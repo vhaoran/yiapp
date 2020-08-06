@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../complex/tools/cus_widget.dart';
-import '../../complex/tools/cus_function.dart';
+import '../../complex/const/const_color.dart';
+import '../../complex/widgets/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -26,14 +26,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 1,
-      child: Scaffold(
-        appBar: _appBar(),
-        body: _bodyCtr(),
-        backgroundColor: Colors.white60,
-      ),
+    return Scaffold(
+      appBar: _appBar(),
+      body: _bodyCtr(),
+      backgroundColor: primary,
     );
   }
 
@@ -41,17 +37,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return CusAppBar(
       showLeading: false,
       bottom: TabBar(
+        controller: _tc,
         indicatorWeight: 3,
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorColor: CusColors.text,
+        indicatorColor: t_primary,
         labelPadding: EdgeInsets.only(bottom: 10),
-        unselectedLabelColor: Colors.white,
-        labelColor: CusColors.text,
+        labelColor: t_primary,
+        unselectedLabelColor: t_gray,
         tabs: <Widget>[
           Text('每日运势', style: TextStyle(fontSize: 16)),
           Text('免费测算', style: TextStyle(fontSize: 16)),
         ],
-        controller: _tc,
         onTap: (index) {
           print(">>>当前index:$index");
         },
@@ -61,8 +57,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget _bodyCtr() {
     return TabBarView(controller: _tc, children: <Widget>[
-      Center(child: Text('每日运势')),
-      Center(child: Text('免费测算')),
+      Center(
+        child: Text('每日运势', style: TextStyle(fontSize: 16, color: t_gray)),
+      ),
+      Center(
+        child: Text('免费测算', style: TextStyle(fontSize: 16, color: t_gray)),
+      ),
     ]);
   }
 
