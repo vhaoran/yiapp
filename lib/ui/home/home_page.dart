@@ -5,7 +5,7 @@ import '../../complex/widgets/cus_appbar.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/6 11:22
-// usage ：首页
+// usage ：首页(运势)
 // ------------------------------------------------------
 
 class HomePage extends StatefulWidget {

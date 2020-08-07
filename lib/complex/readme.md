@@ -6,12 +6,19 @@
     - const_type 固定类型
 - tools 工具类
     - adapt 屏幕自适应
-    - cus_math 自定义数学运算
-    - cus_reg 自定义正则验证
-    - cus_routes 自定义路由
+    - create_uuid 生成uid
+    - cus_callback 回调函数
+    - cus_math 数学运算
+    - cus_reg 正则验证
+    - cus_routes 路由
     - cus_time 转换时间格式
-    - cus_function 自定义功能函数
     - cus_widget 自定义组件
 - widgets 自定义组件
     - cus_appbar 自定义 AppBar
-    - cus_button 自定义按钮
+    - cus_avatar 可复用头像
+    - cus_box 组件盒
+    - cus_button 按钮
+    - cus_dialog 弹框
+    - cus_imagebg 背景墙 
+    - cus_snackbar 底部提示窗
+    - cus_toast 悬浮弹框
