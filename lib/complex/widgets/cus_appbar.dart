@@ -15,7 +15,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.showLeading = true,
-    this.color = sec_primary,
+    this.color = ter_primary,
     this.leadingColor = Colors.black,
     this.actions,
     this.bottom,

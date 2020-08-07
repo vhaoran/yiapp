@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../complex/const/const_color.dart';
-import '../../complex/widgets/cus_appbar.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/widgets/cus_option.dart';
+import 'package:yiapp/complex/widgets/cus_singlebar.dart';
+import 'package:yiapp/ui/ask_fate/ask_fate.dart';
+import 'package:yiapp/ui/face_to_face/face_to_face_page.dart';
+import 'package:yiapp/ui/fate_circle/fate_circle_page.dart';
+import 'package:yiapp/ui/hall/hall_page.dart';
+import 'package:yiapp/ui/mine/mine_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/6 11:22
-// usage ：首页(运势)
+// date  ：2020/8/7 15:15
+// usage ：首页
 // ------------------------------------------------------
 
 class HomePage extends StatefulWidget {
@@ -16,59 +23,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  TabController _tc;
+  int _curIndex = 0; // 底部导航栏索引
+  // 底部导航栏
+  List _bottomBar;
 
   @override
   void initState() {
-    _tc = TabController(length: 2, vsync: this);
+    _bottomBar = [
+      HallPage(),
+      FaceToFacePage(),
+      AskFatePage(),
+      FateCirclePage(),
+      MinePage(),
+    ];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
-      body: _bodyCtr(),
+      body: _bottomBar[_curIndex],
       backgroundColor: primary,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            CusSingleBar(),
+            CusSingleBar(),
+            CusSingleBar(),
+            CusSingleBar(),
+          ],
+        ),
+        color: ter_primary,
+        shape: CircularNotchedRectangle(),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: null),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  Widget _appBar() {
-    return CusAppBar(
-      showLeading: false,
-      bottom: TabBar(
-        controller: _tc,
-        indicatorWeight: 3,
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorColor: t_primary,
-        labelPadding: EdgeInsets.only(bottom: 10),
-        labelColor: t_primary,
-        unselectedLabelColor: t_gray,
-        tabs: <Widget>[
-          Text('每日运势', style: TextStyle(fontSize: 16)),
-          Text('免费测算', style: TextStyle(fontSize: 16)),
-        ],
-        onTap: (index) {
-          print(">>>当前index:$index");
-        },
-      ),
-    );
-  }
-
-  Widget _bodyCtr() {
-    return TabBarView(controller: _tc, children: <Widget>[
-      Center(
-        child: Text('每日运势', style: TextStyle(fontSize: 16, color: t_gray)),
-      ),
-      Center(
-        child: Text('免费测算', style: TextStyle(fontSize: 16, color: t_gray)),
-      ),
-    ]);
-  }
-
-  @override
-  void dispose() {
-    _tc.dispose();
-    super.dispose();
   }
 }

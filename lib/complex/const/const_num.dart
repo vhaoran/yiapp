@@ -4,4 +4,4 @@
 // usage ：固定数字
 // ------------------------------------------------------
 
-const double appBarH = 50; // 通用 AppBar 的高度
+const double appBarH = 46; // 通用 AppBar 的高度

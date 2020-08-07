@@ -1,0 +1,35 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/widgets/cus_appbar.dart';
+
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/8/7 15:39
+// usage ：命理圈
+// ------------------------------------------------------
+
+class FateCirclePage extends StatefulWidget {
+  FateCirclePage({Key key}) : super(key: key);
+  @override
+  _FateCirclePageState createState() => _FateCirclePageState();
+}
+
+class _FateCirclePageState extends State<FateCirclePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CusAppBar(title: '命理圈'),
+      body:_bodyCtr(),
+      backgroundColor:primary,
+    );
+  }
+
+  Widget _bodyCtr() {
+    return ListView(
+      children: <Widget>[
+
+      ],
+    );
+  }
+}

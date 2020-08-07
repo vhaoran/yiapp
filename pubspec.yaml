@@ -38,8 +38,10 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/images/
-
+    - assets/icons/iconfont.ttf
+    - assets/images/bg_blue.png
+    - assets/images/boy.png
+    - assets/images/tai_chi.png
   fonts:
     - family: AliIcon
       fonts:
