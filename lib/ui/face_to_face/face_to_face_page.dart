@@ -19,7 +19,7 @@ class _FaceToFacePageState extends State<FaceToFacePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(title: '测试'),
+      appBar: CusAppBar(title: '面对面'),
       body: _bodyCtr(),
       backgroundColor: primary,
     );

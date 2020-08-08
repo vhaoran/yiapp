@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/widgets/cus_option.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
@@ -23,13 +24,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  final List<String> _barNames = ["大厅", "面对面", "命理圈", "我的"];
+  List<Widget> _bars; // 底部导航栏
   int _curIndex = 0; // 底部导航栏索引
-  // 底部导航栏
-  List _bottomBar;
 
   @override
   void initState() {
-    _bottomBar = [
+    _bars = [
       HallPage(),
       FaceToFacePage(),
       AskFatePage(),
@@ -42,24 +43,75 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _bottomBar[_curIndex],
+      body: _bars[_curIndex],
+      bottomNavigationBar: _bottomAppBar(),
       backgroundColor: primary,
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            CusSingleBar(),
-            CusSingleBar(),
-            CusSingleBar(),
-            CusSingleBar(),
-          ],
+      floatingActionButton: GestureDetector(
+        onTap: () => setState(() => _curIndex = 2),
+        child: Container(
+          decoration: new BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            boxShadow: [
+              BoxShadow(color: Colors.black, blurRadius: 10, spreadRadius: 1)
+            ],
+          ),
+          child:
+              Image.asset('assets/images/tai_chi.png', width: 60, height: 60),
         ),
-        color: ter_primary,
-        shape: CircularNotchedRectangle(),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: null),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  /// 底部导航栏
+  Widget _bottomAppBar() {
+    return BottomAppBar(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: _barNames.map(
+          (name) {
+            int i = _barNames.indexWhere((e) => e == name);
+            Color select = _curIndex == i ? t_primary : t_gray;
+            return Row(
+              children: <Widget>[
+                CusSingleBar(
+                  title: name,
+                  titleColor: select,
+                  iconColor: select,
+                  icon: _icon(i),
+                  onTap: () => setState(() => _curIndex = i),
+                ),
+                if (i == 1) SizedBox(width: 60),
+              ],
+            );
+          },
+        ).toList(),
+      ),
+      color: ter_primary,
+      shape: CircularNotchedRectangle(),
+    );
+  }
+
+  /// 动态获取底部导航栏图标
+  IconData _icon(int i) {
+    IconData icon;
+    switch (i) {
+      case 0:
+        icon = IconData(0xe60e, fontFamily: 'AliIcon');
+        break;
+      case 1:
+        icon = IconData(0xe616, fontFamily: 'AliIcon');
+        break;
+      case 2:
+        icon = IconData(0xe71d, fontFamily: 'AliIcon');
+        break;
+      case 3:
+        icon = IconData(0xe601, fontFamily: 'AliIcon');
+        break;
+      default:
+        icon = FontAwesomeIcons.fastForward;
+        break;
+    }
+    return icon;
   }
 }

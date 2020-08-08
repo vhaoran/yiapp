@@ -19,7 +19,7 @@ class _MinePageState extends State<MinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(title: '测试'),
+      appBar: CusAppBar(title: '个人主页'),
       body: _bodyCtr(),
       backgroundColor: primary,
     );
