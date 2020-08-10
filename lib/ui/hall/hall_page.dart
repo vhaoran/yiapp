@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/widgets/cus_appbar.dart';
+import 'package:yiapp/ui/hall/daily_fortune/daily_fortune.dart';
+import 'package:yiapp/ui/hall/free_calculate/free_calculate.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -23,7 +26,9 @@ class _HallPageState extends State<HallPage> with TickerProviderStateMixin {
       length: 2,
       child: Scaffold(
         appBar: _appBar(),
-        body: _body(),
+        body: TabBarView(
+          children: <Widget>[DailyFortune(), FreeCalculate()],
+        ),
         backgroundColor: primary,
       ),
     );
@@ -43,23 +48,8 @@ class _HallPageState extends State<HallPage> with TickerProviderStateMixin {
           Text('每日运势', style: TextStyle(fontSize: 16)),
           Text('免费测算', style: TextStyle(fontSize: 16)),
         ],
-        onTap: (index) {
-          print(">>>当前index:$index");
-        },
+        onTap: (index) {},
       ),
-    );
-  }
-
-  Widget _body() {
-    return TabBarView(
-      children: <Widget>[
-        Center(
-          child: Text('每日运势页面', style: TextStyle(fontSize: 16, color: t_gray)),
-        ),
-        Center(
-          child: Text('免费测算页面', style: TextStyle(fontSize: 16, color: t_gray)),
-        ),
-      ],
     );
   }
 }

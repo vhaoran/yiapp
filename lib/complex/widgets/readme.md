@@ -4,6 +4,7 @@
 - cus_avatar 可复用头像
 - cus_box 组件盒
 - cus_button 按钮
+- cus_circle_item 上圆下文字
 - cus_dialog 弹框
 - cus_imagebg 背景墙
 - cus_option 选项卡 

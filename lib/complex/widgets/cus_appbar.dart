@@ -16,7 +16,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.showLeading = true,
     this.color = ter_primary,
-    this.leadingColor = Colors.black,
+    this.leadingColor = t_gray,
     this.actions,
     this.bottom,
     this.barHeight = appBarH,
@@ -42,7 +42,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         title: Text(
           title ?? "",
-          style: TextStyle(color: t_primary, fontSize: Adapt.px(34)),
+          style: TextStyle(color: t_gray, fontSize: Adapt.px(34)),
         ),
         elevation: 0,
         bottom: bottom,
@@ -56,7 +56,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? leading ??
                 IconButton(
                   icon:
-                      Icon(Icons.arrow_back_ios, color: leadingColor, size: 22),
+                      Icon(Icons.arrow_back_ios, color: leadingColor, size: 16),
                   onPressed: () => Navigator.pop(context),
                 )
             : null,

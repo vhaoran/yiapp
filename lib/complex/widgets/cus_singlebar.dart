@@ -11,8 +11,10 @@ import 'package:yiapp/complex/tools/adapt.dart';
 class CusSingleBar extends StatelessWidget {
   final IconData icon;
   final String title;
+  final int length;
   final double iconSize;
   final double titleSize;
+  final double width;
   final Color iconColor;
   final Color titleColor;
   final VoidCallback onTap;
@@ -22,6 +24,8 @@ class CusSingleBar extends StatelessWidget {
     this.title: "暂无",
     this.iconSize: 22,
     this.titleSize: 12,
+    this.length: 1,
+    this.width,
     this.iconColor: t_primary,
     this.titleColor: t_primary,
     this.onTap,
@@ -33,7 +37,7 @@ class CusSingleBar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: (Adapt.screenW() - 150) / 4,
+        width: width ?? (Adapt.screenW() - 150) / length,
         padding: EdgeInsets.only(top: 8, bottom: 1),
         child: Column(
           mainAxisSize: MainAxisSize.min,

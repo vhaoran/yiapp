@@ -30,6 +30,8 @@ dependencies:
   provider: ^4.3.1
   # 第三方icon库
   font_awesome_flutter: ^8.8.1
+  # 轮播图
+  flutter_swiper: ^1.1.6
   ###### suxing #####
 
 dev_dependencies:
@@ -41,6 +43,7 @@ flutter:
   
   assets:
     - assets/images/
+    - assets/images/loop/
   fonts:
     - family: AliIcon
       fonts:

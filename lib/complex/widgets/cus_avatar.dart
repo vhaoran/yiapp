@@ -50,14 +50,14 @@ class CusAvatar extends StatelessWidget {
                   imageUrl: "${ApiImage.thumbnail(url)}",
                   placeholder: (context, url) {
                     return Image.asset(
-                      'assets/images/boy.png',
+                      'assets/images/avatar.png',
                       width: size,
                       height: size,
                     );
                   },
                   errorWidget: (context, url, error) {
                     return Image.asset(
-                      'assets/images/boy.png',
+                      'assets/images/avatar.png',
                       width: size,
                       height: size,
                     );

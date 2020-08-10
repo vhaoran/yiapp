@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/widgets/cus_option.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
 import 'package:yiapp/ui/ask_fate/ask_fate.dart';
 import 'package:yiapp/ui/face_to_face/face_to_face_page.dart';
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       floatingActionButton: GestureDetector(
         onTap: () => setState(() => _curIndex = 2),
         child: Container(
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(100)),
             boxShadow: [
               BoxShadow(color: Colors.black, blurRadius: 10, spreadRadius: 1)
@@ -78,6 +77,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   title: name,
                   titleColor: select,
                   iconColor: select,
+                  length: _barNames.length,
                   icon: _icon(i),
                   onTap: () => setState(() => _curIndex = i),
                 ),
