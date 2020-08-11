@@ -15,11 +15,18 @@ class FaceToFacePage extends StatefulWidget {
   _FaceToFacePageState createState() => _FaceToFacePageState();
 }
 
-class _FaceToFacePageState extends State<FaceToFacePage> {
+class _FaceToFacePageState extends State<FaceToFacePage>
+    with AutomaticKeepAliveClientMixin {
+  void initState() {
+    print(">>>进了面对面");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: CusAppBar(title: '面对面'),
+      appBar: CusAppBar(text: "面对面"),
       body: _bodyCtr(),
       backgroundColor: primary,
     );
@@ -30,4 +37,7 @@ class _FaceToFacePageState extends State<FaceToFacePage> {
       children: <Widget>[],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

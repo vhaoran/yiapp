@@ -22,10 +22,12 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final List<String> _barNames = ["大厅", "面对面", "命理圈", "我的"];
+class _HomePageState extends State<HomePage> {
+  final List<String> _barNames = ["大厅", "面对面", "", "命理圈", "我的"];
   List<Widget> _bars; // 底部导航栏
   int _curIndex = 0; // 底部导航栏索引
+  // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
+  PageController _pc = PageController();
 
   @override
   void initState() {
@@ -42,11 +44,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _bars[_curIndex],
+      body: PageView.builder(
+        controller: _pc,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _bars.length,
+        itemBuilder: (context, index) => _bars[index],
+      ),
       bottomNavigationBar: _bottomAppBar(),
       backgroundColor: primary,
       floatingActionButton: GestureDetector(
-        onTap: () => setState(() => _curIndex = 2),
+        onTap: () => _jumpPage(2),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -69,18 +76,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: _barNames.map(
           (name) {
-            int i = _barNames.indexWhere((e) => e == name);
+            int i = _barNames.indexOf(name);
             Color select = _curIndex == i ? t_primary : t_gray;
             return Row(
               children: <Widget>[
-                CusSingleBar(
-                  title: name,
-                  titleColor: select,
-                  iconColor: select,
-                  length: _barNames.length,
-                  icon: _icon(i),
-                  onTap: () => setState(() => _curIndex = i),
-                ),
+                if (name.isNotEmpty)
+                  CusSingleBar(
+                    title: name,
+                    titleColor: select,
+                    iconColor: select,
+                    length: _barNames.length,
+                    icon: _icon(i),
+                    onTap: () => _jumpPage(i),
+                  ),
                 if (i == 1) SizedBox(width: 60),
               ],
             );
@@ -102,10 +110,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case 1:
         icon = IconData(0xe616, fontFamily: 'AliIcon');
         break;
-      case 2:
+      case 3:
         icon = IconData(0xe71d, fontFamily: 'AliIcon');
         break;
-      case 3:
+      case 4:
         icon = IconData(0xe601, fontFamily: 'AliIcon');
         break;
       default:
@@ -113,5 +121,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
     }
     return icon;
+  }
+
+  /// 跳转页面
+  void _jumpPage(int i) {
+    _curIndex = i;
+    setState(() {});
+    _pc.jumpToPage(_curIndex);
+  }
+
+  @override
+  void dispose() {
+    _pc.dispose();
+    super.dispose();
   }
 }

@@ -11,25 +11,34 @@ import 'package:yiapp/complex/widgets/cus_appbar.dart';
 
 class FateCirclePage extends StatefulWidget {
   FateCirclePage({Key key}) : super(key: key);
+
   @override
   _FateCirclePageState createState() => _FateCirclePageState();
 }
 
-class _FateCirclePageState extends State<FateCirclePage> {
+class _FateCirclePageState extends State<FateCirclePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    print(">>>进了命理圈");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(title: '命理圈'),
-      body:_bodyCtr(),
-      backgroundColor:primary,
+      appBar: CusAppBar(text: "命理圈"),
+      body: _bodyCtr(),
+      backgroundColor: primary,
     );
   }
 
   Widget _bodyCtr() {
     return ListView(
-      children: <Widget>[
-
-      ],
+      children: <Widget>[],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

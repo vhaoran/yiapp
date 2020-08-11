@@ -15,11 +15,18 @@ class MinePage extends StatefulWidget {
   _MinePageState createState() => _MinePageState();
 }
 
-class _MinePageState extends State<MinePage> {
+class _MinePageState extends State<MinePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    print(">>>进了个人主页");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(title: '个人主页'),
+      appBar: CusAppBar(text: "个人主页"),
       body: _bodyCtr(),
       backgroundColor: primary,
     );
@@ -30,4 +37,7 @@ class _MinePageState extends State<MinePage> {
       children: <Widget>[],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

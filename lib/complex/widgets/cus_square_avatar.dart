@@ -7,22 +7,22 @@ import '../../service/api/api_image.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/7 11:24
-// usage ：头像
+// date  ：2020/8/11 17:14
+// usage ：自定义方形头像
 // ------------------------------------------------------
 
-class CusAvatar extends StatelessWidget {
-  final double size; // 头像尺寸
+class CusSquareAvatar extends StatelessWidget {
   final String url; // 头像地址
-  final BorderRadius borderRadius;
+  final double size; // 头像尺寸
+  final double borderRadius;
   final int sign; // 标记，如头像右上角的未读消息个数
 
-  CusAvatar(
-    this.url, {
-    Key key,
-    this.size = 40,
+  CusSquareAvatar({
+    @required this.url,
+    this.size: 40,
     this.borderRadius,
     this.sign,
+    Key key,
   })  : assert(size > 4),
         super(key: key);
 
@@ -35,34 +35,25 @@ class CusAvatar extends StatelessWidget {
         overflow: Overflow.visible,
         children: <Widget>[
           Align(
-            child: Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: CusColors.systemBg(context),
-                border: Border.all(color: CusColors.quaLabel(context)),
-                borderRadius: borderRadius ?? BorderRadius.circular(size / 4),
-              ),
-              child: ClipRRect(
-                borderRadius: borderRadius ?? BorderRadius.circular(size / 4),
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: "${ApiImage.thumbnail(url)}",
-                  placeholder: (context, url) {
-                    return Image.asset(
-                      'assets/images/avatar.png',
-                      width: size,
-                      height: size,
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Image.asset(
-                      'assets/images/avatar.png',
-                      width: size,
-                      height: size,
-                    );
-                  },
-                ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius ?? size / 4),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: "${ApiImage.thumbnail(url)}",
+                placeholder: (context, url) {
+                  return Image.asset(
+                    'assets/images/temp_wrong.jpg',
+                    width: size,
+                    height: size,
+                  );
+                },
+                errorWidget: (context, url, error) {
+                  return Image.asset(
+                    'assets/images/temp_wrong.jpg',
+                    width: size,
+                    height: size,
+                  );
+                },
               ),
             ),
           ),

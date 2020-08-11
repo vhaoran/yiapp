@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 
 // ------------------------------------------------------
@@ -13,7 +12,8 @@ const Color primary = Color(0xFF302E32); // 主色调
 const Color sec_primary = Color(0xFF1D1B20); // 二级背景色，比如 消息背景
 const Color ter_primary = Color(0xFF332C2C); // 三级背景色，比如 AppBar
 const Color fou_primary = Color(0xFF4E4141); // 四级背景色，高亮
-const Color fif_primary = Color(0xFF000000); // 五级背景色(待定)
+const Color fif_primary = Color(0xFF413f42); // 五级背景色
+const Color six_primary = Color(0xFF000000); // 六级背景色(待定)
 
 // 文本
 const Color t_primary = Color(0xFFFFC679); // 主文本颜色

@@ -10,20 +10,8 @@ import '../tools/adapt.dart';
 // ------------------------------------------------------
 
 class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CusAppBar({
-    Key key,
-    this.title,
-    this.leading,
-    this.showLeading = true,
-    this.color = ter_primary,
-    this.leadingColor = t_gray,
-    this.actions,
-    this.bottom,
-    this.barHeight = appBarH,
-  })  : preferredSize = Size.fromHeight(barHeight),
-        super(key: key);
-
-  final String title;
+  final Widget title;
+  final String text; // title 为空时，给 text 赋值则默认 title 为 Text 组件
   final Widget leading;
   final bool showLeading;
   final Color color; // AppBar背景色
@@ -34,16 +22,30 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   final Size preferredSize;
+  CusAppBar({
+    Key key,
+    this.title,
+    this.text: "",
+    this.leading,
+    this.showLeading = true,
+    this.color = ter_primary,
+    this.leadingColor = t_gray,
+    this.actions,
+    this.bottom,
+    this.barHeight = appBarH,
+  })  : preferredSize = Size.fromHeight(barHeight),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
       preferredSize: preferredSize,
       child: AppBar(
-        title: Text(
-          title ?? "",
-          style: TextStyle(color: t_gray, fontSize: Adapt.px(34)),
-        ),
+        title: title ??
+            Text(
+              text,
+              style: TextStyle(color: t_gray, fontSize: Adapt.px(34)),
+            ),
         elevation: 0,
         bottom: bottom,
         actions: actions,

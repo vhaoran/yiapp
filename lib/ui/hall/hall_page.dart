@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/widgets/cus_appbar.dart';
@@ -19,7 +18,14 @@ class HallPage extends StatefulWidget {
   _HallPageState createState() => _HallPageState();
 }
 
-class _HallPageState extends State<HallPage> with TickerProviderStateMixin {
+class _HallPageState extends State<HallPage>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    print(">>>进了大厅");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,9 +33,10 @@ class _HallPageState extends State<HallPage> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: _appBar(),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(), // 注释该属性，滑动屏幕也能切换页面
           children: <Widget>[DailyFortune(), FreeCalculate()],
         ),
-        backgroundColor: primary,
+        backgroundColor: fif_primary,
       ),
     );
   }
@@ -52,4 +59,7 @@ class _HallPageState extends State<HallPage> with TickerProviderStateMixin {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

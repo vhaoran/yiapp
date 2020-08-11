@@ -15,11 +15,18 @@ class AskFatePage extends StatefulWidget {
   _AskFatePageState createState() => _AskFatePageState();
 }
 
-class _AskFatePageState extends State<AskFatePage> {
+class _AskFatePageState extends State<AskFatePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    print(">>>进了问命页面");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(title: '问命页面'),
+      appBar: CusAppBar(text: "问命页面"),
       body: _bodyCtr(),
       backgroundColor: primary,
     );
@@ -30,4 +37,7 @@ class _AskFatePageState extends State<AskFatePage> {
       children: <Widget>[],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
