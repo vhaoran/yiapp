@@ -26,7 +26,7 @@ class _AskFatePageState extends State<AskFatePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "问命页面"),
+      appBar: CusAppBar(text: "问命页面",showLeading: false),
       body: _bodyCtr(),
       backgroundColor: primary,
     );

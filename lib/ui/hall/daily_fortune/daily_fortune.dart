@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/widgets/cus_article.dart';
+import 'package:yiapp/complex/widgets/cus_behavior.dart';
 import 'package:yiapp/complex/widgets/cus_circle_item.dart';
 
 // ------------------------------------------------------
@@ -28,33 +34,38 @@ class _DailyFortuneState extends State<DailyFortune> {
 
   // 算命功能区分类
   final List<Map> _assorts = [
-    {"text": "八字精批", "path": "plate.png"},
-    {"text": "八字财运", "path": "plate.png"},
-    {"text": "八字合婚", "path": "plate.png"},
-    {"text": "八字事业", "path": "plate.png"},
-    {"text": "数字测试", "path": "plate.png"},
-    {"text": "桃花运势", "path": "plate.png"},
-    {"text": "姓名测试", "path": "plate.png"},
-    {"text": "学业测试", "path": "plate.png"},
-    {"text": "婚姻测试", "path": "plate.png"},
-    {"text": "2020年运", "path": "plate.png"}
+    {"text": "八字精批", "path": "plate.png", "route": "temp"},
+    {"text": "八字财运", "path": "plate.png", "route": "temp"},
+    {"text": "八字合婚", "path": "plate.png", "route": "temp"},
+    {"text": "八字事业", "path": "plate.png", "route": "temp"},
+    {"text": "数字测试", "path": "plate.png", "route": "temp"},
+    {"text": "桃花运势", "path": "plate.png", "route": "temp"},
+    {"text": "姓名测试", "path": "plate.png", "route": "temp"},
+    {"text": "学业测试", "path": "plate.png", "route": "temp"},
+    {"text": "婚姻测试", "path": "plate.png", "route": "temp"},
+    {"text": "2020年运", "path": "plate.png", "route": "temp"}
   ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      children: <Widget>[
-        _loopArea(), // 轮播图
-        _assortArea(), // 算命功能区分类
-      ],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        controller: ScrollController(keepScrollOffset: false),
+        children: <Widget>[
+          _loopArea(), // 轮播图
+          _assortArea(), // 算命功能区分类
+          _tip("精选评测"),
+          ..._evaluationArea(),
+        ],
+      ),
     );
   }
 
   /// 轮播图
   Widget _loopArea() {
     return Container(
-      height: 140,
+      height: Adapt.px(300),
       color: primary,
       child: Swiper(
         itemCount: _loops.length,
@@ -72,8 +83,8 @@ class _DailyFortuneState extends State<DailyFortune> {
           builder: DotSwiperPaginationBuilder(
             color: Colors.white,
             activeColor: Colors.blue,
-            size: 8,
-            activeSize: 8,
+            size: Adapt.px(18),
+            activeSize: Adapt.px(18),
           ),
         ), // 分页指示
       ),
@@ -84,49 +95,44 @@ class _DailyFortuneState extends State<DailyFortune> {
   Widget _assortArea() {
     return Container(
       color: primary,
-      padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 5),
+      padding: EdgeInsets.only(
+        left: Adapt.px(10),
+        right: Adapt.px(10),
+        top: Adapt.px(20),
+        bottom: Adapt.px(10),
+      ),
       child: GridView.count(
         shrinkWrap: true,
         crossAxisCount: 5, // 横轴元素个数
-        crossAxisSpacing: 5,
+        physics: BouncingScrollPhysics(),
         children: List.generate(
           _assorts.length,
-          (i) => CusCircleItem(
-            text: _assorts[i]['text'],
-            path: "assets/images/${_assorts[i]['path']}",
-            onTap: _clickType,
-          ),
+          (i) {
+            Map m = _assorts[i];
+            return CusCircleItem(
+              text: m['text'],
+              path: "assets/images/${m['path']}",
+              onTap: () => CusRoutes.pushNamed(context,
+                  routeName: m['route'], arguments: m['text']),
+            );
+          },
         ),
       ),
     );
   }
 
-  /// 点击算命按钮的种类
-  void _clickType(String text) {
-    print(">>>点了：$text");
-    switch (text) {
-      case "八字精批":
-        break;
-      case "八字财运":
-        break;
-      case "八字合婚":
-        break;
-      case "八字事业":
-        break;
-      case "数字测试":
-        break;
-      case "桃花运势":
-        break;
-      case "姓名测试":
-        break;
-      case "学业测试":
-        break;
-      case "婚姻测试":
-        break;
-      case "2020年运":
-        break;
-      default:
-        break;
-    }
+  /// 精选评选
+  List<Widget> _evaluationArea() {
+    return _assorts.map((e) => CusArticle(title: e['text'])).toList();
+  }
+
+  Widget _tip(String text) {
+    return Padding(
+      padding: EdgeInsets.all(Adapt.px(20)),
+      child: Text(
+        text ?? "提示文字",
+        style: TextStyle(fontSize: Adapt.px(32), color: t_primary),
+      ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 
 // ------------------------------------------------------
@@ -15,14 +16,14 @@ class CusCircleItem extends StatelessWidget {
   final double fontSize; // 文字大小
   final double top; // 文字距离图片的距离
   final Color color; // 文字颜色
-  FnString onTap;
+  final VoidCallback onTap;
 
   CusCircleItem({
     this.path: "assets/images/plate.png",
     this.text: "默认文字",
-    this.height: 42,
-    this.fontSize: 10,
-    this.top: 2,
+    this.height: 90,
+    this.fontSize: 24,
+    this.top: 12,
     this.color: t_gray,
     this.onTap,
     Key key,
@@ -31,24 +32,20 @@ class CusCircleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        if (onTap != null) {
-          onTap(text);
-        }
-      },
+      onTap: onTap,
       child: Column(
         children: <Widget>[
           ClipOval(
             child: SizedBox(
-              height: height,
+              height: Adapt.px(height),
               child: Image.asset(path, fit: BoxFit.cover),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: top),
+            padding: EdgeInsets.only(top: Adapt.px(top)),
             child: Text(
               text,
-              style: TextStyle(fontSize: fontSize, color: color),
+              style: TextStyle(fontSize: Adapt.px(fontSize), color: color),
             ),
           )
         ],

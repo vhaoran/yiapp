@@ -8,20 +8,22 @@ import '../../service/api/api_image.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/11 17:14
-// usage ：自定义方形头像
+// usage ：自定义头像,调整 borderRadius 的值来设置方形或者圆形
 // ------------------------------------------------------
 
-class CusSquareAvatar extends StatelessWidget {
+class CusAvatar extends StatelessWidget {
   final String url; // 头像地址
   final double size; // 头像尺寸
   final double borderRadius;
   final int sign; // 标记，如头像右上角的未读消息个数
+  final String defaultImage; // 指定默认图片
 
-  CusSquareAvatar({
+  CusAvatar({
     @required this.url,
-    this.size: 40,
+    this.size: 80,
     this.borderRadius,
     this.sign,
+    this.defaultImage: "assets/images/avatar.jpg",
     Key key,
   })  : assert(size > 4),
         super(key: key);
@@ -40,20 +42,8 @@ class CusSquareAvatar extends StatelessWidget {
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
                 imageUrl: "${ApiImage.thumbnail(url)}",
-                placeholder: (context, url) {
-                  return Image.asset(
-                    'assets/images/temp_wrong.jpg',
-                    width: size,
-                    height: size,
-                  );
-                },
-                errorWidget: (context, url, error) {
-                  return Image.asset(
-                    'assets/images/temp_wrong.jpg',
-                    width: size,
-                    height: size,
-                  );
-                },
+                placeholder: (context, url) => _errImage(),
+                errorWidget: (context, url, error) => _errImage(),
               ),
             ),
           ),
@@ -83,4 +73,7 @@ class CusSquareAvatar extends StatelessWidget {
       ),
     );
   }
+
+  /// 错误图片
+  Widget _errImage() => Image.asset(defaultImage, width: size, height: size);
 }

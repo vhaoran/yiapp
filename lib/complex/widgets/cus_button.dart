@@ -24,10 +24,10 @@ class CusRaisedBtn extends StatelessWidget {
     this.text = '确定',
     this.pdHor = 0,
     this.pdVer = 0,
-    this.fontSize,
+    this.fontSize: 30,
     this.borderRadius = 5,
     this.minWidth = double.infinity,
-    this.height,
+    this.height: 72,
     this.bgColor = Colors.lightGreen,
     this.textColor = Colors.white,
     this.onPressed,
@@ -38,7 +38,7 @@ class CusRaisedBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonTheme(
       minWidth: minWidth,
-      height: Adapt.px(height ?? 72),
+      height: Adapt.px(height),
       padding: EdgeInsets.symmetric(horizontal: pdHor, vertical: pdVer),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
@@ -49,7 +49,7 @@ class CusRaisedBtn extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: Adapt.px(fontSize ?? 30),
+            fontSize: Adapt.px(fontSize),
             color: textColor,
           ),
         ),

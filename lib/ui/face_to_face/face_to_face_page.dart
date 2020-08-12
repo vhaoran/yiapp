@@ -26,7 +26,7 @@ class _FaceToFacePageState extends State<FaceToFacePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "面对面"),
+      appBar: CusAppBar(text: "面对面", showLeading: false),
       body: _bodyCtr(),
       backgroundColor: primary,
     );

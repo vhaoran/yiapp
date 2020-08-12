@@ -22,8 +22,8 @@ class CusSingleBar extends StatelessWidget {
   const CusSingleBar({
     this.icon: Icons.broken_image,
     this.title: "暂无",
-    this.iconSize: 22,
-    this.titleSize: 12,
+    this.iconSize: 50,
+    this.titleSize: 26,
     this.length: 1,
     this.width,
     this.iconColor: t_primary,
@@ -37,16 +37,18 @@ class CusSingleBar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: width ?? (Adapt.screenW() - 150) / length,
-        padding: EdgeInsets.only(top: 8, bottom: 1),
+        width: width ?? (Adapt.screenW() - Adapt.px(300)) / length,
+        padding: EdgeInsets.only(top: Adapt.px(16), bottom: Adapt.px(2)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(icon ?? Icons.broken_image, size: iconSize, color: iconColor),
-            SizedBox(height: 3),
+            Icon(icon ?? Icons.broken_image,
+                size: Adapt.px(iconSize), color: iconColor),
+            SizedBox(height: Adapt.px(8)),
             Text(
               title ?? "选项",
-              style: TextStyle(fontSize: titleSize, color: titleColor),
+              style:
+                  TextStyle(fontSize: Adapt.px(titleSize), color: titleColor),
             )
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
 import 'package:yiapp/ui/ask_fate/ask_fate.dart';
 import 'package:yiapp/ui/face_to_face/face_to_face_page.dart';
@@ -61,8 +62,8 @@ class _HomePageState extends State<HomePage> {
               BoxShadow(color: Colors.black, blurRadius: 10, spreadRadius: 1)
             ],
           ),
-          child:
-              Image.asset('assets/images/tai_chi.png', width: 60, height: 60),
+          child: Image.asset('assets/images/tai_chi.png',
+              width: Adapt.px(140), height: Adapt.px(140)),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     icon: _icon(i),
                     onTap: () => _jumpPage(i),
                   ),
-                if (i == 1) SizedBox(width: 60),
+                if (i == 1) SizedBox(width: Adapt.px(120)),
               ],
             );
           },
@@ -125,9 +126,11 @@ class _HomePageState extends State<HomePage> {
 
   /// 跳转页面
   void _jumpPage(int i) {
-    _curIndex = i;
-    setState(() {});
-    _pc.jumpToPage(_curIndex);
+    if (_curIndex != i) {
+      _curIndex = i;
+      setState(() {});
+      _pc.jumpToPage(_curIndex);
+    }
   }
 
   @override

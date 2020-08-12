@@ -5,3 +5,4 @@
 // ------------------------------------------------------
 
 const double appBarH = 46; // 通用 AppBar 的高度
+const double bgWallH = 360; // 背景墙高度
