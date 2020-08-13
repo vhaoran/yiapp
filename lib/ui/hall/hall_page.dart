@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/cus_behavior.dart';
 import 'package:yiapp/ui/hall/daily_fortune/daily_fortune.dart';
 import 'package:yiapp/ui/hall/free_calculate/free_calculate.dart';
 
@@ -33,9 +34,11 @@ class _HallPageState extends State<HallPage>
       length: 2,
       child: Scaffold(
         appBar: _appBar(),
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(), // 注释该属性，滑动屏幕也能切换页面
-          children: <Widget>[DailyFortune(), FreeCalculate()],
+        body: ScrollConfiguration(
+          behavior: CusBehavior(),
+          child: TabBarView(
+            children: <Widget>[DailyFortune(), FreeCalculate()],
+          ),
         ),
         backgroundColor: fif_primary,
       ),

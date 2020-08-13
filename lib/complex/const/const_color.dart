@@ -20,7 +20,10 @@ const Color t_primary = Color(0xFFFFC679); // 主文本颜色
 const Color t_gray = Color(0xFFCFCFCF); // 灰白色
 const Color t_green = Color(0xFF6DD400); // "在线"绿
 const Color t_svip = Color(0xFFE02020); // "svip"红
+const Color t_red = Color(0xFFC74444); // 红
 const Color t_price = Color(0xFFFA6400); // "价格"橙
+const Color t_ji = Color(0xFF83C677); // 忌之绿
+const Color t_yi = Color(0xFFEB827F); // 宜之红
 
 // 边框颜色
 const Color b_border = Color(0xFF6E5A3E);

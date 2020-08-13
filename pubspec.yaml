@@ -32,6 +32,8 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   # 轮播图
   flutter_swiper: ^1.1.6
+  # 公历黄历吉凶星座
+  secret: ^0.1.1
   ###### suxing #####
 
 dev_dependencies:

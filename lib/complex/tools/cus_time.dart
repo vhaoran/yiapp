@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/complex/const/const_calendar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,8 +30,35 @@ class CusTime {
     String minute = date.minute < 10 ? "0${date.minute}" : "${date.minute}";
     return "${date.year}年${date.month}月${date.day}日${date.hour}:$minute";
   }
-}
 
+  /// 根据传入的年份显示天干地支 如 庚子
+  static String zodiac(int year) {
+    int day = (year - 3) % 10; // 天干
+    int earth = (year - 3) % 12; // 地支
+    String dayStr = CalendarConst.day_stem[day];
+    String earthStr = CalendarConst.earth_branch[earth];
+    return dayStr + earthStr;
+  }
+
+  /// 大写的月日，如 六月二十四
+  static String capitalMd({DateTime dateTime, bool lower = false}) {
+    var date = Lunar.fromDate(dateTime ?? DateTime.now());
+    String month = date.monthInChinese;
+    String day = date.dayInChinese;
+    if (lower) {
+      day = day.contains("廿") ? day.replaceFirst("廿", "二十") : day;
+    }
+    String str = month + "月" + day;
+    return str;
+  }
+
+  /// 干支年+大写的月日 如 庚子年六月二十四
+  static String dayEarthMd({DateTime dateTime, bool lower = false}) {
+    var date = Lunar.fromDate(dateTime ?? DateTime.now());
+    String str = zodiac(date.year) + "年" + capitalMd(lower: lower);
+    return str;
+  }
+}
 
 /// 显示发送时间及间隔
 class UtilTime {

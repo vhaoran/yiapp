@@ -121,64 +121,6 @@ class _FreeCalculateState extends State<FreeCalculate>
     return _populars.map((e) => CusArticle(title: e['text'])).toList();
   }
 
-  /// 点击热门推荐的种类
-  Widget _doPopular(String text) {
-    print(">>>点了【热门推荐】中的:$text");
-    switch (text) {
-      case "人体节律":
-        break;
-      case "姓名配对":
-        break;
-      case "星座配对":
-        break;
-      case "生肖配对":
-        break;
-      case "血型配对":
-        break;
-      case "手机号吗":
-        break;
-      case "眼跳吉凶":
-        break;
-      case "指纹吉凶":
-        break;
-      case "生日配对":
-        break;
-      case "QQ号码":
-        break;
-      default:
-        break;
-    }
-  }
-
-  /// 点击个性推荐的种类
-  Widget _doPersonality(String text) {
-    print(">>>点了【个性推荐】中的:$text");
-    switch (text) {
-      case "周公解梦":
-        break;
-      case "生肖运势":
-        break;
-      case "生肖算命":
-        break;
-      case "称骨算命":
-        break;
-      case "缘分测试":
-        break;
-      case "观音灵签":
-        break;
-      case "妈祖灵签":
-        break;
-      case "狐仙灵签":
-        break;
-      case "好友合盘":
-        break;
-      case "生命灵数":
-        break;
-      default:
-        break;
-    }
-  }
-
   Widget _tip(String text) {
     return Padding(
       padding: EdgeInsets.all(Adapt.px(20)),

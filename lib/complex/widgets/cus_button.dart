@@ -26,8 +26,8 @@ class CusRaisedBtn extends StatelessWidget {
     this.pdVer = 0,
     this.fontSize: 30,
     this.borderRadius = 5,
-    this.minWidth = double.infinity,
-    this.height: 72,
+    this.minWidth = 40,
+    this.height: 0,
     this.bgColor = Colors.lightGreen,
     this.textColor = Colors.white,
     this.onPressed,
@@ -37,9 +37,10 @@ class CusRaisedBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
-      minWidth: minWidth,
+      minWidth: Adapt.px(minWidth),
       height: Adapt.px(height),
-      padding: EdgeInsets.symmetric(horizontal: pdHor, vertical: pdVer),
+      padding: EdgeInsets.symmetric(
+          horizontal: Adapt.px(pdHor), vertical: Adapt.px(pdVer)),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
       child: RaisedButton(

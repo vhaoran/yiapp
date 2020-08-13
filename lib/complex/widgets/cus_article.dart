@@ -21,8 +21,6 @@ class CusArticle extends StatelessWidget {
   final double spaceWidth; // 图片和右侧标题间隔
   final double spaceHeight; // 主副标题间隔
   final double btnFontSize; // 按钮字体大小
-  final double btnWidth; // 按钮宽度
-  final double btnHeight; // 按钮高度
   final double btnRadius; // 按钮圆角
   final String title; // 主标题
   final String subtitle; // 副标题
@@ -49,9 +47,7 @@ class CusArticle extends StatelessWidget {
     this.spaceWidth: 20,
     this.spaceHeight: 20,
     this.btnFontSize: 48,
-    this.btnWidth: 160,
-    this.btnHeight: 90,
-    this.btnRadius: 10,
+    this.btnRadius: 50,
     this.title: "文章标题",
     this.subtitle,
     this.url: "",
@@ -107,9 +103,9 @@ class CusArticle extends StatelessWidget {
                               textColor: btnFontColor,
                               fontSize: Adapt.px(btnFontSize),
                               text: btnName,
-                              minWidth: Adapt.px(btnWidth),
                               borderRadius: btnRadius,
-                              height: Adapt.px(btnHeight),
+                              pdHor: 20,
+                              pdVer: 2,
                               onPressed:
                                   onPressed ?? () => print(">>>点了 $title 上的按钮"),
                             ),

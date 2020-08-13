@@ -19,20 +19,24 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final Widget bottom;
   final num barHeight;
-
+  final double leadingSize;
+  final IconData leadingIcon;
   @override
   final Size preferredSize;
+
   CusAppBar({
     Key key,
     this.title,
     this.text: "",
     this.leading,
-    this.showLeading = true,
-    this.color = ter_primary,
-    this.leadingColor = t_gray,
+    this.showLeading: true,
+    this.color: ter_primary,
+    this.leadingColor: t_gray,
     this.actions,
     this.bottom,
-    this.barHeight = appBarH,
+    this.barHeight: appBarH,
+    this.leadingSize: 32,
+    this.leadingIcon: Icons.arrow_back_ios,
   })  : preferredSize = Size.fromHeight(barHeight),
         super(key: key);
 
@@ -51,14 +55,12 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: actions,
         centerTitle: true,
         backgroundColor: color,
-        iconTheme: IconThemeData(color: Colors.black),
-        actionsIconTheme:
-            IconThemeData(size: Adapt.px(50), color: Colors.black),
+
         leading: showLeading
             ? leading ??
                 IconButton(
-                  icon:
-                      Icon(Icons.arrow_back_ios, color: leadingColor, size: 16),
+                  icon: Icon(leadingIcon,
+                      color: leadingColor, size: Adapt.px(leadingSize)),
                   onPressed: () => Navigator.pop(context),
                 )
             : null,

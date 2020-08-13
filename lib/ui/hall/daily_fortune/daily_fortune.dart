@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:secret/secret.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
+import 'package:yiapp/complex/widgets/cus_button.dart';
 import 'package:yiapp/complex/widgets/cus_circle_item.dart';
+import 'package:yiapp/ui/hall/almanac/almanac_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,6 +28,7 @@ class DailyFortune extends StatefulWidget {
 }
 
 class _DailyFortuneState extends State<DailyFortune> {
+  DateTime _cusTime; // 当前时间
   // 本地资源轮播
   final List<String> _loops = [
     "loop_1.jpg",
@@ -47,6 +52,12 @@ class _DailyFortuneState extends State<DailyFortune> {
   ];
 
   @override
+  void initState() {
+    _cusTime = DateTime.now();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: CusBehavior(),
@@ -55,6 +66,8 @@ class _DailyFortuneState extends State<DailyFortune> {
         children: <Widget>[
           _loopArea(), // 轮播图
           _assortArea(), // 算命功能区分类
+          _timeArea(), // 显示时间
+          Container(height: 30, color: primary),
           _tip("精选评测"),
           ..._evaluationArea(),
         ],
@@ -121,17 +134,50 @@ class _DailyFortuneState extends State<DailyFortune> {
     );
   }
 
+  /// 显示时间区域
+  Widget _timeArea() {
+    return InkWell(
+      onTap: () => CusRoutes.push(context, AlmanacPage()),
+      child: Container(
+        height: Adapt.px(72),
+        child: Row(
+          children: <Widget>[
+            Spacer(),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                "${CusTime.ymd(_cusTime.toString())} ${CusTime.dayEarthMd()}",
+                style: TextStyle(color: t_primary, fontSize: Adapt.px(32)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: Adapt.px(16), left: Adapt.px(36)),
+              child: CusRaisedBtn(
+                text: "详情",
+                bgColor: t_primary,
+                textColor: Colors.black,
+                fontSize: 24,
+                pdHor: 14,
+                onPressed: () => CusRoutes.push(context, AlmanacPage()),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// 精选评选
   List<Widget> _evaluationArea() {
     return _assorts.map((e) => CusArticle(title: e['text'])).toList();
   }
 
-  Widget _tip(String text) {
+  Widget _tip(String text, {double fontSize = 32, double padding = 20}) {
     return Padding(
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.all(Adapt.px(padding)),
       child: Text(
         text ?? "提示文字",
-        style: TextStyle(fontSize: Adapt.px(32), color: t_primary),
+        style: TextStyle(fontSize: Adapt.px(fontSize), color: t_primary),
       ),
     );
   }
