@@ -30,6 +30,7 @@ class _HallPageState extends State<HallPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(

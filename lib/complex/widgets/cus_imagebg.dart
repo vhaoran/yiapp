@@ -11,7 +11,7 @@ class CusImageBg extends StatelessWidget {
   final double sizeW;
   final double sizeH; // 不指定高度时，默认等于宽度
   final String url;
-  BoxFit boxFit;
+  final BoxFit boxFit;
 
   CusImageBg({
     @required this.sizeW,

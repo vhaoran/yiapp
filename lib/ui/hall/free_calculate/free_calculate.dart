@@ -52,6 +52,7 @@ class _FreeCalculateState extends State<FreeCalculate>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: ListView(

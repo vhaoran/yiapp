@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:secret/secret.dart';
+import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -29,6 +27,8 @@ class DailyFortune extends StatefulWidget {
 
 class _DailyFortuneState extends State<DailyFortune> {
   DateTime _cusTime; // 当前时间
+  Lunar _lunar;
+  final int _maxCount = 8; // 最多显示宜、忌项的个数
   // 本地资源轮播
   final List<String> _loops = [
     "loop_1.jpg",
@@ -51,9 +51,22 @@ class _DailyFortuneState extends State<DailyFortune> {
     {"text": "2020年运", "path": "plate.png", "route": "temp"}
   ];
 
+  // 好物列表
+  final List<Map> _goods = [
+    {"text": "恋爱桃花", "route": "temp"},
+    {"text": "健康平安", "route": "temp"},
+    {"text": "财富事业", "route": "temp"},
+    {"text": "学业职场", "route": "temp"},
+    {"text": "破灾符", "route": "temp"},
+    {"text": "聚财符", "route": "temp"},
+    {"text": "平安符", "route": "temp"},
+    {"text": "感情符", "route": "temp"},
+  ];
+
   @override
   void initState() {
     _cusTime = DateTime.now();
+    _lunar = Lunar(_cusTime);
     super.initState();
   }
 
@@ -62,14 +75,23 @@ class _DailyFortuneState extends State<DailyFortune> {
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: ListView(
-        controller: ScrollController(keepScrollOffset: false),
         children: <Widget>[
           _loopArea(), // 轮播图
           _assortArea(), // 算命功能区分类
-          _timeArea(), // 显示时间
-          Container(height: 30, color: primary),
+          _timeArea(), // 显示黄历时间
+          Container(
+            color: primary,
+            child: Column(
+              children: <Widget>[
+                _yiOrJiCts(_lunar.dayYi), // 宜
+                _yiOrJiCts(_lunar.dayJi, color: t_ji, isYi: false), // 忌
+              ],
+            ),
+          ),
+          _tip("好物列表"),
+          _goodsArea(), // 好物列表
           _tip("精选评测"),
-          ..._evaluationArea(),
+          ..._evaluationArea(), // 精选评测
         ],
       ),
     );
@@ -117,7 +139,6 @@ class _DailyFortuneState extends State<DailyFortune> {
       child: GridView.count(
         shrinkWrap: true,
         crossAxisCount: 5, // 横轴元素个数
-        physics: BouncingScrollPhysics(),
         children: List.generate(
           _assorts.length,
           (i) {
@@ -167,11 +188,65 @@ class _DailyFortuneState extends State<DailyFortune> {
     );
   }
 
-  /// 精选评选
+  /// 好物列表区域
+  Widget _goodsArea() {
+    return Container(
+      color: primary,
+      child: Wrap(
+        children: List.generate(
+          _goods.length,
+          (index) {
+            var e = _goods[index];
+            return InkWell(
+              onTap: () => CusRoutes.pushNamed(context,
+                  routeName: e['route'], arguments: e['text']),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(6),
+                width: Adapt.screenW() / 4,
+                child: Text(
+                  "${e['text']}",
+                  style: TextStyle(color: t_primary, fontSize: Adapt.px(28)),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  /// 精选评测
   List<Widget> _evaluationArea() {
     return _assorts.map((e) => CusArticle(title: e['text'])).toList();
   }
 
+  /// 封装的宜忌组件
+  Widget _yiOrJiCts(List<String> l, {Color color = t_yi, bool isYi = true}) {
+    return Row(
+      children: List.generate(
+        // 长度 + 1 是防止l长度不足8时，最后一个元素值不显示
+        l.length >= _maxCount ? _maxCount : l.length + 1,
+        (index) {
+          // 索引 - 1 是防止第一个元素不显示
+          String text = index == 0 ? isYi ? "宜" : "忌" : l[index - 1];
+          return Container(
+            width: Adapt.screenW() / _maxCount,
+            child: Text(
+              text,
+              style: TextStyle(color: color, fontSize: Adapt.px(28)),
+            ),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[700], width: 0),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// 如"精选评测"等提示内容
   Widget _tip(String text, {double fontSize = 32, double padding = 20}) {
     return Padding(
       padding: EdgeInsets.all(Adapt.px(padding)),

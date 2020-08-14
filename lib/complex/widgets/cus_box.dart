@@ -12,11 +12,11 @@ import '../tools/cus_callback.dart';
 
 /// 适用于主标题必填，副标题和右则翻页箭头选填
 class GNormalCtr extends StatefulWidget {
-  String title;
-  String subtitle;
-  bool showBtn; // 默认显示右箭头按钮
-  double height;
-  VoidCallback onTap;
+  final String title;
+  final String subtitle;
+  final bool showBtn; // 默认显示右箭头按钮
+  final double height;
+  final VoidCallback onTap;
 
   GNormalCtr({
     @required this.title,
@@ -78,9 +78,9 @@ class _GNormalCtrState extends State<GNormalCtr> {
 
 /// 适用于主副标题上下分布的布局，如发布群公告
 class GDiffLevelCtr extends StatefulWidget {
-  String title;
-  String subtitle;
-  VoidCallback onTap;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
 
   GDiffLevelCtr({
     @required this.title,
@@ -136,9 +136,9 @@ class _GDiffLevelCtrState extends State<GDiffLevelCtr> {
 
 /// 适用于一个主标题，一个开关的布局，如置顶聊天
 class GSwitchCtr extends StatefulWidget {
-  String title;
+  final String title;
   bool status;
-  FnBool fnBool;
+  final FnBool fnBool;
 
   GSwitchCtr({@required this.title, this.status = false, this.fnBool});
 
@@ -182,9 +182,9 @@ class _GSwitchCtrState extends State<GSwitchCtr> {
 
 /// 适用于单文本的布局，如退群
 class GSingleTextCtr extends StatefulWidget {
-  String title;
-  Color color;
-  VoidCallback onTap;
+  final String title;
+  final Color color;
+  final VoidCallback onTap;
 
   GSingleTextCtr({
     @required this.title,
@@ -227,11 +227,11 @@ class _GSingleTextCtrState extends State<GSingleTextCtr> {
 
 /// 适用于左边一个widget，右边一个标题，右侧带有箭头或者Widget的布局
 class GLeftImageCtr extends StatefulWidget {
-  Widget child;
-  Widget trailing; // 当showBtn为false时，显示末尾处组件
-  String title;
-  bool showBtn; // 默认显示尾部的箭头
-  VoidCallback onTap;
+  final Widget child;
+  final Widget trailing; // 当showBtn为false时，显示末尾处组件
+  final  String title;
+  final  bool showBtn; // 默认显示尾部的箭头
+  final VoidCallback onTap;
 
   GLeftImageCtr({
     @required this.child,
@@ -286,11 +286,11 @@ class _GLeftImageCtrState extends State<GLeftImageCtr> {
 
 /// 适用于一个主标题，中间是 Widget，右则翻页箭头的布局
 class GMidImageCtr extends StatefulWidget {
-  String title;
-  Widget child;
-  IconData icon;
-  bool showBtn;
-  VoidCallback onTap;
+  final String title;
+  final Widget child;
+  final IconData icon;
+  final bool showBtn;
+  final VoidCallback onTap;
 
   GMidImageCtr({
     @required this.title,

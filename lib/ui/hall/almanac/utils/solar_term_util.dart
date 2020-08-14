@@ -1,17 +1,11 @@
 import 'dart:core';
 import 'dart:math';
-
 import 'math_util.dart';
 
-/**
- * http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
- * 24节气计算公式，参考该博客实现
- */
+/// 24节气计算公式，参考该博客实现 http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
 class SolarTermUtil {
-  /**
-   * 24节气
-   */
-  static List<String> SOLAR_TERMS = [
+  // 24节气
+  static List<String> solar_terms = [
     "春分",
     "清明",
     "谷雨",
@@ -38,25 +32,16 @@ class SolarTermUtil {
     "惊蛰",
   ];
 
-  /**
-   * 每弧度的角秒数
-   */
+  // 每弧度的角秒数
   static final double SECOND_PER_RAD = 180 * 3600 / pi;
 
-  /**
-   * 每弧度的角度数
-   */
+  // 每弧度的角度数
   static final double ANGLE_PER_RAD = 180 / pi;
 
-  /**
-   * 日历计算
-   * 2000年前儒略日数(2000-1-1)
-   */
+  // 日历计算 2000年前儒略日数(2000-1-1)
   static final double J2000 = 2451545;
 
-  /**
-   * 黄赤交角系数表
-   */
+  // 黄赤交角系数表
   static final List<double> H_C_ANGLE_TABLE = [
     0,
     50287.92262,
@@ -68,9 +53,7 @@ class SolarTermUtil {
     0.00001
   ];
 
-  /**
-   * 世界时与原子时之差计算表
-   */
+  // 世界时与原子时之差计算表
   static final List<double> DTS = [
     -4000,
     108371.7,
@@ -175,23 +158,17 @@ class SolarTermUtil {
     6000
   ];
 
-  /**
-   * 离心率
-   */
+  // 离心率
   static final List<double> GXC_E = [0.016708634, -0.000042037, -0.0000001267];
 
-  /**
-   * 近点
-   */
+  // 近点
   static final List<double> GXC_P = [
     102.93735 / ANGLE_PER_RAD,
     1.71946 / ANGLE_PER_RAD,
     0.00046 / ANGLE_PER_RAD
   ];
 
-  /**
-   * 太平黄经
-   */
+  // 太平黄经
   static final List<double> GXC_L = [
     280.4664567 / ANGLE_PER_RAD,
     36000.76982779 / ANGLE_PER_RAD,
@@ -200,17 +177,10 @@ class SolarTermUtil {
     -1 / 153000000 / ANGLE_PER_RAD
   ];
 
-  /**
-   * 光行差常数
-   */
+  // 光行差常数
   static final double GXC_K = 20.49552 / SECOND_PER_RAD;
 
-  /**
-   * 向下取整
-   *
-   * @param v v
-   * @return 取整数部分
-   */
+  // 向下取整
   static double doubleFloor(double v) {
     v = v.floor().toDouble();
     if (v < 0) return v + 1;
@@ -2151,7 +2121,7 @@ class SolarTermUtil {
       q = getTimeFromAngle(jd + i * 15.2, i * 15.toDouble(), 0);
       q = q + J2000 + 8 / 24; // 计算第i个节气(i=0是春分),结果转为北京时
       Time time = setFromJulian(q, true);
-      solarTerms[i + 3] = time.toString() + SOLAR_TERMS[i];
+      solarTerms[i + 3] = time.toString() + solar_terms[i];
     }
 
     return solarTerms;
@@ -2170,17 +2140,13 @@ class SolarTermUtil {
       q = getTimeFromAngle(jd + i * 15.2, i * 15.toDouble(), 0);
       q = q + J2000 + 8 / 24; // 计算第i个节气(i=0是春分)
       Time time = setFromJulian(q, true);
-      solarTerms[i - 21] = time.toString() + SOLAR_TERMS[i];
+      solarTerms[i - 21] = time.toString() + solar_terms[i];
     }
     return solarTerms;
   }
 
-  /**
-   * 要获得2018年24节气需要传入2017年
-   *
-   * @param year 要获得2018年24节气需要传入2017年
-   * @return 返回 小寒大寒
-   */
+  /// year 要获得2018年24节气需要传入2017年
+  /// return  返回 小寒大寒
   static List<String> getSolarTermsNextOffset(int year) {
     List<String> solarTerms = new List(2);
     double jd = 365.2422 * (year - 2000), q;
@@ -2188,24 +2154,18 @@ class SolarTermUtil {
       q = getTimeFromAngle(jd + i * 15.2, i * 15.toDouble(), 0);
       q = q + J2000 + 8 / 24; // 计算第i个节气(i=0是春分)
       Time time = setFromJulian(q, true);
-      solarTerms[i - 19] = time.toString() + SOLAR_TERMS[i];
+      solarTerms[i - 19] = time.toString() + solar_terms[i];
     }
     return solarTerms;
   }
 }
 
-/**
- * 章动
- */
+/// 章动
 class Nutation {
-  /**
-   * 章动角
-   */
+  // 章动角
   double Lon;
 
-  /**
-   * 交角
-   */
+  // 交角
   double Obl;
 }
 

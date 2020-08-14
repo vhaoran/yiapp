@@ -4,7 +4,6 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
-import 'package:yiapp/complex/widgets/cus_circle_item.dart';
 import 'calendar_view.dart';
 import '../../../complex/const/const_calendar.dart';
 import 'controller.dart';
@@ -141,24 +140,22 @@ class _AlmanacPageState extends State<AlmanacPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (!_lunar.dayYi.contains("无"))
-                    ListTile(
-                      title: Text(
-                        _lunar.dayYi.join(' '),
-                        style: TextStyle(color: t_yi),
-                      ),
-                      leading: Image.asset("assets/images/yi.png"),
-                      contentPadding: EdgeInsets.all(0),
+                  ListTile(
+                    title: Text(
+                      _lunar.dayYi.join(' '),
+                      style: TextStyle(color: t_yi),
                     ),
-                  if (!_lunar.dayJi.contains("无"))
-                    ListTile(
-                      title: Text(
-                        _lunar.dayJi.join(' '),
-                        style: TextStyle(color: t_ji),
-                      ),
-                      leading: Image.asset("assets/images/ji.png"),
-                      contentPadding: EdgeInsets.all(0),
-                    )
+                    leading: Image.asset("assets/images/yi.png"),
+                    contentPadding: EdgeInsets.all(0),
+                  ),
+                  ListTile(
+                    title: Text(
+                      _lunar.dayJi.join(' '),
+                      style: TextStyle(color: t_ji),
+                    ),
+                    leading: Image.asset("assets/images/ji.png"),
+                    contentPadding: EdgeInsets.all(0),
+                  )
                 ],
               ),
             ),

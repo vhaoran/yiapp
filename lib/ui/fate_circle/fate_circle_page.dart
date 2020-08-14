@@ -26,6 +26,7 @@ class _FateCirclePageState extends State<FateCirclePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: CusAppBar(text: "命理圈",showLeading: false),
       body: _bodyCtr(),
