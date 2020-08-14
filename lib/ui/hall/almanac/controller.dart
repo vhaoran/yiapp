@@ -7,7 +7,7 @@ import '../../../model/calendar/date_model.dart';
 import 'default_combine_day_view.dart';
 import 'default_custom_day_view.dart';
 import 'default_week_bar.dart';
-import 'utils/LogUtil.dart';
+import 'utils/log_util.dart';
 import 'utils/date_util.dart';
 
 // ------------------------------------------------------

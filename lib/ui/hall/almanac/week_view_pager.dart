@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'calendar_provider.dart';
 import 'configuration.dart';
 import '../../../model/calendar/date_model.dart';
-import 'utils/LogUtil.dart';
+import 'utils/log_util.dart';
 import 'week_view.dart';
 
 class WeekViewPager extends StatefulWidget {

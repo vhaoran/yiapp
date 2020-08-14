@@ -5,7 +5,7 @@ import 'calendar_provider.dart';
 import 'configuration.dart';
 import '../../../model/calendar/date_model.dart';
 import 'month_view.dart';
-import 'utils/LogUtil.dart';
+import 'utils/log_util.dart';
 
 class MonthViewPager extends StatefulWidget {
   const MonthViewPager({Key key}) : super(key: key);

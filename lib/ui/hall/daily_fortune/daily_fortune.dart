@@ -218,6 +218,7 @@ class _DailyFortuneState extends State<DailyFortune> {
 
   /// 精选评测
   List<Widget> _evaluationArea() {
+    // 再大的愿景都是从小处着手，越大的图越要从小处搞，越小的东西越要从大处着眼
     return _assorts.map((e) => CusArticle(title: e['text'])).toList();
   }
 
@@ -231,6 +232,7 @@ class _DailyFortuneState extends State<DailyFortune> {
           // 索引 - 1 是防止第一个元素不显示
           String text = index == 0 ? isYi ? "宜" : "忌" : l[index - 1];
           return Container(
+            padding: EdgeInsets.all(Adapt.px(8)),
             width: Adapt.screenW() / _maxCount,
             child: Text(
               text,

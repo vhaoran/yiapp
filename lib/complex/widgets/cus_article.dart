@@ -7,12 +7,13 @@ import 'package:yiapp/complex/widgets/cus_avatar.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/11 15:04
-// usage ：自定义文章组件（左侧一张图片，右侧有文章主题、主要内容、一个可选按钮）
+// usage ：自定义类似文章组件，比如用到精选测评、大师榜单
+// usage : 左侧一张图片，右侧有主副标题、一个可选按钮
 // ------------------------------------------------------
 
 class CusArticle extends StatelessWidget {
   final int maxLines; // 最多显示多少行
-  final double size; // 文章图片尺寸
+  final double imgSize; // 文章图片尺寸
   final double titleSize; // 主标题文字大小
   final double subSize; // 副标题文字大小
   final double padding; // EdgeInsets.all
@@ -33,19 +34,20 @@ class CusArticle extends StatelessWidget {
   final Color btnFontColor; // 按钮文字颜色
   final Color shadowColor; // Card 底部阴影颜色
   final bool showBtn; // 是否显示按钮
+  final Widget midTitle; // 中间标题，如提示在线离线
   final VoidCallback onTap; // 点击文章事件
   final VoidCallback onPressed; // 按钮事件
 
   const CusArticle({
     this.maxLines: 3,
-    this.size: 90,
+    this.imgSize: 90,
     this.titleSize: 32,
     this.subSize: 24,
     this.padding: 18,
     this.margin: 0.4,
     this.borderRadius: 10,
     this.spaceWidth: 20,
-    this.spaceHeight: 20,
+    this.spaceHeight: 15,
     this.btnFontSize: 48,
     this.btnRadius: 50,
     this.title: "文章标题",
@@ -59,6 +61,7 @@ class CusArticle extends StatelessWidget {
     this.btnFontColor: Colors.black,
     this.shadowColor: Colors.white,
     this.showBtn: true,
+    this.midTitle,
     this.onTap,
     this.onPressed,
     Key key,
@@ -70,60 +73,70 @@ class CusArticle extends StatelessWidget {
       shadowColor: shadowColor,
       margin: EdgeInsets.all(Adapt.px(margin)),
       child: InkWell(
-        onTap: onTap ?? () => print(">>>点了文章《$title》"),
+        onTap: onTap ?? () => print(">>>点了《$title》"),
         child: Container(
           color: backGroundColor,
           padding: EdgeInsets.all(Adapt.px(padding)),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // 文章图片
-              CusAvatar(url: url, size: size, borderRadius: borderRadius),
+              CusAvatar(url: url, size: imgSize, borderRadius: borderRadius),
               SizedBox(width: Adapt.px(spaceWidth)),
               Expanded(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: Adapt.px(50),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          // 主标题
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: Adapt.px(titleSize),
-                              color: titleColor,
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: Adapt.px(40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            // 主标题
+                            Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: Adapt.px(titleSize),
+                                color: titleColor,
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          // 按钮
-                          if (showBtn)
-                            CusRaisedBtn(
-                              bgColor: btnBgColor,
-                              textColor: btnFontColor,
-                              fontSize: Adapt.px(btnFontSize),
-                              text: btnName,
-                              borderRadius: btnRadius,
-                              pdHor: 20,
-                              pdVer: 2,
-                              onPressed:
-                                  onPressed ?? () => print(">>>点了 $title 上的按钮"),
-                            ),
-                        ],
+                            Spacer(),
+                            // 按钮
+                            if (showBtn)
+                              CusRaisedBtn(
+                                bgColor: btnBgColor,
+                                textColor: btnFontColor,
+                                fontSize: Adapt.px(btnFontSize),
+                                text: btnName,
+                                borderRadius: btnRadius,
+                                pdHor: 20,
+                                pdVer: 2,
+                                onPressed: onPressed ??
+                                    () => print(">>>点了 $title 上的按钮"),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: Adapt.px(spaceHeight)),
-                    // 副标题
-                    Text(
-                      subtitle ??
-                          "中国人历来讲究图吉利、喜庆，特别是挑选结婚的吉日，家住上海三林镇李大妈的儿子今年要结婚，"
-                              "为了给儿子挑选一个“良辰吉日”，李大妈可是没少费工夫。",
-                      style: TextStyle(
-                          color: subColor, fontSize: Adapt.px(subSize)),
-                      maxLines: maxLines,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
+                      SizedBox(height: Adapt.px(spaceHeight)),
+                      if (midTitle != null)
+                        midTitle,
+                      // 副标题
+                      SizedBox(
+                        // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
+                        height: Adapt.px(100),
+                        child: Text(
+                          subtitle ??
+                              "中国人历来讲究图吉利、喜庆，特别是挑选结婚的吉日，家住上海三林镇李大妈的儿子今年要结婚，"
+                                  "为了给儿子挑选一个“良辰吉日”，李大妈可是没少费工夫。",
+                          style: TextStyle(
+                              color: subColor, fontSize: Adapt.px(subSize)),
+                          maxLines: maxLines,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

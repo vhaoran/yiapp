@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/const/const_color.dart';
 import '../tools/adapt.dart';
 
 // ------------------------------------------------------
@@ -107,6 +108,32 @@ class CusOutlineBtn extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// 橙色背景、黑色字体按钮，比如"开始测试"和"立即约聊"
+class CusNormalBtn extends StatelessWidget {
+  final String btnName;
+  final VoidCallback onPressed;
+
+  const CusNormalBtn({
+    this.btnName: "开始测试",
+    this.onPressed,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CusRaisedBtn(
+      bgColor: t_primary,
+      textColor: Colors.black,
+      fontSize: Adapt.px(48),
+      text: btnName,
+      borderRadius: 50,
+      pdHor: 20,
+      pdVer: 2,
+      onPressed: onPressed ?? () => print(">>>点了的按钮"),
     );
   }
 }
