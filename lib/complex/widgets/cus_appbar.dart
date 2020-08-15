@@ -55,7 +55,6 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: actions,
         centerTitle: true,
         backgroundColor: color,
-
         leading: showLeading
             ? leading ??
                 IconButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
@@ -34,7 +35,7 @@ class _AskFatePageState extends State<AskFatePage>
     return DefaultTabController(
       length: _l.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "问命页面", showLeading: false),
+        appBar: CusAppBar(title: _searchBar(), showLeading: false),
         body: _lv(),
         backgroundColor: primary,
       ),
@@ -78,6 +79,34 @@ class _AskFatePageState extends State<AskFatePage>
           ),
         )
       ],
+    );
+  }
+
+  /// 搜索框
+  Widget _searchBar() {
+    double border = 10;
+    return Container(
+      height: appBarH - border,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(border),
+        color: fou_primary,
+      ),
+      child: TextField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          hintText: "搜索",
+          hintStyle: TextStyle(color: t_primary),
+          prefixIcon: Image.asset("assets/images/b.png"),
+          contentPadding: EdgeInsets.only(left: Adapt.px(40)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: t_primary, width: 1),
+            borderRadius: BorderRadius.circular(border),
+          ),
+        ),
+      ),
     );
   }
 

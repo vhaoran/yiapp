@@ -224,18 +224,18 @@ class _DailyFortuneState extends State<DailyFortune> {
 
   /// 封装的宜忌组件
   Widget _yiOrJiCts(List<String> l, {Color color = t_yi, bool isYi = true}) {
+    l.insert(0, isYi ? "宜" : "忌");
     return Row(
       children: List.generate(
-        // 长度 + 1 是防止l长度不足8时，最后一个元素值不显示
-        l.length >= _maxCount ? _maxCount : l.length + 1,
+        l.length >= _maxCount ? _maxCount : l.length,
         (index) {
-          // 索引 - 1 是防止第一个元素不显示
-          String text = index == 0 ? isYi ? "宜" : "忌" : l[index - 1];
+          bool fourWords = l[index].length >= 4 ? true : false;
+          int width = fourWords ? _maxCount - 3 : _maxCount;
           return Container(
-            padding: EdgeInsets.all(Adapt.px(8)),
-            width: Adapt.screenW() / _maxCount,
+            padding: EdgeInsets.all(Adapt.px(6)),
+            width: Adapt.screenW() / width,
             child: Text(
-              text,
+              l[index],
               style: TextStyle(color: color, fontSize: Adapt.px(28)),
             ),
             alignment: Alignment.center,

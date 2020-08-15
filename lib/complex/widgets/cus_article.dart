@@ -27,6 +27,7 @@ class CusArticle extends StatelessWidget {
   final String subtitle; // 副标题
   final String url; // 图片链接
   final String btnName; // 按钮名称
+  final String defaultImage; // 指定默认图片
   final Color backGroundColor;
   final Color titleColor; // 主标题文字颜色
   final Color subColor; // 副标题文字颜色
@@ -54,6 +55,7 @@ class CusArticle extends StatelessWidget {
     this.subtitle,
     this.url: "",
     this.btnName: "开始测试",
+    this.defaultImage: "assets/images/avatar.jpg",
     this.backGroundColor: primary,
     this.titleColor: t_gray,
     this.subColor: t_primary,
@@ -81,7 +83,12 @@ class CusArticle extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // 文章图片
-              CusAvatar(url: url, size: imgSize, borderRadius: borderRadius),
+              CusAvatar(
+                url: url,
+                size: imgSize,
+                borderRadius: borderRadius,
+                defaultImage: defaultImage,
+              ),
               SizedBox(width: Adapt.px(spaceWidth)),
               Expanded(
                 child: Container(
@@ -113,7 +120,7 @@ class CusArticle extends StatelessWidget {
                                 pdHor: 20,
                                 pdVer: 2,
                                 onPressed: onPressed ??
-                                    () => print(">>>点了 $title 上的按钮"),
+                                    () => print(">>> 点了 $title 上的按钮"),
                               ),
                           ],
                         ),
