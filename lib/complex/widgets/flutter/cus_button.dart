@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import '../tools/adapt.dart';
+import '../../tools/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -112,12 +112,12 @@ class CusOutlineBtn extends StatelessWidget {
   }
 }
 
-/// 橙色背景、黑色字体按钮，比如"开始测试"和"立即约聊"
-class CusNormalBtn extends StatelessWidget {
+/// yiapp 中常见样式的按钮，比如"开始测试"和"立即约聊"
+class CusYiBtn extends StatelessWidget {
   final String btnName;
   final VoidCallback onPressed;
 
-  const CusNormalBtn({
+  const CusYiBtn({
     this.btnName: "开始测试",
     this.onPressed,
     Key key,

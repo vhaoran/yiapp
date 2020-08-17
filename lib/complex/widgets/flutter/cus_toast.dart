@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../tools/adapt.dart';
+import '../../tools/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -14,7 +14,7 @@ enum ToastPos {
 }
 
 /// 提示框
-class ToastCtr {
+class CusToast {
   String text; // 提示信息
   double textSize; // 文字大小
   double pdHor; // 左右边距
@@ -27,7 +27,7 @@ class ToastCtr {
   Widget child; // 文字下面显示的图标
   ToastPos pos; // 显示位置
 
-  ToastCtr.toast(
+  CusToast.toast(
     BuildContext context, {
     this.text = "提示信息",
     this.textSize,

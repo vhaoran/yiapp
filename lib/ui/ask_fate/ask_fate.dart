@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
-import 'package:yiapp/ui/ask_fate/single_master.dart';
+import 'package:yiapp/ui/ask_fate/master_list.dart';
 
 // ------------------------------------------------------
 // author：suxing

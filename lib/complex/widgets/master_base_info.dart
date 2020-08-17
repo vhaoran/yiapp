@@ -6,12 +6,11 @@ import 'package:yiapp/complex/widgets/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/11 15:04
-// usage ：自定义类似文章组件，比如用到精选测评、大师榜单
-// usage : 左侧一张图片，右侧有主副标题、一个可选按钮
+// date  ：2020/8/17 10:10
+// usage ：大师基本资料（含头像、名称、在/离线状态、个签）
 // ------------------------------------------------------
 
-class CusArticle extends StatelessWidget {
+class MasterBaseInfo extends StatelessWidget {
   final int maxLines; // 最多显示多少行
   final String title; // 主标题
   final double titleSize;
@@ -19,6 +18,9 @@ class CusArticle extends StatelessWidget {
   final String subtitle; // 副标题
   final double subSize;
   final Color subColor;
+  final String midTitle; // 中间标题
+  final double midSize;
+  final Color midColor;
   final double imgSize; // 文章图片尺寸
   final double padding; // EdgeInsets.all
   final double margin;
@@ -38,24 +40,27 @@ class CusArticle extends StatelessWidget {
   final VoidCallback onTap; // 点击文章事件
   final VoidCallback onPressed; // 按钮事件
 
-  const CusArticle({
+  const MasterBaseInfo({
     this.maxLines: 3,
-    this.title: "文章标题",
+    this.title: "大师姓名",
     this.titleSize: 32,
-    this.titleColor: t_gray,
+    this.titleColor: Colors.white,
     this.subtitle,
-    this.subSize: 24,
-    this.subColor: t_primary,
-    this.imgSize: 90,
+    this.subSize: 26,
+    this.subColor: t_gray,
+    this.midTitle: "状态",
+    this.midSize: 24,
+    this.midColor: Colors.yellow,
+    this.imgSize: 100,
     this.padding: 18,
     this.margin: 0.4,
     this.borderRadius: 10,
     this.spaceWidth: 20,
-    this.spaceHeight: 15,
+    this.spaceHeight: 0,
     this.btnFontSize: 48,
     this.btnRadius: 50,
     this.url: "",
-    this.btnName: "开始测试",
+    this.btnName: "立即约聊",
     this.defaultImage: "assets/images/avatar.jpg",
     this.backGroundColor: primary,
     this.btnBgColor: t_primary,
@@ -118,10 +123,15 @@ class CusArticle extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: Adapt.px(spaceHeight)),
+                      Text(
+                        midTitle,
+                        style: TextStyle(
+                            color: midColor, fontSize: Adapt.px(midSize)),
+                      ),
                       // 副标题
                       SizedBox(
                         // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
-                        height: Adapt.px(100),
+                        height: Adapt.px(110),
                         child: Text(
                           subtitle ??
                               "中国人历来讲究图吉利、喜庆，特别是挑选结婚的吉日，家住上海三林镇李大妈的儿子今年要结婚，"

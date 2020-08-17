@@ -1,11 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -23,6 +26,8 @@ class MinePage extends StatefulWidget {
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
   var _future;
+  File _file; // 返回的相册或者拍摄的图片
+
   @override
   void initState() {
     _future = _fetch();
@@ -34,6 +39,7 @@ class _MinePageState extends State<MinePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: FutureBuilder(
           future: _future,
@@ -63,7 +69,13 @@ class _MinePageState extends State<MinePage>
       child: Stack(
         children: <Widget>[
           // 背景墙
-          BackgroundWall(url: "", onTap: () => print(">>>点了背景墙")),
+          // BackgroundWall(url: "", onTap: () => print(">>>点了背景墙")),
+          BackgroundWall(
+              url: "",
+              onTap: () {
+//                _showBottomSheet();
+                CusBottomSheet(context, fileFn: _selectFile);
+              }),
           // 头像
           Align(
             alignment: Alignment(0, 0),
@@ -84,6 +96,12 @@ class _MinePageState extends State<MinePage>
         ],
       ),
     );
+  }
+
+  void _selectFile(File file) {
+    print(">>>当前选择的图片：$file");
+    _file = file;
+    setState(() {});
   }
 
   @override
