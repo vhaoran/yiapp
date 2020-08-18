@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -13,7 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/7 15:41
-// usage ：个人主页
+// usage ：底部导航栏 - 个人主页
 // ------------------------------------------------------
 
 class MinePage extends StatefulWidget {

@@ -1,5 +1,5 @@
-import '../../ui/hall/almanac/utils/date_util.dart';
-import '../../ui/hall/almanac/utils/lunar_util.dart';
+import 'package:yiapp/ui/fortune/almanac/utils/date_util.dart';
+import 'package:yiapp/ui/fortune/almanac/utils/lunar_util.dart';
 
 // ------------------------------------------------------
 // author：suxing

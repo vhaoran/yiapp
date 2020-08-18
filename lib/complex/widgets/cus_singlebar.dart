@@ -20,7 +20,7 @@ class CusSingleBar extends StatelessWidget {
   final VoidCallback onTap;
 
   const CusSingleBar({
-    this.icon: Icons.broken_image,
+    this.icon,
     this.title: "暂无",
     this.iconSize: 50,
     this.titleSize: 26,
@@ -42,8 +42,7 @@ class CusSingleBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(icon ?? Icons.broken_image,
-                size: Adapt.px(iconSize), color: iconColor),
+            Icon(icon, size: Adapt.px(iconSize), color: iconColor),
             SizedBox(height: Adapt.px(8)),
             Text(
               title ?? "选项",

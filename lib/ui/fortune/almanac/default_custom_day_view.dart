@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/ui/hall/almanac/style.dart';
-
 import 'base_day_view.dart';
 import '../../../model/calendar/date_model.dart';
+import 'style.dart';
 
 /**
  * 这里定义成一个StatelessWidget，状态是外部的父控件传进来参数控制就行，自己不弄state类

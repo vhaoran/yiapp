@@ -4,27 +4,27 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
-import 'package:yiapp/ui/hall/daily_fortune/daily_fortune.dart';
-import 'package:yiapp/ui/hall/free_calculate/free_calculate.dart';
+import 'daily_fortune/daily_fortune.dart';
+import 'free_calculate/free_calculate.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/7 18:58
-// usage ：大厅
+// usage ：底部导航栏 - 运势
 // ------------------------------------------------------
 
-class HallPage extends StatefulWidget {
-  HallPage({Key key}) : super(key: key);
+class FortunePage extends StatefulWidget {
+  FortunePage({Key key}) : super(key: key);
 
   @override
-  _HallPageState createState() => _HallPageState();
+  _FortunePageState createState() => _FortunePageState();
 }
 
-class _HallPageState extends State<HallPage>
+class _FortunePageState extends State<FortunePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    print(">>>进了大厅");
+    print(">>>进了【运势】首页");
     super.initState();
   }
 

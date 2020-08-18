@@ -9,7 +9,6 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // ------------------------------------------------------
 
 class CusNumData extends StatelessWidget {
-  final int count; // 默认生成个数
   List<String> titles; // 上层数据
   List<String> subtitles; // 下面说明文字
   final double titleSize;
@@ -19,7 +18,6 @@ class CusNumData extends StatelessWidget {
   final Color subColor; // 备注颜色
 
   CusNumData({
-    this.count: 3,
     @required this.titles,
     @required this.subtitles,
     this.titleSize: 32,
@@ -36,13 +34,13 @@ class CusNumData extends StatelessWidget {
       color: backGroundColor,
       child: Row(
         children: List.generate(
-          count,
+          titles.length,
           (i) => Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black38, width: 0.3),
             ),
             padding: EdgeInsets.symmetric(vertical: Adapt.px(5)),
-            width: Adapt.screenW() / count,
+            width: Adapt.screenW() / titles.length,
             child: Column(
               children: <Widget>[
                 Text(

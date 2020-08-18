@@ -5,22 +5,20 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/7 15:39
-// usage ：命理圈
+// date  ：2020/8/7 15:40
+// usage ：底部导航栏 - 供奉页面
 // ------------------------------------------------------
 
-class FateCirclePage extends StatefulWidget {
-  FateCirclePage({Key key}) : super(key: key);
-
+class WorshipPage extends StatefulWidget {
+  WorshipPage({Key key}) : super(key: key);
   @override
-  _FateCirclePageState createState() => _FateCirclePageState();
+  _WorshipPageState createState() => _WorshipPageState();
 }
 
-class _FateCirclePageState extends State<FateCirclePage>
+class _WorshipPageState extends State<WorshipPage>
     with AutomaticKeepAliveClientMixin {
-  @override
   void initState() {
-    print(">>>进了命理圈");
+    print(">>>进了供奉页面");
     super.initState();
   }
 
@@ -28,7 +26,7 @@ class _FateCirclePageState extends State<FateCirclePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "命理圈",showLeading: false),
+      appBar: CusAppBar(text: "供奉", showLeading: false),
       body: _bodyCtr(),
       backgroundColor: primary,
     );

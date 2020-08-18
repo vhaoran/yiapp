@@ -4,11 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
-import 'package:yiapp/ui/ask_fate/ask_fate.dart';
-import 'package:yiapp/ui/face_to_face/face_to_face_page.dart';
-import 'package:yiapp/ui/fate_circle/fate_circle_page.dart';
-import 'package:yiapp/ui/hall/hall_page.dart';
+import 'package:yiapp/ui/fortune/fortune_page.dart';
+import 'package:yiapp/ui/master/master_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
+import 'package:yiapp/ui/reward/reward_page.dart';
+import 'package:yiapp/ui/worship/worship_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> _barNames = ["大厅", "面对面", "", "命理圈", "我的"];
+  final List<String> _barNames = ["运势", "供奉", "悬赏", "大师", "我的"];
   List<Widget> _bars; // 底部导航栏
   int _curIndex = 0; // 底部导航栏索引
   // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
@@ -33,10 +33,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _bars = [
-      HallPage(),
-      FaceToFacePage(),
-      AskFatePage(),
-      FateCirclePage(),
+      FortunePage(),
+      WorshipPage(),
+      RewardPage(),
+      MasterPage(),
       MinePage(),
     ];
     super.initState();
@@ -52,19 +52,11 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) => _bars[index],
       ),
       bottomNavigationBar: _bottomAppBar(),
-      backgroundColor: primary,
+      backgroundColor: Colors.black26,
       floatingActionButton: GestureDetector(
         onTap: () => _jumpPage(2),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
-            boxShadow: [
-              BoxShadow(color: Colors.black, blurRadius: 10, spreadRadius: 1)
-            ],
-          ),
-          child: Image.asset('assets/images/tai_chi.png',
-              width: Adapt.px(140), height: Adapt.px(140)),
-        ),
+        child: Image.asset('assets/images/tai_chi.png',
+            width: Adapt.px(140), height: Adapt.px(140)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -79,19 +71,13 @@ class _HomePageState extends State<HomePage> {
           (name) {
             int i = _barNames.indexOf(name);
             Color select = _curIndex == i ? t_primary : t_gray;
-            return Row(
-              children: <Widget>[
-                if (name.isNotEmpty)
-                  CusSingleBar(
-                    title: name,
-                    titleColor: select,
-                    iconColor: select,
-                    length: _barNames.length,
-                    icon: _icon(i),
-                    onTap: () => _jumpPage(i),
-                  ),
-                if (i == 1) SizedBox(width: Adapt.px(120)),
-              ],
+            return CusSingleBar(
+              title: name,
+              titleColor: select,
+              iconColor: select,
+              length: _barNames.length,
+              icon: _icon(i),
+              onTap: () => _jumpPage(i),
             );
           },
         ).toList(),
@@ -106,16 +92,16 @@ class _HomePageState extends State<HomePage> {
     IconData icon;
     switch (i) {
       case 0:
-        icon = IconData(0xe60e, fontFamily: 'AliIcon');
+        icon = IconData(0xe618, fontFamily: 'AliIcon');
         break;
       case 1:
-        icon = IconData(0xe616, fontFamily: 'AliIcon');
+        icon = IconData(0xe66b, fontFamily: 'AliIcon');
         break;
       case 3:
-        icon = IconData(0xe71d, fontFamily: 'AliIcon');
+        icon = IconData(0xe605, fontFamily: 'AliIcon');
         break;
       case 4:
-        icon = IconData(0xe601, fontFamily: 'AliIcon');
+        icon = IconData(0xe608, fontFamily: 'AliIcon');
         break;
       default:
         icon = FontAwesomeIcons.fastForward;

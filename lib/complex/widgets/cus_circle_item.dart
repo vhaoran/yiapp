@@ -45,6 +45,7 @@ class CusCircleItem extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(fontSize: Adapt.px(fontSize), color: color),
+              overflow: TextOverflow.ellipsis,
             ),
           )
         ],

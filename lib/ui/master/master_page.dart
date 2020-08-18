@@ -5,27 +5,27 @@ import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
-import 'package:yiapp/ui/ask_fate/master_list.dart';
+import 'master_list.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/7 19:33
-// usage ：问命
+// usage ：底部导航栏 - 大师页面
 // ------------------------------------------------------
 
-class AskFatePage extends StatefulWidget {
-  AskFatePage({Key key}) : super(key: key);
+class MasterPage extends StatefulWidget {
+  MasterPage({Key key}) : super(key: key);
   @override
-  _AskFatePageState createState() => _AskFatePageState();
+  _MasterPageState createState() => _MasterPageState();
 }
 
-class _AskFatePageState extends State<AskFatePage>
+class _MasterPageState extends State<MasterPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final List<String> _l = ["推荐榜", "好评榜", "资深榜", "订单榜"];
 
   @override
   void initState() {
-    print(">>>进了问命页面");
+    print(">>>进了大师页面");
     super.initState();
   }
 

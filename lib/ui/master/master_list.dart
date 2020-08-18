@@ -5,7 +5,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_behavior.dart';
 import 'package:yiapp/complex/widgets/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/master_base_info.dart';
-import 'package:yiapp/ui/ask_fate/master_homepage.dart';
+import 'master_homepage.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -49,8 +49,9 @@ class _MasterListState extends State<MasterList>
       children: List.generate(widget.l, (index) {
         bool isEven = index.isEven;
         String title = isEven ? "蓝岩天" : "迪丽热巴";
-        String subtitle;
-        if (index.isEven) subtitle = "再大的愿景都是从小处着手，越大的图越要从小处搞，越小的东西越要从大处着眼";
+        String subtitle = isEven
+            ? "再大的愿景都是从小处着手，越大的图越要从小处搞，越小的东西越要从大处着眼再大的愿景都是从小处着手，越大的图越要从小处搞，越小的东西越要从大处着眼"
+            : "中华姓名文化起源于原始社会，以人性为根，以姓氏为本，不仅体现了社会";
         String image = isEven
             ? "assets/images/master.png"
             : "assets/images/girl_master.png";
