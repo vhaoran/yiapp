@@ -89,51 +89,49 @@ class CusArticle extends StatelessWidget {
               ),
               SizedBox(width: Adapt.px(spaceWidth)),
               Expanded(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: Adapt.px(40),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            // 主标题
-                            Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: Adapt.px(titleSize),
-                                color: titleColor,
-                              ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: Adapt.px(Adapt.px(80)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // 主标题
+                          Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: Adapt.px(titleSize),
+                              color: titleColor,
                             ),
-                            Spacer(),
-                            // 按钮
-                            if (showBtn)
-                              CusYiBtn(
-                                btnName: btnName,
-                                onPressed: onPressed ??
-                                    () => print(">>> 点了 $title 上的按钮"),
-                              ),
-                          ],
-                        ),
+                          ),
+                          Spacer(),
+                          // 按钮
+                          if (showBtn)
+                            CusYiBtn(
+                              btnName: btnName,
+                              onPressed: onPressed ??
+                                  () => print(">>> 点了 $title 上的按钮"),
+                            ),
+                        ],
                       ),
-                      SizedBox(height: Adapt.px(spaceHeight)),
-                      // 副标题
-                      SizedBox(
-                        // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
-                        height: Adapt.px(100),
-                        child: Text(
-                          subtitle ??
-                              "中国人历来讲究图吉利、喜庆，特别是挑选结婚的吉日，家住上海三林镇李大妈的儿子今年要结婚，"
-                                  "为了给儿子挑选一个“良辰吉日”，李大妈可是没少费工夫。",
-                          style: TextStyle(
-                              color: subColor, fontSize: Adapt.px(subSize)),
-                          maxLines: maxLines,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    ),
+                    SizedBox(height: Adapt.px(spaceHeight)),
+                    // 副标题
+                    SizedBox(
+                      // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
+                      height: Adapt.px(100),
+                      child: Text(
+                        subtitle ??
+                            "中国人历来讲究图吉利、喜庆，特别是挑选结婚的吉日，家住上海三林镇李大妈的儿子今年要结婚，"
+                                "为了给儿子挑选一个“良辰吉日”，李大妈可是没少费工夫。",
+                        style: TextStyle(
+                            color: subColor, fontSize: Adapt.px(subSize)),
+                        maxLines: maxLines,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],

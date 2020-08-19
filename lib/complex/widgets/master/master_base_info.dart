@@ -56,7 +56,7 @@ class MasterBaseInfo extends StatelessWidget {
     this.margin: 0.4,
     this.borderRadius: 10,
     this.spaceWidth: 20,
-    this.spaceHeight: 0,
+    this.spaceHeight: 4,
     this.btnFontSize: 48,
     this.btnRadius: 50,
     this.url: "",
@@ -122,11 +122,14 @@ class MasterBaseInfo extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: Adapt.px(spaceHeight)),
-                      Text(
-                        midTitle,
-                        style: TextStyle(
-                            color: midColor, fontSize: Adapt.px(midSize)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: Adapt.px(spaceHeight)),
+                        child: Text(
+                          midTitle,
+                          style: TextStyle(
+                              color: midColor, fontSize: Adapt.px(midSize)),
+                        ),
                       ),
                       // 副标题
                       SizedBox(

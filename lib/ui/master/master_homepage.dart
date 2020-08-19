@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
+import 'package:yiapp/complex/widgets/master/cus_fivestar.dart';
 import 'package:yiapp/complex/widgets/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_edge_insets.dart';
+import 'package:yiapp/complex/widgets/master/user_comment.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -64,6 +66,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
   }
 
   Widget _bodyCtr() {
+    List<int> tmp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
@@ -80,14 +83,24 @@ class _MasterHomePageState extends State<MasterHomePage> {
           ),
         ),
         Divider(thickness: 1, height: 0, color: Colors.black26),
-        _commentCt(), // 大师评价区域
+        _comment(), // 大师评价区域
         Divider(thickness: 0, height: 0, color: Colors.black54),
         CusNumData(
           titles: ["12345", "12345", "12345", "12345"],
           subtitles: ["订单数", "订单数", "订单数", "订单数"],
           subSize: _fontSize,
+          titleSize: 28,
+          paddingV: 10,
         ),
         Divider(thickness: 1, height: 0, color: Colors.black54),
+        ...tmp.map((e) {
+          bool b = e.isOdd ? true : false;
+          return UserComment(
+            svip: b,
+            title: b ? "雷军" : "郭德纲",
+            titleColor: b ? t_svip : t_gray,
+          );
+        }).toList(),
       ],
     );
   }
@@ -188,17 +201,15 @@ class _MasterHomePageState extends State<MasterHomePage> {
     // 用户名
   }
 
-  /// 大师评价区域
-  Widget _commentCt() {
+  /// 大师五行评价区域
+  Widget _comment() {
     return Container(
-//      padding: EdgeInsets.only(
-//        left: Adapt.px(30),
-//        right: Adapt.px(10),
-//        top: Adapt.px(10),
-//        bottom: Adapt.px(30),
-//      ),
-      padding: CusEdgeInsets.only(left: 30, right: 10, top: 10, bottom: 30),
-//      padding: EdgeInsets.only(left: 30, right: 10, top: 10, bottom: 10),
+      padding: EdgeInsets.only(
+        left: Adapt.px(30),
+        right: Adapt.px(20),
+        top: Adapt.px(15),
+        bottom: Adapt.px(15),
+      ),
       color: fif_primary,
       child: Row(
         children: <Widget>[
@@ -206,8 +217,28 @@ class _MasterHomePageState extends State<MasterHomePage> {
             "评价",
             style: TextStyle(color: t_primary, fontSize: Adapt.px(28)),
           ),
+          SizedBox(width: Adapt.px(10)),
+          Text(
+            "1000+",
+            style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+          ),
+          Spacer(),
+          FiveStars(), // 五角星
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
+            child: Text(
+              "好评率",
+              style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+            ),
+          ),
+          Text(
+            "100%",
+            style: TextStyle(color: t_red, fontSize: Adapt.px(28)),
+          ),
         ],
       ),
     );
   }
+
+  Widget _commentArea() {}
 }

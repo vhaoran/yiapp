@@ -17,6 +17,15 @@ class CusTime {
     return time;
   }
 
+  /// 横杠日期 如 转换 2020年08月19日 为 2020-08-19
+  static String ymdBar(String createdAt) {
+    var date = DateTime.parse(createdAt);
+    String mouth = "${_zero(date.month)}-";
+    String day = "${_zero(date.day)}";
+    String time = "${date.year}-$mouth$day";
+    return time;
+  }
+
   // 转换为时分，如 15:29
   static String hm(String createdAt) {
     var date = DateTime.parse(createdAt);
@@ -58,9 +67,15 @@ class CusTime {
     String str = zodiac(date.year) + "年" + capitalMd(lower: lower);
     return str;
   }
+
+  /// 小于10的月日前面补0
+  static String _zero(int value) {
+    String str = value < 10 ? "0$value" : "$value";
+    return str;
+  }
 }
 
-/// 显示发送时间及间隔
+/// 显示发送时间及间隔[]
 class UtilTime {
   static List<int> dateD(DateTime date, DateTime date2) {
     Duration di = date.difference(date2);

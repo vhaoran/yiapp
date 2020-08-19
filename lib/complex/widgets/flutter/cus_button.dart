@@ -128,11 +128,11 @@ class CusYiBtn extends StatelessWidget {
     return CusRaisedBtn(
       bgColor: t_primary,
       textColor: Colors.black,
-      fontSize: Adapt.px(48),
+      fontSize: 20,
       text: btnName,
       borderRadius: 50,
       pdHor: 20,
-      pdVer: 2,
+      pdVer: 4,
       onPressed: onPressed ?? () => print(">>>点了的按钮"),
     );
   }

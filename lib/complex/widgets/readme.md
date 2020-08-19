@@ -1,6 +1,7 @@
 ### 自定义组件
 
 - flutter 二次封装flutter系统组件
+- master 关于大师中可复用的组件
 - cus_article 文章组件
 - cus_avatar 头像
 - cus_behavior 取消蓝色回弹

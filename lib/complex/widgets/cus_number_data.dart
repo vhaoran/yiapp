@@ -13,6 +13,7 @@ class CusNumData extends StatelessWidget {
   List<String> subtitles; // 下面说明文字
   final double titleSize;
   final double subSize;
+  final double paddingV;
   final Color backGroundColor;
   final Color titleColor; // 数据颜色
   final Color subColor; // 备注颜色
@@ -22,6 +23,7 @@ class CusNumData extends StatelessWidget {
     @required this.subtitles,
     this.titleSize: 32,
     this.subSize: 24,
+    this.paddingV: 5,
     this.backGroundColor: fif_primary,
     this.titleColor: t_primary,
     this.subColor: t_gray,
@@ -39,7 +41,7 @@ class CusNumData extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black38, width: 0.3),
             ),
-            padding: EdgeInsets.symmetric(vertical: Adapt.px(5)),
+            padding: EdgeInsets.symmetric(vertical: Adapt.px(paddingV)),
             width: Adapt.screenW() / titles.length,
             child: Column(
               children: <Widget>[
