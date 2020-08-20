@@ -18,8 +18,16 @@ dependencies:
   flutter_qiniu: ^0.1.3
   # 生成 uuid
   uuid: ^2.2.0
-  # 权限管理
+  # 简单数据持久化存储
+  shared_preferences: ^0.5.8
+  # 获取系统权限
   permission_handler: ^5.0.1+1
+  # a___for model json
+  json_annotation: ^3.0.1
+  #
+  web_socket_channel: ^1.1.0
+  #  WeChat login
+  # fluwx: ^2.3.0 kotlin 一直编译不通过，先注释该插件 8月20日
 
   ###### suxing #####
   # 图片缓存

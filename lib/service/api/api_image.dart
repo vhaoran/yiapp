@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_qiniu/flutter_qiniu.dart';
-import '../../complex/tools/create_uuid.dart';
+import '../../complex/function/create_uuid.dart';
 import 'api_base.dart';
 
 class ApiImage {

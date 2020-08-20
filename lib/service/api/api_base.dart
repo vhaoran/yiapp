@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:yiapp/model/login/login_result.dart';
 import '../../model/pagebean.dart';
 
 // ------------------------------------------------------
@@ -9,7 +10,7 @@ import '../../model/pagebean.dart';
 //
 // ------------------------------------------------------
 class ApiBase {
-  // static LoginResult loginInfo;
+  static LoginResult loginInfo;
 
   //当前系统是否处理debug状态
   static bool isDebug = true;
