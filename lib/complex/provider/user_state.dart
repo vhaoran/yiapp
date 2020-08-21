@@ -13,7 +13,7 @@ class UserInfoState with ChangeNotifier, DiagnosticableTreeMixin {
   UserInfo get userInfo => _userInfo;
 
   /// 初始化用户信息
-  void initUserInfo(UserInfo info) {
+  void init(UserInfo info) {
     _userInfo = info;
     notifyListeners();
   }

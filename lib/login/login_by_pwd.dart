@@ -1,10 +1,12 @@
 //import 'package:fluwx/fluwx.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -51,26 +53,25 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
     if (_waiting) {
       return Center(child: CircularProgressIndicator());
     }
-    return Container(
-      padding: EdgeInsets.only(
-          left: Adapt.px(50), right: Adapt.px(50), top: Adapt.px(60)),
-      color: fif_primary,
-      child: FutureBuilder(
+    return Scaffold(
+      appBar: CusAppBar(
+        showLeading: false,
+        backgrouodColor: fif_primary,
+        actions: <Widget>[_registerBtn()],
+      ),
+      body: FutureBuilder(
         future: _future,
         builder: (context, snap) => _lv(),
       ),
+      backgroundColor: fif_primary,
     );
   }
 
   Widget _lv() {
     return ListView(
-      padding: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        _register(), // 注册
-        SizedBox(height: Adapt.px(160)),
-//        _welcomeCt("您好,"),
-//        _welcomeCt("欢迎使用《鸿运来》"),
         _mobileInput(), // 手机号输入框
         _pwdInput(), // 密码输入框
         _forgetPwd(), // 忘记密码
@@ -78,13 +79,12 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
           text: '登录',
           fontSize: 28,
           textColor: Colors.black,
-          bgColor: Color(0xFFEE9972),
+          backgroundColor: Color(0xFFEE9972),
           onPressed: _doLogin,
           pdVer: Adapt.px(15),
           borderRadius: 50,
         ),
-        SizedBox(height: Adapt.px(30)),
-        _signInWithCtr(), // 第三方登录
+        // _signInWithCtr(), // 第三方登录
       ],
     );
   }
@@ -119,18 +119,13 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
       };
 
       try {
-        var r = await ApiLogin.Login(m);
+        var r = await ApiLogin.login(m);
         if (r != null) {
           await KV.setStr("/login/user_code", _mobile);
           await KV.setStr("/login/pwd", _pwd);
           await setLoginInfo(r);
-          //------------------------------------------------
-          print("-----------after setLoginInfo-----------");
           CusRoutes.push(context, HomePage());
-          // Routes.toHomePage(context);
-          print("-----------after toHomePage-----------");
-
-          context.read<UserInfoState>().initUserInfo(r.user_info);
+          context.read<UserInfoState>().init(r.user_info);
           print(">>>登录成功");
         }
       } catch (e) {
@@ -146,34 +141,37 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
 
   /// 手机号输入框
   Widget _mobileInput() {
-    return TextField(
-      controller: TextEditingController.fromValue(
-        TextEditingValue(
-          text: _mobile,
-          selection: TextSelection.fromPosition(
-            TextPosition(
-                affinity: TextAffinity.downstream, offset: _mobile.length),
+    return Padding(
+      padding: EdgeInsets.only(top: Adapt.px(160), bottom: Adapt.px(40)),
+      child: TextField(
+        controller: TextEditingController.fromValue(
+          TextEditingValue(
+            text: _mobile,
+            selection: TextSelection.fromPosition(
+              TextPosition(
+                  affinity: TextAffinity.downstream, offset: _mobile.length),
+            ),
           ),
         ),
-      ),
-      keyboardType: TextInputType.text,
-      maxLength: 11,
-      style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-      decoration: InputDecoration(
-        hintText: "请输入手机号",
-        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-        errorText: _userErr,
-        errorStyle: TextStyle(fontSize: Adapt.px(26)),
-        counterText: '',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black45),
+        keyboardType: TextInputType.phone,
+        maxLength: 11,
+        style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+        decoration: InputDecoration(
+          hintText: "请输入手机号",
+          hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+          errorText: _userErr,
+          errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
+          counterText: '',
+          focusedBorder: inputBorder(),
+          errorBorder: inputBorder(),
+          focusedErrorBorder: inputBorder(),
         ),
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        onChanged: (value) {
+          _mobile = value;
+          _clearErr();
+        },
       ),
-      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-      onChanged: (value) {
-        _mobile = value;
-        _clearErr();
-      },
     );
   }
 
@@ -194,13 +192,13 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
       style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
       decoration: InputDecoration(
         hintText: "请输入登录密码",
-        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
         errorText: _pwdErr,
-        errorStyle: TextStyle(fontSize: Adapt.px(27), color: t_red),
+        errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
         counterText: '',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black45),
-        ),
+        focusedBorder: inputBorder(),
+        errorBorder: inputBorder(),
+        focusedErrorBorder: inputBorder(),
       ),
       onChanged: (value) {
         _pwd = value;
@@ -210,40 +208,40 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
   }
 
   /// 第三方登录
-  Widget _signInWithCtr() {
-    return Container(
-        padding: EdgeInsets.only(top: Adapt.screenH() / 5),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
-                ),
-                Text(
-                  '    第三方登录    ',
-                  style: TextStyle(color: t_gray),
-                ),
-                Expanded(
-                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(FontAwesomeIcons.weixin, color: Colors.green),
-                  onPressed: () {
-//              _wxLogin();
-                  },
-                ),
-              ],
-            ),
-          ],
-        ));
-  }
+//  Widget _signInWithCtr() {
+//    return Container(
+//        padding: EdgeInsets.only(top: Adapt.screenH() / 5),
+//        child: Column(
+//          children: <Widget>[
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: <Widget>[
+//                Expanded(
+//                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
+//                ),
+//                Text(
+//                  '    第三方登录    ',
+//                  style: TextStyle(color: t_gray),
+//                ),
+//                Expanded(
+//                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
+//                ),
+//              ],
+//            ),
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: <Widget>[
+//                IconButton(
+//                  icon: Icon(FontAwesomeIcons.weixin, color: Colors.green),
+//                  onPressed: () {
+////              _wxLogin();
+//                  },
+//                ),
+//              ],
+//            ),
+//          ],
+//        ));
+//  }
 
   /// 忘记密码组件
   Widget _forgetPwd() {
@@ -306,18 +304,6 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
 //    });
 //  }
 
-  /// 你好，欢迎使用鸿运
-  Widget _welcomeCt(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: Adapt.px(34),
-        fontWeight: FontWeight.w500,
-        color: t_gray,
-      ),
-    );
-  }
-
   /// 清空错误提示
   void _clearErr() {
     if (_userErr != null || _pwdErr != null) {
@@ -328,18 +314,17 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
   }
 
   /// 注册按钮
-  Widget _register() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        InkWell(
-          onTap: () => CusRoutes.push(context, RegUserPage()),
-          child: Text(
-            "新用户注册",
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-          ),
+  Widget _registerBtn() {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(right: Adapt.px(30)),
+      child: InkWell(
+        onTap: () => CusRoutes.push(context, RegisterPage()),
+        child: Text(
+          "新用户注册",
+          style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
         ),
-      ],
+      ),
     );
   }
 }

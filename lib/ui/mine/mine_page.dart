@@ -1,13 +1,15 @@
 import 'dart:io';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
+import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/model/user/userInfo.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,30 +26,21 @@ class MinePage extends StatefulWidget {
 
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
-  var _future;
   File _file; // 返回的相册或者拍摄的图片
+  UserInfo _userInfo;
 
   @override
   void initState() {
-    _future = _fetch();
     print(">>>进了个人主页");
     super.initState();
   }
 
-  _fetch() async {}
-
   @override
   Widget build(BuildContext context) {
+    _userInfo = context.watch<UserInfoState>().userInfo ?? UserInfo();
     super.build(context);
     return Scaffold(
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, snap) {
-            return _bodyCtr();
-            if (!snapDone(snap)) {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+      body: _bodyCtr(),
       backgroundColor: sec_primary,
     );
   }
@@ -67,24 +60,18 @@ class _MinePageState extends State<MinePage>
       height: Adapt.px(bgWallH),
       child: Stack(
         children: <Widget>[
-          // 背景墙
-          // BackgroundWall(url: "", onTap: () => print(">>>点了背景墙")),
           BackgroundWall(
-              url: "",
-              onTap: () {
-//                _showBottomSheet();
-                CusBottomSheet(context, fileFn: _selectFile);
-              }),
-          // 头像
+            url: "", // 背景墙
+            onTap: () => CusBottomSheet(context, fileFn: _selectFile),
+          ),
           Align(
-            alignment: Alignment(0, 0),
+            alignment: Alignment(0, 0), // 头像
             child: CusAvatar(url: "", borderRadius: 100),
           ),
-          // 用户名
           Align(
             alignment: Alignment(0, 0.75),
             child: Text(
-              "用户454709171",
+              _userInfo.nick ?? "用户454709171", // 用户名
               style: TextStyle(
                 color: t_gray,
                 fontSize: Adapt.px(30),

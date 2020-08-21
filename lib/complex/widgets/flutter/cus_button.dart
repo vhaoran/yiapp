@@ -17,7 +17,7 @@ class CusRaisedBtn extends StatelessWidget {
   final double borderRadius; // 四周圆弧大小
   final double minWidth; // 按钮宽度,默认占满屏幕
   final double height; // 按钮高度
-  final Color bgColor; // 背景色
+  final Color backgroundColor; // 背景色
   final Color textColor; // 文字颜色
   final VoidCallback onPressed;
 
@@ -29,7 +29,7 @@ class CusRaisedBtn extends StatelessWidget {
     this.borderRadius = 5,
     this.minWidth = 40,
     this.height: 0,
-    this.bgColor = Colors.lightGreen,
+    this.backgroundColor = Colors.lightGreen,
     this.textColor = Colors.white,
     this.onPressed,
     Key key,
@@ -46,7 +46,7 @@ class CusRaisedBtn extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
       child: RaisedButton(
         onPressed: onPressed ?? () {},
-        color: bgColor,
+        color: backgroundColor,
         elevation: 0,
         child: Text(
           text,
@@ -126,7 +126,7 @@ class CusYiBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CusRaisedBtn(
-      bgColor: t_primary,
+      backgroundColor: t_primary,
       textColor: Colors.black,
       fontSize: 20,
       text: btnName,

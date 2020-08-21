@@ -8,7 +8,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
-import 'package:yiapp/complex/widgets/cus_behavior.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/cus_circle_item.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
@@ -175,7 +175,7 @@ class _DailyFortuneState extends State<DailyFortune> {
               padding: EdgeInsets.only(right: Adapt.px(16), left: Adapt.px(36)),
               child: CusRaisedBtn(
                 text: "详情",
-                bgColor: t_primary,
+                backgroundColor: t_primary,
                 textColor: Colors.black,
                 fontSize: 24,
                 pdHor: 14,

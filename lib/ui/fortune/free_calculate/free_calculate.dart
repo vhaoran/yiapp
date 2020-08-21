@@ -4,7 +4,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
-import 'package:yiapp/complex/widgets/cus_behavior.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/cus_square_item.dart';
 
 // ------------------------------------------------------

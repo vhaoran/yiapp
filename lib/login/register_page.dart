@@ -1,329 +1,301 @@
-import 'dart:async';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/api/api_user.dart';
 
-class RegUserPage extends StatelessWidget {
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/8/21 09:40
+// usage ：用户注册
+// ------------------------------------------------------
+
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  var _mobileCon = TextEditingController(); // 手机号
+  var _captchaCon = TextEditingController(); // 验证码
+  var _pwdCon = TextEditingController(); // 注册密码
+  List<String> _errs = List<String>(3); // 错误提示信息
+  bool _agree = true; // 是否同意用户协议
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("微聊IM系统--注册新用户"),
-      ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(
-          Adapt.px(20),
-          Adapt.px(150),
-          Adapt.px(50),
-          Adapt.px(0),
+      appBar: CusAppBar(backgrouodColor: fif_primary),
+      body: _lv(),
+      backgroundColor: fif_primary,
+    );
+  }
+
+  Widget _lv() {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.only(left: Adapt.px(50), right: Adapt.px(50)),
+      children: <Widget>[
+        SizedBox(height: Adapt.px(140)),
+        _mobileInput(), // 输入手机号
+        _captchaInput(), // 输入验证码
+        _pwdInput(), // 设置登录密码
+        SizedBox(height: Adapt.px(60)),
+        CusRaisedBtn(
+          text: '注册',
+          textColor: Colors.black,
+          fontSize: 28,
+          backgroundColor: Color(0xFFEE9972),
+          pdVer: Adapt.px(15),
+          onPressed: _doRegister,
         ),
-        child: _RegUser(),
+        _userAgreement(), // 用户协议
+      ],
+    );
+  }
+
+  ///  手机号输入框
+  Widget _mobileInput() {
+    return TextField(
+      maxLength: 11,
+      controller: _mobileCon,
+      keyboardType: TextInputType.phone,
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+      decoration: InputDecoration(
+        hintText: '请输入手机号',
+        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+        errorText: _errs[0],
+        errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
+        counterText: '',
+        suffixIcon: _mobileCon.text.isNotEmpty
+            ? IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.timesCircle,
+                  size: Adapt.px(32),
+                  color: Colors.white38,
+                ),
+                onPressed: () => setState(() => _mobileCon.clear()),
+              )
+            : null,
+        focusedBorder: inputBorder(),
+        errorBorder: inputBorder(),
+        focusedErrorBorder: inputBorder(),
+      ),
+      onChanged: (value) {
+        if (_errs[0] != null) {
+          _errs[0] = null;
+        }
+        setState(() {});
+      },
+    );
+  }
+
+  /// 输入验证码
+  Widget _captchaInput() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: Adapt.px(40)),
+      child: TextField(
+        maxLength: 6,
+        controller: _captchaCon,
+        keyboardType: TextInputType.phone,
+        style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        decoration: InputDecoration(
+          hintText: '验证码',
+          hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+          errorText: _errs[1],
+          errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
+          counterText: '',
+          focusedBorder: inputBorder(),
+          errorBorder: inputBorder(),
+          focusedErrorBorder: inputBorder(),
+          suffixIcon: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                child: Text(
+                  "获取验证码",
+                  style: TextStyle(fontSize: Adapt.px(28), color: t_gray),
+                ),
+                onTap: _getCaptchaID,
+              ),
+            ],
+          ),
+        ),
+        onChanged: (value) {
+          if (_errs[1] != null) {
+            _errs[1] = null;
+            setState(() {});
+          }
+        },
       ),
     );
   }
-}
 
-class _RegUser extends StatefulWidget {
-  @override
-  _RegUserState createState() => new _RegUserState();
-}
+  /// 设置登录密码
+  Widget _pwdInput() {
+    return TextField(
+      maxLength: 20,
+      controller: _pwdCon,
+      keyboardType: TextInputType.text,
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+      decoration: InputDecoration(
+        hintText: '请设置登录密码 ( 6-20位大小写字母 )',
+        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+        errorText: _errs[2],
+        errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
+        counterText: '',
+        suffixIcon: _pwdCon.text.isNotEmpty
+            ? IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.timesCircle,
+                  size: Adapt.px(32),
+                  color: Colors.white38,
+                ),
+                onPressed: () => setState(() => _pwdCon.clear()),
+              )
+            : null,
+        focusedBorder: inputBorder(),
+        errorBorder: inputBorder(),
+        focusedErrorBorder: inputBorder(),
+      ),
+      onChanged: (value) {
+        if (_errs[2] != null) {
+          _errs[2] = null;
+        }
+        setState(() {});
+      },
+    );
+  }
 
-class _RegUserState extends State<_RegUser> {
-  // 用户名
-  TextEditingController regUserCodeC = new TextEditingController();
-  // 手机号
-  TextEditingController regMobileC = new TextEditingController();
-  // 验证码
-  TextEditingController regCaptchaC = new TextEditingController();
-  // 注册密码
-  TextEditingController regPwdC = new TextEditingController();
-  // 错误提示信息
-  List<String> errtipsList = new List<String>(4);
-  // 是否隐藏密码，默认隐藏
-  bool isHidePwd = true;
-  // 是否同意用户协议
-  bool isUserAgreement = false;
-  // 时间管理对象
-  Timer _timer;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: ListView(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            // 注册文本的 Container
-            Container(
-              alignment: Alignment.topLeft,
-              child: Text(
-                '注册',
-                style: TextStyle(
-                    fontSize: Adapt.px(60), fontWeight: FontWeight.bold),
-              ),
-            ),
-            // 用户名的 Container
-            Container(
-              padding: EdgeInsets.only(
-                top: Adapt.px(60),
-              ),
-              child: TextField(
-                // focusNode: usercodeFN,
-                controller: regUserCodeC,
-                // autofocus: true, // 自动获取焦点
-                decoration: InputDecoration(
-                    hintText: 'cpl201912108517',
-                    suffixText: '微聊号',
-                    errorText: errtipsList[0],
-                    // 暂时找不到标准图标，先用 ☁️ 图标样式代替
-                    suffixIcon: IconButton(
-                        icon: Icon(Icons.cloud_queue),
-                        onPressed: () {
-                          CusDialog.tip(context,
-                              title: '微聊号介绍', subTitle: '数字、英文、或两者的混合');
-                        })),
-              ),
-            ),
-            // 手机号的 Container
-            Container(
-              child: TextField(
-                controller: regMobileC,
-                keyboardType: TextInputType.phone, // 默认打开数字键盘
-                maxLength: 11,
-                decoration: InputDecoration(
-                  prefixText: '+86-',
-                  prefixStyle: TextStyle(
-                    fontSize: Adapt.px(46),
-                    color: Color.fromRGBO(32, 32, 32, 1),
-                  ),
-                  hintText: '请输入手机号',
-                  // errorText: errorMobileTips,
-                  errorText: errtipsList[1],
-                  counterText: '', // 控制是否显示最大字符数
-                ),
-              ),
-            ),
-            // 验证码的 Container
-            Container(
-              child: TextField(
-                controller: regCaptchaC,
-                keyboardType: TextInputType.phone,
-                maxLength: 6,
-                decoration: InputDecoration(
-                  hintText: '验证码',
-                  counterText: '',
-                  errorText: errtipsList[2],
-                  suffixIcon: Container(
-                    width: 90,
-                    // 这里如果用自适应则会出现 hintText 的文本不显示的问题
-                    // height: ScreenUtil().setHeight(10),
-                    alignment: Alignment.centerRight,
-                    child: OutlineButton(
-                      textColor: Color.fromRGBO(32, 32, 32, 1),
-                      borderSide: BorderSide(
-                          color: Color.fromRGBO(32, 32, 32, 1), width: 0.5),
-                      child: Text(
-                        '获取验证码',
-                        style: TextStyle(
-                          fontSize: Adapt.px(30),
-                        ),
-                      ),
-                      onPressed: getCaptchaID,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // 密码的 Container
-            Container(
-              child: TextField(
-                controller: regPwdC,
-                maxLength: 20,
-                obscureText: isHidePwd, // 是否隐藏输入的密码
-                decoration: InputDecoration(
-                  hintText: '密码长度 6-20 位****',
-                  suffixIcon: IconButton(
-                      icon: Icon(Icons.remove_red_eye,
-                          color: isHidePwd ? Colors.grey : Colors.lightBlue),
-                      onPressed: () {
-                        if (mounted) {
-                          setState(() {
-                            isHidePwd = !isHidePwd;
-                          });
-                        }
-                      }),
-                  errorText: errtipsList[3],
-                ),
-              ),
-            ),
-            // 注册按钮的 Container
-            Container(
-              padding: EdgeInsets.only(top: Adapt.px(20)),
-              height: Adapt.px(120),
-              width: Adapt.px(1000),
-              child: RaisedButton(
-                color: Colors.blue,
-                textColor: Colors.black,
-                // onPressed: isCanReg() ? submitRegUserdata : null,
-                onPressed: this.regBtn,
-                // 按钮禁用时的颜色
-                disabledColor: Color.fromRGBO(235, 235, 235, 1),
-                child: Text(
-                  '注册',
-                  style: TextStyle(
-                    fontSize: Adapt.px(50),
-                  ),
-                ),
-              ),
-            ),
-            // 用户协议的 Container
-            Container(
-              child: Row(
-                children: <Widget>[
-                  Checkbox(
-                      value: this.isUserAgreement,
-                      onChanged: (bool value) {
-                        setState(() {
-                          this.isUserAgreement = value;
-                        });
-                      }),
-                  Text.rich(TextSpan(
-                    text: '我已阅读并同意聊天系统的',
-                    style: userAgreementStyle(),
-                    children: [
-                      TextSpan(
-                        text: '《用户协议》',
-                        style: TextStyle(
-                          // fontSize: 15,
-                          fontSize: Adapt.px(40),
-                          // color: Color.fromRGBO(32, 32, 32, 1),
-                          color: Colors.lightBlue,
-                        ),
-                        // 手势（`gestures`）库的点击手势识别器（`TapGestureRecognizer`）类，识别点击手势。
-                        // 识别（`recognizer`）属性，一个手势识别器，它将接收触及此文本范围的事件。
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = userIsAgreement,
-                      ),
-                    ],
-                  )),
-                ],
-              ),
+  /// 用户协议
+  Widget _userAgreement() {
+    return CheckboxListTile(
+      value: this._agree,
+      onChanged: (value) => setState(() => this._agree = value),
+      controlAffinity: ListTileControlAffinity.leading,
+      checkColor: t_gray,
+      activeColor: Colors.blueGrey,
+      title: Text.rich(
+        TextSpan(
+          text: '我已阅读并同意',
+          style: TextStyle(fontSize: Adapt.px(28), color: t_gray),
+          children: [
+            TextSpan(
+              text: '《鸿运来用户协议》',
+              style: TextStyle(fontSize: Adapt.px(28), color: Colors.lightBlue),
+              // 手势（`gestures`）库的点击手势识别器（`TapGestureRecognizer`）类，识别点击手势。
+              // 识别（`recognizer`）属性，一个手势识别器，它将接收触及此文本范围的事件。
+              recognizer: TapGestureRecognizer()..onTap = _doAgree,
             ),
           ],
         ),
-      ],
-    ));
+      ),
+    );
   }
 
-  /// 注册按钮事件
-  void regBtn() async {
-    // 验证用户名
-    await verifyUserCode();
-    // 验证手机号
-    errtipsList[1] =
-        RegExp(r"1[0-9]\d{9}$").hasMatch(regMobileC.text) ? null : '请输入正确的手机号';
-    // 验证验证码(目前先做成仅验证输入的是不是6位数字）
-    errtipsList[2] =
-        RegExp(r"^\d{6}$").hasMatch(regCaptchaC.text) ? null : '输入的验证码不正确';
-    // 验证密码
-    errtipsList[3] = (regPwdC.text.length >= 6 && regPwdC.text.length <= 20) &&
-            RegExp(r"^[A-Za-z]+$").hasMatch(regPwdC.text)
-        ? null
-        : '密码设置：6-20位字符大写字母、小写字母';
-    setState(() {});
+  /// 注册事件
+  void _doRegister() async {
+    setState(() {
+      // 验证手机号
+      _errs[0] = CusRegExp.phone(_mobileCon.text) ? null : '请输入正确的手机号';
+      // 验证验证码(目前先做成仅验证输入的是不是6位数字）
+      _errs[1] = CusRegExp.captcha(_captchaCon.text) ? null : '输入的验证码不正确';
+      // 验证密码
+      _errs[2] = (_pwdCon.text.length >= 6 && _pwdCon.text.length <= 20) &&
+              CusRegExp.upLower(_pwdCon.text)
+          ? null
+          : '密码设置：6-20位字符大写字母、小写字母';
+    });
 
-    if (errtipsList.every((value) => value == null)) {
-      if (!isUserAgreement) {
-        userIsAgreement();
-      } else {
-        submitRegUserdata();
-      }
+    if (_errs.every((err) => err == null)) {
+      _agree ? _submitData() : _doAgree();
     } else {
-      print('不满足注册的条件');
+      print(">>>不满足注册的条件");
     }
   }
 
   /// 提交用户注册事件
-  void submitRegUserdata() async {
-    Random random = new Random();
-    bool isSuccessReg;
+  void _submitData() async {
+    // 验证用户名(手机号)是否已存在
+    if (_mobileCon.text.isNotEmpty) {
+      try {
+        bool exist = await ApiUser.userCodeExist(_mobileCon.text);
+        print(">>>当前用户(手机号)是否已存在：$exist");
+        _errs[0] = exist ? "当前手机号已注册" : null;
+        setState(() {});
+        if (exist) return;
+      } catch (e) {
+        print(">>>验证用户是否存在时发生错误: $e");
+      }
+    }
     try {
-      isSuccessReg = await ApiLogin.RegUser(
+      Random random = Random();
+      bool success = await ApiLogin.regUser(
         {
-          "user_code": regUserCodeC.text.trim(),
-          "nick": "微聊新用户:${random.nextInt(1000)}号",
-          "mobile": regMobileC.text.trim(),
-          "pwd": regPwdC.text.trim(),
+          "user_code": _mobileCon.text.trim(),
+          "nick":
+              "用户 ${random.nextInt(1000)}${random.nextInt(1000)}${random.nextInt(1000)}",
+          "pwd": _pwdCon.text.trim(),
         },
       );
+      print(">>>注册是否成功：$success");
+      if (success) {
+        CusToast.toast(context, text: "注册成功");
+        Future.delayed(await Duration(milliseconds: 300))
+            .then((value) => Navigator.pop(context));
+      }
+      // 注册失败
+      else {
+        print("注册失败");
+      }
     } catch (e) {
       print('------用户提交注册数据发生错误------：$e');
     }
-    if (isSuccessReg) {
-      CusDialog.tip(context,
-          title: "注册成功", onApproval: () => Navigator.pop(context));
-      // 清空用户输入的内容
-      regUserCodeC.text =
-          regMobileC.text = regCaptchaC.text = regPwdC.text = "";
-    }
-    // 注册失败
-    else {
-      print("注册失败");
-    }
   }
 
-  /// 验证用户名的存在性
-  void verifyUserCode() async {
-    // 纯数字验证，纯字母验证，英文或者数字验证
-    bool isRightUserCode = ((RegExp(r"^[0-9]*$").hasMatch(regUserCodeC.text) ||
-            RegExp(r"^[A-Za-z]+$").hasMatch(regUserCodeC.text) ||
-            RegExp(r"^[A-Za-z0-9]+$").hasMatch(regUserCodeC.text)) &&
-        regUserCodeC.text.length > 0);
-    if (isRightUserCode) {
+  /// 验证用户名(手机号)的存在性
+  Future<void> verifyUserCode() async {
+    if (CusRegExp.phone(_mobileCon.text)) {
       try {
-        bool isUserCodeExisted = await ApiUser.userCodeExist(regUserCodeC.text);
-        errtipsList[0] = isUserCodeExisted ? '微聊号已被使用请重新设置' : null;
+        bool exist = await ApiUser.userCodeExist(_mobileCon.text);
+        _errs[0] = exist ? "当前手机号已注册" : null;
+        setState(() {});
+        if (exist) return;
       } catch (e) {
-        print('------验证用户是否存在时发生错误------：$e');
+        print(">>>验证用户是否存在时发生错误: $e");
       }
-    } else {
-      errtipsList[0] = "微聊号由数字、英文、或者两者的混合";
     }
-    setState(() {});
   }
 
   /// 获取验证码
-  void getCaptchaID() async {
-    if (RegExp(r"1[0-9]\d{9}$").hasMatch(regMobileC.text)) {
+  void _getCaptchaID() async {
+    print(">>>点了获取验证码");
+    if (CusRegExp.phone(_mobileCon.text)) {
       try {
-        await ApiLogin.MobileCaptchaOfRegUser(regMobileC.text);
+        // await ApiLogin.MobileCaptchaOfRegUser(_mobileCon.text);
       } catch (e) {
         print('------验证验证码是否正确时发生错误------：$e');
       }
     }
   }
 
-  /// 是否同意用户协议
-  void userIsAgreement() {
-    isUserAgreement
-        ? CusDialog.tip(context, title: '这是用户协议、这是用户协议')
-        : CusDialog.tip(context, title: '请同意并勾选用户协议');
-  }
-
-  /// 是否同意《用户协议》时，文本的样式
-  TextStyle userAgreementStyle() {
-    return TextStyle(
-      fontSize: Adapt.px(40),
-      // 同意：黑色，不同意：灰色
-      color: this.isUserAgreement
-          ? Color.fromRGBO(32, 32, 32, 1) // 同意：黑色
-          : Color.fromRGBO(136, 136, 136, 1), // 不同意：灰色
-    );
-  }
+  /// 用户是否同意协议
+  void _doAgree() =>
+      CusDialog.tip(context, title: _agree ? "这是用户协议、这是用户协议" : "请同意并勾选用户协议");
 }

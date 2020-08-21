@@ -1,5 +1,4 @@
 import 'package:yiapp/model/login/login_result.dart';
-
 import 'api_base.dart';
 
 // ------------------------------------------------------
@@ -31,9 +30,9 @@ class ApiLogin {
     return url;
   }
 
-  //用户注册
-  static Future<bool> RegUser(dynamic data) async {
-    var url = "/user/RegUser";
+  /// 用户注册
+  static Future<bool> regUser(dynamic data) async {
+    var url = "/yi/user/RegUse";
     return await ApiBase.postValue<bool>(url, data, enableJwt: false);
   }
 
@@ -51,10 +50,10 @@ class ApiLogin {
     return await ApiBase.postValue<bool>(url, data, enableJwt: false);
   }
 
-  // LoginResult
-  //判断用户编码是否存在
-  static Future<LoginResult> Login(Map<String, dynamic> data) async {
-    var url = "/user/Login";
+  /// LoginResult
+  /// 判断用户编码是否存在
+  static Future<LoginResult> login(Map<String, dynamic> data) async {
+    var url = "/yi/user/Login";
     //var data = {"uid": uid};
     return await ApiBase.postObj(url, data, (m) {
       return LoginResult.fromJson(m);
@@ -71,6 +70,7 @@ class ApiLogin {
     }, enableJwt: false);
   }
 
+  /// 注册时获取验证码
   static Future<bool> MobileCaptchaOfRegUser(String phone_number) async {
     var url = "/user/MobileCaptchaOfRegUser";
     var data = {

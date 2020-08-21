@@ -4,17 +4,27 @@
 // usage ：自定义正则验证
 // ------------------------------------------------------
 
-class CusReg {
+class CusRegExp {
   // 验证手机号
   static bool phone(String phone) {
     return RegExp(
-            r"^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(16[6])|(17[0,1,3,5-8])|(18[0-9])|(19[1,8,9]))\\d{8}\$")
+            "^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$")
         .hasMatch(phone);
+  }
+
+  // 验证码个数
+  static bool captcha(String captcha) {
+    return RegExp(r"^\d{6}$").hasMatch(captcha);
   }
 
   // 纯数字
   static bool money(String money) {
     return RegExp(r"^[0-9]*$").hasMatch(money);
+  }
+
+  // 大小写字母
+  static bool upLower(String str) {
+    return RegExp(r"^[A-Za-z]+$").hasMatch(str);
   }
 
   // 汉字

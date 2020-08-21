@@ -12,20 +12,11 @@ import 'package:yiapp/model/user/userInfo.dart';
 
 class LoginResult {
   UserInfo user_info;
-  List<Group> groups;
-  List<Friend> friends;
   String jwt;
 
   LoginResult.fromJson(Map<String, dynamic> m)
       : jwt = m['jwt'],
-        user_info = UserInfo.fromJson(m['user_info']),
-        groups = (m['groups'] as List).map((x) => Group.fromJson(x)).toList(),
-        friends =
-            (m['friends'] as List).map((x) => Friend.fromJson(x)).toList();
+        user_info = UserInfo.fromJson(m['user_info']);
 
-  Map<String, dynamic> toJson() => {
-        'user_info': jsonEncode(user_info),
-        'groups': jsonEncode(groups),
-        'friends': jsonEncode(friends),
-      };
+  Map<String, dynamic> toJson() => {'user_info': jsonEncode(user_info)};
 }

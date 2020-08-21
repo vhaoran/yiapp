@@ -171,7 +171,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
             CusRaisedBtn(
               minWidth: 150,
               text: "关注",
-              bgColor: Color(0xFF6C6B6D),
+              backgroundColor: Color(0xFF6C6B6D),
               textColor: t_primary,
               fontSize: 26,
               pdHor: 10,
@@ -184,7 +184,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
               child: CusRaisedBtn(
                 minWidth: 150,
                 text: "立即约聊",
-                bgColor: t_primary,
+                backgroundColor: t_primary,
                 textColor: Colors.black,
                 fontSize: 26,
                 pdHor: 10,

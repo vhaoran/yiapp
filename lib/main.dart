@@ -31,7 +31,8 @@ class HongYunApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: mainRoutes,
-      home: _choice(),
+//      home: _choice(),
+      home: HomePage(),
     );
   }
 

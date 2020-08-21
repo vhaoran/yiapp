@@ -14,7 +14,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String text; // title 为空时，给 text 赋值则默认 title 为 Text 组件
   final Widget leading;
   final bool showLeading;
-  final Color color; // AppBar背景色
+  final Color backgrouodColor; // AppBar背景色
   final Color leadingColor; // leading 背景色
   final List<Widget> actions;
   final Widget bottom;
@@ -30,7 +30,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.text: "",
     this.leading,
     this.showLeading: true,
-    this.color: ter_primary,
+    this.backgrouodColor: ter_primary,
     this.leadingColor: t_gray,
     this.actions,
     this.bottom,
@@ -54,7 +54,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
         bottom: bottom,
         actions: actions,
         centerTitle: true,
-        backgroundColor: color,
+        backgroundColor: backgrouodColor,
         leading: showLeading
             ? leading ??
                 IconButton(
