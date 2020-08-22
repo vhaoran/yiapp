@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/function/mix_func.dart';
+import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/login/login_utils.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
 import 'package:yiapp/ui/master/master_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/reward/reward_page.dart';
 import 'package:yiapp/ui/worship/worship_page.dart';
+import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -44,6 +52,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!ApiBase.login) _autoLogin(context);
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -60,6 +69,27 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  /// 如果已经登录过一次，则自动登录
+  void _autoLogin(BuildContext context) async {
+    if (await hadLogin()) {
+      print(">>>用户已经登录过，现在自动登录");
+      try {
+        String mobile = await KV.getStr("/login/user_code");
+        String pwd = await KV.getStr("/login/pwd");
+        var m = {"user_code": mobile, "pwd": pwd};
+        var r = await ApiLogin.login(m);
+        if (r != null) {
+          await setLoginInfo(r);
+          context.read<UserInfoState>().init(r.user_info);
+        }
+      } catch (e) {
+        print("<<<自动登录出现异常：$e");
+      }
+    } else {
+      print(">>>游客登录");
+    }
   }
 
   /// 底部导航栏

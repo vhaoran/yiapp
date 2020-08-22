@@ -146,8 +146,8 @@ class _DailyFortuneState extends State<DailyFortune> {
             return CusCircleItem(
               text: m['text'],
               path: "assets/images/${m['path']}",
-              onTap: () => CusRoutes.pushNamed(context,
-                  routeName: m['route'], arguments: m['text']),
+              onTap: () => CusRoutes.pushNamed(context, m['route'],
+                  arguments: m['text']),
             );
           },
         ),
@@ -198,8 +198,8 @@ class _DailyFortuneState extends State<DailyFortune> {
           (index) {
             var e = _goods[index];
             return InkWell(
-              onTap: () => CusRoutes.pushNamed(context,
-                  routeName: e['route'], arguments: e['text']),
+              onTap: () => CusRoutes.pushNamed(context, e['route'],
+                  arguments: e['text']),
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(6),

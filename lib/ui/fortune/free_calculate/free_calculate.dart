@@ -83,8 +83,8 @@ class _FreeCalculateState extends State<FreeCalculate>
           return CusSquareItem(
             text: m['text'],
             path: "assets/images/${m['path']}",
-            onTap: () => CusRoutes.pushNamed(context,
-                routeName: m['route'], arguments: m['text']),
+            onTap: () =>
+                CusRoutes.pushNamed(context, m['route'], arguments: m['text']),
           );
         }),
       ),
@@ -108,8 +108,8 @@ class _FreeCalculateState extends State<FreeCalculate>
             return CusSquareItem(
               text: m['text'],
               path: "assets/images/${m['path']}",
-              onTap: () => CusRoutes.pushNamed(context,
-                  routeName: m['route'], arguments: m['text']),
+              onTap: () => CusRoutes.pushNamed(context, m['route'],
+                  arguments: m['text']),
             );
           },
         ),

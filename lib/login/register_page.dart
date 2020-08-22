@@ -8,11 +8,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/api/api_user.dart';
 
@@ -258,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (success) {
         CusToast.toast(context, text: "注册成功");
         Future.delayed(await Duration(milliseconds: 300))
-            .then((value) => Navigator.pop(context));
+            .then((value) => CusRoutes.pushReplacement(context, LoginPage()));
       }
       // 注册失败
       else {

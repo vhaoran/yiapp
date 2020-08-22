@@ -17,6 +17,7 @@ import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/ui/mine/mine_page.dart';
 import 'register_page.dart';
 
 // ------------------------------------------------------
@@ -43,7 +44,7 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
 
   @override
   void initState() {
-    _future = _restore();
+//    _future = _restore();
 //    _weChatLoginInit();
     super.initState();
   }
@@ -90,12 +91,12 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
   }
 
   //-------从本地载入保存的用户名及口令数据-----------------------------------------
-  _restore() async {
-    _mobile = await KV.getStr("/login/user_code") ?? "";
-    _pwd = await KV.getStr("/login/pwd") ?? "";
-    print(">>>本地的_user_code:$_mobile");
-    print(">>>本地的_pwd:$_pwd");
-  }
+//  _restore() async {
+//    _mobile = await KV.getStr("/login/user_code") ?? "";
+//    _pwd = await KV.getStr("/login/pwd") ?? "";
+//    print(">>>本地的_user_code:$_mobile");
+//    print(">>>本地的_pwd:$_pwd");
+//  }
 
   /// 请求登录
   void _doLogin() async {
@@ -124,7 +125,7 @@ class _PwdLoginPageState extends State<PwdLoginPage> {
           await KV.setStr("/login/user_code", _mobile);
           await KV.setStr("/login/pwd", _pwd);
           await setLoginInfo(r);
-          CusRoutes.push(context, HomePage());
+          CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
           print(">>>登录成功");
         }

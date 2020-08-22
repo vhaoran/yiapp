@@ -22,8 +22,8 @@ class CusRoutes {
   }
 
   // pushReplacement 跳转到下一个页面并销毁当前页面
-  static Future<dynamic> pushNamed(BuildContext context,
-      {String routeName, dynamic arguments}) {
+  static Future<dynamic> pushNamed(BuildContext context, String routeName,
+      {dynamic arguments}) {
     return Navigator.of(context).pushNamed(routeName, arguments: arguments);
   }
 }

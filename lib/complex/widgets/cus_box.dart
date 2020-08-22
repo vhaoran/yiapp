@@ -11,14 +11,14 @@ import '../tools/cus_callback.dart';
 // ------------------------------------------------------
 
 /// 适用于主标题必填，副标题和右则翻页箭头选填
-class GNormalCtr extends StatefulWidget {
+class NormalBox extends StatefulWidget {
   final String title;
   final String subtitle;
   final bool showBtn; // 默认显示右箭头按钮
   final double height;
   final VoidCallback onTap;
 
-  GNormalCtr({
+  NormalBox({
     @required this.title,
     this.subtitle,
     this.showBtn = true,
@@ -27,34 +27,58 @@ class GNormalCtr extends StatefulWidget {
   });
 
   @override
-  _GNormalCtrState createState() => _GNormalCtrState();
+  _NormalBoxState createState() => _NormalBoxState();
 }
 
-class _GNormalCtrState extends State<GNormalCtr> {
+class _NormalBoxState extends State<NormalBox> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: Adapt.px(3)),
-      child: Material(
-        child: Ink(
-          color: CusColors.terSystemBg(context),
-          child: InkWell(
-            onTap: widget.onTap ?? null,
-            child: Container(
-                alignment: Alignment.center,
-                constraints: BoxConstraints(minHeight: Adapt.px(widget.height)),
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                child: _row(widget.title, widget.subtitle)),
+//    return Padding(
+//      padding: EdgeInsets.only(bottom: Adapt.px(3)),
+//      child: Material(
+//        child: Ink(
+//          color: fif_primary,
+//          child: InkWell(
+//            onTap: widget.onTap ?? null,
+//            child: Container(
+//                alignment: Alignment.center,
+//                constraints: BoxConstraints(minHeight: Adapt.px(widget.height)),
+//                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+//                child: _row(widget.title, widget.subtitle)),
+//          ),
+//        ),
+//      ),
+//    );
+    return Card(
+      margin: EdgeInsets.all(0),
+      child: Container(
+        alignment: Alignment.center,
+        color: fif_primary,
+        child: ListTile(
+          title: Text(
+            widget.title,
+            style: TextStyle(fontSize: Adapt.px(28), color: t_gray),
           ),
+          trailing: widget.showBtn
+              ? Icon(Icons.keyboard_arrow_right,
+                  size: Adapt.px(44), color: t_gray)
+              : null,
+          contentPadding: EdgeInsets.only(
+            left: Adapt.px(40),
+            right: Adapt.px(25),
+            top: Adapt.px(2),
+            bottom: Adapt.px(2),
+          ),
+          dense: true,
         ),
       ),
     );
   }
-
+  
   Widget _row(String title, String subtitle) {
     return Row(
       children: <Widget>[
-        Text(title, style: TextStyle(fontSize: Adapt.px(30))),
+        Text(title, style: TextStyle(fontSize: Adapt.px(28), color: t_gray)),
         Spacer(flex: 1),
         if (subtitle != null)
           Container(
@@ -70,29 +94,29 @@ class _GNormalCtrState extends State<GNormalCtr> {
             ),
           ),
         if (widget.showBtn)
-          Icon(Icons.keyboard_arrow_right, size: Adapt.px(40)),
+          Icon(Icons.keyboard_arrow_right, size: Adapt.px(44), color: t_gray),
       ],
     );
   }
 }
 
 /// 适用于主副标题上下分布的布局，如发布群公告
-class GDiffLevelCtr extends StatefulWidget {
+class DiffLeveBox extends StatefulWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
 
-  GDiffLevelCtr({
+  DiffLeveBox({
     @required this.title,
     this.subtitle,
     this.onTap,
   });
 
   @override
-  _GDiffLevelCtrState createState() => _GDiffLevelCtrState();
+  _DiffLeveBoxState createState() => _DiffLeveBoxState();
 }
 
-class _GDiffLevelCtrState extends State<GDiffLevelCtr> {
+class _DiffLeveBoxState extends State<DiffLeveBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -135,18 +159,18 @@ class _GDiffLevelCtrState extends State<GDiffLevelCtr> {
 }
 
 /// 适用于一个主标题，一个开关的布局，如置顶聊天
-class GSwitchCtr extends StatefulWidget {
+class SwitchBox extends StatefulWidget {
   final String title;
   bool status;
   final FnBool fnBool;
 
-  GSwitchCtr({@required this.title, this.status = false, this.fnBool});
+  SwitchBox({@required this.title, this.status = false, this.fnBool});
 
   @override
-  _GSwitchCtrState createState() => _GSwitchCtrState();
+  _SwitchBoxState createState() => _SwitchBoxState();
 }
 
-class _GSwitchCtrState extends State<GSwitchCtr> {
+class _SwitchBoxState extends State<SwitchBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,22 +205,22 @@ class _GSwitchCtrState extends State<GSwitchCtr> {
 }
 
 /// 适用于单文本的布局，如退群
-class GSingleTextCtr extends StatefulWidget {
+class SingleTextBox extends StatefulWidget {
   final String title;
   final Color color;
   final VoidCallback onTap;
 
-  GSingleTextCtr({
+  SingleTextBox({
     @required this.title,
     this.color = Colors.red,
     this.onTap,
   });
 
   @override
-  _GSingleTextCtrState createState() => _GSingleTextCtrState();
+  _SingleTextBoxState createState() => _SingleTextBoxState();
 }
 
-class _GSingleTextCtrState extends State<GSingleTextCtr> {
+class _SingleTextBoxState extends State<SingleTextBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -226,14 +250,14 @@ class _GSingleTextCtrState extends State<GSingleTextCtr> {
 }
 
 /// 适用于左边一个widget，右边一个标题，右侧带有箭头或者Widget的布局
-class GLeftImageCtr extends StatefulWidget {
+class ImageIconBox extends StatefulWidget {
   final Widget child;
   final Widget trailing; // 当showBtn为false时，显示末尾处组件
-  final  String title;
-  final  bool showBtn; // 默认显示尾部的箭头
+  final String title;
+  final bool showBtn; // 默认显示尾部的箭头
   final VoidCallback onTap;
 
-  GLeftImageCtr({
+  ImageIconBox({
     @required this.child,
     @required this.title,
     this.trailing,
@@ -242,10 +266,10 @@ class GLeftImageCtr extends StatefulWidget {
   });
 
   @override
-  _GLeftImageCtrState createState() => _GLeftImageCtrState();
+  _ImageIconBoxState createState() => _ImageIconBoxState();
 }
 
-class _GLeftImageCtrState extends State<GLeftImageCtr> {
+class _ImageIconBoxState extends State<ImageIconBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -285,14 +309,14 @@ class _GLeftImageCtrState extends State<GLeftImageCtr> {
 }
 
 /// 适用于一个主标题，中间是 Widget，右则翻页箭头的布局
-class GMidImageCtr extends StatefulWidget {
+class MidImageBox extends StatefulWidget {
   final String title;
   final Widget child;
   final IconData icon;
   final bool showBtn;
   final VoidCallback onTap;
 
-  GMidImageCtr({
+  MidImageBox({
     @required this.title,
     this.child,
     this.icon,
@@ -301,10 +325,10 @@ class GMidImageCtr extends StatefulWidget {
   });
 
   @override
-  _GMidImageCtrState createState() => _GMidImageCtrState();
+  _MidImageBoxState createState() => _MidImageBoxState();
 }
 
-class _GMidImageCtrState extends State<GMidImageCtr> {
+class _MidImageBoxState extends State<MidImageBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(

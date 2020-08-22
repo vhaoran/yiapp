@@ -1,15 +1,22 @@
 import 'dart:io';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
+import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
+import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/login/login_page.dart';
+import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/user/userInfo.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -31,13 +38,14 @@ class _MinePageState extends State<MinePage>
 
   @override
   void initState() {
-    print(">>>进了个人主页");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _userInfo = context.watch<UserInfoState>().userInfo ?? UserInfo();
+    _userInfo = ApiBase.login
+        ? context.watch<UserInfoState>().userInfo ?? UserInfo()
+        : UserInfo();
     super.build(context);
     return Scaffold(
       body: _bodyCtr(),
@@ -50,6 +58,11 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _info(),
+        NormalBox(title: "我的订单"),
+//        CusRaisedBtn(
+//          text: "退出登录",
+//          onPressed: () => KV.clear(),
+//        ),
       ],
     );
   }
@@ -61,7 +74,7 @@ class _MinePageState extends State<MinePage>
       child: Stack(
         children: <Widget>[
           BackgroundWall(
-            url: "", // 背景墙
+            url: _userInfo.icon ?? "", // 背景墙
             onTap: () => CusBottomSheet(context, fileFn: _selectFile),
           ),
           Align(
@@ -70,18 +83,39 @@ class _MinePageState extends State<MinePage>
           ),
           Align(
             alignment: Alignment(0, 0.75),
-            child: Text(
-              _userInfo.nick ?? "用户454709171", // 用户名
-              style: TextStyle(
-                color: t_gray,
-                fontSize: Adapt.px(30),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: _userCode(),
           ),
         ],
       ),
     );
+  }
+
+  /// 已登录显示用户名，未登录显示登录丨注册
+  Widget _userCode() {
+    TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
+    return ApiBase.login
+        ? Text(
+            _userInfo.nick ?? "用户454709171", // 用户名
+            style: TextStyle(
+              color: t_gray,
+              fontSize: Adapt.px(30),
+              fontWeight: FontWeight.w500,
+            ),
+          )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              InkWell(
+                onTap: () => CusRoutes.push(context, LoginPage()),
+                child: Text("登录", style: ts),
+              ),
+              Text("丨", style: ts),
+              InkWell(
+                onTap: () => CusRoutes.push(context, RegisterPage()),
+                child: Text("注册", style: ts),
+              ),
+            ],
+          );
   }
 
   void _selectFile(File file) {

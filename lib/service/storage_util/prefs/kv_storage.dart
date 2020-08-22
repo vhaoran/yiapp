@@ -29,6 +29,17 @@ class KV {
     }
   }
 
+  static Future<bool> clear() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      return true;
+    } catch (e) {
+      print(">>>share_preference 执行 clear 操作时出现异常");
+      return false;
+    }
+  }
+
 //------------------------------------------------
 
 }
