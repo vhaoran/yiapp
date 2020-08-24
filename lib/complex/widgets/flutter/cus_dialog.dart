@@ -35,7 +35,9 @@ class CusDialog {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.only(
+                  top: subTitle == null ? 25 : 10,
+                  bottom: subTitle == null ? 25 : 5),
               child: Text(
                 title,
                 style: TextStyle(
@@ -81,13 +83,15 @@ class CusDialog {
       onCancel: () {},
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.only(
+                  top: subTitle == null ? 25 : 10,
+                  bottom: subTitle == null ? 25 : 5),
               child: Text(
-                title,
+                title, // title
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: titleCo,
@@ -190,7 +194,7 @@ class _ComDialog {
 
   Widget _dialogCtr(BuildContext context) {
     return AlertDialog(
-      backgroundColor: CusColors.terSystemBg(context),
+      backgroundColor: tipBg,
       content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,

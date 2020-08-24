@@ -15,14 +15,12 @@ class NormalBox extends StatefulWidget {
   final String title;
   final String subtitle;
   final bool showBtn; // 默认显示右箭头按钮
-  final double height;
   final VoidCallback onTap;
 
   NormalBox({
     @required this.title,
     this.subtitle,
     this.showBtn = true,
-    this.height = 100,
     this.onTap,
   });
 
@@ -33,48 +31,26 @@ class NormalBox extends StatefulWidget {
 class _NormalBoxState extends State<NormalBox> {
   @override
   Widget build(BuildContext context) {
-//    return Padding(
-//      padding: EdgeInsets.only(bottom: Adapt.px(3)),
-//      child: Material(
-//        child: Ink(
-//          color: fif_primary,
-//          child: InkWell(
-//            onTap: widget.onTap ?? null,
-//            child: Container(
-//                alignment: Alignment.center,
-//                constraints: BoxConstraints(minHeight: Adapt.px(widget.height)),
-//                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-//                child: _row(widget.title, widget.subtitle)),
-//          ),
-//        ),
-//      ),
-//    );
-    return Card(
-      margin: EdgeInsets.all(0),
-      child: Container(
-        alignment: Alignment.center,
-        color: fif_primary,
-        child: ListTile(
-          title: Text(
-            widget.title,
-            style: TextStyle(fontSize: Adapt.px(28), color: t_gray),
+    return Padding(
+      padding: EdgeInsets.only(bottom: Adapt.px(2)),
+      child: Material(
+        color: Colors.transparent,
+        child: Ink(
+          color: fif_primary,
+          child: InkWell(
+            onTap: widget.onTap ?? null,
+            child: Container(
+                alignment: Alignment.center,
+                constraints: BoxConstraints(maxHeight: Adapt.px(100)),
+                padding:
+                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(20)),
+                child: _row(widget.title, widget.subtitle)),
           ),
-          trailing: widget.showBtn
-              ? Icon(Icons.keyboard_arrow_right,
-                  size: Adapt.px(44), color: t_gray)
-              : null,
-          contentPadding: EdgeInsets.only(
-            left: Adapt.px(40),
-            right: Adapt.px(25),
-            top: Adapt.px(2),
-            bottom: Adapt.px(2),
-          ),
-          dense: true,
         ),
       ),
     );
   }
-  
+
   Widget _row(String title, String subtitle) {
     return Row(
       children: <Widget>[
@@ -88,7 +64,8 @@ class _NormalBoxState extends State<NormalBox> {
               subtitle,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Color(0xFF888888),
+                // color: Color(0xFF888888),
+                color: t_gray,
                 fontSize: Adapt.px(28),
               ),
             ),
@@ -128,7 +105,7 @@ class _DiffLeveBoxState extends State<DiffLeveBox> {
             onTap: widget.onTap ?? () {},
             child: Container(
                 alignment: Alignment.center,
-                constraints: BoxConstraints(minHeight: Adapt.px(120)),
+                constraints: BoxConstraints(maxHeight: Adapt.px(120)),
                 padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
                 child: _row(widget.title, widget.subtitle)),
           ),
@@ -175,7 +152,7 @@ class _SwitchBoxState extends State<SwitchBox> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      constraints: BoxConstraints(minHeight: Adapt.px(100)),
+      constraints: BoxConstraints(maxHeight: Adapt.px(100)),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       margin: EdgeInsets.only(bottom: Adapt.px(3)),
       color: CusColors.terSystemBg(context),
@@ -204,7 +181,7 @@ class _SwitchBoxState extends State<SwitchBox> {
   }
 }
 
-/// 适用于单文本的布局，如退群
+/// 适用于单文本的布局，如退出登录
 class SingleTextBox extends StatefulWidget {
   final String title;
   final Color color;
@@ -212,7 +189,7 @@ class SingleTextBox extends StatefulWidget {
 
   SingleTextBox({
     @required this.title,
-    this.color = Colors.red,
+    this.color = Colors.redAccent,
     this.onTap,
   });
 
@@ -226,18 +203,18 @@ class _SingleTextBoxState extends State<SingleTextBox> {
     return Padding(
       padding: EdgeInsets.only(bottom: Adapt.px(3)),
       child: Material(
+        color: Colors.transparent,
         child: Ink(
-          color: CusColors.terSystemBg(context),
+          color: fif_primary,
           child: InkWell(
             onTap: widget.onTap ?? () {},
             child: Container(
               alignment: Alignment.center,
-              constraints: BoxConstraints(minHeight: Adapt.px(100)),
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+              constraints: BoxConstraints(maxHeight: Adapt.px(100)),
               child: Text(
                 widget.title,
                 style: TextStyle(
-                  fontSize: Adapt.px(30),
+                  fontSize: Adapt.px(28),
                   color: widget.color,
                 ),
               ),
@@ -281,7 +258,7 @@ class _ImageIconBoxState extends State<ImageIconBox> {
             onTap: widget.onTap,
             child: Container(
               alignment: Alignment.center,
-              constraints: BoxConstraints(minHeight: Adapt.px(100)),
+              constraints: BoxConstraints(maxHeight: Adapt.px(100)),
               padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
               child: _row(widget.title, widget.child),
             ),
@@ -309,14 +286,14 @@ class _ImageIconBoxState extends State<ImageIconBox> {
 }
 
 /// 适用于一个主标题，中间是 Widget，右则翻页箭头的布局
-class MidImageBox extends StatefulWidget {
+class MidWidgetBox extends StatefulWidget {
   final String title;
   final Widget child;
   final IconData icon;
   final bool showBtn;
   final VoidCallback onTap;
 
-  MidImageBox({
+  MidWidgetBox({
     @required this.title,
     this.child,
     this.icon,
@@ -325,23 +302,25 @@ class MidImageBox extends StatefulWidget {
   });
 
   @override
-  _MidImageBoxState createState() => _MidImageBoxState();
+  _MidWidgetBoxState createState() => _MidWidgetBoxState();
 }
 
-class _MidImageBoxState extends State<MidImageBox> {
+class _MidWidgetBoxState extends State<MidWidgetBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: Adapt.px(3)),
       child: Material(
+        color: Colors.transparent,
         child: Ink(
-          color: CusColors.terSystemBg(context),
+          color: fif_primary,
           child: InkWell(
             onTap: widget.onTap,
             child: Container(
                 alignment: Alignment.center,
-                constraints: BoxConstraints(minHeight: Adapt.px(100)),
-                padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+                constraints: BoxConstraints(maxHeight: Adapt.px(100)),
+                padding:
+                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(20)),
                 child: _row(widget.title)),
           ),
         ),
@@ -352,7 +331,7 @@ class _MidImageBoxState extends State<MidImageBox> {
   Widget _row(String title) {
     return Row(
       children: <Widget>[
-        Text(title, style: TextStyle(fontSize: Adapt.px(30))),
+        Text(title, style: TextStyle(fontSize: Adapt.px(28), color: t_gray)),
         Spacer(flex: 1),
         if (widget.child != null)
           Padding(
@@ -362,7 +341,7 @@ class _MidImageBoxState extends State<MidImageBox> {
         if (widget.icon != null)
           Icon(widget.icon, color: Colors.grey, size: Adapt.px(35)),
         if (widget.showBtn)
-          Icon(Icons.keyboard_arrow_right, size: Adapt.px(40)),
+          Icon(Icons.keyboard_arrow_right, size: Adapt.px(44), color: t_gray),
       ],
     );
   }

@@ -17,13 +17,15 @@ class CusAvatar extends StatelessWidget {
   final double borderRadius;
   final int sign; // 标记，如头像右上角的未读消息个数
   final String defaultImage; // 指定默认图片
+  final bool circle; // 是否圆形头像，默认 false
 
   CusAvatar({
-    @required this.url,
+    this.url: "",
     this.size: 80,
-    this.borderRadius,
+    this.borderRadius: 100,
     this.sign,
     this.defaultImage: "assets/images/avatar.jpg",
+    this.circle: false,
     Key key,
   })  : assert(size > 4),
         super(key: key);
@@ -38,7 +40,8 @@ class CusAvatar extends StatelessWidget {
         children: <Widget>[
           Align(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(borderRadius ?? size / 4),
+              borderRadius:
+                  BorderRadius.circular(circle ? borderRadius : size / 4),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
                 imageUrl: "${ApiImage.thumbnail(url)}",

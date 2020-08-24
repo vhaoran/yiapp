@@ -88,6 +88,7 @@ class _AlmanacPageState extends State<AlmanacPage> {
   Widget _appBar() {
     return CusAppBar(
       showLeading: false,
+      showDefault: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -106,7 +107,7 @@ class _AlmanacPageState extends State<AlmanacPage> {
           ),
         ],
       ),
-      backgrouodColor: fou_primary,
+      backGroundColor: fou_primary,
     );
   }
 

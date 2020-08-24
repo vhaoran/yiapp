@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/cus_singlebar.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -76,8 +76,8 @@ class _HomePageState extends State<HomePage> {
     if (await hadLogin()) {
       print(">>>用户已经登录过，现在自动登录");
       try {
-        String mobile = await KV.getStr("/login/user_code");
-        String pwd = await KV.getStr("/login/pwd");
+        String mobile = await KV.getStr(kv_user_code);
+        String pwd = await KV.getStr(kv_pwd);
         var m = {"user_code": mobile, "pwd": pwd};
         var r = await ApiLogin.login(m);
         if (r != null) {

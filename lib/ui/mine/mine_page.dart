@@ -7,16 +7,18 @@ import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/user/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/ui/mine/order_page.dart';
+import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -34,7 +36,7 @@ class MinePage extends StatefulWidget {
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
   File _file; // 返回的相册或者拍摄的图片
-  UserInfo _userInfo;
+  UserInfo _u;
 
   @override
   void initState() {
@@ -43,9 +45,9 @@ class _MinePageState extends State<MinePage>
 
   @override
   Widget build(BuildContext context) {
-    _userInfo = ApiBase.login
-        ? context.watch<UserInfoState>().userInfo ?? UserInfo()
-        : UserInfo();
+    _u = ApiBase.login
+        ? context.watch<UserInfoState>().userInfo ?? defaultUser
+        : defaultUser;
     super.build(context);
     return Scaffold(
       body: _bodyCtr(),
@@ -57,45 +59,53 @@ class _MinePageState extends State<MinePage>
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
-        _info(),
-        NormalBox(title: "我的订单"),
-//        CusRaisedBtn(
-//          text: "退出登录",
-//          onPressed: () => KV.clear(),
-//        ),
+        _avatarAndMore(), // 用户头像、昵称、背景墙
+        if (ApiBase.login)
+          NormalBox(
+            title: "我的订单",
+            onTap: () => CusRoutes.push(context, OrderPage()),
+          ),
       ],
     );
   }
 
-  /// 用户个人信息
-  Widget _info() {
+  /// 用户头像、昵称、背景墙
+  Widget _avatarAndMore() {
     return Container(
       height: Adapt.px(bgWallH),
       child: Stack(
         children: <Widget>[
           BackgroundWall(
-            url: _userInfo.icon ?? "", // 背景墙
-            onTap: () => CusBottomSheet(context, fileFn: _selectFile),
+            url: "", // 背景墙
+            onTap: ApiBase.login
+                ? () => CusBottomSheet(context, fileFn: _selectFile)
+                : null,
           ),
           Align(
             alignment: Alignment(0, 0), // 头像
-            child: CusAvatar(url: "", borderRadius: 100),
+            child: InkWell(
+              child: CusAvatar(url: _u.icon?.substring(16) ?? "", circle: true),
+              onTap: () => CusRoutes.push(
+                context,
+                ApiBase.login ? PersonalPage(userInfo: _u) : LoginPage(),
+              ),
+            ),
           ),
           Align(
             alignment: Alignment(0, 0.75),
-            child: _userCode(),
+            child: _userCodeCt(), // 已登录显示用户名，未登录则显示登录丨注册
           ),
         ],
       ),
     );
   }
 
-  /// 已登录显示用户名，未登录显示登录丨注册
-  Widget _userCode() {
+  /// 已登录显示用户名，未登录则显示登录丨注册
+  Widget _userCodeCt() {
     TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
     return ApiBase.login
         ? Text(
-            _userInfo.nick ?? "用户454709171", // 用户名
+            _u.user_name ?? "用户454709171", // 用户名
             style: TextStyle(
               color: t_gray,
               fontSize: Adapt.px(30),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 
 // ------------------------------------------------------
@@ -9,7 +10,8 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // ------------------------------------------------------
 
 class CusSquareItem extends StatelessWidget {
-  final String path; // 图片路径
+  final int icon; // 图标
+  final int bgColor; // 图标颜色
   final String text; // 文字描述
   final double height; // 图片高度
   final double fontSize; // 文字大小
@@ -18,12 +20,13 @@ class CusSquareItem extends StatelessWidget {
   final Color color; // 文字颜色
   final VoidCallback onTap;
   CusSquareItem({
-    this.path: "assets/images/zodiac_plate.png",
+    this.icon: 0xe615,
+    this.bgColor: 0xFF74C1FA,
     this.text: "默认文字",
     this.height: 100,
     this.fontSize: 22,
     this.spacing: 8, // 文字图片间隔
-    this.borderRadius: 10,
+    this.borderRadius: 20,
     this.color: t_primary,
     this.onTap,
     Key key,
@@ -37,10 +40,16 @@ class CusSquareItem extends StatelessWidget {
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(Adapt.px(borderRadius)),
-            child: SizedBox(
+            child: Container(
+              alignment: Alignment.center,
               height: Adapt.px(height),
               width: Adapt.px(height),
-              child: Image.asset(path, fit: BoxFit.cover),
+              color: Color(bgColor),
+              child: Icon(
+                IconData(icon, fontFamily: ali_font),
+                size: Adapt.px(80),
+                color: Colors.white,
+              ),
             ),
           ),
           Padding(

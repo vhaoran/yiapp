@@ -14,9 +14,9 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/api/api_user.dart';
+import 'login_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(backgrouodColor: fif_primary),
+      appBar: CusAppBar(backGroundColor: fif_primary),
       body: _lv(),
       backgroundColor: fif_primary,
     );
@@ -75,6 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextField(
       maxLength: 11,
       controller: _mobileCon,
+      autofocus: true,
       keyboardType: TextInputType.phone,
       style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -84,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
         errorText: _errs[0],
         errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
         counterText: '',
-        suffixIcon: _mobileCon.text.isNotEmpty
+        suffixIcon: _mobileCon.text.isNotEmpty && _mobileCon.text.length < 11
             ? IconButton(
                 icon: Icon(
                   FontAwesomeIcons.timesCircle,
@@ -162,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
         errorText: _errs[2],
         errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
         counterText: '',
-        suffixIcon: _pwdCon.text.isNotEmpty
+        suffixIcon: _pwdCon.text.isNotEmpty && _pwdCon.text.length < 20
             ? IconButton(
                 icon: Icon(
                   FontAwesomeIcons.timesCircle,

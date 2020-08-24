@@ -1,3 +1,4 @@
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -8,8 +9,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 ///  用户是否已经登录过
 Future<bool> hadLogin() async {
-  if (await KV.getStr("/login/user_code") != null &&
-      await KV.getStr("/login/pwd") != null) {
+  if (await KV.getStr(kv_jwt) != null) {
     return true;
   }
   return false;

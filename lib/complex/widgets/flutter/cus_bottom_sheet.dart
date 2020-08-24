@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 
@@ -17,7 +18,7 @@ class CusBottomSheet {
     this.titles: const ["更换相册封面", "拍摄", "取消"],
     this.titleSize: 28,
     this.titleColor: Colors.black,
-    this.backgroundColor: const Color(0xFFC7C7CC),
+    this.backgroundColor: tipBg,
     this.fileFn,
   }) {
     _showBottomSheet(context);
