@@ -44,8 +44,8 @@ class CusTime {
   static String zodiac(int year) {
     int day = (year - 3) % 10; // 天干
     int earth = (year - 3) % 12; // 地支
-    String dayStr = CalendarConst.day_stem[day];
-    String earthStr = CalendarConst.earth_branch[earth];
+    String dayStr = YiData.day_stem[day];
+    String earthStr = YiData.earth_branch[earth];
     return dayStr + earthStr;
   }
 

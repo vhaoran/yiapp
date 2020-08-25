@@ -77,7 +77,7 @@ class _WeekViewState extends State<WeekView> {
         itemBuilder: (context, index) {
           DateModel dateModel = items[index];
           //判断是否被选择
-          if (configuration.selectMode == CalendarConst.multiple_mode) {
+          if (configuration.selectMode == YiData.multiple_mode) {
             if (calendarProvider.selectedDateList.contains(dateModel)) {
               dateModel.isSelected = true;
             } else {

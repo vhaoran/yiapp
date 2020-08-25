@@ -48,7 +48,7 @@ class DefaultWeekBar extends BaseWeekBar {
       height: 40,
       alignment: Alignment.center,
       child: new Text(
-        CalendarConst.weeks[index],
+        YiData.weeks[index],
         style: topWeekTextStyle,
       ),
     );

@@ -12,6 +12,6 @@ Future<bool> setLoginInfo(LoginResult r) async {
   //设置全局的jwt值
   ApiBase.jwt = r.jwt;
   ApiBase.loginInfo = r;
-  initWSChan();
+  //  initWSChan(); // 初始化 web socket 连接
   await initDB();
 }

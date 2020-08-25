@@ -111,7 +111,7 @@ class _MonthViewState extends State<MonthView>
         itemBuilder: (context, index) {
           DateModel dateModel = items[index];
           //判断是否被选择
-          if (configuration.selectMode == CalendarConst.multiple_mode) {
+          if (configuration.selectMode == YiData.multiple_mode) {
             if (calendarProvider.selectedDateList.contains(dateModel)) {
               dateModel.isSelected = true;
             } else {
@@ -208,7 +208,7 @@ class ItemContainerState extends State<ItemContainer> {
         //范围外不可点击
         if (!dateModel.isInRange) {
           //多选回调
-          if (configuration.selectMode == CalendarConst.multiple_mode) {
+          if (configuration.selectMode == YiData.multiple_mode) {
             configuration.multiSelectOutOfRange();
           }
           return;
@@ -216,7 +216,7 @@ class ItemContainerState extends State<ItemContainer> {
 
         calendarProvider.lastClickDateModel = dateModel;
 
-        if (configuration.selectMode == CalendarConst.multiple_mode) {
+        if (configuration.selectMode == YiData.multiple_mode) {
           if (calendarProvider.selectedDateList.contains(dateModel)) {
             calendarProvider.selectedDateList.remove(dateModel);
           } else {

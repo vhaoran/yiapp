@@ -141,9 +141,9 @@ class CalendarProvider extends ChangeNotifier {
       ..day = 15;
     //初始化展示状态
     if (calendarConfiguration.showMode ==
-            CalendarConst.only_week ||
+            YiData.only_week ||
         calendarConfiguration.showMode ==
-            CalendarConst.week_month) {
+            YiData.week_month) {
       expandStatus = ValueNotifier(false);
     } else {
       expandStatus = ValueNotifier(true);
@@ -169,9 +169,9 @@ class CalendarProvider extends ChangeNotifier {
 
     //如果第一个页面展示的是月视图，需要计算下初始化的高度
     if (calendarConfiguration.showMode ==
-            CalendarConst.only_month ||
+            YiData.only_month ||
         calendarConfiguration.showMode ==
-            CalendarConst.month_week) {
+            YiData.month_week) {
       int lineCount = DateUtil.getMonthViewLineCount(
           calendarConfiguration.nowYear,
           calendarConfiguration.nowMonth,

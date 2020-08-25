@@ -65,7 +65,7 @@ class _AlmanacPageState extends State<AlmanacPage> {
     DateTime now = DateTime.now();
     _controller = CalendarController(
       selectDateModel: DateModel.fromDateTime(now),
-      mode: CalendarConst.month_week,
+      mode: YiData.month_week,
     );
 
     // 监听切换月份

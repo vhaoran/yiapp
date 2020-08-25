@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
@@ -28,11 +29,11 @@ class _FreeCalculateState extends State<FreeCalculate>
   final List<Map> _populars = [
     {"text": "人体节律", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "姓名配对", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": "temp"},
+    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": con_pair},
     {"text": "生肖配对", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "血型配对", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "手机号码", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "眼跳吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
+    {"text": "眼跳co吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "指纹吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "生日配对", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "QQ号码", "icon": 0xe615, "color": def_color, "route": "temp"},

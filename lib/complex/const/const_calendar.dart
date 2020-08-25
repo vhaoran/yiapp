@@ -4,7 +4,7 @@
 // usage ：黄历中不变的数据
 // ------------------------------------------------------
 
-class CalendarConst {
+class YiData {
   static const int single_mode = 1; // 单选或者
   static const int multiple_mode = 2; // 多选模式
 
@@ -105,5 +105,21 @@ class CalendarConst {
     "申",
     "酉",
     "戌",
+  ];
+
+  /// 星座
+  static const List<String> cons = [
+    "白羊",
+    "金牛",
+    "双子",
+    "巨蟹",
+    "狮子",
+    "处女",
+    "天秤",
+    "天蝎",
+    "射手",
+    "摩羯",
+    "水瓶",
+    "双鱼"
   ];
 }
