@@ -6,7 +6,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/cus_square_item.dart';
+import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
 
 // ------------------------------------------------------
 // author：suxing

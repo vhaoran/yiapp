@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/cus_number_data.dart';
+import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/master/master_base_info.dart';
 import 'master_homepage.dart';
 

@@ -1,4 +1,5 @@
 ### 免费测算
 
 - constellation 星座配对
+- zodiac 生肖配对
 - free_calculate 免费测算

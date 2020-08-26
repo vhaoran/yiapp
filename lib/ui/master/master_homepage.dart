@@ -8,7 +8,7 @@ import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/master/cus_fivestar.dart';
-import 'package:yiapp/complex/widgets/cus_number_data.dart';
+import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/master/user_comment.dart';
 

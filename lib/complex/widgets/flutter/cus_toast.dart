@@ -37,7 +37,7 @@ class CusToast {
     this.textColor = Colors.white,
     this.time = 1000,
     this.showing = false,
-    this.showChild = true,
+    this.showChild = false,
     this.child,
     this.pos = ToastPos.center,
   }) {

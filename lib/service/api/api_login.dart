@@ -32,7 +32,7 @@ class ApiLogin {
 
   /// 用户注册
   static Future<bool> regUser(dynamic data) async {
-    var url = "/yi/user/RegUse";
+    var url = "/user/RegUse";
     return await ApiBase.postValue<bool>(url, data, enableJwt: false);
   }
 
@@ -53,7 +53,7 @@ class ApiLogin {
   /// LoginResult
   /// 判断用户编码是否存在
   static Future<LoginResult> login(Map<String, dynamic> data) async {
-    var url = "/yi/user/Login";
+    var url = "/user/Login";
     //var data = {"uid": uid};
     return await ApiBase.postObj(url, data, (m) {
       return LoginResult.fromJson(m);

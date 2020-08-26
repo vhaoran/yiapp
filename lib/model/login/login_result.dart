@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:yiapp/model/friends/friend.dart';
-import 'package:yiapp/model/group/group.dart';
 import 'package:yiapp/model/user/userInfo.dart';
 
 // ------------------------------------------------------

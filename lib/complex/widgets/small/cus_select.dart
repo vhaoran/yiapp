@@ -38,7 +38,7 @@ class CusSelect extends StatelessWidget {
               Container(
                 alignment: Alignment.center,
                 height: Adapt.px(50),
-                width: Adapt.px(320),
+                width: Adapt.px(360),
                 padding: EdgeInsets.symmetric(horizontal: Adapt.px(90)),
                 child: Text(
                   subtitle,

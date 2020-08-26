@@ -10,7 +10,7 @@ import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_article.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/cus_circle_item.dart';
+import 'package:yiapp/complex/widgets/small/cus_circle_item.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 
 // ------------------------------------------------------

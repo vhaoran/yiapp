@@ -9,7 +9,7 @@ import 'api_base.dart';
 class ApiUser {
   //判断用户编码是否存在
   static Future<bool> userCodeExist(String userCode) async {
-    var url = "/yi/user/UserCodeExist";
+    var url = "/user/UserCodeExist";
     var data = {"user_code": userCode};
     return await ApiBase.postValue<bool>(url, data, enableJwt: false);
   }
