@@ -14,7 +14,7 @@ import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
 // usage ：免费测算
 // ------------------------------------------------------
 
-const int def_color = 0xFF80C041; // 当前页选项卡默认背景色
+const int def_color = 0xFFF0B36E; // 当前页选项卡默认背景色
 
 class FreeCalculate extends StatefulWidget {
   FreeCalculate({Key key}) : super(key: key);
@@ -27,11 +27,11 @@ class _FreeCalculateState extends State<FreeCalculate>
     with AutomaticKeepAliveClientMixin {
   // 热门推荐
   final List<Map> _populars = [
+    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": con_pair},
+    {"text": "生肖配对", "icon": 0xe6b1, "color": 0xFF78BA3B, "route": zodiac_pair},
+    {"text": "血型配对", "icon": 0xe656, "color": 0xFFDE524B, "route": blood_pair},
     {"text": "人体节律", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "姓名配对", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": con_pair},
-    {"text": "生肖配对", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "血型配对", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "手机号码", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "眼跳co吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "指纹吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},

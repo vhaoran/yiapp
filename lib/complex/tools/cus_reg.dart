@@ -27,6 +27,16 @@ class CusRegExp {
     return RegExp(r"^[A-Za-z]+$").hasMatch(str);
   }
 
+  // 大写字母
+  static bool upChar(String str) {
+    return RegExp("^[A-Z]").hasMatch(str);
+  }
+
+  // 小写字母
+  static bool lowerChar(String str) {
+    return RegExp("^[a-z]").hasMatch(str);
+  }
+
   // 汉字
   static bool chinese(String char) {
     return RegExp(r"[\u4e00-\u9fa5]").hasMatch(char);

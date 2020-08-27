@@ -4,6 +4,7 @@
 // usage ：自定义混合工具类
 // ------------------------------------------------------
 
+import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/model/user/userInfo.dart';
 
 class CusTool {
@@ -19,6 +20,14 @@ class CusTool {
       default:
         return "";
     }
+  }
+
+  /// 返回字符串中所有的大写字母
+  static String AZ(String str) {
+    List<String> l = str.split('').where((e) => CusRegExp.upChar(e)).toList();
+    String val = "";
+    l.forEach((e) => val += e);
+    return val;
   }
 }
 

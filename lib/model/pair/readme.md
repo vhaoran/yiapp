@@ -1,3 +1,5 @@
 ### 配对实体类
 
-- ConResult 星座配对
+- blood_result 血型
+- con_result 星座
+- zodiac_result 生肖

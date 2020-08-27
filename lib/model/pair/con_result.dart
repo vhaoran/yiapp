@@ -1,7 +1,7 @@
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/26 11:11
-// usage ：星座配对
+// usage ：星座配对结果
 // ------------------------------------------------------
 
 class ConResult {
@@ -23,13 +23,13 @@ class ConResult {
       this.stars});
 
   ConResult.fromJson(Map<String, dynamic> json) {
-    con_day = json['con_day'];
-    feel = json['feel'];
-    gem = json['gem'];
-    name = json['name'];
-    oath = json['oath'];
-    parse = json['parse'];
-    stars = json['stars'] != null ? List<String>.from(json['stars']) : [];
+    this.con_day = json['con_day'];
+    this.feel = json['feel'];
+    this.gem = json['gem'];
+    this.name = json['name'];
+    this.oath = json['oath'];
+    this.parse = json['parse'];
+    this.stars = json['stars'] != null ? List<String>.from(json['stars']) : [];
   }
 
   Map<String, dynamic> toJson() {

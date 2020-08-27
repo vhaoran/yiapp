@@ -7,23 +7,26 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // usage ：星座、生肖配通用的 dialog 回调
 // ------------------------------------------------------
 
-typedef FnPair = void Function(int value, int sex, String name);
+typedef FnPair = void Function(int sex, int select, String name);
 
 class PairDialog {
   final int sex;
+  final int groupValue;
   final List<String> l;
   final FnPair fnPair;
 
   PairDialog(
     BuildContext context, {
-    this.sex,
+    this.sex: 0,
+    this.groupValue: -1,
     this.l,
     this.fnPair,
   }) {
-    _selectCon(context);
+    _selectPair(context);
   }
 
-  void _selectCon(BuildContext context) {
+  /// 选择配对
+  void _selectPair(BuildContext context) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) {
@@ -38,7 +41,7 @@ class PairDialog {
                   children: List.generate(
                     l.length,
                     (i) => _conItem(
-                      value: i,
+                      select: i + 1,
                       name: "${l[i]}",
                       onTap: () => state(() {}),
                     ),
@@ -53,11 +56,11 @@ class PairDialog {
   }
 
   /// 单个星座组件
-  Widget _conItem({int value, String name, VoidCallback onTap}) {
+  Widget _conItem({int select, String name, VoidCallback onTap}) {
     return InkWell(
       onTap: () {
         if (fnPair != null) {
-          fnPair(value, sex, name);
+          fnPair(sex, select, name);
         }
       },
       child: Column(
@@ -68,11 +71,11 @@ class PairDialog {
               Text(name, style: TextStyle(fontSize: Adapt.px(30))),
               Spacer(),
               Radio(
-                value: value,
-                groupValue: 1,
+                value: select,
+                groupValue: groupValue,
                 onChanged: (value) {
                   if (fnPair != null) {
-                    fnPair(value, sex, name);
+                    fnPair(sex, select, name);
                   }
                 },
               ),

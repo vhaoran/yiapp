@@ -122,4 +122,22 @@ class YiData {
     "水瓶座 (01月20日-02月18日)",
     "双鱼座 (02月19日-03月20日) "
   ];
+
+  /// 生肖
+  static const List<String> zodiacs = [
+    "鼠",
+    "牛",
+    "虎",
+    "兔",
+    "龙",
+    "蛇",
+    "马",
+    "羊",
+    "猴",
+    "鸡",
+    "狗",
+    "猪"
+  ];
+
+  static const List<String> bloods = ["A型血", "B型血", "O型血", "AB型血"];
 }
