@@ -119,7 +119,7 @@ class _ConPairPageState extends State<ConPairPage> {
     print(">>>nan:$_maleCon nv $_femaleCon");
     try {
       var m = {"male_con": _maleCon, "female_con": _femaleCon};
-      var res = await ApiPair.conMatch(m);
+      var res = await ApiFree.conMatch(m);
       print(">>>查询星座配对结果:${res.toJson()}");
       if (res != null) {
         CusRoutes.push(context, ConResPage(res: res)).then((value) {
