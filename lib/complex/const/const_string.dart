@@ -13,6 +13,7 @@ const String kv_jwt = "/login/jwt"; // 本地存储jwt的键
 const String con_pair = "con_pair"; // 星座配对
 const String zodiac_pair = "zodiac_pair"; // 生肖配对
 const String blood_pair = "blood_pair"; // 血型配对
+const String birth_pair = "birth_pair"; // 生日配对
 
 const String jwt_131 = "test/131"; // jwt = 131;
 const String ali_font = "AliIcon"; // 阿里图标字体

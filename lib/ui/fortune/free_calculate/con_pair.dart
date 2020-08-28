@@ -13,7 +13,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_pair.dart';
-import 'package:yiapp/ui/fortune/free_calculate/constellation/con_res.dart';
+import 'con_res.dart';
 
 // ------------------------------------------------------
 // author：suxing

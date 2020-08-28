@@ -1,3 +1,4 @@
+import 'package:yiapp/model/pair/birth_result.dart';
 import 'package:yiapp/model/pair/blood_result.dart';
 import 'package:yiapp/model/pair/con_result.dart';
 import 'package:yiapp/model/pair/zodiac_result.dart';
@@ -6,10 +7,10 @@ import 'api_base.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/26 11:29
-// usage ：配对 (星座、生肖、血型、生日)
+// usage ：免费功能的路由，如配对 (星座、生肖)，周公解梦等
 // ------------------------------------------------------
 
-class ApiPair {
+class ApiFree {
   /// 星座配对
   static Future<ConResult> conMatch(Map<String, dynamic> m) async {
     var url = "/cms/ConMatch";
@@ -29,5 +30,12 @@ class ApiPair {
     var url = "/cms/BloodMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => BloodResult.fromJson(m));
+  }
+
+  /// 生日配对
+  static Future<BirthResult> shengRiMatch(Map<String, dynamic> m) async {
+    var url = "/cms/ShengRiMatch";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => BirthResult.fromJson(m));
   }
 }

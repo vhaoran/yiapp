@@ -5,7 +5,6 @@ import 'package:yiapp/complex/const/const_calendar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_num.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
@@ -15,8 +14,8 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_pair.dart';
-import 'package:yiapp/ui/fortune/free_calculate/blood/blood_res.dart';
-import 'package:yiapp/ui/fortune/free_calculate/constellation/con_res.dart';
+
+import 'blood_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
