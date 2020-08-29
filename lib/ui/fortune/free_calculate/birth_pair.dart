@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/cus_time_picker.dart';
+import 'package:yiapp/complex/tools/cus_time.dart';
+import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
@@ -80,15 +81,17 @@ class _BirthPairPageState extends State<BirthPairPage> {
 
   /// 选择生日
   void _birthday() {
-    CusTimePicker(
+    TimePicker(
       context,
-      pickMode: PickerMode.date,
+      pickMode: PickerMode.full,
       onConfirm: _date,
-      showTitle: false,
+      resIsString: true,
+      padLeft: false,
+      start: DateTime(2015, 8, 15),
     );
   }
 
-  void _date(DateTime dateTime) {
-    print(">>>返回的时间是：$dateTime");
+  void _date(dynamic date) {
+    print(">>>返回的时间是：${date}");
   }
 }

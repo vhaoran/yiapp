@@ -11,7 +11,7 @@ import 'package:yiapp/complex/const/const_calendar.dart';
 /// 转换时间格式 2020-06-06 11:18:24 为指定时间格式
 class CusTime {
   /// 获取每个月的天数
-  static int daysInMonth(DateTime date) {
+  static int dayInMonth(DateTime date) {
     return DateTime(date.year, date.month + 1, 0).day;
   }
 
@@ -73,10 +73,27 @@ class CusTime {
     return str;
   }
 
-  /// 小于10的月日前面补0
+  /// 小于10的月日前面补0 可以用 num.padLeft(2,"0")代替，不足两位补0
   static String _zero(int value) {
     String str = value < 10 ? "0$value" : "$value";
     return str;
+  }
+
+  /// 如果指定了 start end ，这两项来决定在 start 之前和 end 之后的时间不在显示
+  static bool isRange(DateTime date, DateTime start, DateTime end) {
+    if (start == null && end == null) return true;
+    // isAtSameMomentAs 同传入的DateTime进行比较，如果二者表示的时间在同一时刻，则返回true
+    if (start == null && end != null) {
+      // isBefore 同传入的DateTime进行比较，如果标识的时间在传入实例之前，则返回true
+      return date.isBefore(end) || date.isAtSameMomentAs(end);
+    }
+    if (start != null && end == null) {
+      // 同传入的DateTime进行比较，如果标识的时间在传入实例之后，则返回true
+      return date.isAfter(start) || date.isAtSameMomentAs(start);
+    }
+    return (date.isAfter(start) && date.isBefore(end)) ||
+        date.isAtSameMomentAs(start) ||
+        date.isAtSameMomentAs(end);
   }
 }
 

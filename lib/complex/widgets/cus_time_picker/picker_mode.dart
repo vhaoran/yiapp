@@ -7,6 +7,7 @@
 enum PickerMode {
   year, // 2020年
   year_month, // 2020年 8月
+  month_day, // 8月 28日
   date, // 2020年 8月 28日
   hour_minute, // 16时 21分
   full, // 2020年 8月 28日 16时 21分

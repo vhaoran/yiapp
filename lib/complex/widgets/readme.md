@@ -1,6 +1,6 @@
 ### 自定义组件
 
-- cus_time_picker 自定义时间选择组件
+- cus_time_picker 自定义日期选择组件
 - flutter 二次封装flutter系统组件
 - master 关于大师中可复用的组件
 - small 简单组件的封装
