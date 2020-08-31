@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_time.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
 import 'package:yiapp/complex/widgets/small/cus_select.dart';
+import 'package:yiapp/service/api/api_free.dart';
+import 'package:yiapp/ui/fortune/free_calculate/birth_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -23,10 +27,10 @@ class BirthPairPage extends StatefulWidget {
 }
 
 class _BirthPairPageState extends State<BirthPairPage> {
-  String _male_month = ""; // 男生-月
-  String _male_day = ""; // 男生-日
-  String _female_month = ""; // 女生-月
-  String _female_day = ""; // 女生-日
+  int _male_month = 0; // 男生-月
+  int _male_day = 0; // 男生-日
+  int _female_month = 0; // 女生-月
+  int _female_day = 0; // 女生-日
   String _maleStr = ""; // 显示男生生日
   String _femaleStr = ""; // 显示女生生日
 
@@ -61,7 +65,15 @@ class _BirthPairPageState extends State<BirthPairPage> {
               CusSelect(
                 title: "男生生日：",
                 subtitle: _maleStr.isEmpty ? "请选择生日" : "$_maleStr",
-                onTap: _birthday,
+                onTap: () => TimePicker(
+                  context,
+                  pickMode: PickerMode.month_day,
+                  onConfirm: (date) => setState(() {
+                    _male_month = date.first;
+                    _male_day = date[1];
+                    _maleStr = "$_male_month月$_male_day日";
+                  }),
+                ),
               ),
               Padding(
                 padding:
@@ -69,29 +81,48 @@ class _BirthPairPageState extends State<BirthPairPage> {
                 child: CusSelect(
                   title: "女生生日：",
                   subtitle: _femaleStr.isEmpty ? "请选择生日" : "$_femaleStr",
-                  onTap: () {},
+                  onTap: () => TimePicker(
+                    context,
+                    pickMode: PickerMode.month_day,
+                    onConfirm: (date) => setState(() {
+                      _female_month = date.first;
+                      _female_day = date[1];
+                      _femaleStr = "$_female_month月$_female_day日";
+                    }),
+                  ),
                 ),
               )
             ],
           ),
         ),
+        CusRaisedBtn(text: "开始测算", onPressed: __doPair),
       ],
     );
   }
 
-  /// 选择生日
-  void _birthday() {
-    TimePicker(
-      context,
-      pickMode: PickerMode.full,
-      onConfirm: _date,
-      resIsString: true,
-      padLeft: false,
-      start: DateTime(2015, 8, 15),
-    );
-  }
-
-  void _date(dynamic date) {
-    print(">>>返回的时间是：${date}");
+  void __doPair() async {
+    if ((_male_month == 0) || _female_month == 0) {
+      CusToast.toast(context, text: "未选择所有生日");
+      return;
+    }
+    var m = {
+      "male_month": _male_month,
+      "male_day": _male_day,
+      "female_month": _female_month,
+      "female_day": _female_day,
+    };
+    try {
+      var res = await ApiFree.shengRiMatch(m);
+      print(">>>生日配对结果：${res.toJson()}");
+      if (res != null) {
+        CusRoutes.push(context, BirthResPage(res: res)).then((value) {
+          _male_month = _male_day = _female_month = _female_day = 0;
+          _maleStr = _femaleStr = "";
+          setState(() {});
+        });
+      }
+    } catch (e) {
+      print("<<<生日配对出现异常：$e");
+    }
   }
 }

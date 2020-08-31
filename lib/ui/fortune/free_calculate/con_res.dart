@@ -18,7 +18,7 @@ class ConResPage extends StatelessWidget {
 
   ConResPage({this.res, Key key}) : super(key: key);
 
-  List<Map> _parses;
+  List<Map> _parses= [];
 
   /// 设置解析后的数据
   void _resData() {

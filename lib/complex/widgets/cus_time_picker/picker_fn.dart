@@ -9,7 +9,7 @@ typedef String FnSelectStr(int index);
 
 /// 根据模式返回 String 或者 int[] 类型
 dynamic dateRes(List<int> l, PickerMode mode, bool isString) {
-  dynamic ls;
+  dynamic ls = isString ? String : List<int>();
   switch (mode) {
     case PickerMode.year:
       isString ? ls = "${l.first}年" : ls.add(l.first);

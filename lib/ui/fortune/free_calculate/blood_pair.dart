@@ -13,7 +13,7 @@ import 'package:yiapp/complex/widgets/small/cus_select.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/service/api/api_pair.dart';
+import 'package:yiapp/service/api/api_free.dart';
 
 import 'blood_res.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/api/api_pair.dart';
+import 'package:yiapp/service/api/api_free.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -51,16 +51,28 @@ void main() {
     ApiBase.jwt = jwt_131;
     // 1月1日男+1月2日女
     var m = {
-      "male_month": "1",
-      "male_day": "1",
-      "female_month": "1",
-      "female_day": "2"
+      "male_month": 1,
+      "male_day": 1,
+      "female_month": 1,
+      "female_day": 2
     };
     try {
       var res = await ApiFree.shengRiMatch(m);
       print(">>>测试---生日配对结果：${res.toJson()}");
     } catch (e) {
       print("<<<测试---生日配对出现异常：$e");
+    }
+  });
+
+  // 05 ------------ 黄大仙灵签 ------------
+  test("黄大仙灵签", () async {
+    ApiBase.jwt = jwt_131;
+    var m = {"num": 100};
+    try {
+      var res = await ApiFree.daXianDraw(m);
+      print(">>>测试---黄大仙灵签结果：${res.toJson()}");
+    } catch (e) {
+      print("<<<测试---黄大仙灵签出现异常：$e");
     }
   });
 }

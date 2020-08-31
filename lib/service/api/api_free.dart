@@ -1,3 +1,4 @@
+import 'package:yiapp/model/draw/daxian_result.dart';
 import 'package:yiapp/model/pair/birth_result.dart';
 import 'package:yiapp/model/pair/blood_result.dart';
 import 'package:yiapp/model/pair/con_result.dart';
@@ -37,5 +38,12 @@ class ApiFree {
     var url = "/cms/ShengRiMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => BirthResult.fromJson(m));
+  }
+
+  /// 黄大仙灵签
+  static Future<DaXianResult> daXianDraw(Map<String, dynamic> m) async {
+    var url = "/cms/DaXianDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => DaXianResult.fromJson(m));
   }
 }

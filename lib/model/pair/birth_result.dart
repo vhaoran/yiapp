@@ -5,10 +5,10 @@
 // ------------------------------------------------------
 
 class BirthResult {
-  String name;
-  String oath;
-  List<String> jiRi;
-  List<String> result;
+  String name; // 类如 1月1日出生的男的和1月2日出生的女的配吗？
+  String oath; // 爱情誓言
+  List<String> jiRi; // 各种吉日
+  List<String> result; // 配对结果
 
   BirthResult({this.name, this.oath, this.jiRi, this.result});
 

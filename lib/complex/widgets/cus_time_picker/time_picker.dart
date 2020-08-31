@@ -21,7 +21,7 @@ class TimePicker {
   final double offset; // 选中日期的偏移量
   final double squeeze; // 挤压系数，值越大，日期间的间隔越小
   final bool showHeader; // 是否显示顶部信息（确定，取消按钮）
-  final bool padLeft; // 月、日、时、分不满足2位数的是否在前面补0
+  final bool padLeft; // 月、日、时、分,不满足2位数的是否在前面补0
   final bool resIsString; // 返回的结果是否为字符串，默认false,返回int数组
   final Color backgroundColor; // 背景色
   final Color color; // 字体颜色

@@ -46,6 +46,8 @@ dependencies:
   flutter_swiper: ^1.1.6
   # 公历黄历吉凶星座
   secret: ^0.1.1
+  # 按钮、文字抖动效果
+  shake_animation_widget: ^1.0.0
   ###### suxing #####
 
 dev_dependencies:

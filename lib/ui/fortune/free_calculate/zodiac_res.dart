@@ -18,8 +18,8 @@ class ZodiacResPage extends StatelessWidget {
 
   ZodiacResPage({this.res, Key key}) : super(key: key);
 
-  List<Map> _parses;
-  List<Map> _titles; // 标题 如 属兔的男的和属鼠的女的配吗？
+  List<Map> _parses = [];
+  List<Map> _titles = []; // 标题 如 属兔的男的和属鼠的女的配吗？
 
   /// 设置解析后的数据
   void _resData() {
