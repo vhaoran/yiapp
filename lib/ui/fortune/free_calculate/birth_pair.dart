@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -67,7 +68,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
                 subtitle: _maleStr.isEmpty ? "请选择生日" : "$_maleStr",
                 onTap: () => TimePicker(
                   context,
-                  pickMode: PickerMode.month_day,
+                  pickMode: PickerMode.date,
                   onConfirm: (date) => setState(() {
                     _male_month = date.first;
                     _male_day = date[1];

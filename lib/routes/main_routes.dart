@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/demo/datetimed_demo.dart';
 import 'package:yiapp/complex/temp_page.dart';
 import 'package:yiapp/ui/fortune/free_calculate/birth_pair.dart';
 import 'package:yiapp/ui/fortune/free_calculate/blood_pair.dart';
@@ -16,4 +17,5 @@ final Map<String, WidgetBuilder> mainRoutes = {
   blood_pair: (BuildContext context) => BloodPairPage(), // 血型配对
   birth_pair: (BuildContext context) => BirthPairPage(), // 生日配对
   com_draw: (BuildContext context) => ComDrawPage(), // 共用的免费抽灵签页面
+  "date_demo": (BuildContext context) =>DateTimeDemo(), // 阴阳历测试
 };

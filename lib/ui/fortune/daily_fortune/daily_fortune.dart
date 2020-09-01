@@ -26,7 +26,7 @@ class DailyFortune extends StatefulWidget {
 }
 
 class _DailyFortuneState extends State<DailyFortune> {
-  DateTime _cusTime; // 当前时间
+  DateTime _now; // 当前时间
   Lunar _lunar;
   final int _maxCount = 8; // 最多显示宜、忌项的个数
   // 本地资源轮播
@@ -65,8 +65,8 @@ class _DailyFortuneState extends State<DailyFortune> {
 
   @override
   void initState() {
-    _cusTime = DateTime.now();
-    _lunar = Lunar(_cusTime);
+    _now = DateTime.now();
+    _lunar = Lunar(_now);
     super.initState();
   }
 
@@ -167,7 +167,7 @@ class _DailyFortuneState extends State<DailyFortune> {
             Container(
               alignment: Alignment.center,
               child: Text(
-                "${CusTime.ymd(_cusTime.toString())} ${CusTime.dayEarthMd()}",
+                "${CusTime.ymd(_now.toString())} ${CusTime.dayEarthMd()}",
                 style: TextStyle(color: t_primary, fontSize: Adapt.px(32)),
               ),
             ),

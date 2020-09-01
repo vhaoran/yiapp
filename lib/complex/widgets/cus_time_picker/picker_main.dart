@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_template.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_header.dart';
@@ -212,10 +213,15 @@ class _PickerViewState extends State<PickerView> {
       DateTime end = widget.end == null
           ? null
           : DateTime(widget.end.year, widget.end.month);
+//      String resMonth = CusTime.isRange(nowDate, start, end)
+//          ? widget.padLeft
+//              ? "${monthIndex.toString().padLeft(2, "0")}月"
+//              : "$monthIndex月"
+//          : null;
       String resMonth = CusTime.isRange(nowDate, start, end)
           ? widget.padLeft
               ? "${monthIndex.toString().padLeft(2, "0")}月"
-              : "$monthIndex月"
+              : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, monthIndex)).monthInChinese}月"
           : null;
       return resMonth;
     }
@@ -235,10 +241,15 @@ class _PickerViewState extends State<PickerView> {
       DateTime end = widget.end == null
           ? null
           : DateTime(widget.end.year, widget.end.month, widget.end.day);
+//      String resDay = CusTime.isRange(_nowDate, start, end)
+//          ? widget.padLeft
+//              ? "${dayIndex.toString().padLeft(2, "0")}日"
+//              : "$dayIndex日"
+//          : null;
       String resDay = CusTime.isRange(_nowDate, start, end)
           ? widget.padLeft
               ? "${dayIndex.toString().padLeft(2, "0")}日"
-              : "$dayIndex日"
+              : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, _monthIndex + 1, dayIndex)).dayInChinese}"
           : null;
       return resDay;
     }
