@@ -122,6 +122,7 @@ class CusDialog {
       String textAgree,
       Color titleCo,
       Color agreeCo,
+      Widget child,
       VoidCallback onApproval}) {
     _ComDialog(
       context,
@@ -150,6 +151,7 @@ class CusDialog {
                 ),
               ),
             ],
+            if (child != null) child,
           ],
         ),
       ),

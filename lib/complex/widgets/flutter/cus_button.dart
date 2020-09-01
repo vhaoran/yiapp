@@ -15,7 +15,7 @@ class CusRaisedBtn extends StatelessWidget {
   final double pdVer; // 垂直内边距
   final double fontSize;
   final double borderRadius; // 四周圆弧大小
-  final double minWidth; // 按钮宽度,默认占满屏幕
+  final double minWidth; // 按钮宽度
   final double height; // 按钮高度
   final Color backgroundColor; // 背景色
   final Color textColor; // 文字颜色

@@ -1,4 +1,10 @@
+import 'package:yiapp/model/draw/chegong_result.dart';
 import 'package:yiapp/model/draw/daxian_result.dart';
+import 'package:yiapp/model/draw/guandi_result.dart';
+import 'package:yiapp/model/draw/guanyin_result.dart';
+import 'package:yiapp/model/draw/lvzu_result.dart';
+import 'package:yiapp/model/draw/mazu_result.dart';
+import 'package:yiapp/model/draw/yuelao_result.dart';
 import 'package:yiapp/model/pair/birth_result.dart';
 import 'package:yiapp/model/pair/blood_result.dart';
 import 'package:yiapp/model/pair/con_result.dart';
@@ -45,5 +51,47 @@ class ApiFree {
     var url = "/cms/DaXianDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => DaXianResult.fromJson(m));
+  }
+
+  /// 关帝灵签
+  static Future<GuanDiResult> guanDiDraw(Map<String, dynamic> m) async {
+    var url = "/cms/GuanDiDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => GuanDiResult.fromJson(m));
+  }
+
+  /// 观音灵签
+  static Future<GuanYinResult> guanYinDraw(Map<String, dynamic> m) async {
+    var url = "/cms/GuanYinDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => GuanYinResult.fromJson(m));
+  }
+
+  /// 妈祖灵签
+  static Future<MaZuResult> maZuDraw(Map<String, dynamic> m) async {
+    var url = "/cms/MaZuDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => MaZuResult.fromJson(m));
+  }
+
+  /// 月老灵签
+  static Future<YueLaoResult> yueLaoDraw(Map<String, dynamic> m) async {
+    var url = "/cms/YueLaoDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => YueLaoResult.fromJson(m));
+  }
+
+  /// 车公灵签
+  static Future<CheGongResult> cheGongDraw(Map<String, dynamic> m) async {
+    var url = "/cms/CheGongDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => CheGongResult.fromJson(m));
+  }
+
+  /// 吕祖灵签
+  static Future<LvZuResult> lvZuDraw(Map<String, dynamic> m) async {
+    var url = "/cms/LvZuDraw";
+    var data = m;
+    return await ApiBase.postObj(url, data, (m) => LvZuResult.fromJson(m));
   }
 }

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:secret/model/Guandi.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/cus_parse.dart';
+import 'package:yiapp/model/draw/chegong_result.dart';
 import 'package:yiapp/model/draw/daxian_result.dart';
+import 'package:yiapp/model/draw/guandi_result.dart';
+import 'package:yiapp/model/draw/guanyin_result.dart';
+import 'package:yiapp/model/draw/lvzu_result.dart';
+import 'package:yiapp/model/draw/mazu_result.dart';
+import 'package:yiapp/model/draw/yuelao_result.dart';
 import 'package:yiapp/ui/fortune/free_calculate/draw_parse.dart';
 
 // ------------------------------------------------------
@@ -49,11 +56,10 @@ class ComDrawResPage extends StatelessWidget {
             (e) => ParseContent(
               title: e['title'],
               contents: e['contents'],
-              icon: e['icon'],
             ),
           ),
           // 重测按钮
-          CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context))
+          CusRaisedBtn(text: "再抽一签", onPressed: () => Navigator.pop(context))
         ],
       ),
       backgroundColor: primary,
@@ -62,10 +68,34 @@ class ComDrawResPage extends StatelessWidget {
 
   /// 选择灵签类型
   void _drawType() {
+    _name = result.name.substring(5);
+    // 大仙
     if (result is DaXianResult) {
-      result == DaXianResult;
-      _name = result.name.substring(5);
+      _parses = DrawParse.daXian(result);
     }
-    _parses = DrawParse.daXian(result);
+    // 关公
+    else if (result is GuanDiResult) {
+      _parses = DrawParse.guanDi(result);
+    }
+    // 观音
+    else if (result is GuanYinResult) {
+      _parses = DrawParse.guanYin(result);
+    }
+    // 妈祖
+    else if (result is MaZuResult) {
+      _parses = DrawParse.maZu(result);
+    }
+    // 月老
+    else if (result is YueLaoResult) {
+      _parses = DrawParse.yueLao(result);
+    }
+    // 车公
+    else if (result is CheGongResult) {
+      _parses = DrawParse.cheGong(result);
+    }
+    // 吕祖
+    else if (result is LvZuResult) {
+      _parses = DrawParse.lvZu(result);
+    }
   }
 }
