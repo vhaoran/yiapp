@@ -21,6 +21,7 @@ class TimePicker {
   final double offset; // 选中日期的偏移量
   final double squeeze; // 挤压系数，值越大，日期间的间隔越小
   final bool showHeader; // 是否显示顶部信息（确定，取消按钮）
+  final bool showLunar; // 是否显示阴历
   final bool padLeft; // 月、日、时、分,不满足2位数的是否在前面补0
   final bool resIsString; // 返回的结果是否为字符串，默认false,返回int数组
   final Color backgroundColor; // 背景色
@@ -42,6 +43,7 @@ class TimePicker {
     this.offset: 0,
     this.squeeze: 1,
     this.showHeader: true,
+    this.showLunar: false,
     this.padLeft: true,
     this.resIsString: false,
     this.backgroundColor: t_gray,
@@ -76,6 +78,7 @@ class TimePicker {
           offset: offset,
           squeeze: squeeze,
           showHeader: showHeader,
+          showLunar: showLunar,
           resIsString: resIsString,
           padLeft: padLeft,
           backgroundColor: backgroundColor,

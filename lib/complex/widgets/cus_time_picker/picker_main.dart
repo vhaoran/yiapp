@@ -23,6 +23,7 @@ class PickerView extends StatefulWidget {
   final double offset;
   final double squeeze;
   final bool showHeader;
+  final bool showLunar;
   final bool resIsString;
   final bool padLeft;
   final Color backgroundColor;
@@ -43,6 +44,7 @@ class PickerView extends StatefulWidget {
     this.offset,
     this.squeeze,
     this.showHeader,
+    this.showLunar,
     this.resIsString,
     this.padLeft,
     this.backgroundColor,
@@ -66,6 +68,7 @@ class _PickerViewState extends State<PickerView> {
   final DateTime _now = DateTime.now();
   DateTime _lastDt; // 上一次回调的时间
   bool _isScroll = false; // 如果是手动滚动，不要触发onChange
+  bool _isLunar = false; // 是否阴历，默认false，
   Timer _timer; // 定时器
 
   @override
@@ -104,7 +107,12 @@ class _PickerViewState extends State<PickerView> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (widget.showHeader) PickerHeader(onFirm: _onFirm),
+        if (widget.showHeader)
+          PickerHeader(
+            onFirm: _onFirm,
+            showLunar: widget.showLunar,
+            selectLunar: (b) => setState(() => _isLunar = b),
+          ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -213,16 +221,20 @@ class _PickerViewState extends State<PickerView> {
       DateTime end = widget.end == null
           ? null
           : DateTime(widget.end.year, widget.end.month);
-//      String resMonth = CusTime.isRange(nowDate, start, end)
-//          ? widget.padLeft
-//              ? "${monthIndex.toString().padLeft(2, "0")}月"
-//              : "$monthIndex月"
-//          : null;
-      String resMonth = CusTime.isRange(nowDate, start, end)
-          ? widget.padLeft
-              ? "${monthIndex.toString().padLeft(2, "0")}月"
-              : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, monthIndex)).monthInChinese}月"
-          : null;
+      String resMonth;
+      if (_isLunar) {
+        resMonth = CusTime.isRange(nowDate, start, end)
+            ? widget.padLeft
+                ? "${monthIndex.toString().padLeft(2, "0")}月"
+                : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, monthIndex)).monthInChinese}月"
+            : null;
+      } else {
+        resMonth = CusTime.isRange(nowDate, start, end)
+            ? widget.padLeft
+                ? "${monthIndex.toString().padLeft(2, "0")}月"
+                : "$monthIndex月"
+            : null;
+      }
       return resMonth;
     }
     return null;
@@ -241,16 +253,20 @@ class _PickerViewState extends State<PickerView> {
       DateTime end = widget.end == null
           ? null
           : DateTime(widget.end.year, widget.end.month, widget.end.day);
-//      String resDay = CusTime.isRange(_nowDate, start, end)
-//          ? widget.padLeft
-//              ? "${dayIndex.toString().padLeft(2, "0")}日"
-//              : "$dayIndex日"
-//          : null;
-      String resDay = CusTime.isRange(_nowDate, start, end)
-          ? widget.padLeft
-              ? "${dayIndex.toString().padLeft(2, "0")}日"
-              : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, _monthIndex + 1, dayIndex)).dayInChinese}"
-          : null;
+      String resDay;
+      if (_isLunar) {
+        resDay = CusTime.isRange(_nowDate, start, end)
+            ? widget.padLeft
+                ? "${dayIndex.toString().padLeft(2, "0")}日"
+                : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, _monthIndex + 1, dayIndex)).dayInChinese}"
+            : null;
+      } else {
+        resDay = CusTime.isRange(_nowDate, start, end)
+            ? widget.padLeft
+                ? "${dayIndex.toString().padLeft(2, "0")}日"
+                : "$dayIndex日"
+            : null;
+      }
       return resDay;
     }
     return null;

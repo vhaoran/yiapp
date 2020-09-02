@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 
 // ------------------------------------------------------
@@ -13,11 +14,11 @@ class PickerHeader extends StatelessWidget {
   final Widget midChild; // 中间可扩展的组件
   final bool showLunar; // 显示阳历/阴历
   final VoidCallback onFirm; // 确认后的事件
-  final VoidCallback selectLunar; // 点击阴历的事件
+  final FnBool selectLunar; // 点击阴历的事件
 
   const PickerHeader({
     this.midChild,
-    this.showLunar: true,
+    this.showLunar: false,
     @required this.onFirm,
     this.selectLunar,
     Key key,
@@ -43,11 +44,19 @@ class PickerHeader extends StatelessWidget {
                 children: [
                   CusRaisedBtn(
                     text: "阳历",
-                    onPressed: () {},
+                    onPressed: () {
+                      if (selectLunar != null) {
+                        selectLunar(false);
+                      }
+                    },
                   ),
                   CusRaisedBtn(
                     text: "阴历",
-                    onPressed: () {},
+                    onPressed: () {
+                      if (selectLunar != null) {
+                        selectLunar(true);
+                      }
+                    },
                   ),
                 ],
               ),

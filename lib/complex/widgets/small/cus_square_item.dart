@@ -19,6 +19,7 @@ class CusSquareItem extends StatelessWidget {
   final double borderRadius; // 图片圆角的大小
   final Color color; // 文字颜色
   final VoidCallback onTap;
+
   CusSquareItem({
     this.icon: 0xe615,
     this.bgColor: 0xFF74C1FA,

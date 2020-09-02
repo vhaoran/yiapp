@@ -19,6 +19,8 @@ import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 // usage ：每日运势
 // ------------------------------------------------------
 
+const int tmp_color = 0xFFF0B36E; // 当前页选项卡默认背景色
+
 class DailyFortune extends StatefulWidget {
   DailyFortune({Key key}) : super(key: key);
   @override
@@ -39,16 +41,16 @@ class _DailyFortuneState extends State<DailyFortune> {
 
   // 算命功能区分类
   final List<Map> _assorts = [
-    {"text": "八字精批", "path": "plate.png", "route": "temp"},
-    {"text": "八字财运", "path": "plate.png", "route": "temp"},
-    {"text": "八字合婚", "path": "plate.png", "route": "temp"},
-    {"text": "八字事业", "path": "plate.png", "route": "temp"},
-    {"text": "数字测试", "path": "plate.png", "route": "temp"},
-    {"text": "桃花运势", "path": "plate.png", "route": "temp"},
-    {"text": "姓名测试", "path": "plate.png", "route": "temp"},
-    {"text": "学业测试", "path": "plate.png", "route": "temp"},
-    {"text": "婚姻测试", "path": "plate.png", "route": "temp"},
-    {"text": "2020年运", "path": "plate.png", "route": "temp"}
+    {"text": "八字精批", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": "temp"},
+    {"text": "八字合婚", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "八字事业", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "数字测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "桃花运势", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "姓名测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "学业测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "婚姻测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
+    {"text": "2020年运", "icon": 0xe615, "color": tmp_color, "route": "temp"}
   ];
 
   // 好物列表
@@ -145,7 +147,8 @@ class _DailyFortuneState extends State<DailyFortune> {
             Map m = _assorts[i];
             return CusCircleItem(
               text: m['text'],
-              path: "assets/images/${m['path']}",
+              icon: m['icon'],
+              bgColor: m['color'],
               onTap: () => CusRoutes.pushNamed(context, m['route'],
                   arguments: m['text']),
             );

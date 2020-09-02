@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 
 // ------------------------------------------------------
@@ -9,21 +10,23 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // ------------------------------------------------------
 
 class CusCircleItem extends StatelessWidget {
-  final String path; // 图片路径
+  final int icon; // 图标
   final String text; // 文字描述
   final double height; // 图片高度
   final double fontSize; // 文字大小
   final double top; // 文字距离图片的距离
   final Color color; // 文字颜色
+  final int bgColor; // 图标颜色
   final VoidCallback onTap;
 
   CusCircleItem({
-    this.path: "assets/images/plate.png",
+    this.icon: 0xe615,
     this.text: "默认文字",
     this.height: 90,
     this.fontSize: 24,
     this.top: 12,
     this.color: t_gray,
+    this.bgColor: 0xFFF0B36E,
     this.onTap,
     Key key,
   }) : super(key: key);
@@ -35,9 +38,15 @@ class CusCircleItem extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ClipOval(
-            child: SizedBox(
+            child: Container(
               height: Adapt.px(height),
-              child: Image.asset(path, fit: BoxFit.cover),
+              width: Adapt.px(height),
+              color: Color(bgColor),
+              child: Icon(
+                IconData(icon, fontFamily: ali_font),
+                size: Adapt.px(80),
+                color: Colors.white,
+              ),
             ),
           ),
           Padding(

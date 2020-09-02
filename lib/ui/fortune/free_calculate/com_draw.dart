@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shake_animation_widget/shake_animation_widget.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_math.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/service/api/api_free.dart';
@@ -65,8 +65,8 @@ class _ComDrawPageState extends State<ComDrawPage> {
                     _aniCtrl.start(shakeCount: 1);
                     await Future.delayed(Duration(milliseconds: 1000)).then(
                       (value) {
-                        int num = CusMath.random(mod: _mod());
-                        String tip = CusMath.numToChinese(num);
+                        int num = YiTool.draw(mod: _mod());
+                        String tip = YiTool.numToChinese(num);
                         CusDialog.tip(
                           context,
                           child: Image.asset(path, scale: 4),
