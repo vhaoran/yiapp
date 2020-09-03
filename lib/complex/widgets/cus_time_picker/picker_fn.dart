@@ -1,14 +1,14 @@
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 
 /// 值发生变化时的回调
-typedef FnDateChanged(dynamic time);
-//typedef FnDateChanged(DateTime time);
+//typedef FnDateChanged(time);
+typedef FnDateChanged(DateTime time);
 
 /// 根据选择日期的索引显示时间
 typedef String FnSelectStr(int index);
 
 /// 根据模式返回 String 或者 int[] 类型
-dynamic dateRes(List<int> l, PickerMode mode, bool isString) {
+dateRes(List<int> l, PickerMode mode, bool isString) {
   dynamic ls = isString ? String : List<int>();
   switch (mode) {
     case PickerMode.year:

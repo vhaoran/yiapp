@@ -15,6 +15,7 @@ const String zodiac_pair = "zodiac_pair"; // 生肖配对
 const String blood_pair = "blood_pair"; // 血型配对
 const String birth_pair = "birth_pair"; // 生日配对
 const String com_draw = "com_draw"; // 共用的免费抽灵签页面
+const String liu_yao = "liu_yao"; // 六爻排盘
 
 const String jwt_131 = "test/131"; // jwt = 131;
 const String ali_font = "AliIcon"; // 阿里图标字体

@@ -91,14 +91,17 @@ class _PickerViewState extends State<PickerView> {
 
   /// 点击确认后的回调
   void _onFirm() {
-    List<int> l = [
-      _now.year + _yearIndex,
-      _monthIndex + 1,
-      _dayIndex + 1,
-      _hourIndex,
-      _minuteIndex
-    ];
-    widget.onConfirm(dateRes(l, widget.pickMode, widget.resIsString));
+//    List<int> l = [
+//      _now.year + _yearIndex,
+//      _monthIndex + 1,
+//      _dayIndex + 1,
+//      _hourIndex,
+//      _minuteIndex
+//    ];
+    DateTime dt = DateTime(_now.year + _yearIndex, _monthIndex + 1,
+        _dayIndex + 1, _hourIndex, _minuteIndex);
+    widget.onConfirm(dt);
+//    widget.onConfirm(dateRes(l, widget.pickMode, widget.resIsString));
     Navigator.pop(context);
   }
 
@@ -334,8 +337,8 @@ class _PickerViewState extends State<PickerView> {
     _timer = Timer(Duration(milliseconds: 5), () {
       if (_lastDt != date && _dayIndex < day && !_isScroll) {
         _lastDt = date;
-//        widget.onChange(date);
-        widget.onChange(l);
+        widget.onChange(date);
+//        widget.onChange(l);
       }
     });
   }

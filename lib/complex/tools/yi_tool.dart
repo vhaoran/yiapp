@@ -17,8 +17,14 @@ class YiTool {
     return res;
   }
 
-  /// 返回六爻数据
-  static int liuYao() => DateTime.now().microsecond % 4;
+  // 返回类如 2020年09月03日 14：08
+  static String fullDate(DateTime date) {
+    String month = "${date.month}".padLeft(2, "0");
+    String day = "${date.day}".padLeft(2, "0");
+    String hour = "${date.hour}".padLeft(2, "0");
+    String minute = "${date.minute}".padLeft(2, "0");
+    return "${date.year}年$month月$day日 $hour:$minute";
+  }
 
   /// 根据数字，转换为对应的中文，如 79 to 七十九，支持三位数以内的
   static String numToChinese(int num) {

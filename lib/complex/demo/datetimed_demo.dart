@@ -39,28 +39,21 @@ class _DateState extends State<DateTimeDemo> {
           backgroundColor: Colors.green,
           text: "测试阴历农历",
           onPressed: () {
-//            print(">>>${Lunar.fromDate(DateTime(2020, 8, 31))}");
             TimePicker(
               context,
               pickMode: PickerMode.date,
               padLeft: false,
               showLunar: true,
               onConfirm: (date) => setState(() {
-                int year = date.first;
-                int month = date[1];
-                int day = date[2];
+                int year = date.year;
+                int month = date.month;
+                int day = date.day;
                 print(">>>选择的阳历日期是：$year年$month月$day日");
                 print("<<<转换的阴历日期是：${Lunar.fromDate(
                   DateTime(year, month, day),
                 )}");
               }),
             );
-          },
-        ),
-        CusRaisedBtn(
-          text: "模拟六爻",
-          onPressed: () {
-            print(">>>计算的六爻数据：${YiTool.liuYao()}");
           },
         ),
       ],

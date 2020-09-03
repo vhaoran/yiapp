@@ -68,10 +68,10 @@ class _BirthPairPageState extends State<BirthPairPage> {
                 subtitle: _maleStr.isEmpty ? "请选择生日" : "$_maleStr",
                 onTap: () => TimePicker(
                   context,
-                  pickMode: PickerMode.date,
+                  pickMode: PickerMode.month_day,
                   onConfirm: (date) => setState(() {
-                    _male_month = date.first;
-                    _male_day = date[1];
+                    _male_month = date.month;
+                    _male_day = date.day;
                     _maleStr = "$_male_month月$_male_day日";
                   }),
                 ),
@@ -86,8 +86,8 @@ class _BirthPairPageState extends State<BirthPairPage> {
                     context,
                     pickMode: PickerMode.month_day,
                     onConfirm: (date) => setState(() {
-                      _female_month = date.first;
-                      _female_day = date[1];
+                      _female_month = date.month;
+                      _female_day = date.day;
                       _femaleStr = "$_female_month月$_female_day日";
                     }),
                   ),

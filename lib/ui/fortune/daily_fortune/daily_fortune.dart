@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
@@ -42,7 +43,7 @@ class _DailyFortuneState extends State<DailyFortune> {
   // 算命功能区分类
   final List<Map> _assorts = [
     {"text": "八字精批", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": "temp"},
+    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": liu_yao},
     {"text": "八字合婚", "icon": 0xe615, "color": tmp_color, "route": "temp"},
     {"text": "八字事业", "icon": 0xe615, "color": tmp_color, "route": "temp"},
     {"text": "数字测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
@@ -232,14 +233,15 @@ class _DailyFortuneState extends State<DailyFortune> {
       children: List.generate(
         l.length >= _maxCount ? _maxCount : l.length,
         (index) {
-          bool fourWords = l[index].length >= 4 ? true : false;
-          int width = fourWords ? _maxCount - 3 : _maxCount;
+          // bool fourWords = l[index].length >= 4 ? true : false;
+          // int width = fourWords ? _maxCount - 3 : _maxCount;
           return Container(
             padding: EdgeInsets.all(Adapt.px(6)),
-            width: Adapt.screenW() / width,
+            width: Adapt.screenW() / _maxCount,
             child: Text(
               l[index],
               style: TextStyle(color: color, fontSize: Adapt.px(28)),
+              overflow: TextOverflow.ellipsis,
             ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
