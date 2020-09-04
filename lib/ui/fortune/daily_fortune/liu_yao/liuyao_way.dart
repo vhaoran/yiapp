@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 
@@ -24,7 +23,8 @@ class LiuYaoWay extends StatefulWidget {
 
 class _LiuYaoWayState extends State<LiuYaoWay> {
   final List<String> _ways = ["在线起卦", "时间起卦", "待定起卦"];
-  int _select = 0; // 选中的哪一个起卦方式
+  int _select = 0; // 选中的哪一个起卦方式,默认选择第一个
+
   @override
   Widget build(BuildContext context) {
     return Column(
