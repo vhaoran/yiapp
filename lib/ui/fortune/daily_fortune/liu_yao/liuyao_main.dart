@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_online.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_time.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_way.dart';
@@ -55,6 +56,12 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
         LiuYaoWay(select: (int way) => setState(() => _select = way)),
         // 根据起卦方式，显示具体内容
         _guaType(_select),
+        CusDivider(),
+        Text(
+          "        请让内心平静，摒除杂念，集中注意力默想自己占卜之事，"
+          "每次摇卦时在心里默数3秒，会更加灵验哦!",
+          style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+        ),
       ],
     );
   }

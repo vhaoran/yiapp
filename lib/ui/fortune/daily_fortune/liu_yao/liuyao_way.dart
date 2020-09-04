@@ -22,7 +22,7 @@ class LiuYaoWay extends StatefulWidget {
 }
 
 class _LiuYaoWayState extends State<LiuYaoWay> {
-  final List<String> _ways = ["在线起卦", "时间起卦", "待定起卦"];
+  final List<String> _ways = ["在线起卦", "待定起卦", "待定起卦"];
   int _select = 0; // 选中的哪一个起卦方式,默认选择第一个
 
   @override
