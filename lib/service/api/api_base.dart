@@ -26,7 +26,7 @@ class ApiBase {
   static int uid = 0;
 
   //用户访问的主机
-  static String host = "0755yicai.com/yi";
+  static String host = "0755yicai.com";
 
   //对于基本返回值是一个结构的类型
   static Future<PageBean> postPage<T>(

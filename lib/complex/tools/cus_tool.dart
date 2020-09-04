@@ -12,13 +12,11 @@ class CusTool {
   static String sex(int sex) {
     switch (sex) {
       case 0:
-        return '保密';
+        return '女';
       case 1:
         return '男';
-      case 2:
-        return '女';
       default:
-        return "";
+        return "保密";
     }
   }
 

@@ -20,77 +20,77 @@ import 'api_base.dart';
 class ApiFree {
   /// 星座配对
   static Future<ConResult> conMatch(Map<String, dynamic> m) async {
-    var url = "/cms/ConMatch";
+    var url = "/yi/cms/ConMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => ConResult.fromJson(m));
   }
 
   /// 生肖配对
   static Future<ZodiacResult> shengXiaoMatch(Map<String, dynamic> m) async {
-    var url = "/cms/ShengXiaoMatch";
+    var url = "/yi/cms/ShengXiaoMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => ZodiacResult.fromJson(m));
   }
 
   /// 血型配对
   static Future<BloodResult> bloodMatch(Map<String, dynamic> m) async {
-    var url = "/cms/BloodMatch";
+    var url = "/yi/cms/BloodMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => BloodResult.fromJson(m));
   }
 
   /// 生日配对
   static Future<BirthResult> shengRiMatch(Map<String, dynamic> m) async {
-    var url = "/cms/ShengRiMatch";
+    var url = "/yi/cms/ShengRiMatch";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => BirthResult.fromJson(m));
   }
 
   /// 黄大仙灵签
   static Future<DaXianResult> daXianDraw(Map<String, dynamic> m) async {
-    var url = "/cms/DaXianDraw";
+    var url = "/yi/cms/DaXianDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => DaXianResult.fromJson(m));
   }
 
   /// 关帝灵签
   static Future<GuanDiResult> guanDiDraw(Map<String, dynamic> m) async {
-    var url = "/cms/GuanDiDraw";
+    var url = "/yi/cms/GuanDiDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => GuanDiResult.fromJson(m));
   }
 
   /// 观音灵签
   static Future<GuanYinResult> guanYinDraw(Map<String, dynamic> m) async {
-    var url = "/cms/GuanYinDraw";
+    var url = "/yi/cms/GuanYinDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => GuanYinResult.fromJson(m));
   }
 
   /// 妈祖灵签
   static Future<MaZuResult> maZuDraw(Map<String, dynamic> m) async {
-    var url = "/cms/MaZuDraw";
+    var url = "/yi/cms/MaZuDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => MaZuResult.fromJson(m));
   }
 
   /// 月老灵签
   static Future<YueLaoResult> yueLaoDraw(Map<String, dynamic> m) async {
-    var url = "/cms/YueLaoDraw";
+    var url = "/yi/cms/YueLaoDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => YueLaoResult.fromJson(m));
   }
 
   /// 车公灵签
   static Future<CheGongResult> cheGongDraw(Map<String, dynamic> m) async {
-    var url = "/cms/CheGongDraw";
+    var url = "/yi/cms/CheGongDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => CheGongResult.fromJson(m));
   }
 
   /// 吕祖灵签
   static Future<LvZuResult> lvZuDraw(Map<String, dynamic> m) async {
-    var url = "/cms/LvZuDraw";
+    var url = "/yi/cms/LvZuDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => LvZuResult.fromJson(m));
   }
