@@ -22,10 +22,19 @@ class CusTool {
 
   /// 返回字符串中所有的大写字母
   static String AZ(String str) {
-    List<String> l = str.split('').where((e) => CusRegExp.upChar(e)).toList();
+    List<String> l =
+        str.trim().split('').where((e) => CusRegExp.upChar(e)).toList();
     String val = "";
     l.forEach((e) => val += e);
     return val;
+  }
+
+  // 返回字符串中的所有数字
+  static List<String> retainNum(String str) {
+    List<String> l = str.trim().split('');
+    l.retainWhere((e) => CusRegExp.retainNum(e));
+    print(">>>当前的l：$l");
+    return l;
   }
 }
 

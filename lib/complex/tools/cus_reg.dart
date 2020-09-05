@@ -18,7 +18,7 @@ class CusRegExp {
   }
 
   // 纯数字
-  static bool money(String money) {
+  static bool retainNum(String money) {
     return RegExp(r"^[0-9]*$").hasMatch(money);
   }
 

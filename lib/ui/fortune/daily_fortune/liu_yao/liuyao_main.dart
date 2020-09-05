@@ -22,9 +22,10 @@ class LiuYaoPage extends StatefulWidget {
 }
 
 class _LiuYaoPageState extends State<LiuYaoPage> {
-  String _guaTime = ""; // 起卦时间
+//  String _guaTime = ""; // 起卦时间
+  DateTime _guaTime;
   int _select = 0; // 选中的哪一个起卦方式
-  List<int> _onLines = []; // 在线起卦的六爻编码
+  List<int> _codes = []; // 在线起卦的六爻编码
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,8 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
         ),
         // 起卦时间
         LiuYaoTime(
-          pickerTime: (String time) => setState(() => _guaTime = time),
+          pickerTime: (DateTime time) => setState(() => _guaTime = time),
+          outTime: _guaTime,
         ),
         // 选择起卦方式
         LiuYaoWay(select: (int way) => setState(() => _select = way)),
@@ -69,12 +71,13 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
   /// 动态选择起卦方式
   Widget _guaType(int select) {
     Widget w;
-    if (select != 0) _onLines.clear(); // 点击其它卦时，清空在线起卦数据
+    if (select != 0) _codes.clear(); // 点击其它卦时，清空在线起卦数据
     switch (select) {
       case 0: // 在线起卦
         w = LiuYaoByOnLine(
-          l: _onLines,
-          guaTime: (String time) => setState(() => _guaTime = time),
+          l: _codes,
+          guaTime: (DateTime time) => setState(() => _guaTime = time),
+          pickerTime: _guaTime,
         );
         break;
       default:

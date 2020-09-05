@@ -17,66 +17,72 @@ import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 // ------------------------------------------------------
 
 class LiuYaoTime extends StatefulWidget {
-  FnString pickerTime; // 点击时间选择器自选的时间
+  FnDate pickerTime; // 选择器选择的时间
+  DateTime outTime; // 没有点击选择器选择时间，传递进来点击铜钱时的时间
 
-  LiuYaoTime({this.pickerTime, Key key}) : super(key: key);
+  LiuYaoTime({this.pickerTime, this.outTime, Key key}) : super(key: key);
 
   @override
   _LiuYaoTimeState createState() => _LiuYaoTimeState();
 }
 
 class _LiuYaoTimeState extends State<LiuYaoTime> {
-  String _guaTime = "可选起卦时间"; // 起卦时间，没选默认现在
+  DateTime _guaTime; // 起卦时间，没选默认现在(outTime)
+  String _guaStr = "可选起卦时间";
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         CusDivider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              "起卦时间",
-              style: TextStyle(
-                color: t_primary,
-                fontSize: Adapt.px(32),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                child: Row(
-                  children: <Widget>[
-                    Spacer(),
-                    Text(
-                      _guaTime.contains("公元")
-                          ? _guaTime
-                          : "公元 ${YiTool.fullDate(DateTime.now())}",
-                      style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-                    ),
-                    Spacer(),
-                    Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
-                  ],
-                ),
-                onTap: () {
-                  TimePicker(
-                    context,
-                    pickMode: PickerMode.full,
-                    onConfirm: (date) {
-                      _guaTime = "公元 ${YiTool.fullDate(date)}";
-                      if (widget.pickerTime != null) {
-                        widget.pickerTime(_guaTime);
-                      }
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+        _row(),
         CusDivider(),
+      ],
+    );
+  }
+
+  Widget _row() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          "起卦时间",
+          style: TextStyle(
+            color: t_gray,
+            fontSize: Adapt.px(32),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          child: InkWell(
+            child: Row(
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  widget.outTime == null
+                      ? _guaTime == null
+                          ? _guaStr
+                          : "公元 ${YiTool.fullDate(_guaTime)}"
+                      : "公元 ${YiTool.fullDate(widget.outTime)}",
+                  style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+                ),
+                Spacer(),
+                Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
+              ],
+            ),
+            onTap: () => TimePicker(
+              context,
+              pickMode: PickerMode.full,
+              onConfirm: (date) {
+                _guaTime = date;
+                if (widget.pickerTime != null) {
+                  widget.pickerTime(_guaTime);
+                }
+                setState(() {});
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

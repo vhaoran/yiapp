@@ -34,7 +34,7 @@ class _LiuYaoWayState extends State<LiuYaoWay> {
         Text(
           "起卦方式",
           style: TextStyle(
-            color: t_primary,
+            color: t_gray,
             fontSize: Adapt.px(32),
             fontWeight: FontWeight.bold,
           ),

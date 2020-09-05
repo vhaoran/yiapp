@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/liuyao_symbol.dart';
+import 'package:yiapp/service/api/api_yi.dart';
+import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_result.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -20,9 +22,15 @@ const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)
 
 class LiuYaoByOnLine extends StatefulWidget {
   List<int> l = []; // 六爻编码
-  FnString guaTime; // 起卦时间
+  FnDate guaTime; // 当前点击铜钱的时间，传递给外部的起卦时间
+  DateTime pickerTime; // 如果通过选择器更改了时间，则同步该时间
 
-  LiuYaoByOnLine({this.l, this.guaTime, Key key}) : super(key: key);
+  LiuYaoByOnLine({
+    this.l,
+    this.guaTime,
+    this.pickerTime,
+    Key key,
+  }) : super(key: key);
 
   @override
   _LiuYaoByOnLineState createState() => _LiuYaoByOnLineState();
@@ -30,25 +38,29 @@ class LiuYaoByOnLine extends StatefulWidget {
 
 class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   bool _shaking = false; // 是否正在摇卦
-  String _guaTime = ""; // 起卦时间
+  bool _hadShaken = false; // 是否已经摇完6爻
+  DateTime _guaTime;
   String _assets = _bei;
   List<String> _ziBei = []; // 铜钱字背面
-  Random random = Random();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ..._shake(), // 点击铜钱摇卦
-        ..._showLiuYao(), // 显示六爻
-      ],
+    _hadShaken = widget.l.length == 6 ? true : false;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
+      child: Column(
+        children: <Widget>[
+          ..._shake(), // 点击铜钱摇卦
+          ..._showLiuYao(), // 显示六爻
+        ],
+      ),
     );
   }
 
   /// 点击铜钱摇卦
   List<Widget> _shake() {
     return <Widget>[
-      if (widget.l.length != 6)
+      if (!_hadShaken)
         Text(
           _shaking ? "点击铜钱出卦" : "点击铜钱进行摇卦",
           style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
@@ -69,10 +81,10 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
             ),
           ),
         ),
-        onTap: widget.l.length == 6 ? null : _doShake,
+        onTap: _hadShaken ? null : _doShake,
       ),
       // 剩余次数
-      if (widget.l.length != 6)
+      if (!_hadShaken)
         Text(
           "剩余 ${6 - widget.l.length} 次",
           style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
@@ -91,41 +103,61 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
         ).reversed.toList(),
       ),
       // 六爻都摇完后，显示起卦按钮
-      if (widget.l.length == 6)
+      if (_hadShaken)
         Padding(
           padding: EdgeInsets.only(top: Adapt.px(30)),
           child: CusRaisedBtn(
             text: "开始起卦",
-            pdHor: 50,
-            onPressed: () {
-              print(">>>六爻code码：${widget.l}");
-            },
+            minWidth: double.infinity,
+            onPressed: _doQiGua,
           ),
         ),
     ];
   }
 
+  /// 开始起卦
+  void _doQiGua() async {
+    String code = "";
+    widget.l.forEach((e) => code += e.toString());
+    var m = {
+      "year": _guaTime.year,
+      "month": _guaTime.month,
+      "day": _guaTime.day,
+      "minute": _guaTime.minute,
+      "code": code,
+      "male": 1
+    };
+    try {
+      var res = await ApiYi.liuYaoQiGua(m);
+      print(">>>六爻起卦的数据是：${res.toJson()}");
+      if (res != null) {
+        CusRoutes.pushReplacement(context, LiuYaoResPage());
+      }
+    } catch (e) {
+      print("<<<六爻起卦出现异常：$e");
+    }
+  }
+
   /// 点击铜钱摇卦
   void _doShake() {
     _ziBei.clear(); // 清空上一次的数据
-    if (_guaTime.isEmpty) {
-      _guaTime = "公元 ${YiTool.fullDate(DateTime.now())}";
+    if (_guaTime == null) {
+      _guaTime = DateTime.now();
+      if (widget.guaTime != null) {
+        widget.guaTime(_guaTime);
+      }
     }
-    if (widget.guaTime != null) {
-      widget.guaTime(_guaTime);
+    if (widget.pickerTime != null) {
+      _guaTime = widget.pickerTime;
     }
     _shaking = !_shaking;
-    print(">>>当前_shaking:$_shaking");
-    if (!_shaking && widget.l.length != 6) {
+    if (!_shaking && !_hadShaken) {
       int code = _ranLiuYao;
-      print(">>>摇的爻编码：$code");
       widget.l.add(code);
-      _detailData(code); // 根据少阳少阴老阳老阴，显示具体的铜钱面
-    }
-    if (widget.l.length == 6) {
-      print(">>>爻的编码：${widget.l}");
+      _showZiBei(code); // 根据少阳少阴老阳老阴，显示具体的铜钱面
     }
     _shakeAni(); // 模拟点击铜钱的动画，交替显示铜钱正反面
+    print(">>>起卦时间：$_guaTime");
     setState(() {});
   }
 
@@ -141,7 +173,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   }
 
   /// 根据少阳少阴老阳老阴，显示具体的铜钱面
-  void _detailData(int code) {
+  void _showZiBei(int code) {
     switch (code) {
       case shao_yin:
         switch (Random().nextInt(3)) {

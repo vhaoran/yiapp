@@ -19,11 +19,7 @@ class LiuYaoSymbol extends StatelessWidget {
   final int code; // 当前爻码 0 1 2 3
   final int num; // 第几爻
 
-  LiuYaoSymbol({
-    this.code: 0,
-    this.num: 0,
-    Key key,
-  }) : super(key: key);
+  LiuYaoSymbol({this.code: 0, this.num: 0, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +70,7 @@ class LiuYaoSymbol extends StatelessWidget {
             ),
           ),
         ),
-        // 什么爻
+        // 几背几字
         Text(
           "${_liuYao(code).last}",
           style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
@@ -127,7 +123,7 @@ class LiuYaoSymbol extends StatelessWidget {
     return str;
   }
 
-  /// 爻的符号
+  /// 爻的符号 阳爻 ——  阴爻 - -
   Widget _yao({double width = _width}) {
     return Container(
       height: Adapt.px(45),
