@@ -54,7 +54,11 @@ class _PersonalPageState extends State<PersonalPage> {
         NormalBox(title: "昵称", subtitle: _u.user_name),
         NormalBox(title: "性别", subtitle: CusTool.sex(_u.sex)),
         NormalBox(title: "手机号码", subtitle: _u.user_code),
-        NormalBox(title: "出生日期", subtitle: "农历 某年某月某日某时"),
+        NormalBox(
+          title: "出生日期",
+          subtitle: "${_u.birth_year} 年 ${CusTool.padLeft(_u.birth_month)} 月"
+              " ${CusTool.padLeft(_u.birth_day)} 日",
+        ),
         NormalBox(title: "出生地点", subtitle: "${_u.province}省 ${_u.city}市"),
         SizedBox(height: Adapt.px(50)),
         SingleTextBox(

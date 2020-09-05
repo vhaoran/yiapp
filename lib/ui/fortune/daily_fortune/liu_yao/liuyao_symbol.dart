@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 
@@ -9,10 +10,6 @@ import 'package:yiapp/complex/tools/yi_tool.dart';
 // usage ：生成六爻符号
 // ------------------------------------------------------
 
-const int shao_yin = 0; // 少阴 2背1字 3/8 概率
-const int shao_yang = 1; // 少阳 1背2字 3/8 概率
-const int lao_yin = 2; // 老阴 3字 1/8 概率
-const int lao_yang = 3; // 老阳 3面 1/8 概率
 const double _width = 130; // 阴爻中单个符号的宽度
 
 class LiuYaoSymbol extends StatelessWidget {
@@ -46,13 +43,13 @@ class LiuYaoSymbol extends StatelessWidget {
         // 爻的符号
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-          child: code.isOdd // 偶数为阴
-              ? _yao(width: 2 * _width + 40)
+          child: code.isOdd // 是否奇数，奇数为阳，偶数为阴
+              ? _yaoSym(width: 2 * _width + 40)
               : Row(
                   children: <Widget>[
-                    _yao(),
+                    _yaoSym(),
                     SizedBox(width: Adapt.px(40)),
-                    _yao(),
+                    _yaoSym(),
                   ],
                 ),
         ),
@@ -62,7 +59,7 @@ class LiuYaoSymbol extends StatelessWidget {
           height: Adapt.px(30),
           margin: EdgeInsets.only(right: Adapt.px(10)),
           child: Text(
-            _symbol(code),
+            YiTool.xoSymbol(code),
             style: TextStyle(
               color: t_gray,
               fontSize: Adapt.px(30),
@@ -106,25 +103,8 @@ class LiuYaoSymbol extends StatelessWidget {
     return [yao, detail];
   }
 
-  /// 符号，老阴、老阳显示 X 和 O，少阴少阳不显示
-  String _symbol(int code) {
-    String str;
-    switch (code) {
-      case lao_yin: // 老阴
-        str = "X";
-        break;
-      case lao_yang: // 老阳
-        str = "O";
-        break;
-      default:
-        str = "";
-        break;
-    }
-    return str;
-  }
-
   /// 爻的符号 阳爻 ——  阴爻 - -
-  Widget _yao({double width = _width}) {
+  Widget _yaoSym({double width = _width}) {
     return Container(
       height: Adapt.px(45),
       width: Adapt.px(width),

@@ -7,5 +7,4 @@
 - cus_select 选择星座、生肖组件
 - cus_singlebar 单个bottom_bar选项
 - cus_square_item 上方图下文字
-- liuyao_symbol生成六爻
 

@@ -3,13 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/small/liuyao_symbol.dart';
+import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_result.dart';
+import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -42,10 +45,12 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   DateTime _guaTime;
   String _assets = _bei;
   List<String> _ziBei = []; // 铜钱字背面
+  int _sex; // 用户性别
 
   @override
   Widget build(BuildContext context) {
     _hadShaken = widget.l.length == 6 ? true : false;
+    _sex = context.watch<UserInfoState>()?.userInfo?.sex ?? -1;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
       child: Column(
@@ -123,15 +128,19 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       "year": _guaTime.year,
       "month": _guaTime.month,
       "day": _guaTime.day,
+      "hour": _guaTime.hour,
       "minute": _guaTime.minute,
       "code": code,
-      "male": 1
+      "male": _sex,
     };
     try {
       var res = await ApiYi.liuYaoQiGua(m);
       print(">>>六爻起卦的数据是：${res.toJson()}");
       if (res != null) {
-        CusRoutes.pushReplacement(context, LiuYaoResPage());
+        CusRoutes.pushReplacement(
+          context,
+          LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),
+        );
       }
     } catch (e) {
       print("<<<六爻起卦出现异常：$e");
@@ -157,7 +166,6 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       _showZiBei(code); // 根据少阳少阴老阳老阴，显示具体的铜钱面
     }
     _shakeAni(); // 模拟点击铜钱的动画，交替显示铜钱正反面
-    print(">>>起卦时间：$_guaTime");
     setState(() {});
   }
 

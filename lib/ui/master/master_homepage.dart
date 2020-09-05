@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_num.dart';
+import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';

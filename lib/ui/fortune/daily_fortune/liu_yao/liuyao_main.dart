@@ -22,8 +22,7 @@ class LiuYaoPage extends StatefulWidget {
 }
 
 class _LiuYaoPageState extends State<LiuYaoPage> {
-//  String _guaTime = ""; // 起卦时间
-  DateTime _guaTime;
+  DateTime _guaTime; // 起卦时间
   int _select = 0; // 选中的哪一个起卦方式
   List<int> _codes = []; // 在线起卦的六爻编码
 

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_num.dart';
+import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 
 // ------------------------------------------------------

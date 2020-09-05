@@ -36,6 +36,16 @@ class CusTool {
     print(">>>当前的l：$l");
     return l;
   }
+
+  /// 不够两位数的补0，比如 8:4 to 08:04
+  static String padLeft(dynamic data) {
+    if (data is num) {
+      return data.toString().padLeft(2, "0");
+    } else if (data is String) {
+      return data.padLeft(2, "0");
+    }
+    return "转换格式异常";
+  }
 }
 
 UserInfo defaultUser = UserInfo.fromJson({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/const/const_double.dart';
 import '../../const/const_color.dart';
-import '../../const/const_num.dart';
 import '../../tools/adapt.dart';
 
 // ------------------------------------------------------
