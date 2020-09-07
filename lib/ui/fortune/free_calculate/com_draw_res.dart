@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:secret/model/Guandi.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/cus_parse.dart';
-import 'package:yiapp/model/draw/chegong_result.dart';
-import 'package:yiapp/model/draw/daxian_result.dart';
-import 'package:yiapp/model/draw/guandi_result.dart';
-import 'package:yiapp/model/draw/guanyin_result.dart';
-import 'package:yiapp/model/draw/lvzu_result.dart';
-import 'package:yiapp/model/draw/mazu_result.dart';
-import 'package:yiapp/model/draw/yuelao_result.dart';
+import 'package:yiapp/free_model/draws/chegong_result.dart';
+import 'package:yiapp/free_model/draws/daxian_result.dart';
+import 'package:yiapp/free_model/draws/guandi_result.dart';
+import 'package:yiapp/free_model/draws/guanyin_result.dart';
+import 'package:yiapp/free_model/draws/lvzu_result.dart';
+import 'package:yiapp/free_model/draws/mazu_result.dart';
+import 'package:yiapp/free_model/draws/yuelao_result.dart';
 import 'package:yiapp/ui/fortune/free_calculate/draw_parse.dart';
 
 // ------------------------------------------------------

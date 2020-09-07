@@ -1,4 +1,4 @@
-import 'package:yiapp/model/liuyao/liuyao_result.dart';
+import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------

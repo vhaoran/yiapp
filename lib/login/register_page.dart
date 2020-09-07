@@ -95,9 +95,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () => setState(() => _mobileCon.clear()),
               )
             : null,
-        focusedBorder: inputBorder(),
-        errorBorder: inputBorder(),
-        focusedErrorBorder: inputBorder(),
+        focusedBorder: cusUnderBorder(),
+        errorBorder: cusUnderBorder(),
+        focusedErrorBorder: cusUnderBorder(),
       ),
       onChanged: (value) {
         if (_errs[0] != null) {
@@ -124,9 +124,9 @@ class _RegisterPageState extends State<RegisterPage> {
           errorText: _errs[1],
           errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
           counterText: '',
-          focusedBorder: inputBorder(),
-          errorBorder: inputBorder(),
-          focusedErrorBorder: inputBorder(),
+          focusedBorder: cusUnderBorder(),
+          errorBorder: cusUnderBorder(),
+          focusedErrorBorder: cusUnderBorder(),
           suffixIcon: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -173,9 +173,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () => setState(() => _pwdCon.clear()),
               )
             : null,
-        focusedBorder: inputBorder(),
-        errorBorder: inputBorder(),
-        focusedErrorBorder: inputBorder(),
+        focusedBorder: cusUnderBorder(),
+        errorBorder: cusUnderBorder(),
+        focusedErrorBorder: cusUnderBorder(),
       ),
       onChanged: (value) {
         if (_errs[2] != null) {

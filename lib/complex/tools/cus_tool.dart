@@ -5,7 +5,7 @@
 // ------------------------------------------------------
 
 import 'package:yiapp/complex/tools/cus_reg.dart';
-import 'package:yiapp/model/user/userInfo.dart';
+import 'package:yiapp/model/login/userInfo.dart';
 
 class CusTool {
   /// 处理性别
@@ -62,11 +62,11 @@ UserInfo defaultUser = UserInfo.fromJson({
       "http://cli.oss.aliyuncs.com/2015/04/22/21f5deae6515c6c8a8834c5a65506971.jpg?e=1598256911&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:szss9JHvlzM0ac7YYzc13-nABsg=",
   "id": 7,
   "id_card": "",
-  "nick": "",
+  "nick": "游客登录",
   "province": "",
   "pwd": "",
-  "sex": 1,
+  "sex": 0,
   "update_at": "2020-08-24 14:58:43",
   "user_code": "",
-  "user_name": "设置新昵称"
+  "user_name": "游客登录"
 });

@@ -5,7 +5,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/cus_parse.dart';
-import 'package:yiapp/model/pair/blood_result.dart';
+import 'package:yiapp/free_model/pairs/blood_result.dart';
 
 // ------------------------------------------------------
 // author：suxing

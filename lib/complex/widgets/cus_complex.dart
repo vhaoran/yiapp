@@ -12,8 +12,15 @@ class CusBehavior extends ScrollBehavior {
 }
 
 /// 自定义 UnderlineInputBorder
-InputBorder inputBorder() {
+InputBorder cusUnderBorder({Color color}) {
   return UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.black45),
+    borderSide: BorderSide(color: color ?? Colors.black45),
+  );
+}
+
+/// 自定义 OutlineInputBorder
+InputBorder cusOutlineBorder({Color color}) {
+  return OutlineInputBorder(
+    borderSide: BorderSide(color: color ?? Colors.black45),
   );
 }

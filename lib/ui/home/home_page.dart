@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// 如果已经登录过一次，则自动登录
+  /// 如果已经登录过一次，则自动登录,没有则默认游客登录
   void _autoLogin(BuildContext context) async {
     if (await hadLogin()) {
       print(">>>用户已经登录过，现在自动登录");
@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
         var r = await ApiLogin.login(m);
         if (r != null) {
           await setLoginInfo(r);
+          ApiBase.isGuest = false;
           context.read<UserInfoState>().init(r.user_info);
         }
       } catch (e) {
@@ -89,6 +90,17 @@ class _HomePageState extends State<HomePage> {
       }
     } else {
       print(">>>游客登录");
+      try {
+        var res = await ApiLogin.guestLogin({});
+        print(">>>测试---游客登录结果：${res.toJson()}");
+        if (res != null) {
+          await setLoginInfo(res);
+          ApiBase.isGuest = true;
+          context.read<UserInfoState>().init(res.user_info);
+        }
+      } catch (e) {
+        print("<<<测试---游客登录异常：$e");
+      }
     }
   }
 

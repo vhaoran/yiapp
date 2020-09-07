@@ -10,9 +10,10 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/login/login_page.dart';
-import 'package:yiapp/model/user/userInfo.dart';
+import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/ui/mine/personal_info/ch_user_name.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -37,12 +38,12 @@ class _PersonalPageState extends State<PersonalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(text: '个人信息'),
-      body: _bodyCtr(),
+      body: _lv(),
       backgroundColor: primary,
     );
   }
 
-  Widget _bodyCtr() {
+  Widget _lv() {
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
@@ -51,7 +52,14 @@ class _PersonalPageState extends State<PersonalPage> {
           title: "头像",
           child: CusAvatar(url: _u.icon?.substring(16), size: 40, circle: true),
         ),
-        NormalBox(title: "昵称", subtitle: _u.user_name),
+        NormalBox(
+          title: "昵称",
+          subtitle: _u.user_name,
+          onTap: () => CusRoutes.push(
+            context,
+            ChUserName(user_name: _u.user_name),
+          ),
+        ),
         NormalBox(title: "性别", subtitle: CusTool.sex(_u.sex)),
         NormalBox(title: "手机号码", subtitle: _u.user_code),
         NormalBox(

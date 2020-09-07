@@ -1,5 +1,3 @@
-//import 'package:fluwx/fluwx.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +7,7 @@ import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -78,9 +76,23 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        _mobileInput(), // 手机号输入框
-        _pwdInput(), // 密码输入框
-        _forgetPwd(), // 忘记密码
+        // 手机号输入框
+        _mobileInput(),
+        // 密码输入框
+        _pwdInput(),
+        // 忘记密码
+        Container(
+          padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(80)),
+          alignment: Alignment.centerRight,
+          child: InkWell(
+            child: Text(
+              '忘记密码',
+              style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+            ),
+            onTap: () =>
+                CusToast.toast(context, text: '忘记密码待做', showChild: false),
+          ),
+        ),
         CusRaisedBtn(
           text: '登录',
           fontSize: 28,
@@ -90,18 +102,9 @@ class _LoginPageState extends State<LoginPage> {
           pdVer: Adapt.px(15),
           borderRadius: 50,
         ),
-        // _signInWithCtr(), // 第三方登录
       ],
     );
   }
-
-  //-------从本地载入保存的用户名及口令数据-----------------------------------------
-//  _restore() async {
-//    _mobile = await KV.getStr("/login/user_code") ?? "";
-//    _pwd = await KV.getStr("/login/pwd") ?? "";
-//    print(">>>本地的_user_code:$_mobile");
-//    print(">>>本地的_pwd:$_pwd");
-//  }
 
   /// 请求登录
   void _doLogin() async {
@@ -131,12 +134,13 @@ class _LoginPageState extends State<LoginPage> {
           await KV.setStr(kv_pwd, _pwdCon.text);
           await KV.setStr(kv_jwt, r.jwt);
           await setLoginInfo(r);
+          ApiBase.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
           print(">>>登录成功");
         }
       } catch (e) {
-        print("*****${e.tloString()}");
+        print("<<<登录出现异常：$e");
         _pwdErr = "密码错误";
         setState(() {});
       }
@@ -172,9 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () => setState(() => _mobileCon.clear()),
                 )
               : null,
-          focusedBorder: inputBorder(),
-          errorBorder: inputBorder(),
-          focusedErrorBorder: inputBorder(),
+          focusedBorder: cusUnderBorder(),
+          errorBorder: cusUnderBorder(),
+          focusedErrorBorder: cusUnderBorder(),
         ),
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         onChanged: (value) {
@@ -210,9 +214,9 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () => setState(() => _pwdCon.clear()),
               )
             : null,
-        focusedBorder: inputBorder(),
-        errorBorder: inputBorder(),
-        focusedErrorBorder: inputBorder(),
+        focusedBorder: cusUnderBorder(),
+        errorBorder: cusUnderBorder(),
+        focusedErrorBorder: cusUnderBorder(),
       ),
       onChanged: (value) {
         if (_userErr != null) {
@@ -223,43 +227,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// 第三方登录
-//  Widget _signInWithCtr() {
-//    return Container(
-//        padding: EdgeInsets.only(top: Adapt.screenH() / 5),
-//        child: Column(
-//          children: <Widget>[
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.center,
-//              children: <Widget>[
-//                Expanded(
-//                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
-//                ),
-//                Text(
-//                  '    第三方登录    ',
-//                  style: TextStyle(color: t_gray),
-//                ),
-//                Expanded(
-//                  child: Divider(thickness: 1, height: 0, color: Colors.grey),
-//                ),
-//              ],
-//            ),
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.center,
-//              children: <Widget>[
-//                IconButton(
-//                  icon: Icon(FontAwesomeIcons.weixin, color: Colors.green),
-//                  onPressed: () {
-////              _wxLogin();
-//                  },
-//                ),
-//              ],
-//            ),
-//          ],
-//        ));
-//  }
-
-  /// 忘记密码组件
+  /// 忘记密码
   Widget _forgetPwd() {
     return Container(
       padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(80)),
@@ -267,27 +235,6 @@ class _LoginPageState extends State<LoginPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-//          InkWell(
-//            child: Text(
-//              '游客登录',
-//              style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
-//            ),
-//            onTap: () {
-//              CusDialog.normal(
-//                context,
-//                title: "登录提示",
-//                textAgree: "登录",
-//                subTitle: "游客登录方式仅供用户体验使用，无法保证您的账号安全，可能存在账号丢失的风险，建议使用其它登录方式",
-//                onApproval: () {
-//                  print(">>>dianle");
-////                  CusRoutes.pushReplacement(context, RegisterPage());
-//                  CusRoutes.push(context, LoginPage());
-//                  print(">>>fdfddaf11");
-//                },
-//              );
-//            },
-//          ),
-          SizedBox(width: Adapt.px(40)),
           InkWell(
             child: Text(
               '忘记密码',
@@ -300,52 +247,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  //------weChat Login------------------------------------------
-//  _weChatLoginInit() {
-//    final String APP_ID = "wx1a5150d9e8cd17f2";
-//    registerWxApi(appId: APP_ID);
-//    //add listener
-//    weChatResponseEventHandler.distinct((a, b) => a == b).listen((ret) {
-//      if (!(ret is WeChatAuthResponse)) {
-//        _waiting = false;
-//        return;
-//      }
-//      var res = ret as WeChatAuthResponse;
-//      _wx_code = res.code;
-//      print("state :${res.state} \n code:${res.code}");
-//      print("state :${(res as WeChatAuthResponse).toString()} ");
-//      if (_wx_code.length > 0) {
-//        ApiLogin.WXLogin(_wx_code).then((v) {
-//          print("#### loginResult ${v.toJson().toString()}");
-//          setLoginInfo(v).then((b) {
-////            Routes.toHomePage(context);
-//            CusRoutes.push(context, HomePage());
-//          }).catchError((e) {
-//            setState(() {
-//              _waiting = false;
-//            });
-//            CusDialog.err(context, title: '微信登录出错', subTitle: '$e');
-//          });
-//        }).catchError((e) {
-//          setState(() {
-//            _waiting = false;
-//          });
-//          CusDialog.err(context, title: '微信登录出错', subTitle: '$e');
-//        });
-//      }
-//    });
-//  }
-
-  /// 登录微信
-//  void _wxLogin() async {
-//    print(">>>dddd");
-//    var b = await sendWeChatAuth(
-//        scope: "snsapi_userinfo", state: "wechat_sdk_demo_test");
-//    setState(() {
-//      _waiting = true;
-//    });
-//  }
 
   /// 注册按钮
   Widget _registerBtn() {

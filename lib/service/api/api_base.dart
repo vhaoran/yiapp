@@ -21,6 +21,9 @@ class ApiBase {
   //用户是否登录
   static bool login = false;
 
+  // 是否游客登录
+  static bool isGuest = true;
+
   //用户登录后的token
   static String jwt = "test/1";
   static int uid = 0;

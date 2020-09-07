@@ -1,20 +1,47 @@
-import 'dart:convert';
-import 'package:yiapp/model/user/userInfo.dart';
+import 'package:yiapp/complex/tools/cus_tool.dart';
+import 'package:yiapp/model/login/userInfo.dart';
 
 // ------------------------------------------------------
-// author: whr    除本人外请勿更改，如果确有必要，请征得本人同意
-// date  : 2020/4/3 11:38
-// usage : 登录成功后的返回数据
-//
+// author：suxing
+// date  ：2020/9/7 16:06
+// usage ：登录结果
 // ------------------------------------------------------
 
 class LoginResult {
-  UserInfo user_info;
+  bool is_admin;
+  bool is_broker_admin;
+  bool is_master;
   String jwt;
+  UserInfo user_info;
 
-  LoginResult.fromJson(Map<String, dynamic> m)
-      : jwt = m['jwt'],
-        user_info = UserInfo.fromJson(m['user_info']);
+  LoginResult(
+      {this.is_admin,
+      this.is_broker_admin,
+      this.is_master,
+      this.jwt,
+      this.user_info});
 
-  Map<String, dynamic> toJson() => {'user_info': jsonEncode(user_info)};
+  factory LoginResult.fromJson(Map<String, dynamic> json) {
+    return LoginResult(
+      is_admin: json['is_admin'],
+      is_broker_admin: json['is_broker_admin'],
+      is_master: json['is_master'],
+      jwt: json['jwt'],
+      user_info: json['user_info'] != null
+          ? UserInfo.fromJson(json['user_info'])
+          : defaultUser,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['is_admin'] = this.is_admin;
+    data['is_broker_admin'] = this.is_broker_admin;
+    data['is_master'] = this.is_master;
+    data['jwt'] = this.jwt;
+    if (this.user_info != null) {
+      data['user_info'] = this.user_info.toJson();
+    }
+    return data;
+  }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
-import 'package:yiapp/model/liuyao/liuyao_result.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
+import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,6 +29,7 @@ class LiuYaoSymRes extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          CusDivider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -55,6 +57,7 @@ class LiuYaoSymRes extends StatelessWidget {
               ],
             ),
           ),
+          CusDivider(),
         ],
       ),
     );
@@ -105,6 +108,11 @@ class LiuYaoSymRes extends StatelessWidget {
 
   /// 变卦
   Widget _bianGua(String bian_gua, int code) {
+    if (code == 2) {
+      code = 3; // 至阴为阳
+    } else if (code == 3) {
+      code = 2; // 至阳为阴
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -113,8 +121,16 @@ class LiuYaoSymRes extends StatelessWidget {
             SizedBox(width: Adapt.px(40)),
             // 变卦内容
             SizedBox(width: Adapt.px(150), child: Text(bian_gua)),
-            // 变卦爻符号
-            _yaoSym(width: 2 * _width + 10),
+            // 变卦爻符号（老阴变老阳、老阳变老阴）
+            code.isOdd // // 是否奇数，奇数为阳，偶数为阴
+                ? _yaoSym(width: 2 * _width + 10)
+                : Row(
+                    children: <Widget>[
+                      _yaoSym(),
+                      SizedBox(width: Adapt.px(10)),
+                      _yaoSym(),
+                    ],
+                  ),
           ],
         ),
       ],

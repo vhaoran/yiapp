@@ -6,9 +6,9 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
-import 'package:yiapp/model/liuyao/liuyao_result.dart';
-import 'package:yiapp/model/liuyao/liuyao_riqi.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/model/liuyaos/liuyao_result.dart';
+import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 
 // ------------------------------------------------------
@@ -51,19 +51,59 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
 
   Widget _lv() {
     LiuYaoRiqi riqi = _res.riqi;
-    return ListView(
-      padding: EdgeInsets.all(Adapt.px(30)),
+    return Column(
       children: <Widget>[
-        _show("占类", "在线起卦"),
-        _show("卦主", _user_name),
-        _show(
-            "时间",
-            "公元 ${YiTool.fullDate(
-              DateTime(riqi.year, riqi.month, riqi.day, riqi.hour, riqi.minute),
-            )}"),
-        CusDivider(),
-        // 卦象
-        LiuYaoSymRes(res: _res, codes: widget.l.reversed.toList()),
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(Adapt.px(30)),
+            children: <Widget>[
+              _show("占类", "在线起卦"),
+              _show("卦主", _user_name),
+              _show(
+                  "时间",
+                  "公元 ${YiTool.fullDate(
+                    DateTime(riqi.year, riqi.month, riqi.day, riqi.hour,
+                        riqi.minute),
+                  )}"),
+              _show(
+                "干支",
+                "${riqi.nian_gan}${riqi.nian_zhi}  ${riqi.yue_gan}${riqi.yue_zhi}"
+                    "  ${riqi.ri_gan}${riqi.ri_zhi}  ${riqi.shi_gan}${riqi.shi_zhi}",
+              ),
+              // 卦象
+              LiuYaoSymRes(res: _res, codes: widget.l.reversed.toList()),
+            ],
+          ),
+        ),
+        // 底部智能解盘、发帖求测按钮
+        _bottom(),
+      ],
+    );
+  }
+
+  /// 底部智能解盘、发帖求测按钮
+  Widget _bottom() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: CusRaisedBtn(
+            text: "智能解盘",
+            borderRadius: 0,
+            backgroundColor: Color(0xFFED9951),
+            height: 90,
+            onPressed: () {},
+          ),
+        ),
+        Expanded(
+          child: CusRaisedBtn(
+            text: "发帖求测",
+            borderRadius: 0,
+            backgroundColor: Color(0xFFE96C62),
+            height: 90,
+            onPressed: () {},
+          ),
+        ),
       ],
     );
   }
