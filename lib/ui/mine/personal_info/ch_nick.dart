@@ -7,7 +7,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/service/api/api_user.dart';
+import '../../../service/api/api_user.dart';
 import 'package:provider/provider.dart';
 
 // ------------------------------------------------------

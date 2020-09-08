@@ -24,9 +24,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
     super.initState();
   }
 
-  _fetch() async {
-
-  }
+  _fetch() async {}
 
   @override
   Widget build(BuildContext context) {

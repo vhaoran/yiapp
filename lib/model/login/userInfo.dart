@@ -10,16 +10,11 @@ part 'userInfo.g.dart';
 
 @JsonSerializable()
 class UserInfo {
-  String addr_area;
-  String addr_city;
-  String addr_link_man;
-  String addr_mobile;
-  String addr_province;
-  String addr_street;
   String area;
   num birth_day;
   num birth_month;
   num birth_year;
+  num broker_id;
   String city;
   String country;
   String created_at;
@@ -27,8 +22,6 @@ class UserInfo {
   String icon;
   num id;
   String id_card;
-  String mobile;
-  bool mobile_login_default;
   String nick;
   String province;
   String pwd;
@@ -36,34 +29,30 @@ class UserInfo {
   String update_at;
   String user_code;
   String user_name;
+  num ver;
 
-  UserInfo(
-      {this.addr_area,
-      this.addr_city,
-      this.addr_link_man,
-      this.addr_mobile,
-      this.addr_province,
-      this.addr_street,
-      this.area,
-      this.birth_day,
-      this.birth_month,
-      this.birth_year,
-      this.city,
-      this.country,
-      this.created_at,
-      this.enabled,
-      this.icon,
-      this.id,
-      this.id_card,
-      this.mobile,
-      this.mobile_login_default,
-      this.nick,
-      this.province,
-      this.pwd,
-      this.sex,
-      this.update_at,
-      this.user_code,
-      this.user_name});
+  UserInfo({
+    this.area,
+    this.birth_day,
+    this.birth_month,
+    this.birth_year,
+    this.broker_id,
+    this.city,
+    this.country,
+    this.created_at,
+    this.enabled,
+    this.icon,
+    this.id,
+    this.id_card,
+    this.nick,
+    this.province,
+    this.pwd,
+    this.sex,
+    this.update_at,
+    this.user_code,
+    this.user_name,
+    this.ver,
+  });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) =>
       _$UserInfoFromJson(json);

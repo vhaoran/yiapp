@@ -7,7 +7,7 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/service/api/api_user.dart';
+import '../../../service/api/api_user.dart';
 
 // ------------------------------------------------------
 // author：suxing

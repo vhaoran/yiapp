@@ -15,7 +15,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_login.dart';
-import 'package:yiapp/service/api/api_user.dart';
+import '../service/api/api_user.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:provider/provider.dart';
 import 'register_page.dart';
