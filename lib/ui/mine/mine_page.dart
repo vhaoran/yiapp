@@ -42,6 +42,7 @@ class _MinePageState extends State<MinePage>
 
   @override
   void initState() {
+    print(">>>进入了个人主页");
     super.initState();
   }
 
@@ -89,7 +90,7 @@ class _MinePageState extends State<MinePage>
               child: CusAvatar(url: _u.icon?.substring(16) ?? "", circle: true),
               onTap: ApiBase.isGuest
                   ? () => CusToast.toast(context, text: "请先登录")
-                  : () => CusRoutes.push(context, PersonalPage(userInfo: _u)),
+                  : () => CusRoutes.push(context, PersonalPage()),
             ),
           ),
           Align(

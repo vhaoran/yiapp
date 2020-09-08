@@ -8,17 +8,17 @@ import 'api_base.dart';
 // ------------------------------------------------------
 
 class ApiUser {
-  /// 用户编码是否存在
-  static Future<bool> userCodeExist(String userCode) async {
-    var url = "/yi/user/UserCodeExist";
-    var data = {"user_code": userCode};
-    return await ApiBase.postValue<bool>(url, data, enableJwt: false);
-  }
-
   /// 修改登录者本人信息
   static Future<bool> ChUserInfo(Map<String, dynamic> m) async {
     var url = "/yi/user/ChUserInfo";
     var data = {"data": m};
     return await ApiBase.postValue<bool>(url, data);
+  }
+
+  /// 用户编码是否存在
+  static Future<bool> userCodeExist(String userCode) async {
+    var url = "/yi/user/UserCodeExist";
+    var data = {"user_code": userCode};
+    return await ApiBase.postValue<bool>(url, data, enableJwt: false);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
@@ -13,13 +14,21 @@ import '../cus_complex.dart';
 
 class CusTextField extends StatefulWidget {
   final String value; // 外部传入的默认参数
-  FnString input;
+  FnString onChanged;
+  VoidCallback callback;
   final String hintText;
+  TextInputType keyboardType;
+  int maxLength;
+  List<TextInputFormatter> inputFormatters;
 
   CusTextField({
-    this.value,
-    this.input,
+    this.value: "",
+    this.onChanged,
+    this.callback,
     this.hintText: "默认内容",
+    this.keyboardType: TextInputType.text,
+    this.maxLength: 18,
+    this.inputFormatters: null,
     Key key,
   }) : super(key: key);
 
@@ -45,9 +54,9 @@ class _CusTextFieldState extends State<CusTextField> {
       ),
       child: TextField(
         autofocus: true,
-        keyboardType: TextInputType.text,
+        keyboardType: widget.keyboardType,
         style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-        maxLength: 8,
+        maxLength: widget.maxLength,
         controller: TextEditingController.fromValue(
           TextEditingValue(
             text: _value,
@@ -67,11 +76,14 @@ class _CusTextFieldState extends State<CusTextField> {
         ),
         onChanged: (val) {
           _value = val;
-          if (widget.input != null) {
-            widget.input(_value);
+          if (widget.onChanged != null) {
+            widget.onChanged(_value);
           }
-          setState(() {});
+          if (widget.callback != null) {
+            widget.callback();
+          }
         },
+        inputFormatters: widget.inputFormatters,
       ),
     );
   }

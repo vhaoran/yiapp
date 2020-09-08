@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/service/api/api_user.dart';
+import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -52,23 +56,40 @@ class _ChUserNickState extends State<ChUserNick> {
           ),
           // 修改昵称输入框
           CusTextField(
-              hintText: "输入昵称", value: _nick, input: (val) => _nick = val),
+            hintText: "输入昵称",
+            value: _nick,
+            onChanged: (val) => _nick = val,
+            maxLength: 8,
+          ),
           Padding(
             padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(130)),
             child: Text("限制2-8个字"),
           ),
-          CusRaisedBtn(
-              text: "修改",
-              onPressed: () {
-                print(">>>昵称：$_nick");
-              }),
+          // 修改昵称
+          _chNick(),
         ],
       ),
     );
   }
 
-  /// 修改昵称
-  void _doChNick() async {
-    var m = {"nick": _nick};
+  /// 修改用户昵称
+  Widget _chNick() {
+    return CusRaisedBtn(
+      text: "修改",
+      onPressed: () async {
+        var m = {"nick": _nick};
+        try {
+          bool ok = await ApiUser.ChUserInfo(m);
+          print(">>>修改用户昵称结果：$ok");
+          if (ok) {
+            context.read<UserInfoState>().chNick(_nick);
+            CusToast.toast(context, text: "修改成功");
+            Navigator.pop(context);
+          }
+        } catch (e) {
+          print("<<<修改用户昵称出现异常：$e");
+        }
+      },
+    );
   }
 }
