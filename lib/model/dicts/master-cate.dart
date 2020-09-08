@@ -6,7 +6,7 @@
 
 class MasterCate {
   //这个id基本无用，只用在删除时
-  int iD;
+  int id;
 
   //uid
   int uid;
@@ -28,7 +28,7 @@ class MasterCate {
 
   MasterCate(
       {this.comment,
-      this.iD,
+      this.id,
       this.price,
       this.sort_no,
       this.uid,
@@ -38,7 +38,7 @@ class MasterCate {
   factory MasterCate.fromJson(Map<String, dynamic> json) {
     return MasterCate(
       comment: json['comment'],
-      iD: json['iD'],
+      id: json['id'],
       price: json['price'],
       sort_no: json['sort_no'],
       uid: json['uid'],
@@ -50,7 +50,7 @@ class MasterCate {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['comment'] = this.comment;
-    data['iD'] = this.iD;
+    data['id'] = this.id;
     data['price'] = this.price;
     data['sort_no'] = this.sort_no;
     data['uid'] = this.uid;

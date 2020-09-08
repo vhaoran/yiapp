@@ -4,21 +4,24 @@
 // usage : //大师基本信息
 // ------------------------------------------------------
 class MasterInfo {
+  int iD;
+  int uid;
+  String nick;
+  String icon;
+  String user_code;
+  int enabled;
+
   int bad_rate;
   int best_rate;
-  String created_at;
-  int enabled;
-  int iD;
-  String icon;
   int level;
-  int mid_rate;
-  String nick;
   int order_total;
+  int mid_rate;
   int rate;
+
   String sign_date;
-  int uid;
+  String created_at;
   String update_at;
-  String user_code;
+
   int ver;
 
   MasterInfo(
