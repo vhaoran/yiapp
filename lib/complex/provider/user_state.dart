@@ -36,6 +36,15 @@ class UserInfoState with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  /// 修改出生日期
+  void chBirth(num year, month, day) {
+    _userInfo
+      ..birth_year = year
+      ..birth_month = month
+      ..birth_day = day;
+    notifyListeners();
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
