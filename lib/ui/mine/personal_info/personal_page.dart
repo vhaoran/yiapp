@@ -13,7 +13,7 @@ import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/mine/personal_info/ch_user_name.dart';
+import 'package:yiapp/ui/mine/personal_info/ch_user_nick.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -54,10 +54,10 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         NormalBox(
           title: "昵称",
-          subtitle: _u.user_name,
+          subtitle: _u.nick,
           onTap: () => CusRoutes.push(
             context,
-            ChUserName(user_name: _u.user_name),
+            ChUserNick(nick: _u.nick),
           ),
         ),
         NormalBox(title: "性别", subtitle: CusTool.sex(_u.sex)),

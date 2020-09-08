@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
@@ -10,24 +9,24 @@ import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/7 17:59
-// usage ：修改用户名
+// usage ：修改用户昵称
 // ------------------------------------------------------
 
-class ChUserName extends StatefulWidget {
-  final String user_name;
+class ChUserNick extends StatefulWidget {
+  final String nick;
 
-  ChUserName({this.user_name, Key key}) : super(key: key);
+  ChUserNick({this.nick, Key key}) : super(key: key);
 
   @override
-  _ChUserNameState createState() => _ChUserNameState();
+  _ChUserNickState createState() => _ChUserNickState();
 }
 
-class _ChUserNameState extends State<ChUserName> {
-  String _user_name = "";
+class _ChUserNickState extends State<ChUserNick> {
+  String _nick = "";
 
   @override
   void initState() {
-    _user_name = widget.user_name;
+    _nick = widget.nick;
     super.initState();
   }
 
@@ -53,20 +52,23 @@ class _ChUserNameState extends State<ChUserName> {
           ),
           // 修改昵称输入框
           CusTextField(
-              hintText: "输入昵称",
-              value: _user_name,
-              input: (val) => _user_name = val),
+              hintText: "输入昵称", value: _nick, input: (val) => _nick = val),
           Padding(
-            padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(160)),
+            padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(130)),
             child: Text("限制2-8个字"),
           ),
           CusRaisedBtn(
               text: "修改",
               onPressed: () {
-                print(">>>昵称：$_user_name");
+                print(">>>昵称：$_nick");
               }),
         ],
       ),
     );
+  }
+
+  /// 修改昵称
+  void _doChNick() async {
+    var m = {"nick": _nick};
   }
 }

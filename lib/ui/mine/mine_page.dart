@@ -128,7 +128,7 @@ class _MinePageState extends State<MinePage>
             ],
           )
         : Text(
-            _u?.user_name?.isEmpty ? _u.nick : _u?.user_name, // 用户名
+            _u.nick, // 用户昵称
             style: TextStyle(
               color: t_gray,
               fontSize: Adapt.px(30),
