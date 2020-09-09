@@ -6,9 +6,8 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/ui/mine/personal_info/address/addr_input.dart';
+import 'file:///D:/GitHubManager/yiapp/lib/complex/widgets/flutter/com_input.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -27,7 +26,9 @@ class _AddAddrPageState extends State<AddAddrPage> {
   var _userCtrl = TextEditingController(); // 收件人
   var _mobileCtrl = TextEditingController(); // 手机号
   var _addrCtrl = TextEditingController(); // 地址
-  String _err; // 收件人错误提示信息
+  String _userErr; // 收件人错误提示信息
+  String _mobileErr; // 手机号错误提示信息
+  String _addrErr; // 地址错误信息提示
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +39,16 @@ class _AddAddrPageState extends State<AddAddrPage> {
           FlatButton(
             child: CusText("保存", Colors.orangeAccent, 28),
             onPressed: () {
+              print(">>>输入的手机号：${_mobileCtrl.text}");
               if (!CusRegExp.phone(_mobileCtrl.text)) {
-                _err = "请输入正确的手机号";
-                CusDialog.err(context, title: _err);
-                setState(() {});
+                _mobileErr = "请输入正确的手机号";
+              } else {
+                print(">>>是正确的手机号}");
               }
-              print(">>>是正确的手机号}");
+              if (_userCtrl.text.isEmpty) {
+                _userErr = "收件人不能为空";
+              }
+              setState(() {});
             },
           ),
         ],
@@ -55,9 +60,24 @@ class _AddAddrPageState extends State<AddAddrPage> {
 
   Widget _lv() {
     return ListView(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
+      physics: BouncingScrollPhysics(),
       children: <Widget>[
-        _userInput(), // 收货人
-        _mobileInput(), // 手机号
+        SizedBox(height: Adapt.px(100)),
+        ComTextField(
+          controller: _userCtrl,
+          hintText: "收件人",
+          errorText: _userErr,
+          autofocus: true,
+          spacing: 30,
+        ),
+        ComTextField(
+          controller: _mobileCtrl,
+          hintText: "手机号码",
+          maxLength: 11,
+          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+          errorText: _mobileErr,
+        ),
         SizedBox(height: Adapt.px(100)),
       ],
     );
@@ -91,7 +111,7 @@ class _AddAddrPageState extends State<AddAddrPage> {
           border: InputBorder.none,
         ),
         onChanged: (val) {
-          if (_err != null) _err = null;
+          if (_mobileErr != null) _mobileErr = null;
           setState(() {});
         },
       ),
@@ -110,7 +130,7 @@ class _AddAddrPageState extends State<AddAddrPage> {
         decoration: InputDecoration(
           hintText: "收货人",
           hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-          errorText: _err,
+          errorText: _mobileErr,
           contentPadding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
           counterText: "",
           suffix: _userCtrl.text.isNotEmpty && _userCtrl.text.length < 11
@@ -126,7 +146,7 @@ class _AddAddrPageState extends State<AddAddrPage> {
           border: InputBorder.none,
         ),
         onChanged: (val) {
-          if (_err != null) _err = null;
+          if (_mobileErr != null) _mobileErr = null;
           setState(() {});
         },
       ),
