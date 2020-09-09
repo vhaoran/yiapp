@@ -10,6 +10,12 @@ import 'package:yiapp/model/pays/business.dart';
 
 import 'api_base.dart';
 
+// ------------------------------------------------------
+// author: whr    除本人外请勿更改，如果确有必要，请征得本人同意
+// date  : 2020/9/9 10:15
+// usage : 支付帐号及对帐单
+//
+// ------------------------------------------------------
 class ApiAccount {
   //设置用户支付帐号，新增或修改均用此方法
   static Future<Account> accountSet(Map<String, dynamic> m) async {
