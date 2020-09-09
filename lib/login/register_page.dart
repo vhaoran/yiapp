@@ -15,7 +15,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_login.dart';
-import 'package:yiapp/service/api/api_user.dart';
+import '../service/api/api_user.dart';
 import 'login_page.dart';
 
 // ------------------------------------------------------

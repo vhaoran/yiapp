@@ -14,7 +14,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/api/api_user.dart';
+import '../../../service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/personal_info/address/user_address.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
