@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   var _mobileCon = TextEditingController(); // 登录手机号
   var _pwdCon = TextEditingController(); // 鸿运密码
   bool _waiting = false; // 是否在过渡状态
-  String _userErr; // 非手机号错误提示
+  String _mobileErr; // 非手机号错误提示
   String _pwdErr; // 密码错误提示
   String _wx_code = ""; // 微信code
   var _future;
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {});
       }
     } else {
-      _userErr = "账号不存在";
+      _mobileErr = "账号不存在";
       setState(() {});
     }
   }
@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           hintText: "请输入手机号",
           hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-          errorText: _userErr,
+          errorText: _mobileErr,
           errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
           counterText: '',
           suffixIcon: _mobileCon.text.isNotEmpty && _mobileCon.text.length < 11
@@ -182,8 +182,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         onChanged: (value) {
-          if (_userErr != null) {
-            _userErr = null;
+          if (_mobileErr != null) {
+            _mobileErr = null;
           }
           setState(() {});
         },
@@ -219,8 +219,8 @@ class _LoginPageState extends State<LoginPage> {
         focusedErrorBorder: cusUnderBorder(),
       ),
       onChanged: (value) {
-        if (_userErr != null) {
-          _userErr = null;
+        if (_mobileErr != null) {
+          _mobileErr = null;
         }
         setState(() {});
       },

@@ -144,8 +144,8 @@ class CusDialog {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
-                  top: subTitle == null ? 25 : 10,
-                  bottom: subTitle == null ? 25 : 5),
+                  top: subTitle == null ? 15 : 10,
+                  bottom: subTitle == null ? 15 : 5),
               child: Text(
                 title,
                 style: TextStyle(
