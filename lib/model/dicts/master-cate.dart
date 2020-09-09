@@ -15,7 +15,7 @@ class MasterCate {
   String comment;
 
   //价格
-  double price;
+  num price;
 
   //排序号，决定其在大师页中的显示 顺序
   int sort_no;
@@ -39,10 +39,10 @@ class MasterCate {
     return MasterCate(
       comment: json['comment'],
       id: json['id'],
-      price: json['price'],
-      sort_no: json['sort_no'],
-      uid: json['uid'],
-      yi_cate_id: json['yi_cate_id'],
+      price: json['price'] as num,
+      sort_no: json['sort_no'] as int,
+      uid: json['uid'] as int,
+      yi_cate_id: json['yi_cate_id'] as int,
       yi_cate_name: json['yi_cate_name'],
     );
   }
