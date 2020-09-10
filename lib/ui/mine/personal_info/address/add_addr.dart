@@ -5,9 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/widgets/flutter/com_input.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'file:///D:/GitHubManager/yiapp/lib/complex/widgets/flutter/com_input.dart';
 
 // ------------------------------------------------------
 // author：suxing
