@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
+import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -36,18 +36,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var _mobileCon = TextEditingController(); // 登录手机号
-  var _pwdCon = TextEditingController(); // 鸿运密码
+  var _mobileCtrl = TextEditingController(); // 登录手机号
+  var _pwdCtrl = TextEditingController(); // 鸿运密码
   bool _waiting = false; // 是否在过渡状态
   String _mobileErr; // 非手机号错误提示
   String _pwdErr; // 密码错误提示
-  String _wx_code = ""; // 微信code
   var _future;
 
   @override
   void initState() {
-//    _future = _restore();
-//    _weChatLoginInit();
     super.initState();
   }
 
@@ -76,13 +73,11 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        // 手机号输入框
-        _mobileInput(),
-        // 密码输入框
-        _pwdInput(),
+        SizedBox(height: Adapt.px(100)),
+        ..._inputs(), // 手机号、密码输入框
         // 忘记密码
         Container(
-          padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(80)),
+          padding: EdgeInsets.only(bottom: Adapt.px(80)),
           alignment: Alignment.centerRight,
           child: InkWell(
             child: Text(
@@ -106,22 +101,49 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  List<Widget> _inputs() {
+    return <Widget>[
+      // 手机号输入框
+      CusUnderField(
+        controller: _mobileCtrl,
+        hintText: "请输入手机号",
+        errorText: _mobileErr,
+        keyboardType: TextInputType.phone,
+        maxLength: 11,
+        autofocus: true,
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+      ),
+      // 密码输入框
+      CusUnderField(
+        controller: _pwdCtrl,
+        hintText: "请输入登录密码",
+        errorText: _pwdErr,
+        maxLength: 20,
+      ),
+    ];
+  }
+
   /// 请求登录
   void _doLogin() async {
-    print(">>>_user_code：${_mobileCon.text}");
-    print(">>>_pwd：${_pwdCon.text}");
-    if (_pwdCon.text.isEmpty || _mobileCon.text.isEmpty) {
+    print(">>>_user_code：${_mobileCtrl.text}");
+    print(">>>_pwd：${_pwdCtrl.text}");
+    if (_pwdCtrl.text.isEmpty || _mobileCtrl.text.isEmpty) {
       _pwdErr = "手机号或者密码不能为空";
       setState(() {});
       return;
     }
+    if (!CusRegExp.phone(_mobileCtrl.text)) {
+      _mobileErr = "请输入正确的手机号";
+      setState(() {});
+      return;
+    }
     // 鸿运号是否存在，存在再登录
-    bool exist = await ApiUser.userCodeExist(_mobileCon.text);
+    bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
     if (exist) {
       print(">>>存在该账号");
       var m = {
-        "user_code": _mobileCon.text.trim(),
-        "pwd": _pwdCon.text.trim(),
+        "user_code": _mobileCtrl.text.trim(),
+        "pwd": _pwdCtrl.text.trim(),
         "is_mobile": false,
         "chart_key": "aaaaa",
         "chart_value": "3333",
@@ -130,8 +152,8 @@ class _LoginPageState extends State<LoginPage> {
       try {
         var r = await ApiLogin.login(m);
         if (r != null) {
-          await KV.setStr(kv_user_code, _mobileCon.text);
-          await KV.setStr(kv_pwd, _pwdCon.text);
+          await KV.setStr(kv_user_code, _mobileCtrl.text);
+          await KV.setStr(kv_pwd, _pwdCtrl.text);
           await KV.setStr(kv_jwt, r.jwt);
           await setLoginInfo(r);
           ApiBase.isGuest = false;
@@ -148,83 +170,6 @@ class _LoginPageState extends State<LoginPage> {
       _mobileErr = "账号不存在";
       setState(() {});
     }
-  }
-
-  /// 手机号输入框
-  Widget _mobileInput() {
-    return Padding(
-      padding: EdgeInsets.only(top: Adapt.px(160), bottom: Adapt.px(40)),
-      child: TextField(
-        controller: _mobileCon,
-        keyboardType: TextInputType.phone,
-        maxLength: 11,
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-        autofocus: true,
-        decoration: InputDecoration(
-          hintText: "请输入手机号",
-          hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-          errorText: _mobileErr,
-          errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
-          counterText: '',
-          suffixIcon: _mobileCon.text.isNotEmpty && _mobileCon.text.length < 11
-              ? IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.timesCircle,
-                    size: Adapt.px(32),
-                    color: Colors.white38,
-                  ),
-                  onPressed: () => setState(() => _mobileCon.clear()),
-                )
-              : null,
-          focusedBorder: cusUnderBorder(),
-          errorBorder: cusUnderBorder(),
-          focusedErrorBorder: cusUnderBorder(),
-        ),
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-        onChanged: (value) {
-          if (_mobileErr != null) {
-            _mobileErr = null;
-          }
-          setState(() {});
-        },
-      ),
-    );
-  }
-
-  /// 密码输入框
-  Widget _pwdInput() {
-    return TextField(
-      controller: _pwdCon,
-      keyboardType: TextInputType.text,
-      maxLength: 20,
-      style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-      decoration: InputDecoration(
-        hintText: "请输入登录密码",
-        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-        errorText: _pwdErr,
-        errorStyle: TextStyle(fontSize: Adapt.px(26), color: t_yi),
-        counterText: '',
-        suffixIcon: _pwdCon.text.isNotEmpty && _pwdCon.text.length < 20
-            ? IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.timesCircle,
-                  size: Adapt.px(32),
-                  color: Colors.white38,
-                ),
-                onPressed: () => setState(() => _pwdCon.clear()),
-              )
-            : null,
-        focusedBorder: cusUnderBorder(),
-        errorBorder: cusUnderBorder(),
-        focusedErrorBorder: cusUnderBorder(),
-      ),
-      onChanged: (value) {
-        if (_mobileErr != null) {
-          _mobileErr = null;
-        }
-        setState(() {});
-      },
-    );
   }
 
   /// 忘记密码
@@ -265,8 +210,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _mobileCon.dispose();
-    _pwdCon.dispose();
+    _mobileCtrl.dispose();
+    _pwdCtrl.dispose();
     super.dispose();
   }
 }

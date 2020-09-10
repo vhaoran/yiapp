@@ -12,15 +12,16 @@ import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/small/guest_dialog.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/order_page.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
+
+import 'address/user_addr.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -68,6 +69,14 @@ class _MinePageState extends State<MinePage>
             title: "我的订单",
             onTap: () => CusRoutes.push(context, OrderPage()),
           ),
+        NormalBox(
+          title: "账户与安全",
+          onTap: () => CusRoutes.push(context, AccountSafePage()),
+        ),
+        NormalBox(
+          title: "我的收货地址",
+          onTap: () => CusRoutes.push(context, UserAddressPage()),
+        ),
       ],
     );
   }

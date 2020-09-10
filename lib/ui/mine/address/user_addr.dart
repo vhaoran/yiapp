@@ -5,12 +5,11 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_user.dart';
-import 'package:yiapp/ui/mine/personal_info/address/add_addr.dart';
-import 'package:yiapp/ui/mine/personal_info/address/addr_item.dart';
+import 'package:yiapp/ui/mine/address/add_or_ch.dart';
+import 'package:yiapp/ui/mine/address/addr_item.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,7 +27,6 @@ class UserAddressPage extends StatefulWidget {
 class _UserAddressPageState extends State<UserAddressPage> {
   var _future;
   List<AddressResult> _l; // 地址信息列表
-  int _defId = 0; // 默认收件地址 id
 
   @override
   void initState() {
@@ -41,8 +39,6 @@ class _UserAddressPageState extends State<UserAddressPage> {
     try {
       var res = await ApiUser.userAddrList(ApiBase.uid);
       if (res != null) _l = res;
-      var def = await ApiUser.userAddrGetDefault({});
-      if (def != null) _defId = def.id;
     } catch (e) {
       _l = [];
       print("<<<暂未添加收货地址：$e");
@@ -60,7 +56,9 @@ class _UserAddressPageState extends State<UserAddressPage> {
               "添加新地址",
               style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
             ),
-            onPressed: () => CusRoutes.push(context, AddAddrPage()),
+            onPressed: () => CusRoutes.push(context, AddChAddrPage()).then(
+              (val) => _refresh(),
+            ),
           )
         ],
       ),
@@ -84,7 +82,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
           padding: EdgeInsets.only(top: Adapt.px(10)),
           children: List.generate(
             _l.length,
-            (i) => CusAddrItem(res: _l[i], defId: _defId, onChanged: _refresh),
+            (i) => AddrItem(res: _l[i], onChanged: _refresh),
           ),
         );
       },

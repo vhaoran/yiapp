@@ -91,17 +91,9 @@ class _PickerViewState extends State<PickerView> {
 
   /// 点击确认后的回调
   void _onFirm() {
-//    List<int> l = [
-//      _now.year + _yearIndex,
-//      _monthIndex + 1,
-//      _dayIndex + 1,
-//      _hourIndex,
-//      _minuteIndex
-//    ];
     DateTime dt = DateTime(_now.year + _yearIndex, _monthIndex + 1,
         _dayIndex + 1, _hourIndex, _minuteIndex);
     widget.onConfirm(dt);
-//    widget.onConfirm(dateRes(l, widget.pickMode, widget.resIsString));
     Navigator.pop(context);
   }
 

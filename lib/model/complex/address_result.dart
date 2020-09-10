@@ -10,6 +10,7 @@ class AddressResult {
   String contact_person; // 收件人
   String detail; // 详情地址
   int id; // 收货地址的 id
+  int is_default;
   String mobile;
   String province;
   int uid;
@@ -21,6 +22,7 @@ class AddressResult {
     this.contact_person,
     this.detail,
     this.id,
+    this.is_default,
     this.mobile,
     this.province,
     this.uid,
@@ -34,6 +36,7 @@ class AddressResult {
       contact_person: json['contact_person'],
       detail: json['detail'],
       id: json['id'],
+      is_default: json['is_default'],
       mobile: json['mobile'],
       province: json['province'],
       uid: json['uid'],
@@ -48,6 +51,7 @@ class AddressResult {
     data['contact_person'] = this.contact_person;
     data['detail'] = this.detail;
     data['id'] = this.id;
+    data['is_default'] = this.is_default;
     data['mobile'] = this.mobile;
     data['province'] = this.province;
     data['uid'] = this.uid;

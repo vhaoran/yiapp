@@ -5,7 +5,7 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
+import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import '../../../service/api/api_user.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class _ChUserNickState extends State<ChUserNick> {
             child: Text("昵称"),
           ),
           // 修改昵称输入框
-          CusTextField(
+          CusRectField(
             hintText: "输入昵称",
             value: _nick,
             onChanged: (val) => _nick = val,
