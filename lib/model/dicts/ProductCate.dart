@@ -8,7 +8,7 @@ class Category {
   int id;
   String name;
   String icon;
-  String sort_no;
+  int sort_no;
 
   Category({this.icon, this.id, this.name, this.sort_no});
 
