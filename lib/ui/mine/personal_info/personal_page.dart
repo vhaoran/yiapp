@@ -16,7 +16,7 @@ import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import '../../../service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/mine/personal_info/address/user_address.dart';
+import 'package:yiapp/ui/mine/address/user_addr.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_sex.dart';
@@ -49,7 +49,7 @@ class _PersonalPageState extends State<PersonalPage> {
         physics: BouncingScrollPhysics(),
         children: <Widget>[
           ..._areaTop(), // 头像、昵称、性别、手机号码
-          ..._areaBottom(), // 出生日期、出生地点、退出登录、我的收货地址
+          ..._areaBottom(), // 出生日期、出生地点、退出登录
         ],
       ),
       backgroundColor: primary,
@@ -78,7 +78,7 @@ class _PersonalPageState extends State<PersonalPage> {
     ];
   }
 
-  /// 出生日期、出生地点、退出登录、我的收货地址
+  /// 出生日期、出生地点、退出登录
   List<Widget> _areaBottom() {
     return <Widget>[
       NormalBox(
@@ -88,10 +88,6 @@ class _PersonalPageState extends State<PersonalPage> {
         onTap: _doChBirth,
       ),
       NormalBox(title: "出生地点", subtitle: "${_u.province}省 ${_u.city}市"),
-      NormalBox(
-        title: "我的收货地址",
-        onTap: () => CusRoutes.push(context, UserAddressPage()),
-      ),
       SizedBox(height: Adapt.px(50)),
       SingleTextBox(
         title: "退出登录",

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_user.dart';
+import 'package:yiapp/ui/mine/address/add_or_ch.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -14,14 +16,12 @@ import 'package:yiapp/service/api/api_user.dart';
 // usage ：封装的单个收货地址组件
 // ------------------------------------------------------
 
-class CusAddrItem extends StatelessWidget {
+class AddrItem extends StatelessWidget {
   final AddressResult res;
-  final int defId; // 默认收件地址 id
   final VoidCallback onChanged;
 
-  CusAddrItem({
+  AddrItem({
     this.res,
-    this.defId,
     this.onChanged,
     Key key,
   }) : super(key: key);
@@ -30,7 +30,7 @@ class CusAddrItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _isDefault = res.id == defId ? true : false;
+    _isDefault = res.is_default == 1 ? true : false;
     return Card(
       margin: EdgeInsets.only(bottom: Adapt.px(5)),
       color: fif_primary,
@@ -63,15 +63,16 @@ class CusAddrItem extends StatelessWidget {
       ),
       subtitle: Text(
         res.detail, // 地址详情
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+        style: TextStyle(color: t_gray, fontSize: Adapt.px(26)),
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
       ),
       trailing: InkWell(
         child: CusText("编辑", CusColors.systemGrey2(context), 28),
-        onTap: () {
-          print(">>>点了id:${res.id}");
-        },
+        onTap: () =>
+            CusRoutes.push(context, AddChAddrPage(res: res)).then((val) {
+          if (onChanged != null) onChanged();
+        }),
       ),
       dense: true,
     );
@@ -106,9 +107,9 @@ class CusAddrItem extends StatelessWidget {
         try {
           bool ok = await ApiUser.userAddrRm(m);
           print(">>>删除 id 为 ${res.id}的收件地址结果：$ok");
-          if (ok && onChanged != null) {
+          if (ok) {
             CusToast.toast(context, text: "删除成功");
-            onChanged();
+            if (onChanged != null) onChanged();
           }
         } catch (e) {
           print("<<<移除 id 为 ${res.id}的收件地址出现异常：$e");
@@ -125,9 +126,7 @@ class CusAddrItem extends StatelessWidget {
       print(">>>设置 id 等于 ${res.id}为默认地址的结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "设置成功");
-        if (onChanged != null) {
-          onChanged();
-        }
+        if (onChanged != null) onChanged();
       }
     } catch (e) {
       print("<<<设置 id 等于 ${res.id}为默认地址出现异常：$e");

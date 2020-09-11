@@ -9,10 +9,10 @@ import '../cus_complex.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/7 18:58
-// usage ：自定义输入框
+// usage ：矩形输入框
 // ------------------------------------------------------
 
-class CusTextField extends StatefulWidget {
+class CusRectField extends StatefulWidget {
   final String value; // 外部传入的默认参数
   FnString onChanged;
   VoidCallback callback;
@@ -21,7 +21,7 @@ class CusTextField extends StatefulWidget {
   int maxLength;
   List<TextInputFormatter> inputFormatters;
 
-  CusTextField({
+  CusRectField({
     this.value: "",
     this.onChanged,
     this.callback,
@@ -33,10 +33,10 @@ class CusTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CusTextFieldState createState() => _CusTextFieldState();
+  _CusRectFieldState createState() => _CusRectFieldState();
 }
 
-class _CusTextFieldState extends State<CusTextField> {
+class _CusRectFieldState extends State<CusRectField> {
   String _value = "";
 
   @override

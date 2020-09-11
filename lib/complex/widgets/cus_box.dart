@@ -139,9 +139,15 @@ class _DiffLeveBoxState extends State<DiffLeveBox> {
 class SwitchBox extends StatefulWidget {
   final String title;
   bool status;
+  final Color backgroundColor;
   final FnBool fnBool;
 
-  SwitchBox({@required this.title, this.status = false, this.fnBool});
+  SwitchBox({
+    @required this.title,
+    this.status = false,
+    this.backgroundColor: fif_primary,
+    this.fnBool,
+  });
 
   @override
   _SwitchBoxState createState() => _SwitchBoxState();
@@ -155,7 +161,7 @@ class _SwitchBoxState extends State<SwitchBox> {
       constraints: BoxConstraints(maxHeight: Adapt.px(100)),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       margin: EdgeInsets.only(bottom: Adapt.px(3)),
-      color: CusColors.terSystemBg(context),
+      color: widget.backgroundColor,
       child: _row(widget.title),
     );
   }
@@ -163,7 +169,7 @@ class _SwitchBoxState extends State<SwitchBox> {
   Widget _row(String title) {
     return Row(
       children: <Widget>[
-        Text(title, style: TextStyle(fontSize: Adapt.px(30))),
+        Text(title, style: TextStyle(fontSize: Adapt.px(30), color: t_gray)),
         Spacer(flex: 1),
         CupertinoSwitch(
           value: widget.status,

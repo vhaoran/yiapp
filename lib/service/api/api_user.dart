@@ -22,7 +22,7 @@ class ApiUser {
   static Future<bool> chUserPwd(String old_pwd, new_pwd) async {
     var url = "/yi/user/ChUserPwd";
     var data = {"old_pwd": old_pwd, "new_pwd": new_pwd};
-    return await ApiBase.postValue<bool>(url, data, enableJwt: false);
+    return await ApiBase.postValue<bool>(url, data);
   }
 
   /// 获取用户信息
@@ -50,7 +50,7 @@ class ApiUser {
   static Future<bool> userAddrCh(Map<String, dynamic> m) async {
     var url = "/yi/user/UserAddrCh";
     var data = m;
-    return await ApiBase.postValue<bool>(url, data, enableJwt: false);
+    return await ApiBase.postValue<bool>(url, data);
   }
 
   /// 获取地址列表

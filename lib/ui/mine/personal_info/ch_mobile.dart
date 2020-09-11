@@ -6,7 +6,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text_field.dart';
+import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -55,7 +55,7 @@ class _ChUserMobileState extends State<ChUserMobile> {
             child: Text("手机号"),
           ),
           // 修改手机号输入框
-          CusTextField(
+          CusRectField(
             hintText: "输入新手机号",
             value: _mobile,
             onChanged: (val) => _mobile = val,
