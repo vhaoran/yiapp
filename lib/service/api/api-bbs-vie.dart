@@ -1,4 +1,4 @@
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs-Vie.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 
 import 'api_base.dart';
@@ -9,42 +9,42 @@ import 'api_base.dart';
 // usage : 悬赏贴
 //
 // ------------------------------------------------------
-class ApiBBSPrize {
+class ApiBBSVie {
   static final String pre = "/yi/trade/";
 
   //-----------w悬赏贴分页查询v-------------------------------------
-  static bbsPrizePage(Map<String, dynamic> pb) async {
-    var url = pre + "BBSPrizePage";
-    return await ApiBase.postPage(url, pb, (m) => BBSPrize.fromJson(m));
+  static bbsViePage(Map<String, dynamic> pb) async {
+    var url = pre + "BBSViePage";
+    return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
   }
 
   //-----------悬赏贴   历史 ---分页查询v-------------------------------------
-  static bbsPrizeHisPage(Map<String, dynamic> pb) async {
-    var url = pre + "BBSPrizeHisPage";
-    return await ApiBase.postPage(url, pb, (m) => BBSPrize.fromJson(m));
+  static bbsVieHisPage(Map<String, dynamic> pb) async {
+    var url = pre + "BBSVieHisPage";
+    return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
   }
 
 //-----------w单个悬赏贴get v-------------------------------------
-  static Future<BBSPrize> bbsPrizeGet(String id) async {
-    var url = pre + "BBSPrizeGet";
+  static Future<BBSVie> bbsVieGet(String id) async {
+    var url = pre + "BBSVieGet";
     var data = {"id": id};
     return await ApiBase.postObj(url, data, (m) {
-      return BBSPrize.fromJson(m);
+      return BBSVie.fromJson(m);
     }, enableJwt: true);
   }
 
   //-----------单个悬赏历史 get v-------------------------------------
-  static Future<BBSPrize> bbsPrizeHisGet(String id) async {
-    var url = pre + "BBSPrizeHisGet";
+  static Future<BBSVie> bbsVieHisGet(String id) async {
+    var url = pre + "BBSVieHisGet";
     var data = {"id": id};
     return await ApiBase.postObj(url, data, (m) {
-      return BBSPrize.fromJson(m);
+      return BBSVie.fromJson(m);
     }, enableJwt: true);
   }
 
 //-----------w查询贴子中所有的回复内容v-------------------------------------
-  static Future<List<BBSReply>> bbsPrizeReplyList(String id) async {
-    var url = pre + "BBSPrizeReplyList";
+  static Future<List<BBSReply>> bbsVieReplyList(String id) async {
+    var url = pre + "BBSVieReplyList";
     var data = {
       "id": id,
     };
@@ -55,24 +55,41 @@ class ApiBBSPrize {
   }
 
 //-----------w发布悬赏贴--用户使用v-------------------------------------
-  static Future<BBSPrize> bbsPrizeAdd(Map<String, dynamic> m) async {
-    var url = pre + "BBSPrizeAdd";
+  static Future<BBSVie> bbsVieAdd(Map<String, dynamic> m) async {
+    var url = pre + "BBSVieAdd";
     var data = m;
     return await ApiBase.postObj(url, data, (m) {
-      return BBSPrize.fromJson(m);
+      return BBSVie.fromJson(m);
     }, enableJwt: true);
   }
 
 //-----------w取消 悬赏贴v----在没有人回复的情况下---------------------------------
-  static Future<bool> bbsPrizeCancel(String id) async {
-    var url = pre + "BBSPrizeCancel";
+  static Future<bool> bbsVieCancel(String id) async {
+    var url = pre + "BBSVieCancel";
     var data = {"id": id};
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
   //-----------w悬赏贴打赏,兑现分值v-------------------------------------
-  static Future<bool> bbsPrizeDue(Map<String, dynamic> m) async {
-    var url = pre + "BBSPrizeDue";
+  static Future<bool> bbsVieDue(Map<String, dynamic> m) async {
+    var url = pre + "BBSVieDue";
+    var data = m;
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  //-------抢单--------------------
+  static Future<BBSVie> bbsVieAim(String id) async {
+    var url = pre + "BBSVieAim";
+    var data = {"id": id};
+    return await ApiBase.postObj(url, data, (m) {
+      return BBSVie.fromJson(m);
+    }, enableJwt: true);
+  }
+
+  //-----------w回贴-------------------------------------
+  //------------------------------------------------
+  static Future<bool> bbsVieReply(Map<String, dynamic> m) async {
+    var url = pre + "BBSVieReply";
     var data = m;
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
