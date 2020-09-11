@@ -54,7 +54,7 @@ class CusTime {
     return dayStr + earthStr;
   }
 
-  /// 大写的月日，如 六月二十四
+  /// 大写、小写的月日，如大写 六月廿四，小写 六月二十四
   static String capitalMd({DateTime dateTime, bool lower = false}) {
     var date = Lunar.fromDate(dateTime ?? DateTime.now());
     String month = date.monthInChinese;

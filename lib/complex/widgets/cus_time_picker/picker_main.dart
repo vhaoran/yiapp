@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/complex/class/cus_date_time.dart';
+import 'package:yiapp/complex/const/const_calendar.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_template.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_header.dart';
@@ -69,15 +71,19 @@ class _PickerViewState extends State<PickerView> {
   DateTime _lastDt; // 上一次回调的时间
   bool _isScroll = false; // 如果是手动滚动，不要触发onChange
   bool _isLunar = false; // 是否阴历，默认false，
+  bool _isZhouYi = false; // 是否为周易日历
   Timer _timer; // 定时器
 
   @override
   void initState() {
+    _isZhouYi = widget.pickMode == PickerMode.zhou_yi;
+
     // 获取每个日期索引
     _yearIndex = widget.current.year - _now.year;
     _monthIndex = widget.current.month - 1;
     _dayIndex = widget.current.day - 1;
-    _hourIndex = widget.current.hour;
+    // 如果是周易日历，小时下标默认为 11:00-12:59 午时
+    _hourIndex = _isZhouYi ? 6 : widget.current.hour;
     _minuteIndex = widget.current.minute;
 
     // 监听滚动偏移
@@ -91,9 +97,18 @@ class _PickerViewState extends State<PickerView> {
 
   /// 点击确认后的回调
   void _onFirm() {
-    DateTime dt = DateTime(_now.year + _yearIndex, _monthIndex + 1,
-        _dayIndex + 1, _hourIndex, _minuteIndex);
-    widget.onConfirm(dt);
+    int year = _now.year + _yearIndex;
+    // 普通格式
+    DateTime dt = DateTime(
+        year, _monthIndex + 1, _dayIndex + 1, _hourIndex, _minuteIndex);
+    // 周易格式 hour 代表时辰，如午时
+    CusDateTime cusDt;
+    if (_isZhouYi) {
+      Lunar t = Lunar.fromDate(dt);
+      String hour = YiData.old_times[_hourIndex].substring(14);
+      cusDt = CusDateTime(year, t.month, t.day, _hourIndex, hour);
+    }
+    widget.onConfirm(_isZhouYi ? cusDt : dt);
     Navigator.pop(context);
   }
 
@@ -121,7 +136,7 @@ class _PickerViewState extends State<PickerView> {
   /// 根据传入的模式动态展示选择器
   List<Widget> _dynamicPicker(PickerMode mode) {
     List<Widget> l = [];
-    // 显示 年
+    // 是否显示 年
     if (!(mode == PickerMode.hour_minute || mode == PickerMode.month_day)) {
       l.add(PickerTemplate(
         pickView: widget,
@@ -131,20 +146,20 @@ class _PickerViewState extends State<PickerView> {
         fnSelectStr: _fnSelectYear,
       ));
     }
-    // 显示 月
+    // 是否显示 月
     if (!(mode == PickerMode.hour_minute || mode == PickerMode.year)) {
       l.add(PickerTemplate(
         pickView: widget,
         scrollCtrl: _monthCtrl,
         onScrollEnd: _changeDate,
         onScrolling: _changeMonth,
-        fnSelectStr: __fnSelectMonth,
+        fnSelectStr: _fnSelectMonth,
       ));
     }
-    // 显示 日
-    if (mode == PickerMode.month_day ||
-        mode == PickerMode.date ||
-        mode == PickerMode.full) {
+    // 是否显示 日
+    if (!(mode == PickerMode.year ||
+        mode == PickerMode.year_month ||
+        mode == PickerMode.hour_minute)) {
       l.add(PickerTemplate(
         pickView: widget,
         scrollCtrl: _dayCtrl,
@@ -153,24 +168,28 @@ class _PickerViewState extends State<PickerView> {
         fnSelectStr: _fnSelectDay,
       ));
     }
-    // 显示 时
+    // 是否显示 时
+    if (mode == PickerMode.hour_minute ||
+        mode == PickerMode.full ||
+        mode == PickerMode.zhou_yi) {
+      l.add(PickerTemplate(
+        pickView: widget,
+        scrollCtrl: _hourCtrl,
+        onScrollEnd: _changeDate,
+        onScrolling: _changeHour,
+        fnSelectStr: _isZhouYi ? _fnSelectZhouYi : _fnSelectHour,
+        flex: _isZhouYi ? 2 : 1,
+      ));
+    }
+    // 是否显示 分
     if (mode == PickerMode.hour_minute || mode == PickerMode.full) {
-      l.addAll([
-        PickerTemplate(
-          pickView: widget,
-          scrollCtrl: _hourCtrl,
-          onScrollEnd: _changeDate,
-          onScrolling: _changeHour,
-          fnSelectStr: __fnSelectHour,
-        ),
-        PickerTemplate(
-          pickView: widget,
-          scrollCtrl: _minuteCtrl,
-          onScrollEnd: _changeDate,
-          onScrolling: _changeMinute,
-          fnSelectStr: _fnSelectMinute,
-        ),
-      ]);
+      l.add(PickerTemplate(
+        pickView: widget,
+        scrollCtrl: _minuteCtrl,
+        onScrollEnd: _changeDate,
+        onScrolling: _changeMinute,
+        fnSelectStr: _fnSelectMinute,
+      ));
     }
     return l;
   }
@@ -206,7 +225,7 @@ class _PickerViewState extends State<PickerView> {
   }
 
   /// 设置月份
-  String __fnSelectMonth(int index) {
+  String _fnSelectMonth(int index) {
     if (index >= 0 && index <= 11) {
       int monthIndex = index + 1;
       DateTime nowDate = DateTime(_now.year + _yearIndex, monthIndex);
@@ -267,8 +286,16 @@ class _PickerViewState extends State<PickerView> {
     return null;
   }
 
+  /// 设置小时 针对周易日历
+  String _fnSelectZhouYi(int index) {
+    if (index >= 0 && index < YiData.old_times.length) {
+      return YiData.old_times[index];
+    }
+    return null;
+  }
+
   /// 设置小时
-  String __fnSelectHour(int index) {
+  String _fnSelectHour(int index) {
     if (index >= 0 && index < 24) {
       DateTime nowDate = DateTime(
           _now.year + _yearIndex, _monthIndex + 1, _dayIndex + 1, index);
@@ -316,21 +343,12 @@ class _PickerViewState extends State<PickerView> {
     DateTime date = DateTime(_now.year + _yearIndex, _monthIndex + 1,
         _dayIndex + 1, _hourIndex, _minuteIndex);
 
-    List l = [
-      _now.year + _yearIndex,
-      _monthIndex + 1,
-      _dayIndex + 1,
-      _hourIndex,
-      _minuteIndex
-    ];
-
     // 加入定时器，方便取消. 防止触发多次
     _timer?.cancel();
     _timer = Timer(Duration(milliseconds: 5), () {
       if (_lastDt != date && _dayIndex < day && !_isScroll) {
         _lastDt = date;
         widget.onChange(date);
-//        widget.onChange(l);
       }
     });
   }

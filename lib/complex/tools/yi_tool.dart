@@ -1,12 +1,14 @@
+import 'dart:math';
+import 'package:yiapp/complex/class/cus_date_time.dart';
+import 'package:yiapp/complex/class/old_time.dart';
+import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/tools/cus_time.dart';
+
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/2 19:13
 // usage ：周易相关的工具
 // ------------------------------------------------------
-
-import 'dart:math';
-
-import 'package:yiapp/complex/const/const_int.dart';
 
 class YiTool {
   /// 返回抽签数
@@ -26,6 +28,35 @@ class YiTool {
     String hour = "${date.hour}".padLeft(2, "0");
     String minute = "${date.minute}".padLeft(2, "0");
     return "${date.year}年$month月$day日 $hour:$minute";
+  }
+
+  /// 转换格式为类如 2020-09-11
+  static String ymdBar(dynamic date) {
+    String month = "${date.month}".padLeft(2, "0");
+    String day = "${date.day}".padLeft(2, "0");
+    return "${date.year}-$month-$day";
+  }
+
+  /// 将 CusTimeDate 转为 DateTime
+  static DateTime toDateTime(CusDateTime cdt) {
+    DateTime dt = DateTime(cdt.year, cdt.month, cdt.day);
+    return dt;
+  }
+
+  /// 返回格式  公历：2020-09-10 午时
+  static String yangLi(CusDateTime date) {
+    String str = "公历:${YiTool.ymdBar(date)} ${date.hour}";
+    return str;
+  }
+
+  /// 返回格式  阴历
+  static String yinLi(CusDateTime date) {
+    String year = "${date.year}年"; // 2020
+    // 四月廿九
+    String month = "${CusTime.capitalMd(dateTime: YiTool.toDateTime(date))}";
+    String oldTime = "${date.hour}"; // 午时
+    String str = "农历:$year$month $oldTime";
+    return str;
   }
 
   /// 符号，老阴、老阳显示 X 和 O，少阴少阳不显示

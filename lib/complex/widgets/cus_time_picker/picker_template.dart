@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_main.dart';
+import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import '../cus_complex.dart';
 import 'picker_fn.dart';
 
@@ -13,6 +15,7 @@ import 'picker_fn.dart';
 class PickerTemplate extends StatelessWidget {
   final PickerView pickView;
   final ScrollController scrollCtrl;
+  final int flex;
   FnSelectStr fnSelectStr;
   ValueChanged<int> onScrolling;
   ValueChanged<int> onScrollEnd;
@@ -21,6 +24,7 @@ class PickerTemplate extends StatelessWidget {
   PickerTemplate(
       {this.pickView,
       this.scrollCtrl,
+      this.flex: 1,
       this.fnSelectStr,
       this.onScrolling,
       this.onScrollEnd,
@@ -33,6 +37,7 @@ class PickerTemplate extends StatelessWidget {
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: Expanded(
+        flex: flex,
         child: Container(
           padding: EdgeInsets.all(6),
           height: pickView.itemHeight * (pickView.itemCount + 1),
@@ -66,7 +71,8 @@ class PickerTemplate extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     content,
-                    style: TextStyle(fontSize: 18, color: pickView.color),
+                    style: TextStyle(
+                        fontSize: Adapt.px(28), color: pickView.color),
                   ),
                 );
               },
