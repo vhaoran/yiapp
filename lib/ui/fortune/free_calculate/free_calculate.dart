@@ -31,7 +31,7 @@ class _FreeCalculateState extends State<FreeCalculate>
     {"text": "生肖配对", "icon": 0xe6b1, "color": 0xFF78BA3B, "route": zodiac_pair},
     {"text": "血型配对", "icon": 0xe656, "color": 0xFFDE524B, "route": blood_pair},
     {"text": "生日配对", "icon": 0xe728, "color": 0xFF74C1FA, "route": birth_pair},
-    {"text": "阴阳测试", "icon": 0xe615, "color": def_color, "route": "date_demo"},
+    {"text": "阴阳八卦", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "手机号码", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "人体节律", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "指纹吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},

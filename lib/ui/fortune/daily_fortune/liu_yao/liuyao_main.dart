@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -22,7 +23,7 @@ class LiuYaoPage extends StatefulWidget {
 }
 
 class _LiuYaoPageState extends State<LiuYaoPage> {
-  DateTime _guaTime; // 起卦时间
+  YiDateTime _guaTime; // 起卦时间
   int _select = 0; // 选中的哪一个起卦方式
   List<int> _codes = []; // 在线起卦的六爻编码
 
@@ -50,7 +51,7 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
         ),
         // 起卦时间
         LiuYaoTime(
-          pickerTime: (DateTime time) => setState(() => _guaTime = time),
+          pickerTime: (YiDateTime time) => setState(() => _guaTime = time),
           outTime: _guaTime,
         ),
         // 选择起卦方式
@@ -75,7 +76,7 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
       case 0: // 在线起卦
         w = LiuYaoByOnLine(
           l: _codes,
-          guaTime: (DateTime time) => setState(() => _guaTime = time),
+          guaTime: (YiDateTime time) => setState(() => _guaTime = time),
           pickerTime: _guaTime,
         );
         break;

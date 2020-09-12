@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'picker_fn.dart';
 import 'picker_mode.dart';
@@ -31,7 +32,8 @@ class TimePicker {
   final DateTime start; // 开始时间，如 DateTime(2014, 5，14)
   final DateTime end; // 结束时间,目前设置后有问题，后续再改
   final FnDateChanged onChange; // 值发生变化时的回调
-  final FnDateChanged onConfirm; // 点击确认按钮的回调
+  final FnOnConfirm onConfirm;
+  final FnBool isLunar; // 选中的是否为阴历
 
   TimePicker(
     BuildContext context, {
@@ -44,7 +46,7 @@ class TimePicker {
     this.squeeze: 1,
     this.showHeader: true,
     this.showLunar: false,
-    this.padLeft: true,
+    this.padLeft: false,
     this.resIsString: false,
     this.backgroundColor: t_gray,
     this.color: Colors.black,
@@ -54,6 +56,7 @@ class TimePicker {
     this.end,
     this.onChange,
     this.onConfirm,
+    this.isLunar,
   }) {
     if (current != null) {
       if (start != null && current.year < start.year) {
@@ -70,25 +73,27 @@ class TimePicker {
       context,
       backgroundColor: backgroundColor,
       child: PickerView(
-          itemCount: itemCount,
-          itemHeight: itemHeight,
-          minYear: minYear,
-          maxYear: maxYear,
-          factor: factor,
-          offset: offset,
-          squeeze: squeeze,
-          showHeader: showHeader,
-          showLunar: showLunar,
-          resIsString: resIsString,
-          padLeft: padLeft,
-          backgroundColor: backgroundColor,
-          color: color,
-          pickMode: pickMode,
-          current: current,
-          start: start,
-          end: end,
-          onConfirm: onConfirm ?? (date) {},
-          onChange: onChange ?? (date) {}),
+        itemCount: itemCount,
+        itemHeight: itemHeight,
+        minYear: minYear,
+        maxYear: maxYear,
+        factor: factor,
+        offset: offset,
+        squeeze: squeeze,
+        showHeader: showHeader,
+        showLunar: showLunar,
+        resIsString: resIsString,
+        padLeft: padLeft,
+        backgroundColor: backgroundColor,
+        color: color,
+        pickMode: pickMode,
+        current: current,
+        start: start,
+        end: end,
+        onChange: onChange ?? (date) {},
+        onConfirm: onConfirm ?? (date) {},
+        isLunar: isLunar,
+      ),
     );
   }
 

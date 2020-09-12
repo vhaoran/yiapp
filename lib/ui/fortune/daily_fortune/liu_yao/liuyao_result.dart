@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -20,7 +21,7 @@ import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 class LiuYaoResPage extends StatefulWidget {
   final LiuYaoResult res;
   final List<int> l; // 六爻编码
-  final DateTime guaTime;
+  final YiDateTime guaTime;
 
   LiuYaoResPage({
     this.res,
@@ -37,11 +38,11 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
   LiuYaoResult _res;
   _LiuYaoResPageState(this._res);
 
-  String _user_name; // 卦主
+  String _user_nick; // 卦主
 
   @override
   Widget build(BuildContext context) {
-    _user_name = context.watch<UserInfoState>()?.userInfo?.user_name ?? "";
+    _user_nick = context.watch<UserInfoState>()?.userInfo?.nick ?? "";
     return Scaffold(
       appBar: CusAppBar(text: "六爻排盘"),
       body: _lv(),
@@ -59,12 +60,16 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             padding: EdgeInsets.all(Adapt.px(30)),
             children: <Widget>[
               _show("占类", "在线起卦"),
-              _show("卦主", _user_name),
+              _show("卦主", _user_nick),
               _show(
                   "时间",
-                  "公元 ${YiTool.fullDate(
-                    DateTime(riqi.year, riqi.month, riqi.day, riqi.hour,
-                        riqi.minute),
+                  "公元 ${YiTool.fullDateGong(
+                    YiDateTime(
+                        year: riqi.year,
+                        month: riqi.month,
+                        day: riqi.day,
+                        hour: riqi.hour,
+                        minute: riqi.minute),
                   )}"),
               _show(
                 "干支",

@@ -16,11 +16,9 @@ import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import '../../../service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/mine/address/user_addr.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_sex.dart';
-import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing

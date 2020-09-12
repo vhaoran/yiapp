@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/lunar.dart';
-import 'package:yiapp/complex/class/cus_date_time.dart';
+import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_calendar.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_template.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_header.dart';
@@ -35,7 +36,8 @@ class PickerView extends StatefulWidget {
   final DateTime start;
   final DateTime end;
   final FnDateChanged onChange;
-  final FnDateChanged onConfirm;
+  final FnOnConfirm onConfirm;
+  final FnBool isLunar;
 
   PickerView({
     this.itemCount,
@@ -57,6 +59,7 @@ class PickerView extends StatefulWidget {
     this.end,
     this.onChange,
     this.onConfirm,
+    this.isLunar,
   }) : this.current = current == null ? DateTime.now() : current;
 
   @override
@@ -76,7 +79,7 @@ class _PickerViewState extends State<PickerView> {
 
   @override
   void initState() {
-    _isZhouYi = widget.pickMode == PickerMode.zhou_yi;
+    _isZhouYi = widget.pickMode == PickerMode.yi;
 
     // 获取每个日期索引
     _yearIndex = widget.current.year - _now.year;
@@ -96,19 +99,26 @@ class _PickerViewState extends State<PickerView> {
   }
 
   /// 点击确认后的回调
-  void _onFirm() {
+  void _onConfirm() {
     int year = _now.year + _yearIndex;
-    // 普通格式
-    DateTime dt = DateTime(
-        year, _monthIndex + 1, _dayIndex + 1, _hourIndex, _minuteIndex);
-    // 周易格式 hour 代表时辰，如午时
-    CusDateTime cusDt;
-    if (_isZhouYi) {
-      Lunar t = Lunar.fromDate(dt);
-      String hour = YiData.old_times[_hourIndex].substring(14);
-      cusDt = CusDateTime(year, t.month, t.day, _hourIndex, hour);
-    }
-    widget.onConfirm(_isZhouYi ? cusDt : dt);
+    int month = _monthIndex + 1;
+    int day = _dayIndex + 1;
+    // time 是当前选择的阳历时间
+    DateTime time = DateTime(year, month, day, _hourIndex, _minuteIndex);
+    Lunar lunar = Lunar.fromDate(time);
+    YiDateTime yiDt = YiDateTime(
+      year: year,
+      month: _isLunar ? lunar.month : month, // 根据阴阳历选择月
+      day: _isLunar ? lunar.day : day, // 根据阴阳历选择日
+      hour: _hourIndex,
+      minute: _minuteIndex,
+      monthStr: _fnSelectMonth(_monthIndex),
+      dayStr: _fnSelectDay(_dayIndex),
+      // 目前只能周易日历需要显示 hourStr
+      hourStr: _isZhouYi ? YiData.old_times[_hourIndex].substring(14) : null,
+    );
+    YiDateTime res = yiDt.fromPickMode(widget.pickMode);
+    widget.onConfirm(res);
     Navigator.pop(context);
   }
 
@@ -119,9 +129,15 @@ class _PickerViewState extends State<PickerView> {
       children: <Widget>[
         if (widget.showHeader)
           PickerHeader(
-            onFirm: _onFirm,
+            onFirm: _onConfirm,
             showLunar: widget.showLunar,
-            selectLunar: (b) => setState(() => _isLunar = b),
+            selectLunar: (b) {
+              _isLunar = b;
+              if (widget.isLunar != null) {
+                widget.isLunar(b);
+              }
+              setState(() {});
+            },
           ),
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -171,7 +187,7 @@ class _PickerViewState extends State<PickerView> {
     // 是否显示 时
     if (mode == PickerMode.hour_minute ||
         mode == PickerMode.full ||
-        mode == PickerMode.zhou_yi) {
+        mode == PickerMode.yi) {
       l.add(PickerTemplate(
         pickView: widget,
         scrollCtrl: _hourCtrl,

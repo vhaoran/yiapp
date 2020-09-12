@@ -1,6 +1,10 @@
-/// 值发生变化时的回调
-//typedef FnDateChanged(DateTime time);
-typedef FnDateChanged(dynamic time);
+import 'package:yiapp/complex/class/yi_date_time.dart';
+
+/// 普通日历的回调
+typedef FnDateChanged(DateTime time);
+
+/// 点击确定按钮的回调
+typedef FnOnConfirm(YiDateTime time);
 
 /// 根据选择日期的索引显示时间
 typedef String FnSelectStr(int index);

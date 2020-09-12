@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
@@ -13,12 +14,12 @@ import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 // author：suxing
 // date  ：2020/9/4 09:42
 // usage ：起卦时间
-// usage : 阳历显示为 公元 2020年09月04日 09:44
+// usage : 阳历显示为 公历 2020年09月04日 09:44
 // ------------------------------------------------------
 
 class LiuYaoTime extends StatefulWidget {
-  FnDate pickerTime; // 选择器选择的时间
-  DateTime outTime; // 没有点击选择器选择时间，传递进来点击铜钱时的时间
+  FnYiDate pickerTime; // 选择器选择的时间
+  YiDateTime outTime; // 没有点击选择器选择时间，传递进来点击铜钱时的时间
 
   LiuYaoTime({this.pickerTime, this.outTime, Key key}) : super(key: key);
 
@@ -27,8 +28,10 @@ class LiuYaoTime extends StatefulWidget {
 }
 
 class _LiuYaoTimeState extends State<LiuYaoTime> {
-  DateTime _guaTime; // 起卦时间，没选默认现在(outTime)
+  YiDateTime _guaTime; // 起卦时间，没选默认现在(outTime)
   String _guaStr = "可选起卦时间";
+
+  bool _isLunar = false; // 是否选择了阴历
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +62,16 @@ class _LiuYaoTimeState extends State<LiuYaoTime> {
               children: <Widget>[
                 Spacer(),
                 Text(
+                  // TODO 六爻用阴历会报错，这个是否支持阴历(9月12日)
                   widget.outTime == null
                       ? _guaTime == null
                           ? _guaStr
-                          : "公元 ${YiTool.fullDate(_guaTime)}"
-                      : "公元 ${YiTool.fullDate(widget.outTime)}",
+                          : _isLunar
+                              ? "${YiTool.fullDateNong(_guaTime)}"
+                              : "${YiTool.fullDateGong(_guaTime)}"
+                      : _isLunar
+                          ? "${YiTool.fullDateNong(widget.outTime)}"
+                          : "${YiTool.fullDateGong(widget.outTime)}",
                   style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
                 ),
                 Spacer(),
@@ -73,8 +81,11 @@ class _LiuYaoTimeState extends State<LiuYaoTime> {
             onTap: () => TimePicker(
               context,
               pickMode: PickerMode.full,
-              onConfirm: (date) {
-                _guaTime = date;
+              showLunar: true,
+              isLunar: (val) => setState(() => _isLunar = val),
+              onConfirm: (yiDate) {
+                _isLunar = false; // 每次点击重置
+                _guaTime = yiDate;
                 if (widget.pickerTime != null) {
                   widget.pickerTime(_guaTime);
                 }

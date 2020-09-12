@@ -19,5 +19,4 @@ final Map<String, WidgetBuilder> mainRoutes = {
   com_draw: (BuildContext context) => ComDrawPage(), // 共用的免费抽灵签页面
   liu_yao: (BuildContext context) => LiuYaoPage(), // 六爻排盘
   "temp": (BuildContext context) => TempPage(), // 临时页面[待删]
-  "date_demo": (BuildContext context) => DateTimeDemo(), // 阴阳历测试
 };

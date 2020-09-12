@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
+import 'package:yiapp/complex/demo/datetimed_demo.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -77,6 +78,10 @@ class _MinePageState extends State<MinePage>
           title: "我的收货地址",
           onTap: () => CusRoutes.push(context, UserAddressPage()),
         ),
+        NormalBox(
+          title: "demo 测试",
+          onTap: () => CusRoutes.push(context, CusTimePickerDemo()),
+        ),
       ],
     );
   }
@@ -96,7 +101,7 @@ class _MinePageState extends State<MinePage>
           Align(
             alignment: Alignment(0, 0), // 头像
             child: InkWell(
-              child: CusAvatar(url: _u.icon?.substring(16) ?? "", circle: true),
+              child: CusAvatar(url: _u.icon ?? "", circle: true),
               onTap: ApiBase.isGuest
                   ? () => CusToast.toast(context, text: "请先登录")
                   : () => CusRoutes.push(context, PersonalPage()),

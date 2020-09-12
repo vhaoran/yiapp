@@ -10,6 +10,13 @@ class OldTime {
 
   OldTime(this.hour, this.minute);
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hour'] = this.hour;
+    data['minute'] = this.minute;
+    return data;
+  }
+
   /// 根据时辰，返回时分，如 time = "午时"，则 hour:11，minuter统一为30
   factory OldTime.from(String time) {
     int hour;

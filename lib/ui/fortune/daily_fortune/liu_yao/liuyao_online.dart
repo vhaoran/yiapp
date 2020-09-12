@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
@@ -25,8 +27,8 @@ const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)
 
 class LiuYaoByOnLine extends StatefulWidget {
   List<int> l = []; // 六爻编码
-  FnDate guaTime; // 当前点击铜钱的时间，传递给外部的起卦时间
-  DateTime pickerTime; // 如果通过选择器更改了时间，则同步该时间
+  FnYiDate guaTime; // 当前点击铜钱的时间，传递给外部的起卦时间
+  YiDateTime pickerTime; // 如果通过选择器更改了时间，则同步该时间
 
   LiuYaoByOnLine({
     this.l,
@@ -42,7 +44,7 @@ class LiuYaoByOnLine extends StatefulWidget {
 class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   bool _shaking = false; // 是否正在摇卦
   bool _hadShaken = false; // 是否已经摇完6爻
-  DateTime _guaTime;
+  YiDateTime _guaTime;
   String _assets = _bei;
   List<String> _ziBei = []; // 铜钱字背面
   int _sex; // 用户性别
@@ -124,6 +126,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   void _doQiGua() async {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
+    print(">>>guatime.tojson:${_guaTime.toJson()}");
     var m = {
       "year": _guaTime.year,
       "month": _guaTime.month,
@@ -151,8 +154,9 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   void _doShake() {
     _ziBei.clear(); // 清空上一次的数据
     if (_guaTime == null) {
-      _guaTime = DateTime.now();
-      if (widget.guaTime != null) {
+      _guaTime = YiTool.toYiDate(DateTime.now());
+      // 先通过选择器选择时间，再点铜钱，不能去改变选择器的时间，所以加了pickerTime == null
+      if (widget.guaTime != null && widget.pickerTime == null) {
         widget.guaTime(_guaTime);
       }
     }
