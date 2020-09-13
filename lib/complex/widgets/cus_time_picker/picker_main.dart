@@ -80,7 +80,6 @@ class _PickerViewState extends State<PickerView> {
   @override
   void initState() {
     _isZhouYi = widget.pickMode == PickerMode.yi;
-
     // 获取每个日期索引
     _yearIndex = widget.current.year - _now.year;
     _monthIndex = widget.current.month - 1;

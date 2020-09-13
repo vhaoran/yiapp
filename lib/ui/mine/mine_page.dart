@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
-import 'package:yiapp/complex/demo/datetimed_demo.dart';
+import 'package:yiapp/complex/demo/demo_main.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -21,7 +21,6 @@ import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/order_page.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
-
 import 'address/user_addr.dart';
 
 // ------------------------------------------------------
@@ -80,7 +79,7 @@ class _MinePageState extends State<MinePage>
         ),
         NormalBox(
           title: "demo 测试",
-          onTap: () => CusRoutes.push(context, CusTimePickerDemo()),
+          onTap: () => CusRoutes.push(context, CusDemoMain()),
         ),
       ],
     );
@@ -88,6 +87,7 @@ class _MinePageState extends State<MinePage>
 
   /// 用户头像、昵称、背景墙
   Widget _avatarAndMore() {
+    print(">>>这里的图片地址：${_u.icon}");
     return Container(
       height: Adapt.px(bgWallH),
       child: Stack(
