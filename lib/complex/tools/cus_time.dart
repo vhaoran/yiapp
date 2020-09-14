@@ -10,6 +10,11 @@ import 'package:yiapp/complex/const/const_calendar.dart';
 
 /// 转换时间格式 2020-06-06 11:18:24 为指定时间格式
 class CusTime {
+  static String _padLeft(String str) {
+    if (str == null) return "_padLeft 传值为空";
+    return str.padLeft(2, "0");
+  }
+
   /// 获取每个月的天数
   static int dayInMonth(DateTime date) {
     return DateTime(date.year, date.month + 1, 0).day;
@@ -40,9 +45,13 @@ class CusTime {
 
   /// 转换为年月日时分，如 2020年8月6日10:37
   static String ymdhm(String createdAt) {
+    if (createdAt == null) return "2020年01月01日00:00";
     var date = DateTime.parse(createdAt);
-    String minute = date.minute < 10 ? "0${date.minute}" : "${date.minute}";
-    return "${date.year}年${date.month}月${date.day}日${date.hour}:$minute";
+    String month = _padLeft("${date.month}");
+    String day = _padLeft("${date.day}");
+    String hour = _padLeft("${date.hour}");
+    String minute = _padLeft("${date.minute}");
+    return "${date.year}年$month月$day日 $hour:$minute";
   }
 
   /// 根据传入的年份显示天干地支 如 庚子

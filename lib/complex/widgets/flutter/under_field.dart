@@ -26,8 +26,8 @@ class CusUnderField extends StatefulWidget {
   final TextStyle hintStyle;
   final TextStyle errorStyle;
   final Widget suffixIcon;
+  final bool formatter;
   String errorText; // 错误提示
-  List<TextInputFormatter> inputFormatters; // 验证输入类型(黑白名单)
 
   CusUnderField({
     @required this.controller,
@@ -44,7 +44,7 @@ class CusUnderField extends StatefulWidget {
     this.errorStyle,
     this.suffixIcon,
     this.errorText,
-    this.inputFormatters,
+    this.formatter: false,
     Key key,
   }) : super(key: key);
 
@@ -107,7 +107,8 @@ class _CusUnderFieldState extends State<CusUnderField> {
         errorBorder: cusUnderBorder(),
         focusedErrorBorder: cusUnderBorder(),
       ),
-      inputFormatters: widget.inputFormatters,
+      inputFormatters:
+          widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,
       onChanged: (value) {
         if (widget.errorText != null) {
           widget.errorText = null;

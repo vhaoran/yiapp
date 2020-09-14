@@ -113,7 +113,6 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
         hintText: "手机号码",
         errorText: _mobileErr,
         maxLength: 11,
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         fromValue: _isAdd ? null : widget.res.mobile,
       ),
       CusUnderField(

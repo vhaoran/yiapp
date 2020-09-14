@@ -57,15 +57,8 @@ class _ChUserMobileState extends State<ChUserMobile> {
           // 修改手机号输入框
           CusRectField(
             hintText: "输入新手机号",
-            value: _mobile,
-            onChanged: (val) => _mobile = val,
             keyboardType: TextInputType.phone,
             maxLength: 11,
-            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            callback: () {
-              _isMobile = CusRegExp.phone(_mobile);
-              setState(() {});
-            },
           ),
           if (!CusRegExp.phone(_mobile))
             Padding(

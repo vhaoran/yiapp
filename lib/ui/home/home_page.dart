@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         var r = await ApiLogin.login(m);
         if (r != null) {
           await setLoginInfo(r);
-          ApiBase.isGuest = false;
+          ApiState.isGuest = false;
           context.read<UserInfoState>().init(r.user_info);
         }
       } catch (e) {
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         print(">>>测试---游客登录结果：${res.toJson()}");
         if (res != null) {
           await setLoginInfo(res);
-          ApiBase.isGuest = true;
+          ApiState.isGuest = true;
           context.read<UserInfoState>().init(res.user_info);
         }
       } catch (e) {

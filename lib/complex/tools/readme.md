@@ -1,6 +1,7 @@
 ### 工具类
 
 - adapt 屏幕自适应
+- api_state 用户是否是admin,broker等
 - cus_callback 回调函数
 - cus_math 数学运算
 - cus_reg 正则验证

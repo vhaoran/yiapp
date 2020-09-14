@@ -1,5 +1,7 @@
 ### yiapp 功能分类
 
+- admin 后台管理员
+- broker 代理
 - chat 聊天
 - fortune 运势
 - home 首页
