@@ -99,7 +99,8 @@ void main() {
     ApiBase.jwt = "test/15";
 
     Map<String, dynamic> m = {
-      "info": {"uid": 15, "user_code": "14", "icon": "icon14"},
+      "info": {"uid": 15,
+        "user_code": "14", "icon": "icon14"},
       "images": [
         {"image_path": "master13", "sort_no": 1}
       ],

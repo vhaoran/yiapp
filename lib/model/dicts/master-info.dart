@@ -9,6 +9,7 @@ class MasterInfo {
   String nick;
   String icon;
   String user_code;
+  String brief;
   int enabled;
 
   int bad_rate;
@@ -40,6 +41,7 @@ class MasterInfo {
       this.uid,
       this.update_at,
       this.user_code,
+      this.brief,
       this.ver});
 
   factory MasterInfo.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class MasterInfo {
       uid: json['uid'],
       update_at: json['update_at'],
       user_code: json['user_code'],
+      brief: json['brief'],
       ver: json['ver'],
     );
   }
@@ -80,6 +83,7 @@ class MasterInfo {
     data['uid'] = this.uid;
     data['update_at'] = this.update_at;
     data['user_code'] = this.user_code;
+    data['brief'] = this.brief;
     data['ver'] = this.ver;
     return data;
   }
