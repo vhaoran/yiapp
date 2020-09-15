@@ -28,6 +28,9 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
   int _pageNo = 0;
   int _rowsCount = 0;
   var _future;
+  String _dropVal = "全部";
+
+  List<String> _strs = ["全部", "待审核", "已审核", "已拒绝"];
 
   @override
   void initState() {
@@ -62,44 +65,98 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "大师申请审批"),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snap) {
-          if (!snapDone(snap)) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (_l.isEmpty) {
-            return Center(child: CusText("暂时没有大师申请", t_gray, 28));
-          }
-          return _lv();
-        },
+    return DefaultTabController(
+      length: _strs.length,
+      child: Scaffold(
+        appBar: CusAppBar(text: "大师申请审批"),
+        body: FutureBuilder(
+          future: _future,
+          builder: (context, snap) {
+            if (!snapDone(snap)) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (_l.isEmpty) {
+              return Center(child: CusText("暂时没有大师申请", t_gray, 28));
+            }
+            return _lv();
+          },
+        ),
+        backgroundColor: primary,
       ),
-      backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    return EasyRefresh(
-      child: ListView(
-        children: List.generate(
-          _l.length,
-          (i) {
-            var e = _l[i];
-            return ApproveItem(
-              title: e.info.nick,
-              time: e.create_date,
-              brief: e.info.brief,
-              stat: e.stat,
-              onApproval: _doAgree,
-              onCancel: _doRefuse,
-            );
-          },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TabBar(
+          tabs: List.generate(
+            _strs.length,
+            (i) => CusText(_strs[i], t_gray, 28),
+          ),
         ),
-      ),
-      onLoad: () async {
-        await _fetch();
+        _buildButton(),
+        Expanded(
+          child: EasyRefresh(
+            child: TabBarView(
+              children: List.generate(_strs.length, (i) {
+                var e = _l[i];
+                return ApproveItem(
+                  title: e.info.nick,
+                  time: e.create_date,
+                  brief: e.info.brief,
+                  stat: e.stat,
+                  onApproval: _doAgree,
+                  onCancel: _doRefuse,
+                );
+              }),
+            ),
+            onLoad: () async {
+              await _fetch();
+              setState(() {});
+            },
+          ),
+        ),
+//        Expanded(
+//          child: EasyRefresh(
+//            child: ListView(
+//              children: List.generate(
+//                _l.length,
+//                (i) {
+//                  var e = _l[i];
+//                  return ApproveItem(
+//                    title: e.info.nick,
+//                    time: e.create_date,
+//                    brief: e.info.brief,
+//                    stat: e.stat,
+//                    onApproval: _doAgree,
+//                    onCancel: _doRefuse,
+//                  );
+//                },
+//              ),
+//            ),
+//            onLoad: () async {
+//              await _fetch();
+//              setState(() {});
+//            },
+//          ),
+//        ),
+      ],
+    );
+  }
+
+  Widget _buildButton() {
+    return DropdownButton(
+      value: _dropVal,
+      items: [
+        DropdownMenuItem(child: CusText("全部", t_gray, 28), value: "全部"),
+        DropdownMenuItem(child: CusText("待审核", t_gray, 28), value: "待审核"),
+        DropdownMenuItem(child: CusText("已审核", t_gray, 28), value: "已审核"),
+        DropdownMenuItem(child: CusText("已拒绝", t_gray, 28), value: "已拒绝"),
+      ],
+      onChanged: (val) {
+        _dropVal = val;
         setState(() {});
       },
     );
