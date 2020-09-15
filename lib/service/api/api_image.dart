@@ -109,14 +109,14 @@ class ApiImage {
 
   // util/UploadToken
   static Future<String> UploadToken(int expired_hours) async {
-    var url = "/util/UploadToken";
+    var url = "/yi/util/UploadToken";
     var data = {"expired": expired_hours};
     return await ApiBase.postValue<String>(url, data, enableJwt: true);
   }
 
   // VisitURL
   static Future<String> _VisitURL(String key, int expired_hours) async {
-    var url = "/util/VisitURL";
+    var url = "/yi/util/VisitURL";
     var data = {
       "key": key,
       "expired": expired_hours,
