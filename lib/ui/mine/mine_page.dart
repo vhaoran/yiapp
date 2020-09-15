@@ -97,10 +97,10 @@ class _MinePageState extends State<MinePage>
           onTap: () => CusRoutes.push(context, BrokerInfoPage()),
         ),
 //        if (ApiState.isAdmin)
-          NormalBox(
-            title: "后台管理",
-            onTap: () => CusRoutes.push(context, BackstageManage()),
-          ),
+        NormalBox(
+          title: "后台管理",
+          onTap: () => CusRoutes.push(context, BackstageManage()),
+        ),
         NormalBox(
           title: "demo 测试",
           onTap: () => CusRoutes.push(context, CusDemoMain()),
@@ -119,7 +119,7 @@ class _MinePageState extends State<MinePage>
             url: "", // 背景墙
             onTap: ApiState.isGuest
                 ? () => CusToast.toast(context, text: "请先登录")
-                : () => CusBottomSheet(context, fileFn: _selectFile),
+                : () => CusBottomSheet(context, OnFile: _selectFile),
           ),
           Align(
             alignment: Alignment(0, 0), // 头像

@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:yiapp/complex/provider/master_state.dart';
 import 'user_state.dart';
 
 // ------------------------------------------------------
@@ -12,5 +13,7 @@ class CusProvider {
   static List<SingleChildWidget> providers = [
     // 用户个人信息状态管理
     ChangeNotifierProvider(create: (_) => UserInfoState()),
+    // 大师个人信息状态管理
+    ChangeNotifierProvider(create: (_) => MasterInfoState()),
   ];
 }

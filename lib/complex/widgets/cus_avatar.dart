@@ -44,7 +44,11 @@ class CusAvatar extends StatelessWidget {
                   BorderRadius.circular(circle ? borderRadius : size / 4),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                imageUrl: "${ApiImage.thumbnail(url)}",
+                imageUrl: "${ApiImage.thumbnail(
+                  url, // 缩略图头像
+                  width: size.toInt(),
+                  height: size.toInt(),
+                )}",
                 placeholder: (context, url) => _errImage(),
                 errorWidget: (context, url, error) => _errImage(),
               ),

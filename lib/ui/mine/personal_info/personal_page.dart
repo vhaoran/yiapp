@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
@@ -9,11 +10,13 @@ import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/api/api_image.dart';
 import 'package:yiapp/ui/mine/address/user_addr.dart';
 import '../../../service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -61,7 +64,16 @@ class _PersonalPageState extends State<PersonalPage> {
       SizedBox(height: Adapt.px(20)),
       MidWidgetBox(
         title: "头像",
-        child: CusAvatar(url: _u.icon?.substring(16), size: 40, circle: true),
+        child: CusAvatar(url: _u.icon ?? "", size: 40, circle: true),
+        onTap: () => CusBottomSheet(
+          context,
+          OnFile: (file) {
+            if (file != null) {
+              _doChIcon(file);
+              setState(() => {});
+            }
+          },
+        ),
       ),
       NormalBox(
         title: "昵称",
@@ -101,6 +113,24 @@ class _PersonalPageState extends State<PersonalPage> {
         }),
       ),
     ];
+  }
+
+  /// 修改头像地址
+  void _doChIcon(File file) async {
+    try {
+      String key = await ApiImage.uploadQiniu(file);
+      String url = await ApiImage.GetVisitURL(key);
+      print(">>>这里的key是：$key,url是：$url");
+      var m = {"icon": url};
+      bool ok = await ApiUser.ChUserInfo(m);
+      if (ok) {
+        print(">>>修改头像成功");
+        context.read<UserInfoState>().chIcon(url);
+        CusToast.toast(context, text: "修改成功");
+      }
+    } catch (e) {
+      print("<<<修改用户头像出现异常：$e");
+    }
   }
 
   /// 修改出生日期

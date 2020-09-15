@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/master/com_approve.dart';
 import 'package:yiapp/model/dicts/master-apply.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -25,12 +26,11 @@ class MasterApplyHisPage extends StatefulWidget {
 
 class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
   List<MasterInfoApply> _l = []; // 大师申请全记录
+  List<String> _tabs = ["全部", "待审核", "已审核", "已拒绝"];
   int _pageNo = 0;
   int _rowsCount = 0;
+  final int _count = 50; // 默认每页查询个数
   var _future;
-  String _dropVal = "全部";
-
-  List<String> _strs = ["全部", "待审核", "已审核", "已拒绝"];
 
   @override
   void initState() {
@@ -40,11 +40,11 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
 
   /// 分页获取数据
   _fetch() async {
-    if (_pageNo * 20 > _rowsCount) return; // 默认每页查询20条
+    if (_pageNo * _count > _rowsCount) return; // 默认每页查询20条
     _pageNo++;
     var m = {
       "page_no": _pageNo,
-      "rows_per_page": 20,
+      "rows_per_page": _count,
     };
     try {
       PageBean pb = await ApiMaster.masterInfoApplyPage(m);
@@ -66,7 +66,7 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _strs.length,
+      length: _tabs.length,
       child: Scaffold(
         appBar: CusAppBar(text: "大师申请审批"),
         body: FutureBuilder(
@@ -91,84 +91,62 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
+          indicatorWeight: Adapt.px(6),
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: t_primary,
+          labelPadding: EdgeInsets.all(Adapt.px(8)),
+          labelColor: t_primary,
+          unselectedLabelColor: t_gray,
           tabs: List.generate(
-            _strs.length,
-            (i) => CusText(_strs[i], t_gray, 28),
+            _tabs.length,
+            (i) => CusText(_tabs[i], t_gray, 28),
           ),
         ),
-        _buildButton(),
+        SizedBox(height: Adapt.px(15)),
         Expanded(
-          child: EasyRefresh(
-            child: TabBarView(
-              children: List.generate(_strs.length, (i) {
-                var e = _l[i];
-                return ApproveItem(
-                  title: e.info.nick,
-                  time: e.create_date,
-                  brief: e.info.brief,
-                  stat: e.stat,
-                  onApproval: _doAgree,
-                  onCancel: _doRefuse,
-                );
-              }),
-            ),
-            onLoad: () async {
-              await _fetch();
-              setState(() {});
-            },
+          child: TabBarView(
+            children: List.generate(_tabs.length, (i) {
+              bool isAll = i == 0; // 是否为全部分类
+              List myList = [];
+              myList = isAll ? _l : _l.where((e) => e.stat == i - 1).toList();
+              return ApproveItem(
+                l: myList,
+                isAll: isAll,
+                onApproval: _doDeal,
+                onCancel: _doDeal,
+                onLoad: () async {
+                  await _fetch();
+                  setState(() {});
+                },
+              );
+            }),
           ),
         ),
-//        Expanded(
-//          child: EasyRefresh(
-//            child: ListView(
-//              children: List.generate(
-//                _l.length,
-//                (i) {
-//                  var e = _l[i];
-//                  return ApproveItem(
-//                    title: e.info.nick,
-//                    time: e.create_date,
-//                    brief: e.info.brief,
-//                    stat: e.stat,
-//                    onApproval: _doAgree,
-//                    onCancel: _doRefuse,
-//                  );
-//                },
-//              ),
-//            ),
-//            onLoad: () async {
-//              await _fetch();
-//              setState(() {});
-//            },
-//          ),
-//        ),
       ],
     );
   }
 
-  Widget _buildButton() {
-    return DropdownButton(
-      value: _dropVal,
-      items: [
-        DropdownMenuItem(child: CusText("全部", t_gray, 28), value: "全部"),
-        DropdownMenuItem(child: CusText("待审核", t_gray, 28), value: "待审核"),
-        DropdownMenuItem(child: CusText("已审核", t_gray, 28), value: "已审核"),
-        DropdownMenuItem(child: CusText("已拒绝", t_gray, 28), value: "已拒绝"),
-      ],
-      onChanged: (val) {
-        _dropVal = val;
-        setState(() {});
-      },
-    );
+  /// 同意或者拒绝申请
+  void _doDeal(MasterInfoApply e, int stat) async {
+    if (e == null || stat == null) return;
+    bool pass = stat == 1;
+    try {
+      bool ok = await ApiMaster.masterInfoApplyAudit(e.id, stat);
+      print(">>>${pass ? '' : '拒绝'}大师申请结果：$ok");
+      if (ok) {
+        CusToast.toast(context, text: pass ? "已通过审批" : "已拒绝申请");
+        _reset();
+      }
+    } catch (e) {
+      print("<<<同意大师申请出现异常：$e");
+    }
   }
 
-  /// 同意申请
-  void _doAgree() async {
-    print(">>>点了同意");
-  }
-
-  /// 拒绝申请
-  void _doRefuse() async {
-    print(">>>点了拒绝");
+  // 重置数据
+  void _reset() async {
+    _pageNo = _rowsCount = 0;
+    _l.clear();
+    await _fetch();
+    setState(() {});
   }
 }

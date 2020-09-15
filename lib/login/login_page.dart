@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/service/api/api-master.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -158,6 +162,7 @@ class _LoginPageState extends State<LoginPage> {
           ApiState.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
+          if (ApiState.isMaster) _fetchMaster();
           print(">>>登录成功");
         }
       } catch (e) {
@@ -205,6 +210,18 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  /// 如果是大师，获取大师基本资料
+  _fetchMaster() async {
+    try {
+      MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
+      if (res != null) {
+        context.read<MasterInfoState>().init(res);
+      }
+    } catch (e) {
+      print("<<<获取大师个人信息出现异常：$e");
+    }
   }
 
   @override

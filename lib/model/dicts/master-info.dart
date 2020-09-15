@@ -4,7 +4,7 @@
 // usage : //大师基本信息
 // ------------------------------------------------------
 class MasterInfo {
-  int iD;
+  int id;
   int uid;
   String nick;
   String icon;
@@ -30,7 +30,7 @@ class MasterInfo {
       this.best_rate,
       this.created_at,
       this.enabled,
-      this.iD,
+      this.id,
       this.icon,
       this.level,
       this.mid_rate,
@@ -50,7 +50,7 @@ class MasterInfo {
       best_rate: json['best_rate'],
       created_at: json['created_at'],
       enabled: json['enabled'],
-      iD: json['iD'],
+      id: json['id'],
       icon: json['icon'],
       level: json['level'],
       mid_rate: json['mid_rate'],
@@ -72,7 +72,7 @@ class MasterInfo {
     data['best_rate'] = this.best_rate;
     data['created_at'] = this.created_at;
     data['enabled'] = this.enabled;
-    data['iD'] = this.iD;
+    data['id'] = this.id;
     data['icon'] = this.icon;
     data['level'] = this.level;
     data['mid_rate'] = this.mid_rate;

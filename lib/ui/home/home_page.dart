@@ -4,10 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
+import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
+import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/login/login_utils.dart';
@@ -85,6 +88,7 @@ class _HomePageState extends State<HomePage> {
           await setLoginInfo(r);
           ApiState.isGuest = false;
           context.read<UserInfoState>().init(r.user_info);
+          if (ApiState.isMaster) _fetchMaster();
         }
       } catch (e) {
         print("<<<自动登录出现异常：$e");
@@ -98,6 +102,7 @@ class _HomePageState extends State<HomePage> {
           await setLoginInfo(res);
           ApiState.isGuest = true;
           context.read<UserInfoState>().init(res.user_info);
+          if (ApiState.isMaster) _fetchMaster();
         }
       } catch (e) {
         print("<<<测试---游客登录异常：$e");
@@ -159,6 +164,18 @@ class _HomePageState extends State<HomePage> {
       _curIndex = i;
       setState(() {});
       _pc.jumpToPage(_curIndex);
+    }
+  }
+
+  /// 如果是大师，获取大师基本资料
+  _fetchMaster() async {
+    try {
+      MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
+      if (res != null) {
+        context.read<MasterInfoState>().init(res);
+      }
+    } catch (e) {
+      print("<<<获取大师个人信息出现异常：$e");
     }
   }
 

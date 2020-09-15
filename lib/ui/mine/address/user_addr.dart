@@ -5,6 +5,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_user.dart';
@@ -75,7 +76,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: Text("暂未添加收货地址"));
+          return Center(child: CusText("暂未添加收货地址", t_gray, 30));
         }
         return ListView(
           physics: BouncingScrollPhysics(),
