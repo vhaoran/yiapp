@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -111,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
         keyboardType: TextInputType.phone,
         maxLength: 11,
         autofocus: true,
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       ),
       // 密码输入框
       CusUnderField(
@@ -156,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
           await KV.setStr(kv_pwd, _pwdCtrl.text);
           await KV.setStr(kv_jwt, r.jwt);
           await setLoginInfo(r);
-          ApiBase.isGuest = false;
+          ApiState.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
           print(">>>登录成功");

@@ -26,11 +26,10 @@ class ChUserNick extends StatefulWidget {
 }
 
 class _ChUserNickState extends State<ChUserNick> {
-  String _nick = "";
+  var _nickCtrl = TextEditingController();
 
   @override
   void initState() {
-    _nick = widget.nick;
     super.initState();
   }
 
@@ -56,9 +55,9 @@ class _ChUserNickState extends State<ChUserNick> {
           ),
           // 修改昵称输入框
           CusRectField(
+            controller: _nickCtrl,
+            fromValue: widget.nick,
             hintText: "输入昵称",
-            value: _nick,
-            onChanged: (val) => _nick = val,
             maxLength: 8,
           ),
           Padding(
@@ -77,12 +76,12 @@ class _ChUserNickState extends State<ChUserNick> {
     return CusRaisedBtn(
       text: "修改",
       onPressed: () async {
-        var m = {"nick": _nick};
+        var m = {"nick": _nickCtrl.text};
         try {
           bool ok = await ApiUser.ChUserInfo(m);
           print(">>>修改用户昵称结果：$ok");
           if (ok) {
-            context.read<UserInfoState>().chNick(_nick);
+            context.read<UserInfoState>().chNick(_nickCtrl.text);
             CusToast.toast(context, text: "修改成功");
             Navigator.pop(context);
           }

@@ -23,6 +23,7 @@ class _ComDialog {
   VoidCallback onApproval; // 同意按钮事件
   VoidCallback onCancel; // 取消按钮事件
   Widget child; // 按钮上面的组件
+  bool barrierDismissible;
 
   _ComDialog(
     BuildContext context, {
@@ -36,10 +37,11 @@ class _ComDialog {
     this.onApproval,
     this.onCancel,
     this.child,
+    this.barrierDismissible: false,
   }) {
     showDialog<Null>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
         return _dialogCtr(context);
       },
@@ -179,6 +181,7 @@ class CusDialog {
       Color titleCo,
       Color agreeCo,
       Color cancelCo,
+      bool barrierDismissible,
       VoidCallback onApproval,
       VoidCallback onCancel}) {
     _ComDialog(
@@ -188,7 +191,8 @@ class CusDialog {
       agreeCo: agreeCo ?? Colors.lightBlue,
       cancelCo: cancelCo,
       onApproval: onApproval,
-      onCancel: () {},
+      barrierDismissible: barrierDismissible,
+      onCancel: onCancel,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 15),

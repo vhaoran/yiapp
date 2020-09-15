@@ -19,7 +19,11 @@ class CusText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(color: color, fontSize: Adapt.px(fontSize)),
+      style: TextStyle(
+        color: color,
+        fontSize: Adapt.px(fontSize),
+      ),
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

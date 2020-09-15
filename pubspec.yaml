@@ -22,6 +22,8 @@ dependencies:
   shared_preferences: ^0.5.8
   # 获取系统权限
   permission_handler: ^5.0.1+1
+  # 下拉刷新、上拉加载
+  flutter_easyrefresh: ^2.1.5
   # a___for model json
   json_annotation: ^3.0.1
   #

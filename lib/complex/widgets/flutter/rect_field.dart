@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import '../cus_complex.dart';
 
 // ------------------------------------------------------
@@ -13,22 +13,28 @@ import '../cus_complex.dart';
 // ------------------------------------------------------
 
 class CusRectField extends StatefulWidget {
-  final String value; // 外部传入的默认参数
-  FnString onChanged;
-  VoidCallback callback;
+  final TextEditingController controller;
+  final String fromValue; // 初始值文字
   final String hintText;
+  final int maxLength;
+  final int maxLines;
+  final bool formatter;
+  final bool autofocus;
+  final double pdHor;
+  String errorText; // 错误提示
   TextInputType keyboardType;
-  int maxLength;
-  List<TextInputFormatter> inputFormatters;
 
   CusRectField({
-    this.value: "",
-    this.onChanged,
-    this.callback,
-    this.hintText: "默认内容",
+    @required this.controller,
+    this.fromValue: "",
+    this.hintText: "",
+    this.maxLength: -1,
+    this.maxLines: 1,
+    this.formatter: false,
+    this.autofocus: true,
+    this.pdHor: 30,
+    this.errorText,
     this.keyboardType: TextInputType.text,
-    this.maxLength: 18,
-    this.inputFormatters: null,
     Key key,
   }) : super(key: key);
 
@@ -37,54 +43,61 @@ class CusRectField extends StatefulWidget {
 }
 
 class _CusRectFieldState extends State<CusRectField> {
-  String _value = "";
-
   @override
   void initState() {
-    _value = widget.value;
+    widget.controller.text = widget.fromValue;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: fif_primary,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: TextField(
-        autofocus: true,
-        keyboardType: widget.keyboardType,
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-        maxLength: widget.maxLength,
-        controller: TextEditingController.fromValue(
-          TextEditingValue(
-            text: _value,
-            selection: TextSelection.fromPosition(
-              TextPosition(offset: _value.length), // 光标移动到最后
-            ),
-          ), // 设置默认内容
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: fif_primary,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: _input(),
         ),
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-          contentPadding: EdgeInsets.only(left: Adapt.px(30)),
-          counterText: "",
-          border: cusOutlineBorder(),
-          focusedBorder: cusOutlineBorder(color: Colors.white24),
-          errorBorder: cusOutlineBorder(color: Colors.red),
-        ),
-        onChanged: (val) {
-          _value = val;
-          if (widget.onChanged != null) {
-            widget.onChanged(_value);
-          }
-          if (widget.callback != null) {
-            widget.callback();
-          }
-        },
-        inputFormatters: widget.inputFormatters,
+        if (widget.errorText != null)
+          Padding(
+            padding: EdgeInsets.only(top: Adapt.px(15)),
+            child: CusText(widget.errorText, t_yi, 28),
+          ),
+      ],
+    );
+  }
+
+  /// 输入框
+  Widget _input() {
+    return TextField(
+      autofocus: widget.autofocus,
+      keyboardType: widget.keyboardType,
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+      maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      controller: widget.controller,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+        contentPadding:
+            EdgeInsets.symmetric(horizontal: Adapt.px(widget.pdHor)),
+        counterText: "",
+        border: cusOutlineBorder(),
+        focusedBorder: cusOutlineBorder(color: Colors.white24),
+        errorBorder: cusOutlineBorder(color: Colors.white24),
+        focusedErrorBorder: cusOutlineBorder(color: Colors.white24),
       ),
+      onChanged: (val) {
+        if (widget.errorText != null) {
+          widget.errorText = null;
+        }
+        setState(() {});
+      },
+      inputFormatters:
+          widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,
     );
   }
 }

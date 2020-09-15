@@ -7,6 +7,7 @@ import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/demo/demo_main.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
@@ -18,10 +19,14 @@ import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/master/backstage_manage.dart';
+import 'package:yiapp/ui/broker/broker_apply.dart';
+import 'package:yiapp/ui/broker/broker_info_page.dart';
+import 'package:yiapp/ui/master/master_apply.dart';
+import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/order_page.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
-import 'address/user_addr.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -64,7 +69,7 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
-        if (!ApiBase.isGuest)
+        if (!ApiState.isGuest)
           NormalBox(
             title: "我的订单",
             onTap: () => CusRoutes.push(context, OrderPage()),
@@ -73,10 +78,29 @@ class _MinePageState extends State<MinePage>
           title: "账户与安全",
           onTap: () => CusRoutes.push(context, AccountSafePage()),
         ),
+//        if (!ApiState.isMaster)
         NormalBox(
-          title: "我的收货地址",
-          onTap: () => CusRoutes.push(context, UserAddressPage()),
+          title: "大师申请",
+          onTap: () => CusRoutes.push(context, ApplyMasterPage()),
         ),
+//        if (ApiState.isMaster)
+        NormalBox(
+          title: "大师信息",
+          onTap: () => CusRoutes.push(context, MasterInfoPage()),
+        ),
+        NormalBox(
+          title: "代理申请",
+          onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
+        ),
+        NormalBox(
+          title: "代理信息",
+          onTap: () => CusRoutes.push(context, BrokerInfoPage()),
+        ),
+//        if (ApiState.isAdmin)
+          NormalBox(
+            title: "后台管理",
+            onTap: () => CusRoutes.push(context, BackstageManage()),
+          ),
         NormalBox(
           title: "demo 测试",
           onTap: () => CusRoutes.push(context, CusDemoMain()),
@@ -87,14 +111,13 @@ class _MinePageState extends State<MinePage>
 
   /// 用户头像、昵称、背景墙
   Widget _avatarAndMore() {
-    print(">>>这里的图片地址：${_u.icon}");
     return Container(
       height: Adapt.px(bgWallH),
       child: Stack(
         children: <Widget>[
           BackgroundWall(
             url: "", // 背景墙
-            onTap: ApiBase.isGuest
+            onTap: ApiState.isGuest
                 ? () => CusToast.toast(context, text: "请先登录")
                 : () => CusBottomSheet(context, fileFn: _selectFile),
           ),
@@ -102,7 +125,7 @@ class _MinePageState extends State<MinePage>
             alignment: Alignment(0, 0), // 头像
             child: InkWell(
               child: CusAvatar(url: _u.icon ?? "", circle: true),
-              onTap: ApiBase.isGuest
+              onTap: ApiState.isGuest
                   ? () => CusToast.toast(context, text: "请先登录")
                   : () => CusRoutes.push(context, PersonalPage()),
             ),
@@ -119,7 +142,7 @@ class _MinePageState extends State<MinePage>
   /// 已登录显示用户名，未登录则显示登录丨注册
   Widget _userCodeCt() {
     TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
-    return ApiBase.isGuest
+    return ApiState.isGuest
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
