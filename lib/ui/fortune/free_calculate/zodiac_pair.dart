@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:yiapp/complex/const/const_calendar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
@@ -70,7 +71,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
                 onTap: () => PairDialog(context,
                     sex: male,
                     groupValue: _maleZodiac,
-                    l: YiData.zodiacs,
+                    l: c_zodiacs,
                     fnPair: _zodiacCall),
               ),
               Padding(
@@ -82,7 +83,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
                   onTap: () => PairDialog(context,
                       sex: female,
                       groupValue: _femaleZodiac,
-                      l: YiData.zodiacs,
+                      l: c_zodiacs,
                       fnPair: _zodiacCall),
                 ),
               )

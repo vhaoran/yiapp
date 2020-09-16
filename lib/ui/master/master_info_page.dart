@@ -1,21 +1,27 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/cus_box.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
-import 'package:provider/provider.dart';
 import 'package:yiapp/service/api/api-master.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_image.dart';
-import 'package:yiapp/ui/master/ch_master_nick.dart';
 import 'package:yiapp/ui/master/master_service.dart';
+import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -31,47 +37,120 @@ class MasterInfoPage extends StatefulWidget {
 }
 
 class _MasterInfoPageState extends State<MasterInfoPage> {
-  MasterInfo _m;
+  MasterInfo _m; // 大师个人信息
+  List<MasterImages> _l; // 大师图片列表
+  List<String> _tabs = ["主页", "大师服务"];
+  var _future;
+
+  @override
+  void initState() {
+    _future = _fetch();
+    super.initState();
+  }
+
+  /// 获取大师图片列表
+  _fetch() async {
+    try {
+      var res = await ApiMaster.masterImageList(ApiBase.uid);
+      print(">>>大师第一张图片列表：${res.first.toJson()}");
+      if (res != null) _l = res;
+    } catch (e) {
+      _l = [];
+      print("<<<获取大师图片列表出现异常，是否暂未添加：$e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     _m = context.watch<MasterInfoState>()?.masterInfo ?? MasterInfo();
-    return Scaffold(
-      appBar: CusAppBar(text: '大师信息'),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: _lv(),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, snap) {
+              if (!snapDone(snap)) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return _co();
+            }),
+        backgroundColor: primary,
       ),
-      backgroundColor: primary,
     );
   }
 
-  List<Widget> _lv() {
-    return <Widget>[
-      SizedBox(height: Adapt.px(20)),
-      MidWidgetBox(
-        title: "头像",
-        child: CusAvatar(url: _m.icon ?? "", size: 40, circle: true),
-        onTap: () => CusBottomSheet(context, OnFile: (file) {
-          if (file != null) {
-            _doChIcon(file);
-            setState(() => {});
-          }
-        }),
-      ),
-      NormalBox(
-        title: "昵称",
-        subtitle: _m.nick,
-        onTap: () => CusRoutes.push(
-          context,
-          ChMasterNick(nick: _m.nick, id: _m.id),
+  Widget _co() {
+    return Column(
+      children: <Widget>[
+        _masterInfo(), // 大师背景墙、头像、昵称
+        // 大师主页、服务
+        TabBar(
+          indicatorWeight: Adapt.px(6),
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: t_yi,
+          labelPadding: EdgeInsets.all(Adapt.px(8)),
+          labelColor: t_yi,
+          unselectedLabelColor: t_gray,
+          tabs: List.generate(
+            _tabs.length,
+            (i) => CusText(_tabs[i], t_primary, 28),
+          ),
         ),
+        Expanded(
+          flex: 1,
+          child: TabBarView(
+            children: <Widget>[
+              Text("主页"),
+              MasterServicePage(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 大师背景墙、头像、昵称
+  Widget _masterInfo() {
+    return Container(
+      height: Adapt.px(bgWallH),
+      child: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          BackgroundWall(url: ""), // 背景墙
+          if (ApiState.isMaster)
+            Align(
+              alignment: Alignment(-0.95, -0.8), // 返回按钮
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          Align(
+            alignment: Alignment(0, 0), // 头像
+            child: InkWell(
+              child: CusAvatar(url: _m.icon ?? "", circle: true),
+              onTap: ApiState.isMaster
+                  ? () => CusBottomSheet(context, OnFile: (file) {
+                        if (file != null) {
+                          _doChIcon(file);
+                          setState(() => {});
+                        }
+                      })
+                  : null,
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, 0.75),
+            child: InkWell(
+              child: CusText(_m.nick, t_primary, 28),
+              onTap: ApiState.isMaster
+                  ? () => CusRoutes.push(context, ChUserNick(nick: _m.nick))
+                  : null,
+            ),
+          ),
+        ],
       ),
-      NormalBox(
-        title: "服务",
-        onTap: () => CusRoutes.push(context, MasterServicePage()),
-      ),
-    ];
+    );
   }
 
   /// 修改大师头像地址

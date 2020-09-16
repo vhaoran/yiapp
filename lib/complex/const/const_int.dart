@@ -14,6 +14,19 @@ const int shao_yang = 1; // 少阳 1背2字 3/8 概率
 const int lao_yin = 2; // 老阴 3字 1/8 概率
 const int lao_yang = 3; // 老阳 3面 1/8 概率
 
+// ----------------------- 大师服务 -----------------------
+const int ming_yun = 1; // 性格命运分析
+const int shi_ye = 2; // 事业
+const int hun_yin = 3; // 婚姻
+const int cai_yun = 4; // 财运
+const int jian_kang = 5; // 健康
+const int shou_xiang = 6; // 手相
+const int mian_xiang = 7; // 面向
+const int mo_gu = 8; // 摸骨
+const int qi_ming = 9; // 起名
+const int hun_jia = 10; // 婚丧嫁娶吉日
+const int he_hun = 11; // 合婚
+
 // ------------------------- 时辰 ------------------------
 const int zao_zi = 0; // 早子
 const int chou_shi = 1; // 丑时

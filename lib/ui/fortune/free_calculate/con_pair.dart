@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:yiapp/complex/const/const_calendar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
@@ -70,7 +71,7 @@ class _ConPairPageState extends State<ConPairPage> {
                 onTap: () => PairDialog(context,
                     sex: male,
                     groupValue: _maleCon,
-                    l: YiData.cons,
+                    l: c_constellation,
                     fnPair: _conCall),
               ),
               Padding(
@@ -82,7 +83,7 @@ class _ConPairPageState extends State<ConPairPage> {
                   onTap: () => PairDialog(context,
                       sex: female,
                       groupValue: _femaleCon,
-                      l: YiData.cons,
+                      l: c_constellation,
                       fnPair: _conCall),
                 ),
               )

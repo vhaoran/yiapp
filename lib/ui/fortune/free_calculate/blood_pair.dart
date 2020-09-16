@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yiapp/complex/const/const_calendar.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
@@ -72,7 +72,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
                 onTap: () => PairDialog(context,
                     sex: male,
                     groupValue: _maleBlood,
-                    l: YiData.bloods,
+                    l: c_bloods,
                     fnPair: _bloodCall),
               ),
               Padding(
@@ -84,7 +84,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
                   onTap: () => PairDialog(context,
                       sex: female,
                       groupValue: _femaleBlood,
-                      l: YiData.bloods,
+                      l: c_bloods,
                       fnPair: _bloodCall),
                 ),
               )

@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/const/const_calendar.dart';
+import 'package:yiapp/complex/const/const_list.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -58,8 +59,8 @@ class CusTime {
   static String zodiac(int year) {
     int day = (year - 3) % 10; // 天干
     int earth = (year - 3) % 12; // 地支
-    String dayStr = YiData.day_stem[day];
-    String earthStr = YiData.earth_branch[earth];
+    String dayStr = c_day_stem[day];
+    String earthStr = c_earth_branch[earth];
     return dayStr + earthStr;
   }
 

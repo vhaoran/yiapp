@@ -13,25 +13,27 @@ import '../cus_complex.dart';
 // ------------------------------------------------------
 
 class CusRectField extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController controller; // 可为空
   final String fromValue; // 初始值文字
   final String hintText;
   final int maxLength;
   final int maxLines;
   final bool formatter;
   final bool autofocus;
+  final bool enable;
   final double pdHor;
   String errorText; // 错误提示
   TextInputType keyboardType;
 
   CusRectField({
-    @required this.controller,
+    this.controller,
     this.fromValue: "",
     this.hintText: "",
     this.maxLength: -1,
     this.maxLines: 1,
     this.formatter: false,
     this.autofocus: true,
+    this.enable: true,
     this.pdHor: 30,
     this.errorText,
     this.keyboardType: TextInputType.text,
@@ -45,7 +47,7 @@ class CusRectField extends StatefulWidget {
 class _CusRectFieldState extends State<CusRectField> {
   @override
   void initState() {
-    widget.controller.text = widget.fromValue;
+    widget.controller?.text = widget.fromValue;
     super.initState();
   }
 
@@ -74,6 +76,7 @@ class _CusRectFieldState extends State<CusRectField> {
   Widget _input() {
     return TextField(
       autofocus: widget.autofocus,
+      enabled: widget.enable,
       keyboardType: widget.keyboardType,
       style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
       maxLength: widget.maxLength,
@@ -82,8 +85,8 @@ class _CusRectFieldState extends State<CusRectField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: Adapt.px(widget.pdHor)),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
         counterText: "",
         border: cusOutlineBorder(),
         focusedBorder: cusOutlineBorder(color: Colors.white24),

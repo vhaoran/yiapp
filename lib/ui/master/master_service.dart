@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/master/cus_service.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/master/addChServicePage.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -22,7 +26,8 @@ class MasterServicePage extends StatefulWidget {
   _MasterServicePageState createState() => _MasterServicePageState();
 }
 
-class _MasterServicePageState extends State<MasterServicePage> {
+class _MasterServicePageState extends State<MasterServicePage>
+    with AutomaticKeepAliveClientMixin {
   var _future;
   List<MasterCate> _l; // 获取大师项目列表
 
@@ -35,7 +40,6 @@ class _MasterServicePageState extends State<MasterServicePage> {
   _fetch() async {
     try {
       var res = await ApiMaster.masterItemList(ApiBase.uid);
-      print(">>>第一个大师项目列表数据：${res.first.toJson()}");
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
@@ -45,41 +49,79 @@ class _MasterServicePageState extends State<MasterServicePage> {
 
   @override
   Widget build(BuildContext context) {
-    List.from([1,3]);
-    return Scaffold(
-      appBar: CusAppBar(
-        text: "大师服务",
-        actions: <Widget>[
-          FlatButton(
-            child: Text(
-              "添加新服务",
-              style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-            ),
-//            onPressed: () => CusRoutes.push(context, AddChAddrPage()).then(
-//              (val) => _refresh(),
-//            ),
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, snap) {
-            if (!snapDone(snap)) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (_l.isEmpty) {
-              return Center(child: CusText("暂未添加项目", t_gray, 30));
-            }
-            return _lv();
-          }),
-      backgroundColor: primary,
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (!snapDone(snap)) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (_l.isEmpty) {
+          return Center(child: CusText("暂未添加项目", t_gray, 30));
+        }
+        return _co();
+      },
     );
   }
 
-  Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+  Widget _co() {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 10),
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: List.generate(
+              _l.length,
+              (i) => CusService(
+                m: _l[i],
+                onRm: _doRm,
+                onChange: (m) =>
+                    CusRoutes.push(context, AddChServicePage(res: m)).then(
+                  (val) => _refresh(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        CusRaisedBtn(
+          text: "添加服务",
+          minWidth: double.infinity,
+          backgroundColor: fif_primary,
+          pdVer: 20,
+          onPressed: () => CusRoutes.push(context, AddChServicePage()).then(
+            (val) => _refresh(),
+          ),
+        ),
+      ],
     );
   }
+
+  /// 移除服务项目
+  void _doRm(MasterCate m) {
+    if (m == null) return;
+    CusDialog.err(
+      context,
+      title: "确认移除该服务项目吗 ?",
+      onApproval: () async {
+        try {
+          bool ok = await ApiMaster.masterItemRm(m.id);
+          print(">>>移除大师项目结果：$ok");
+          if (ok) {
+            CusToast.toast(context, text: "移除成功");
+            _refresh();
+          }
+        } catch (e) {
+          print("<<<移除大师服务项目出现异常：$e");
+        }
+      },
+    );
+  }
+
+  void _refresh() async {
+    await _fetch();
+    setState(() {});
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

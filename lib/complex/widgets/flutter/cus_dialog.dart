@@ -191,7 +191,7 @@ class CusDialog {
       agreeCo: agreeCo ?? Colors.lightBlue,
       cancelCo: cancelCo,
       onApproval: onApproval,
-      barrierDismissible: barrierDismissible,
+      barrierDismissible: barrierDismissible ?? false,
       onCancel: onCancel,
       child: Container(
         alignment: Alignment.center,

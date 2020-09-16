@@ -5,7 +5,7 @@ import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'master_list.dart';
+import '../../complex/widgets/master/master_list.dart';
 
 // ------------------------------------------------------
 // author：suxing

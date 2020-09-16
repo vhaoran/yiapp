@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_calendar.dart';
+import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_template.dart';
@@ -114,7 +115,7 @@ class _PickerViewState extends State<PickerView> {
       monthStr: _fnSelectMonth(_monthIndex),
       dayStr: _fnSelectDay(_dayIndex),
       // 目前只能周易日历需要显示 hourStr
-      hourStr: _isZhouYi ? YiData.old_times[_hourIndex].substring(14) : null,
+      hourStr: _isZhouYi ? c_old_times[_hourIndex].substring(14) : null,
     );
     YiDateTime res = yiDt.fromPickMode(widget.pickMode);
     widget.onConfirm(res);
@@ -303,8 +304,8 @@ class _PickerViewState extends State<PickerView> {
 
   /// 设置小时 针对周易日历
   String _fnSelectZhouYi(int index) {
-    if (index >= 0 && index < YiData.old_times.length) {
-      return YiData.old_times[index];
+    if (index >= 0 && index < c_old_times.length) {
+      return c_old_times[index];
     }
     return null;
   }
