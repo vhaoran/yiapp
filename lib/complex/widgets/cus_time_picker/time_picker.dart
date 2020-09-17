@@ -60,11 +60,11 @@ class TimePicker {
   }) {
     if (current != null) {
       if (start != null && current.year < start.year) {
-        CusDialog.tip(context, title: "当前年份不能小于开始年份", agreeCo: Colors.red);
+        CusDialog.tip(context, title: "当前年份不能小于开始年份", agreeColor: Colors.red);
         return;
       }
       if (end != null && current.year > end.year) {
-        CusDialog.tip(context, title: "当前年份不能大于结束年份", agreeCo: Colors.red);
+        CusDialog.tip(context, title: "当前年份不能大于结束年份", agreeColor: Colors.red);
         return;
       }
     }

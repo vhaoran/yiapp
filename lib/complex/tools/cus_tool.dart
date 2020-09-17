@@ -4,8 +4,11 @@
 // usage ：自定义混合工具类
 // ------------------------------------------------------
 
+import 'dart:io';
+
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/service/api/api_image.dart';
 
 class CusTool {
   /// 处理性别
@@ -45,6 +48,17 @@ class CusTool {
       return data.padLeft(2, "0");
     }
     return "转换格式异常";
+  }
+
+  static Future<String> fileUrl(File file) async {
+    String url = "";
+    try {
+      String key = await ApiImage.uploadQiniu(file);
+      url = await ApiImage.GetVisitURL(key);
+    } catch (e) {
+      print("<<<出现异常：$e");
+    }
+    return url;
   }
 }
 

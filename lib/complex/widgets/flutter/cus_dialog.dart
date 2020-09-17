@@ -17,9 +17,9 @@ class _ComDialog {
   String subTitle;
   String textAgree; // 确定按钮名称
   String textCancel; // 取消按钮名称
-  Color titleCo; // 提示内容颜色
-  Color agreeCo; // 同意按钮颜色
-  Color cancelCo; // 取消按钮颜色
+  Color titleColor; // 提示内容颜色
+  Color agreeColor; // 同意按钮颜色
+  Color cancelColor; // 取消按钮颜色
   VoidCallback onApproval; // 同意按钮事件
   VoidCallback onCancel; // 取消按钮事件
   Widget child; // 按钮上面的组件
@@ -31,9 +31,9 @@ class _ComDialog {
     this.subTitle,
     this.textAgree = '确定',
     this.textCancel = '取消',
-    this.titleCo,
-    this.agreeCo,
-    this.cancelCo,
+    this.titleColor,
+    this.agreeColor,
+    this.cancelColor,
     this.onApproval,
     this.onCancel,
     this.child,
@@ -63,7 +63,7 @@ class _ComDialog {
                   if (onCancel != null) ...[
                     Expanded(
                         child: _buildBtn(context, onCancel, textCancel,
-                            color: cancelCo ?? CusColors.label(context))),
+                            color: cancelColor ?? CusColors.label(context))),
                     Container(
                       width: 1,
                       height: 40,
@@ -79,7 +79,7 @@ class _ComDialog {
                   ],
                   Expanded(
                     child: _buildBtn(context, onApproval ?? () {}, textAgree,
-                        color: agreeCo ?? CusColors.systemRed(context)),
+                        color: agreeColor ?? CusColors.systemRed(context)),
                   ),
                 ],
               ),
@@ -126,17 +126,17 @@ class CusDialog {
       String subTitle,
       String textAgree,
       String textCancel,
-      Color titleCo,
-      Color agreeCo,
-      Color cancelCo,
+      Color titleColor,
+      Color agreeColor,
+      Color cancelColor,
       VoidCallback onApproval,
       VoidCallback onCancel}) {
     _ComDialog(
       context,
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
-      agreeCo: agreeCo,
-      cancelCo: cancelCo,
+      agreeColor: agreeColor,
+      cancelColor: cancelColor,
       onApproval: onApproval,
       onCancel: () {},
       child: Container(
@@ -152,7 +152,7 @@ class CusDialog {
                 title,
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: titleCo,
+                    color: titleColor,
                     fontSize: Adapt.px(34)),
               ),
             ),
@@ -178,9 +178,9 @@ class CusDialog {
       String subTitle,
       String textAgree,
       String textCancel,
-      Color titleCo,
-      Color agreeCo,
-      Color cancelCo,
+      Color titleColor,
+      Color agreeColor,
+      Color cancelColor,
       bool barrierDismissible,
       VoidCallback onApproval,
       VoidCallback onCancel}) {
@@ -188,11 +188,11 @@ class CusDialog {
       context,
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
-      agreeCo: agreeCo ?? Colors.lightBlue,
-      cancelCo: cancelCo,
+      agreeColor: agreeColor ?? Colors.lightBlue,
+      cancelColor: cancelColor,
       onApproval: onApproval,
       barrierDismissible: barrierDismissible ?? false,
-      onCancel: onCancel,
+      onCancel: onCancel ?? () {},
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -206,7 +206,7 @@ class CusDialog {
                 title, // title
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: titleCo,
+                    color: titleColor,
                     fontSize: Adapt.px(34)),
               ),
             ),
@@ -232,15 +232,15 @@ class CusDialog {
       {@required String title,
       String subTitle,
       String textAgree,
-      Color titleCo,
-      Color agreeCo,
+      Color titleColor,
+      Color agreeColor,
       Widget child,
       VoidCallback onApproval}) {
     _ComDialog(
       context,
       onApproval: onApproval,
       textAgree: textAgree ?? "确定",
-      agreeCo: agreeCo ?? Colors.black,
+      agreeColor: agreeColor ?? Colors.black,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(15),
@@ -250,7 +250,7 @@ class CusDialog {
               title,
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: titleCo,
+                  color: titleColor,
                   fontSize: Adapt.px(34)),
             ),
             if (subTitle != null) ...[

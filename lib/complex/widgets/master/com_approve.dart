@@ -85,7 +85,7 @@ class _ApproveItemState extends State<ApproveItem> {
                   widget.onCancel(e, 2);
                 }
               },
-              cancelCo: Colors.red,
+              cancelColor: Colors.red,
               barrierDismissible: true,
             )
           : CusDialog.tip(

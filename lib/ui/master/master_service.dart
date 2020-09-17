@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -66,7 +67,6 @@ class _MasterServicePageState extends State<MasterServicePage>
   Widget _co() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 10),
         Expanded(
           child: ListView(
             physics: BouncingScrollPhysics(),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/service/api/api_image.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -30,7 +31,12 @@ class BackgroundWall extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints.expand(height: Adapt.px(height)),
         child: CachedNetworkImage(
-          imageUrl: url,
+          imageUrl: "${ApiImage.thumbnail(
+            url,
+            height: bgWallH.toInt(),
+            width: (bgWallH + 100).toInt(),
+          )}",
+          fit: boxFit,
           placeholder: (context, url) => _errImage(),
           errorWidget: (context, url, error) => _errImage(),
         ),

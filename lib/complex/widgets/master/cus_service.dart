@@ -129,7 +129,7 @@ class _CusServiceState extends State<CusService> {
       ),
       child: Icon(
         FontAwesomeIcons.fire,
-        color: t_yi,
+        color: Colors.white70,
         size: Adapt.px(80),
       ),
     );

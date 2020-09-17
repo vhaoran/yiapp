@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/const/const_color.dart';
 
 /// 自定义 behavior ，用于取消 ListView 中回弹的蓝色效果
 class CusBehavior extends ScrollBehavior {
