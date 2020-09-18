@@ -10,6 +10,7 @@ Future<bool> setLoginInfo(LoginResult r) async {
   ApiState.isMaster = r.is_master;
   ApiState.isAdmin = r.is_admin;
   ApiState.isBrokerAdmin = r.is_broker_admin;
+  ApiState.isBroker = r.user_info.broker_id > 0 ? true : false;
   // save user_code and pwd
 
   //设置全局的jwt值

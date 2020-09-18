@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -36,7 +37,6 @@ class _ChMasterNickState extends State<ChMasterNick> {
 
   @override
   Widget build(BuildContext context) {
-    print(">>>这里的id:${widget.id}");
     return Scaffold(
       appBar: CusAppBar(text: "修改昵称"),
       body: _lv(),
@@ -88,14 +88,14 @@ class _ChMasterNickState extends State<ChMasterNick> {
     };
     try {
       bool ok = await ApiMaster.masterInfoCh(m);
-      print(">>>修改大师昵称结果：$ok");
+      Debug.log("修改大师昵称结果：$ok");
       if (ok) {
         context.read<MasterInfoState>().chNick(_nickCtrl.text);
         CusToast.toast(context, text: "修改成功");
         Navigator.pop(context);
       }
     } catch (e) {
-      print("<<<修改大师昵称出现异常：$e");
+      Debug.logError("修改大师昵称出现异常：$e");
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
@@ -126,7 +127,6 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   void _doQiGua() async {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
-    print(">>>guatime.tojson:${_guaTime.toJson()}");
     var m = {
       "year": _guaTime.year,
       "month": _guaTime.month,
@@ -138,7 +138,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
     };
     try {
       var res = await ApiYi.liuYaoQiGua(m);
-      print(">>>六爻起卦的数据是：${res.toJson()}");
+      Debug.log("六爻起卦的数据是：${res.toJson()}");
       if (res != null) {
         CusRoutes.pushReplacement(
           context,
@@ -146,7 +146,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
         );
       }
     } catch (e) {
-      print("<<<六爻起卦出现异常：$e");
+      Debug.logError("六爻起卦出现异常：$e");
     }
   }
 

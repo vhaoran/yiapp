@@ -7,6 +7,7 @@ import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/broker/broker_apply_his.dart';
 import 'package:yiapp/ui/master/master_apply_his.dart';
+import 'package:yiapp/ui/master/master_enable.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -35,6 +36,10 @@ class BackstageManage extends StatelessWidget {
         NormalBox(
           title: "代理申请审批",
           onTap: () => CusRoutes.push(context, BrokerApplyHisPage()),
+        ),
+        NormalBox(
+          title: "启用停用大师",
+          onTap: () => CusRoutes.push(context, MasterEnable()),
         ),
       ],
     );

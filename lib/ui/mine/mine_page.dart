@@ -25,6 +25,7 @@ import 'package:yiapp/ui/broker/broker_info_page.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
+import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/order_page.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 
@@ -80,7 +81,7 @@ class _MinePageState extends State<MinePage>
         ),
 //        if (!ApiState.isMaster)
         NormalBox(
-          title: "大师申请",
+          title: "申请大师",
           onTap: () => CusRoutes.push(context, ApplyMasterPage()),
         ),
 //        if (ApiState.isMaster)
@@ -89,7 +90,7 @@ class _MinePageState extends State<MinePage>
           onTap: () => CusRoutes.push(context, MasterInfoPage()),
         ),
         NormalBox(
-          title: "代理申请",
+          title: "申请代理",
           onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
         ),
         NormalBox(
@@ -100,6 +101,10 @@ class _MinePageState extends State<MinePage>
         NormalBox(
           title: "后台管理",
           onTap: () => CusRoutes.push(context, BackstageManage()),
+        ),
+        NormalBox(
+          title: "绑定代理",
+          onTap: () => CusRoutes.push(context, BindSerCodePage()),
         ),
         NormalBox(
           title: "demo 测试",

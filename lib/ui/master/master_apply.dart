@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -30,7 +31,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "大师申请"),
+      appBar: CusAppBar(text: "申请大师"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -87,7 +88,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
           Navigator.pop(context);
         });
       }
-      print("<<<uid为 ${ApiBase.uid} 申请大师出现异常：$e");
+      Debug.logError("uid为 ${ApiBase.uid} 申请大师出现异常：$e");
     }
   }
 }

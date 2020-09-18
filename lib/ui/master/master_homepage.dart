@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -43,7 +44,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
   @override
   void initState() {
     _future = _fetch();
-    print(">>>进了大师主页");
+    Debug.log("进了大师主页");
     super.initState();
   }
 
@@ -238,6 +239,4 @@ class _MasterHomePageState extends State<MasterHomePage> {
       ),
     );
   }
-
-  Widget _commentArea() {}
 }

@@ -5,6 +5,7 @@
 - ch_nick 修改昵称
 - master_apply 申请成为大师
 - master_apply_his 分页查询大师申请记录
+- master_enable 启用停用大师
 - master_homepage 大师主页
 - master_info_page 大师的个人信息
 - master_loops 大师轮播图

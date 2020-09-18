@@ -2,17 +2,18 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
-import 'package:yiapp/service/api/api_image.dart';
 import 'ch_master_nick.dart';
 
 // ------------------------------------------------------
@@ -65,21 +66,20 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
   void _doChIcon(File file) async {
     if (file == null) return;
     try {
-      String key = await ApiImage.uploadQiniu(file);
-      String url = await ApiImage.GetVisitURL(key);
-      print(">>>这里的key是：$key,url是：$url");
+      String url = await CusTool.fileUrl(file);
+      Debug.log("这里的url是：$url");
       var m = {
         "id": widget.m.id,
         "M": {"icon": url}
       };
       bool ok = await ApiMaster.masterInfoCh(m);
       if (ok) {
-        print(">>>修改大师头像成功");
+        Debug.log("修改大师头像成功");
         context.read<MasterInfoState>().chIcon(url);
         CusToast.toast(context, text: "修改成功");
       }
     } catch (e) {
-      print("<<<修改大师头像出现异常：$e");
+      Debug.logError("修改大师头像出现异常：$e");
     }
   }
 }

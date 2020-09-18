@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -73,7 +74,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
         Navigator.pop(context);
       }
     } catch (e) {
-      print("<<<添加大师服务出现异常：$e");
+      Debug.logError("添加大师服务出现异常：$e");
     }
   }
 
@@ -95,7 +96,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
         Navigator.pop(context);
       }
     } catch (e) {
-      print("<<<修改大师服务出现异常：$e");
+      Debug.logError("修改大师服务出现异常：$e");
     }
   }
 

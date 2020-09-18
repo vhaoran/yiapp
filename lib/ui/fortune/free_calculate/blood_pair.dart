@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_list.dart';
@@ -14,7 +15,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_free.dart';
-
 import 'blood_res.dart';
 
 // ------------------------------------------------------
@@ -121,7 +121,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
     try {
       var m = {"male_blood": _maleStr, "female_blood": _femaleStr};
       var res = await ApiFree.bloodMatch(m);
-      print(">>>查询血型配对结果:${res.toJson()}");
+      Debug.log("查询血型配对结果:${res.toJson()}");
       if (res != null) {
         CusRoutes.push(context, BloodResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
@@ -130,7 +130,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
         });
       }
     } catch (e) {
-      print("<<<血型配对出现异常：$e");
+      Debug.logError("血型配对出现异常：$e");
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -114,7 +115,7 @@ class _DailyFortuneState extends State<DailyFortune> {
           );
         },
         onTap: (index) {
-          print(">>>当前点的第${index + 1}张轮播图片");
+          Debug.log("当前点的第${index + 1}张轮播图片");
         },
         autoplay: false, // 自动翻页
         pagination: SwiperPagination(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -25,7 +26,7 @@ class _MasterPageState extends State<MasterPage>
 
   @override
   void initState() {
-    print(">>>进了大师页面");
+    Debug.log("进了大师页面");
     super.initState();
   }
 

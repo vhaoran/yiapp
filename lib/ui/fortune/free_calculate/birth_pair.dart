@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -114,7 +114,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
     };
     try {
       var res = await ApiFree.shengRiMatch(m);
-      print(">>>生日配对结果：${res.toJson()}");
+      Debug.log("生日配对结果：${res.toJson()}");
       if (res != null) {
         CusRoutes.push(context, BirthResPage(res: res)).then((value) {
           _male_month = _male_day = _female_month = _female_day = 0;
@@ -123,7 +123,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
         });
       }
     } catch (e) {
-      print("<<<生日配对出现异常：$e");
+      Debug.logError("生日配对出现异常：$e");
     }
   }
 }

@@ -11,7 +11,11 @@ class CusBottomSheet {
   final double titleSize;
   final Color titleColor;
   final Color backgroundColor;
+  final List<VoidCallback> fnLists;
   FnFile OnFile;
+
+  // 能够调起相册或者摄像头的字段
+  List<String> _l = ["从相册获取", "从相册添加", "拍摄", "替换"];
 
   CusBottomSheet(
     BuildContext context, {
@@ -19,7 +23,8 @@ class CusBottomSheet {
     this.titleSize: 28,
     this.titleColor: Colors.black,
     this.backgroundColor: tipBg,
-    @required this.OnFile,
+    this.fnLists: const [],
+    this.OnFile,
   }) {
     _showBottomSheet(context);
   }
@@ -58,8 +63,11 @@ class CusBottomSheet {
                 textAlign: TextAlign.center,
               ),
               onTap: () {
-                if (title.contains("相册") || title.contains("拍摄")) {
+                if (_l.contains(title)) {
                   _selectImage(context, type: title);
+                }
+                if (fnLists.isNotEmpty && fnLists[i] != null) {
+                  fnLists[i]();
                 }
                 Navigator.pop(context);
               },
@@ -73,15 +81,18 @@ class CusBottomSheet {
 
   Future<File> _selectImage(context, {String type}) async {
     ImageSource source =
-        type.contains("相册") ? ImageSource.gallery : ImageSource.camera;
+        type.contains("拍摄") ? ImageSource.camera : ImageSource.gallery;
 
     final picker = ImagePicker();
     var image = await picker.getImage(source: source);
-    var file = File(image.path);
-    if (file != null) {
-      if (this.OnFile != null) {
-        this.OnFile(file);
+    if (image != null) {
+      var file = File(image.path);
+      if (file != null) {
+        if (this.OnFile != null) {
+          this.OnFile(file);
+        }
       }
     }
+    return null;
   }
 }

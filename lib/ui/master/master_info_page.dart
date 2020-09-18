@@ -41,7 +41,6 @@ class _MasterInfoPageState extends State<MasterInfoPage>
   _fetch() async {
     try {
       var res = await ApiMaster.masterImageList(ApiBase.uid);
-      Debug.log("大师第一张图片列表：${res.first.toJson()}");
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
@@ -72,7 +71,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
                 headerSliverBuilder: (context, bool) => _buildHeader(),
                 body: TabBarView(
                   children: <Widget>[
-                    Center(child: Text("主页")), // 大师主页
+                    Center(child: CusText("主页", t_gray, 32)), // 大师主页
                     MasterServicePage(), // 大师服务
                   ],
                 ),
@@ -123,6 +122,5 @@ class _MasterInfoPageState extends State<MasterInfoPage>
     _l.clear();
     await _fetch();
     setState(() {});
-    print(">>>_l.length:${_l.length}");
   }
 }

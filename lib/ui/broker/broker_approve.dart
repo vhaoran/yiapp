@@ -6,24 +6,24 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/model/dicts/master-apply.dart';
+import 'package:yiapp/model/dicts/broker-apply.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/14 16:56
-// usage ：通用的审批记录组件，如大师、代理
+// date  ：2020/9/18 17:36
+// usage ：代理通用的审批记录组件
 // ------------------------------------------------------
 
-typedef FnMater = void Function(MasterInfoApply master, int stat);
+typedef FnBroker = void Function(BrokerApply master, int stat);
 
-class ApproveItem extends StatefulWidget {
-  final FnMater onApproval;
-  final FnMater onCancel;
+class BrokerApproveItem extends StatefulWidget {
+  final FnBroker onApproval;
+  final FnBroker onCancel;
   final VoidCallback onLoad;
-  final bool isAll;
-  final List<MasterInfoApply> l;
+  final bool isAll; // 是否全部分类
+  final List<BrokerApply> l;
 
-  ApproveItem({
+  BrokerApproveItem({
     this.onApproval,
     this.onCancel,
     this.onLoad,
@@ -33,12 +33,13 @@ class ApproveItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ApproveItemState createState() => _ApproveItemState();
+  _BrokerApproveItemState createState() => _BrokerApproveItemState();
 }
 
-class _ApproveItemState extends State<ApproveItem> {
+class _BrokerApproveItemState extends State<BrokerApproveItem> {
   String _statStr = ""; // 审核状态
   Color _statColor = Colors.grey; // 审核颜色
+
   @override
   Widget build(BuildContext context) {
     return EasyRefresh(
@@ -60,20 +61,21 @@ class _ApproveItemState extends State<ApproveItem> {
     );
   }
 
-  Widget _leftScroll(MasterInfoApply e) {
+  Widget _leftScroll(BrokerApply e) {
     _stat(e);
     return ListTile(
       // 名称
-      title: CusText("${e.info.nick}", t_gray, 30),
+      title: CusText("${e.owner_nick}", t_gray, 30),
       // 时间
-      subtitle: CusText("${CusTime.ymdhm(e.create_date)}", t_gray, 30),
+      subtitle: CusText("${CusTime.ymdhm(e.created_at)}", t_gray, 30),
       // 审核状态
       trailing: CusText(_statStr, _statColor, 28),
       onTap: () => e.stat == 0
           ? CusDialog.normal(
               context,
-              title: e.info.brief.isEmpty ? "大师简介" : e.info.brief,
+              title: e.brief.isEmpty ? "代理简介" : e.brief,
               textAgree: "同意",
+              agreeColor: Colors.black,
               onApproval: () {
                 if (widget.onApproval != null) {
                   widget.onApproval(e, 1);
@@ -90,13 +92,13 @@ class _ApproveItemState extends State<ApproveItem> {
             )
           : CusDialog.tip(
               context,
-              title: e.info.brief.isEmpty ? "大师简介" : e.info.brief,
+              title: e.brief.isEmpty ? "代理简介" : e.brief,
             ),
     );
   }
 
   /// 根据审核状态显示
-  void _stat(MasterInfoApply e) {
+  void _stat(BrokerApply e) {
     switch (e.stat) {
       case 0:
         _statStr = "待审核";

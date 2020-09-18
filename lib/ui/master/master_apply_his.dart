@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/master/com_approve.dart';
+import 'package:yiapp/complex/widgets/master/master_approve.dart';
 import 'package:yiapp/model/dicts/master-apply.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-master.dart';
@@ -51,15 +52,15 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as MasterInfoApply).toList();
 
-      print(">>>总的大师申请记录个数：$_rowsCount");
+      Debug.log("总的大师申请记录个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      print(">>>当前已查询多少条数据：${_l.length}");
+      Debug.log("当前已查询多少条数据：${_l.length}");
     } catch (e) {
-      print("<<<分页查询大师申请记录出现异常：$e");
+      Debug.logError("分页查询大师申请记录出现异常：$e");
     }
   }
 
@@ -109,7 +110,7 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
               bool isAll = i == 0; // 是否为全部分类
               List myList = [];
               myList = isAll ? _l : _l.where((e) => e.stat == i - 1).toList();
-              return ApproveItem(
+              return MasterApproveItem(
                 l: myList,
                 isAll: isAll,
                 onApproval: _doDeal,
@@ -132,13 +133,13 @@ class _MasterApplyHisPageState extends State<MasterApplyHisPage> {
     bool pass = stat == 1;
     try {
       bool ok = await ApiMaster.masterInfoApplyAudit(e.id, stat);
-      print(">>>${pass ? '' : '拒绝'}大师申请结果：$ok");
+      Debug.log("${pass ? '' : '拒绝'}大师申请结果：$ok");
       if (ok) {
         CusToast.toast(context, text: pass ? "已通过审批" : "已拒绝申请");
         _reset();
       }
     } catch (e) {
-      print("<<<同意大师申请出现异常：$e");
+      Debug.logError("同意大师申请出现异常：$e");
     }
   }
 

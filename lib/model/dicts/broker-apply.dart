@@ -7,11 +7,11 @@
 
 class BrokerApply {
   int id;
-  int accountType;
+  int account_type;
   String account_code;
   String brief;
-  int enableMall;
-  int enableMaster;
+  int enable_mall;
+  int enable_master;
   int enabled;
   String icon;
   String name;
@@ -29,12 +29,12 @@ class BrokerApply {
   int ver;
 
   BrokerApply(
-      {this.accountType,
+      {this.account_type,
       this.account_code,
       this.brief,
       this.created_at,
-      this.enableMall,
-      this.enableMaster,
+      this.enable_mall,
+      this.enable_master,
       this.enabled,
       this.icon,
       this.id,
@@ -50,12 +50,12 @@ class BrokerApply {
 
   factory BrokerApply.fromJson(Map<String, dynamic> json) {
     return BrokerApply(
-      accountType: json['accountType'],
+      account_type: json['account_type'],
       account_code: json['account_code'],
       brief: json['brief'],
       created_at: json['created_at'],
-      enableMall: json['enableMall'],
-      enableMaster: json['enableMaster'],
+      enable_mall: json['enable_mall'],
+      enable_master: json['enable_master'],
       enabled: json['enabled'],
       icon: json['icon'],
       id: json['id'],
@@ -73,12 +73,12 @@ class BrokerApply {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['accountType'] = this.accountType;
+    data['account_type'] = this.account_type;
     data['account_code'] = this.account_code;
     data['brief'] = this.brief;
     data['created_at'] = this.created_at;
-    data['enableMall'] = this.enableMall;
-    data['enableMaster'] = this.enableMaster;
+    data['enable_mall'] = this.enable_mall;
+    data['enable_master'] = this.enable_master;
     data['enabled'] = this.enabled;
     data['icon'] = this.icon;
     data['id'] = this.id;

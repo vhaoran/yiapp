@@ -22,6 +22,7 @@ class CusRectField extends StatefulWidget {
   final bool autofocus;
   final bool enable;
   final double pdHor;
+  final double fontSize;
   String errorText; // 错误提示
   TextInputType keyboardType;
 
@@ -35,6 +36,7 @@ class CusRectField extends StatefulWidget {
     this.autofocus: true,
     this.enable: true,
     this.pdHor: 30,
+    this.fontSize: 30,
     this.errorText,
     this.keyboardType: TextInputType.text,
     Key key,
@@ -63,10 +65,10 @@ class _CusRectFieldState extends State<CusRectField> {
           ),
           child: _input(),
         ),
-        if (widget.errorText != null)
+        if (widget.errorText != null) // 错误提示信息
           Padding(
             padding: EdgeInsets.only(top: Adapt.px(15)),
-            child: CusText(widget.errorText, t_yi, 28),
+            child: CusText(widget.errorText, t_yi, widget.fontSize - 2),
           ),
       ],
     );
@@ -78,13 +80,14 @@ class _CusRectFieldState extends State<CusRectField> {
       autofocus: widget.autofocus,
       enabled: widget.enable,
       keyboardType: widget.keyboardType,
-      style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
       maxLength: widget.maxLength,
       maxLines: widget.maxLines,
       controller: widget.controller,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+        hintStyle:
+            TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
         contentPadding: EdgeInsets.symmetric(
             horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
         counterText: "",

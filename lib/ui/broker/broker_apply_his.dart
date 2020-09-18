@@ -1,12 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/model/dicts/broker-apply.dart';
+import 'package:yiapp/model/pagebean.dart';
+import 'package:yiapp/service/api/api-broker.dart';
+import 'package:yiapp/ui/broker/broker_approve.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/14 14:57
-// usage ：分页查询代理申请记录
+// date  ：2020/9/18 17:08
+// usage ：分页查询代理申请记录(含待审核、已审核、已拒绝)
 // ------------------------------------------------------
 
 class BrokerApplyHisPage extends StatefulWidget {
@@ -17,18 +26,124 @@ class BrokerApplyHisPage extends StatefulWidget {
 }
 
 class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
+  List<BrokerApply> _l = []; // 大师申请全记录
+  List<String> _tabs = ["全部", "待审核", "已审核", "已拒绝"];
+  int _pageNo = 0;
+  int _rowsCount = 0;
+  final int _count = 50; // 默认每页查询个数
+  var _future;
+
+  @override
+  void initState() {
+    _future = _fetch();
+    super.initState();
+  }
+
+  /// 分页获取数据
+  _fetch() async {
+    if (_pageNo * _count > _rowsCount) return; // 默认每页查询50条
+    _pageNo++;
+    var m = {"page_no": _pageNo, "rows_per_page": _count};
+    try {
+      PageBean pb = await ApiBroker.brokerApplyPage(m);
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      var l = pb.data.map((e) => e as BrokerApply).toList();
+      Debug.log("总的代理申请记录个数：$_rowsCount");
+      l.forEach((src) {
+        // 在原来的基础上继续添加新的数据
+        var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
+        if (dst == null) _l.add(src);
+      });
+      Debug.log("当前已查询多少条数据：${_l.length}");
+    } catch (e) {
+      Debug.logError("分页查询代理申请记录出现异常：$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "代理申请审批"),
-      body: _lv(),
-      backgroundColor: primary,
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        appBar: CusAppBar(text: "代理申请审批"),
+        body: FutureBuilder(
+          future: _future,
+          builder: (context, snap) {
+            if (!snapDone(snap)) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (_l.isEmpty) {
+              return Center(child: CusText("暂时没有代理申请", t_gray, 28));
+            }
+            return _lv();
+          },
+        ),
+        backgroundColor: primary,
+      ),
     );
   }
 
   Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TabBar(
+          indicatorWeight: Adapt.px(6),
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: t_primary,
+          labelPadding: EdgeInsets.all(Adapt.px(8)),
+          labelColor: t_primary,
+          unselectedLabelColor: t_gray,
+          tabs: List.generate(
+            _tabs.length,
+            (i) => CusText(_tabs[i], t_gray, 28),
+          ),
+        ),
+        SizedBox(height: Adapt.px(15)),
+        Expanded(
+          child: TabBarView(
+            children: List.generate(_tabs.length, (i) {
+              bool isAll = i == 0; // 是否为全部分类
+              List myList = [];
+              myList = isAll ? _l : _l.where((e) => e.stat == i - 1).toList();
+              return BrokerApproveItem(
+                l: myList,
+                isAll: isAll,
+                onApproval: _doDeal,
+                onCancel: _doDeal,
+                onLoad: () async {
+                  await _fetch();
+                  setState(() {});
+                },
+              );
+            }),
+          ),
+        ),
+      ],
     );
+  }
+
+  /// 同意或者拒绝申请
+  void _doDeal(BrokerApply e, int stat) async {
+    if (e == null || stat == null) return;
+    bool pass = stat == 1;
+    try {
+      bool ok = await ApiBroker.brokerApplyAudit(e.id, stat);
+      Debug.log("${pass ? '' : '拒绝'}代理申请结果：$ok");
+      if (ok) {
+        CusToast.toast(context, text: pass ? "已通过审批" : "已拒绝申请");
+        _reset();
+      }
+    } catch (e) {
+      Debug.logError("同意大师申请出现异常：$e");
+    }
+  }
+
+  // 重置数据
+  void _reset() async {
+    _pageNo = _rowsCount = 0;
+    _l.clear();
+    await _fetch();
+    setState(() {});
   }
 }

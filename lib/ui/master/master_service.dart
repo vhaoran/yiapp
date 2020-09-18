@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -44,7 +44,7 @@ class _MasterServicePageState extends State<MasterServicePage>
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      print("<<<获取大师项目列表出现异常：$e");
+      Debug.logError("获取大师项目列表出现异常：$e");
     }
   }
 
@@ -105,13 +105,13 @@ class _MasterServicePageState extends State<MasterServicePage>
       onApproval: () async {
         try {
           bool ok = await ApiMaster.masterItemRm(m.id);
-          print(">>>移除大师项目结果：$ok");
+          Debug.log("移除大师项目结果：$ok");
           if (ok) {
             CusToast.toast(context, text: "移除成功");
             _refresh();
           }
         } catch (e) {
-          print("<<<移除大师服务项目出现异常：$e");
+          Debug.logError("移除大师服务项目出现异常：$e");
         }
       },
     );
