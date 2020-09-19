@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/broker_state.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/ui/broker/broker_admin.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -53,6 +55,10 @@ class _BrokerInfoPageState extends State<BrokerInfoPage> {
           onTap: () {},
         ),
         NormalBox(title: "推荐码", subtitle: _b.service_code),
+        NormalBox(
+          title: "代理管理员",
+          onTap: () => CusRoutes.push(context, BrokerAdminPage()),
+        ),
       ],
     );
   }
