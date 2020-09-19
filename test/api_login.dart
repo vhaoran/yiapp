@@ -12,7 +12,7 @@ import 'package:yiapp/service/api/api_login.dart';
 void main() {
   // 01 ------------ 用户注册 ------------
   test("用户注册", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {
       "user_code": "18066610000",
       "nick": "中国电信",
@@ -28,7 +28,7 @@ void main() {
 
   // 02 ------------ 用户登录 ------------
   test("用户登录", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"user_code": "18037779691", "pwd": "suxing"};
     try {
       var res = await ApiLogin.login(m);
@@ -40,7 +40,7 @@ void main() {
 
   // 03 ------------ 游客登录 ------------
   test("游客登录", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     try {
       var res = await ApiLogin.guestLogin({});
       print(">>>测试---游客登录结果：${res.toJson()}");

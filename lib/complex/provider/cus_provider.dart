@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:yiapp/complex/provider/broker_state.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'user_state.dart';
 
@@ -15,5 +16,7 @@ class CusProvider {
     ChangeNotifierProvider(create: (_) => UserInfoState()),
     // 大师个人信息状态管理
     ChangeNotifierProvider(create: (_) => MasterInfoState()),
+    // 代理个人信息状态管理
+    ChangeNotifierProvider(create: (_) => BrokerInfoState()),
   ];
 }

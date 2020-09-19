@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
+import 'package:yiapp/complex/provider/broker_state.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
+import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -89,6 +93,7 @@ class _HomePageState extends State<HomePage> {
           ApiState.isGuest = false;
           context.read<UserInfoState>().init(r.user_info);
           if (ApiState.isMaster) _fetchMaster();
+          if (ApiState.isBroker) _fetchBroker();
         }
       } catch (e) {
         print("<<<自动登录出现异常：$e");
@@ -103,6 +108,7 @@ class _HomePageState extends State<HomePage> {
           ApiState.isGuest = true;
           context.read<UserInfoState>().init(res.user_info);
           if (ApiState.isMaster) _fetchMaster();
+          if (ApiState.isBroker) _fetchBroker();
         }
       } catch (e) {
         print("<<<测试---游客登录异常：$e");
@@ -176,6 +182,16 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       print("<<<获取大师个人信息出现异常：$e");
+    }
+  }
+
+  /// 如果是代理，获取代理基本资料
+  _fetchBroker() async {
+    try {
+      BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
+      if (res != null) context.read<BrokerInfoState>().init(res);
+    } catch (e) {
+      Debug.logError("获取大师个人信息出现异常：$e");
     }
   }
 

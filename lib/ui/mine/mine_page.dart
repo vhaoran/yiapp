@@ -93,10 +93,11 @@ class _MinePageState extends State<MinePage>
           title: "申请代理",
           onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
         ),
-        NormalBox(
-          title: "代理信息",
-          onTap: () => CusRoutes.push(context, BrokerInfoPage()),
-        ),
+        if (ApiState.isBrokerAdmin)
+          NormalBox(
+            title: "代理信息",
+            onTap: () => CusRoutes.push(context, BrokerInfoPage()),
+          ),
 //        if (ApiState.isAdmin)
         NormalBox(
           title: "后台管理",

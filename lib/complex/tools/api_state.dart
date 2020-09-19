@@ -19,4 +19,7 @@ class ApiState {
 
   // 是否代理管理员
   static bool isBrokerAdmin = false;
+
+  // 代理 id
+  static num broker_id = 0;
 }

@@ -12,7 +12,7 @@ import 'package:yiapp/service/api/api_user.dart';
 void main() {
   // 01 ------------ 修改用户昵称 ------------
   test("修改用户昵称", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"nick": "苏醒"};
     try {
       bool ok = await ApiUser.ChUserInfo(m);
@@ -24,7 +24,7 @@ void main() {
 
   // 02 ------------ 修改用户密码 ------------
   test("修改用户密码", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     try {
       bool ok = await ApiUser.chUserPwd("suxinga", "suxing");
       print(">>>测试---修改用户密码结果：$ok");
@@ -36,7 +36,7 @@ void main() {
 
   // 03 ------------ 获取用户信息 ------------
   test("获取用户信息", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"uid": 131};
     try {
       var res = await ApiUser.getUser(m);
@@ -48,7 +48,7 @@ void main() {
 
   // 04 ------------ 获取用户公开信息 ------------
   test("获取用户公开信息", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"uid": 131};
     try {
       var res = await ApiUser.getUserPublic(m);
@@ -60,7 +60,7 @@ void main() {
 
   // 05 ------------ 添加收件地址 ------------
   test("添加收件地址", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {
       "contact": "苏醒",
       "mobile": "18037779691",
@@ -76,7 +76,7 @@ void main() {
 
   // 06 ------------ 修改收货地址 ------------
   test("修改收货地址", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {
       "id": 27,
       "M": {
@@ -100,7 +100,7 @@ void main() {
 
   // 07 ------------ 获取地址列表 ------------
   test("获取地址列表", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     try {
       var res = await ApiUser.userAddrList(131);
       print(">>>当前有几个地址：${res.length}");
@@ -112,7 +112,7 @@ void main() {
 
   // 08 ------------ 获取默认收件地址------------
   test("获取默认收件地址", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     try {
       var res = await ApiUser.userAddrGetDefault({});
       print(">>>测试---获取默认收件地址结果：${res.toJson()}");
@@ -123,7 +123,7 @@ void main() {
 
   // 09 ------------ 删除收件地址 ------------
   test("删除收件地址", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"id": 28};
     try {
       bool ok = await ApiUser.userAddrRm(m);
@@ -135,7 +135,7 @@ void main() {
 
   // 10 ------------ 设置默认收件地址 ------------
   test("设置默认收件地址", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"id": 29};
     try {
       bool ok = await ApiUser.userAddrSetDefault(m);

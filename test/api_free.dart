@@ -12,7 +12,7 @@ import 'package:yiapp/service/api/api_free.dart';
 void main() {
   // 01 ------------ 星座配对 ------------
   test("测试星座配对", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"male_con": 1, "female_con": 3}; // 白羊男+双子女
     try {
       var res = await ApiFree.conMatch(m);
@@ -24,7 +24,7 @@ void main() {
 
   // 02 ------------ 生肖配对 ------------
   test("测试生肖配对", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"male_ShengXiao": 1, "female_ShengXiao": 3}; // 鼠男+虎女
     try {
       var res = await ApiFree.shengXiaoMatch(m);
@@ -36,7 +36,7 @@ void main() {
 
   // 03 ------------ 血型配对 ------------
   test("测试血型配对", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"male_blood": "A", "female_blood": "B"}; // A型血男+B型血女
     try {
       var res = await ApiFree.bloodMatch(m);
@@ -48,7 +48,7 @@ void main() {
 
   // 04 ------------ 生日配对 ------------
   test("测试生日配对", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     // 1月1日男+1月2日女
     var m = {
       "male_month": 1,
@@ -66,7 +66,7 @@ void main() {
 
   // 05 ------------ 黄大仙灵签 ------------
   test("黄大仙灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 100};
     try {
       var res = await ApiFree.daXianDraw(m);
@@ -78,7 +78,7 @@ void main() {
 
   // 06 ------------ 关帝灵签 ------------
   test("关帝灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 100};
     try {
       var res = await ApiFree.guanDiDraw(m);
@@ -90,7 +90,7 @@ void main() {
 
   // 07 ------------ 观音灵签 ------------
   test("观音灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 73};
     try {
       var res = await ApiFree.guanYinDraw(m);
@@ -102,7 +102,7 @@ void main() {
 
   // 08 ------------ 妈祖灵签 ------------
   test("妈祖灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 73};
     try {
       var res = await ApiFree.maZuDraw(m);
@@ -114,7 +114,7 @@ void main() {
 
   // 09 ------------ 月老灵签 ------------
   test("月老灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 44};
     try {
       var res = await ApiFree.yueLaoDraw(m);
@@ -126,7 +126,7 @@ void main() {
 
   // 10 ------------ 车公灵签 ------------
   test("车公灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 34};
     try {
       var res = await ApiFree.cheGongDraw(m);
@@ -138,7 +138,7 @@ void main() {
 
   // 11 ------------ 吕祖灵签 ------------
   test("吕祖灵签", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {"num": 4};
     try {
       var res = await ApiFree.lvZuDraw(m);

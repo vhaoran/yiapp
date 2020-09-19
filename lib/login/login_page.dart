@@ -1,15 +1,19 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/provider/broker_state.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -115,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
         keyboardType: TextInputType.phone,
         maxLength: 11,
         autofocus: true,
+        formatter: true,
       ),
       // 密码输入框
       CusUnderField(
@@ -163,6 +168,7 @@ class _LoginPageState extends State<LoginPage> {
           CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
           if (ApiState.isMaster) _fetchMaster();
+          if (ApiState.isBroker) _fetchBroker();
           print(">>>登录成功");
         }
       } catch (e) {
@@ -216,11 +222,19 @@ class _LoginPageState extends State<LoginPage> {
   _fetchMaster() async {
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
-      if (res != null) {
-        context.read<MasterInfoState>().init(res);
-      }
+      if (res != null) context.read<MasterInfoState>().init(res);
     } catch (e) {
-      print("<<<获取大师个人信息出现异常：$e");
+      Debug.logError("获取大师个人信息出现异常：$e");
+    }
+  }
+
+  /// 如果是代理，获取代理基本资料
+  _fetchBroker() async {
+    try {
+      BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
+      if (res != null) context.read<BrokerInfoState>().init(res);
+    } catch (e) {
+      Debug.logError("获取大师个人信息出现异常：$e");
     }
   }
 

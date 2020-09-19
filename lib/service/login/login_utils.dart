@@ -7,6 +7,7 @@ import 'package:yiapp/service/storage_util/sq_init.dart';
 Future<bool> setLoginInfo(LoginResult r) async {
   ApiBase.login = true;
   ApiBase.uid = r.user_info.id;
+  ApiState.broker_id = r.user_info.broker_id;
   ApiState.isMaster = r.is_master;
   ApiState.isAdmin = r.is_admin;
   ApiState.isBrokerAdmin = r.is_broker_admin;

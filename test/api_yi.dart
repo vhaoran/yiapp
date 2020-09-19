@@ -6,7 +6,7 @@ import 'package:yiapp/service/api/api_yi.dart';
 void main() {
   // 1 ------------ 六爻排盘 ------------
   test("六爻排盘", () async {
-    ApiBase.jwt = jwt_131;
+    ApiBase.jwt = jwt_134;
     var m = {
       "year": 1996,
       "month": 7,

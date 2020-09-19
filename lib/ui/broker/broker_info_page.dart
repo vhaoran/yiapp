@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/provider/broker_state.dart';
+import 'package:yiapp/complex/widgets/cus_avatar.dart';
+import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/model/dicts/broker-info.dart';
+import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -17,8 +22,16 @@ class BrokerInfoPage extends StatefulWidget {
 }
 
 class _BrokerInfoPageState extends State<BrokerInfoPage> {
+  BrokerInfo _b;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _b = context.watch<BrokerInfoState>()?.brokerInfo ?? BrokerInfo();
     return Scaffold(
       appBar: CusAppBar(text: "代理信息"),
       body: _lv(),
@@ -28,7 +41,19 @@ class _BrokerInfoPageState extends State<BrokerInfoPage> {
 
   Widget _lv() {
     return ListView(
-      children: <Widget>[],
+      children: <Widget>[
+        MidWidgetBox(
+          title: "头像",
+          child: CusAvatar(url: _b.icon ?? "", size: 40, circle: true),
+          onTap: () {},
+        ),
+        NormalBox(
+          title: "昵称",
+          subtitle: _b.owner_nick,
+          onTap: () {},
+        ),
+        NormalBox(title: "推荐码", subtitle: _b.service_code),
+      ],
     );
   }
 }

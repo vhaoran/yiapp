@@ -15,7 +15,7 @@ import 'package:yiapp/service/api/api-broker.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/18 19:04
-// usage ：绑定服务代码(由代理提供)
+// usage ：绑定推荐码(由代理提供)
 // ------------------------------------------------------
 
 class BindSerCodePage extends StatefulWidget {
@@ -26,7 +26,7 @@ class BindSerCodePage extends StatefulWidget {
 }
 
 class _BindSerCodePageState extends State<BindSerCodePage> {
-  var _codeCtrl = TextEditingController(); // 设置服务代码
+  var _codeCtrl = TextEditingController(); // 设置推荐码
   String _err; // 提示信息
 
   @override
@@ -45,7 +45,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: Adapt.px(40), bottom: Adapt.px(25)),
-          child: CusText("输入服务代码", t_primary, 30),
+          child: CusText("输入推荐码", t_primary, 30),
         ),
         CusRectField(
           controller: _codeCtrl,
@@ -62,7 +62,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
     );
   }
 
-  /// 绑定服务代码
+  /// 绑定推荐码
   void _doBind() async {
     if (ApiState.isBroker) {
       CusDialog.tip(context,
@@ -70,7 +70,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       return;
     }
     setState(() {
-      _err = _codeCtrl.text.isEmpty ? "服务代码不能为空" : null;
+      _err = _codeCtrl.text.isEmpty ? "推荐码不能为空" : null;
       if (_err != null) return;
     });
     if (_err == null) {
@@ -82,8 +82,8 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
           Navigator.pop(context);
         }
       } catch (e) {
-        if (e.toString().contains("没有找到对应的服务代码")) {
-          setState(() => _err = "不存在该服务代码");
+        if (e.toString().contains("没有找到对应的推荐码")) {
+          setState(() => _err = "不存在该推荐码");
         }
         Debug.logError("绑定代理出现异常：$e");
       }
