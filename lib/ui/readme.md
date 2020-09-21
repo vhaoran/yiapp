@@ -7,5 +7,6 @@
 - home 首页
 - master 大师
 - mine 个人主页
-- reward 悬赏
+- question 发布提问
+- trade 贴子
 - worship 供奉

@@ -12,6 +12,11 @@ const int male = 1; // 男性
 const int m_disable = 0; // 停用大师
 const int m_enable = 1; // 启用大师
 
+// ------------------------- 悬赏帖类型 ------------------------
+const int post_liuyao = 1; // 六爻类型
+const int post_sizhu = 2; // 四柱类型
+const int post_hehun = 3; // 合婚类型
+
 // ------------------------- 六爻 ------------------------
 const int shao_yin = 0; // 少阴 2背1字 3/8 概率
 const int shao_yang = 1; // 少阳 1背2字 3/8 概率

@@ -10,6 +10,7 @@ import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
@@ -22,7 +23,8 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
 import 'package:yiapp/ui/master/master_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
-import 'package:yiapp/ui/reward/reward_page.dart';
+import 'package:yiapp/ui/question/question_page.dart';
+import 'package:yiapp/ui/question/reward_post/ask_question.dart';
 import 'package:yiapp/ui/worship/worship_page.dart';
 import 'package:provider/provider.dart';
 
@@ -40,18 +42,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> _barNames = ["运势", "供奉", "悬赏", "大师", "我的"];
+  final List<String> _barNames = ["运势", "供奉", "问命", "大师", "我的"];
   List<Widget> _bars; // 底部导航栏
   int _curIndex = 0; // 底部导航栏索引
   // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
   PageController _pc = PageController();
+  bool _isMid = false; // 是否为中间提问
 
   @override
   void initState() {
     _bars = [
       FortunePage(),
       WorshipPage(),
-      RewardPage(),
+      QuestionPage(),
       MasterPage(),
       MinePage(),
     ];
@@ -70,11 +73,13 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: _bottomAppBar(),
       backgroundColor: Colors.black26,
-      floatingActionButton: GestureDetector(
-        onTap: () => _jumpPage(2),
-        child: Image.asset('assets/images/tai_chi.png',
-            width: Adapt.px(140), height: Adapt.px(140)),
-      ),
+      floatingActionButton: _isMid
+          ? GestureDetector(
+              onTap: () => CusRoutes.push(context, AskQuestionPage()),
+              child: Image.asset('assets/images/tai_chi.png',
+                  width: Adapt.px(140), height: Adapt.px(140)),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -126,7 +131,7 @@ class _HomePageState extends State<HomePage> {
             int i = _barNames.indexOf(name);
             Color select = _curIndex == i ? t_primary : t_gray;
             return CusSingleBar(
-              title: name,
+              title: _isMid && i == 2 ? "发布提问" : name,
               titleColor: select,
               iconColor: select,
               length: _barNames.length,
@@ -151,6 +156,9 @@ class _HomePageState extends State<HomePage> {
       case 1:
         icon = IconData(0xe66b, fontFamily: 'AliIcon');
         break;
+      case 2:
+        icon = IconData(0xe666, fontFamily: 'AliIcon');
+        break;
       case 3:
         icon = IconData(0xe605, fontFamily: 'AliIcon');
         break;
@@ -168,6 +176,7 @@ class _HomePageState extends State<HomePage> {
   void _jumpPage(int i) {
     if (_curIndex != i) {
       _curIndex = i;
+      _isMid = _curIndex == 2 ? true : false;
       setState(() {});
       _pc.jumpToPage(_curIndex);
     }

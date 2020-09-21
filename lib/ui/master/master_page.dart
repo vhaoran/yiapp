@@ -6,6 +6,9 @@ import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/model/pagebean.dart';
+import 'package:yiapp/service/api/api-master.dart';
 import '../../complex/widgets/master/master_list.dart';
 
 // ------------------------------------------------------
@@ -22,19 +25,46 @@ class MasterPage extends StatefulWidget {
 
 class _MasterPageState extends State<MasterPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final List<String> _l = ["推荐榜", "好评榜", "资深榜", "订单榜"];
+  final List<String> _tabs = ["推荐榜", "好评榜", "资深榜", "订单榜"];
+  final List<MasterInfo> _l = [];
+  int _pageNo = 0;
+  int _rowsCount = 0;
+  final int _count = 20; // 默认每页查询个数
+  var _future;
 
   @override
   void initState() {
     Debug.log("进了大师页面");
+//    _future = _fetch(); // 暂时先注释
     super.initState();
+  }
+
+  /// 分页获取数据
+  _fetch() async {
+    if (_pageNo * _count > _rowsCount) return; // 默认每页查询50条
+    _pageNo++;
+    var m = {"page_no": _pageNo, "rows_per_page": _count};
+    try {
+      PageBean pb = await ApiMaster.masterInfoPage(m);
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      var l = pb.data.map((e) => e as MasterInfo).toList();
+      Debug.log("总的大师个数：$_rowsCount");
+      l.forEach((src) {
+        // 在原来的基础上继续添加新的数据
+        var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
+        if (dst == null) _l.add(src);
+      });
+      Debug.log("当前已查询多少条数据：${_tabs.length}");
+    } catch (e) {
+      Debug.logError("分页查询大师信息出现异常：$e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return DefaultTabController(
-      length: _l.length,
+      length: _tabs.length,
       child: Scaffold(
         appBar: CusAppBar(title: _searchBar(), showLeading: false),
         body: _lv(),
@@ -60,9 +90,9 @@ class _MasterPageState extends State<MasterPage>
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
-            _l.length,
+            _tabs.length,
             (index) => Text(
-              _l[index],
+              _tabs[index],
               style: TextStyle(fontSize: Adapt.px(28)),
             ),
           ),
@@ -73,7 +103,7 @@ class _MasterPageState extends State<MasterPage>
             behavior: CusBehavior(),
             child: TabBarView(
               children: List.generate(
-                _l.length,
+                _tabs.length,
                 (index) => MasterList(l: 15),
               ),
             ),
@@ -109,6 +139,14 @@ class _MasterPageState extends State<MasterPage>
         ),
       ),
     );
+  }
+
+  // 重置数据
+  void _reset() async {
+    _pageNo = _rowsCount = 0;
+    _l.clear();
+    await _fetch();
+    setState(() {});
   }
 
   @override

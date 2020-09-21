@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
@@ -24,7 +25,7 @@ class _FortunePageState extends State<FortunePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    print(">>>进了【运势】首页");
+    Debug.log("进了【运势】首页");
     super.initState();
   }
 

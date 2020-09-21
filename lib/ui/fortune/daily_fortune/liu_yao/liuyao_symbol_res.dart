@@ -99,7 +99,7 @@ class LiuYaoSymRes extends StatelessWidget {
           ],
         ),
         Text(
-          fushen.isEmpty ? "" : "↑伏神",
+          fushen.isEmpty ? "" : "↑伏神 $fushen",
           style: TextStyle(color: t_red, fontSize: Adapt.px(26)),
         ),
       ],

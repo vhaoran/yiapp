@@ -17,5 +17,9 @@ const String birth_pair = "birth_pair"; // 生日配对
 const String com_draw = "com_draw"; // 共用的免费抽灵签页面
 const String liu_yao = "liu_yao"; // 六爻排盘
 
-const String jwt_134 = "test/131"; // jwt = 131;
+///
+const String jwt_134 = "test/134"; // jwt = 134;
 const String ali_font = "AliIcon"; // 阿里图标字体
+
+/// 货币单位
+const String yuan_bao = "元宝"; // 目前先以元宝为货币单位

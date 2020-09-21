@@ -16,11 +16,13 @@ class CusRectField extends StatefulWidget {
   final TextEditingController controller; // 可为空
   final String fromValue; // 初始值文字
   final String hintText;
+  final String prefixText; // 前置提示信息
   final int maxLength;
   final int maxLines;
   final bool formatter;
   final bool autofocus;
   final bool enable;
+  final bool hideBorder;
   final double pdHor;
   final double fontSize;
   String errorText; // 错误提示
@@ -30,11 +32,13 @@ class CusRectField extends StatefulWidget {
     this.controller,
     this.fromValue: "",
     this.hintText: "",
+    this.prefixText,
     this.maxLength: -1,
     this.maxLines: 1,
     this.formatter: false,
     this.autofocus: true,
     this.enable: true,
+    this.hideBorder: false,
     this.pdHor: 30,
     this.fontSize: 30,
     this.errorText,
@@ -88,13 +92,22 @@ class _CusRectFieldState extends State<CusRectField> {
         hintText: widget.hintText,
         hintStyle:
             TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+        prefixText: widget.prefixText,
+        prefixStyle:
+            TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
         contentPadding: EdgeInsets.symmetric(
             horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
         counterText: "",
-        border: cusOutlineBorder(),
-        focusedBorder: cusOutlineBorder(color: Colors.white24),
-        errorBorder: cusOutlineBorder(color: Colors.white24),
-        focusedErrorBorder: cusOutlineBorder(color: Colors.white24),
+        border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
+        focusedBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
+        errorBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
+        focusedErrorBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
       ),
       onChanged: (val) {
         if (widget.errorText != null) {

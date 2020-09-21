@@ -2,44 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/model/bbs/bbs-Prize.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/7 15:39
-// usage ：底部导航栏 - 悬赏页面
+// date  ：2020/9/21 10:54
+// usage ：封装的单个悬赏帖内容组件
 // ------------------------------------------------------
 
-class RewardPage extends StatefulWidget {
-  RewardPage({Key key}) : super(key: key);
+class RewardContentPage extends StatefulWidget {
+  final BBSPrize data;
+
+  RewardContentPage({this.data, Key key}) : super(key: key);
 
   @override
-  _RewardPageState createState() => _RewardPageState();
+  _RewardContentPageState createState() => _RewardContentPageState();
 }
 
-class _RewardPageState extends State<RewardPage>
-    with AutomaticKeepAliveClientMixin {
+class _RewardContentPageState extends State<RewardContentPage> {
+  BBSPrize _data; // 悬赏帖详情
+
   @override
   void initState() {
-    print(">>>进了悬赏页面");
+    _data = widget.data;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "悬赏",showLeading: false),
-      body: _bodyCtr(),
+      appBar: CusAppBar(text: "问题详情"),
+      body: _lv(),
       backgroundColor: primary,
     );
   }
 
-  Widget _bodyCtr() {
+  Widget _lv() {
     return ListView(
       children: <Widget>[],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

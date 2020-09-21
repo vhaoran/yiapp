@@ -78,20 +78,22 @@ class _LiuYaoTimeState extends State<LiuYaoTime> {
                 Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
               ],
             ),
-            onTap: () => TimePicker(
-              context,
-              pickMode: PickerMode.full,
-              showLunar: true,
-              isLunar: (val) => setState(() => _isLunar = val),
-              onConfirm: (yiDate) {
-                _isLunar = false; // 每次点击重置
-                _guaTime = yiDate;
-                if (widget.pickerTime != null) {
-                  widget.pickerTime(_guaTime);
-                }
-                setState(() {});
-              },
-            ),
+            onTap: () {
+              if (_isLunar != false) _isLunar = false;
+              TimePicker(
+                context,
+                pickMode: PickerMode.full,
+                showLunar: true,
+                isLunar: (val) => setState(() => _isLunar = val),
+                onConfirm: (yiDate) {
+                  _guaTime = yiDate;
+                  if (widget.pickerTime != null) {
+                    widget.pickerTime(_guaTime);
+                  }
+                  setState(() {});
+                },
+              );
+            },
           ),
         ),
       ],
