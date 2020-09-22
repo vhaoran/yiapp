@@ -25,6 +25,7 @@ class CusRectField extends StatefulWidget {
   final bool hideBorder;
   final double pdHor;
   final double fontSize;
+  final FocusNode focusNode;
   String errorText; // 错误提示
   TextInputType keyboardType;
 
@@ -41,6 +42,7 @@ class CusRectField extends StatefulWidget {
     this.hideBorder: false,
     this.pdHor: 30,
     this.fontSize: 30,
+    this.focusNode,
     this.errorText,
     this.keyboardType: TextInputType.text,
     Key key,
@@ -82,6 +84,7 @@ class _CusRectFieldState extends State<CusRectField> {
   Widget _input() {
     return TextField(
       autofocus: widget.autofocus,
+      focusNode: widget.focusNode,
       enabled: widget.enable,
       keyboardType: widget.keyboardType,
       style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),

@@ -52,6 +52,10 @@ dependencies:
   shake_animation_widget: ^1.0.1
   # 左滑工具栏
   left_scroll_actions: ^1.5.3
+  # 中国城市选择
+  city_pickers: ^0.2.0
+  # 上拉加载、下拉刷新
+  pull_to_refresh: ^1.6.2
   ###### suxing #####
 
 dev_dependencies:

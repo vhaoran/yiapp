@@ -240,8 +240,6 @@ class _PickerViewState extends State<PickerView> {
   }
 
   /// 设置月份
-  ///
-  /// 
   String _fnSelectMonth(int index) {
     if (index >= 0 && index <= 11) {
       int monthIndex = index + 1;

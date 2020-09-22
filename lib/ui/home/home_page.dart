@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/complex/provider/broker_state.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-broker.dart';
@@ -21,10 +16,11 @@ import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
+import 'package:yiapp/ui/home/chose_ask_type.dart';
+import 'package:yiapp/ui/home/navigation_type.dart';
 import 'package:yiapp/ui/master/master_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
-import 'package:yiapp/ui/question/reward_post/ask_question.dart';
 import 'package:yiapp/ui/worship/worship_page.dart';
 import 'package:provider/provider.dart';
 
@@ -42,12 +38,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> _barNames = ["运势", "供奉", "问命", "大师", "我的"];
-  List<Widget> _bars; // 底部导航栏
+  List<Widget> _bars; // 底部导航组件
   int _curIndex = 0; // 底部导航栏索引
+  bool _isMid = false; // 是否为中间提问
   // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
   PageController _pc = PageController();
-  bool _isMid = false; // 是否为中间提问
 
   @override
   void initState() {
@@ -71,15 +66,22 @@ class _HomePageState extends State<HomePage> {
         itemCount: _bars.length,
         itemBuilder: (context, index) => _bars[index],
       ),
-      bottomNavigationBar: _bottomAppBar(),
+      bottomNavigationBar: NavigationType(
+        isMid: _isMid,
+        curIndex: _curIndex, // 底部导航栏设置
+        onChanged: (val) {
+          if (val == null) return;
+          if (_curIndex != val) {
+            setState(() {
+              _curIndex = val;
+              _isMid = _curIndex == 2 ? true : false;
+              _pc.jumpToPage(_curIndex);
+            });
+          }
+        },
+      ),
       backgroundColor: Colors.black26,
-      floatingActionButton: _isMid
-          ? GestureDetector(
-              onTap: () => CusRoutes.push(context, AskQuestionPage()),
-              child: Image.asset('assets/images/tai_chi.png',
-                  width: Adapt.px(140), height: Adapt.px(140)),
-            )
-          : null,
+      floatingActionButton: _isMid ? ChoseAskType(isMid: _isMid) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
   /// 如果已经登录过一次，则自动登录,没有则默认游客登录
   void _autoLogin(BuildContext context) async {
     if (await hadLogin()) {
-      print(">>>用户已经登录过，现在自动登录");
+      Debug.log("用户已经登录过，现在自动登录");
       try {
         String mobile = await KV.getStr(kv_user_code);
         String pwd = await KV.getStr(kv_pwd);
@@ -101,13 +103,13 @@ class _HomePageState extends State<HomePage> {
           if (ApiState.isBroker) _fetchBroker();
         }
       } catch (e) {
-        print("<<<自动登录出现异常：$e");
+        Debug.logError("自动登录出现异常：$e");
       }
     } else {
-      print(">>>游客登录");
+      Debug.log("游客登录");
       try {
         var res = await ApiLogin.guestLogin({});
-        print(">>>测试---游客登录结果：${res.toJson()}");
+        Debug.log("游客登录结果：${res.toJson()}");
         if (res != null) {
           await setLoginInfo(res);
           ApiState.isGuest = true;
@@ -116,69 +118,8 @@ class _HomePageState extends State<HomePage> {
           if (ApiState.isBroker) _fetchBroker();
         }
       } catch (e) {
-        print("<<<测试---游客登录异常：$e");
+        Debug.logError("游客登录异常：$e");
       }
-    }
-  }
-
-  /// 底部导航栏
-  Widget _bottomAppBar() {
-    return BottomAppBar(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _barNames.map(
-          (name) {
-            int i = _barNames.indexOf(name);
-            Color select = _curIndex == i ? t_primary : t_gray;
-            return CusSingleBar(
-              title: _isMid && i == 2 ? "发布提问" : name,
-              titleColor: select,
-              iconColor: select,
-              length: _barNames.length,
-              icon: _icon(i),
-              onTap: () => _jumpPage(i),
-            );
-          },
-        ).toList(),
-      ),
-      color: ter_primary,
-      shape: CircularNotchedRectangle(),
-    );
-  }
-
-  /// 动态获取底部导航栏图标
-  IconData _icon(int i) {
-    IconData icon;
-    switch (i) {
-      case 0:
-        icon = IconData(0xe618, fontFamily: 'AliIcon');
-        break;
-      case 1:
-        icon = IconData(0xe66b, fontFamily: 'AliIcon');
-        break;
-      case 2:
-        icon = IconData(0xe666, fontFamily: 'AliIcon');
-        break;
-      case 3:
-        icon = IconData(0xe605, fontFamily: 'AliIcon');
-        break;
-      case 4:
-        icon = IconData(0xe608, fontFamily: 'AliIcon');
-        break;
-      default:
-        icon = FontAwesomeIcons.fastForward;
-        break;
-    }
-    return icon;
-  }
-
-  /// 跳转页面
-  void _jumpPage(int i) {
-    if (_curIndex != i) {
-      _curIndex = i;
-      _isMid = _curIndex == 2 ? true : false;
-      setState(() {});
-      _pc.jumpToPage(_curIndex);
     }
   }
 
@@ -190,7 +131,7 @@ class _HomePageState extends State<HomePage> {
         context.read<MasterInfoState>().init(res);
       }
     } catch (e) {
-      print("<<<获取大师个人信息出现异常：$e");
+      Debug.logError("获取大师个人信息出现异常：$e");
     }
   }
 

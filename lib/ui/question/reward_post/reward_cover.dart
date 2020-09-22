@@ -26,7 +26,11 @@ class RewardCover extends StatefulWidget {
 
 class _RewardCoverState extends State<RewardCover> {
   BBSPrize _data; // 悬赏帖详情
-  Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
+  Color _typeColor =
+
+      Colors.blueGrey;
+
+  // 所求类型图片的背景色
   String _type = "未知"; // 所求类型的文字
 
   @override
