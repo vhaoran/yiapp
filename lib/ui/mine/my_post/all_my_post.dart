@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/ui/mine/my_post/reward_his_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,7 +30,13 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
 
   Widget _bodyCtr() {
     return ListView(
-      children: <Widget>[],
+      children: <Widget>[
+        NormalBox(
+          title: "悬赏帖历史",
+          onTap: () => CusRoutes.push(context, RewardPostHisPage()),
+        ),
+        NormalBox(title: "闪断帖历史", onTap: () {}),
+      ],
     );
   }
 }

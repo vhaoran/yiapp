@@ -4,10 +4,12 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/ui/question/com_post/post_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -25,24 +27,15 @@ class RewardCover extends StatefulWidget {
 }
 
 class _RewardCoverState extends State<RewardCover> {
-  BBSPrize _data; // 悬赏帖详情
-  Color _typeColor =
-
-      Colors.blueGrey;
+  Color _typeColor = Colors.blueGrey;
 
   // 所求类型图片的背景色
   String _type = "未知"; // 所求类型的文字
 
   @override
-  void initState() {
-    _data = widget.data;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => CusRoutes.push(context, PostContent(data: widget.data)),
       child: Card(
         color: fif_primary,
         margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
@@ -69,16 +62,17 @@ class _RewardCoverState extends State<RewardCover> {
     return Row(
       children: <Widget>[
         CusAvatar(
-          url: _data.icon ?? "", // 头像
+          url: widget.data.icon ?? "", // 头像
           size: 30,
           circle: true,
         ),
-//                CusText(_data.nick, t_gray, 28), // 昵称
+        // 昵称
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
-          child: CusText("至尊宝", t_gray, 28),
+          child: CusText(
+              widget.data.nick.isEmpty ? "至尊宝" : widget.data.nick, t_gray, 28),
         ),
-        CusText("悬赏 ${_data.score} $yuan_bao", t_yi, 28), // 悬赏金
+        CusText("悬赏 ${widget.data.score} $yuan_bao", t_yi, 28), // 悬赏金
       ],
     );
   }
@@ -90,7 +84,7 @@ class _RewardCoverState extends State<RewardCover> {
       children: <Widget>[
         Expanded(
           child: Text(
-            _data.brief, // 帖子摘要
+            widget.data.brief, // 帖子摘要
             style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
@@ -114,14 +108,14 @@ class _RewardCoverState extends State<RewardCover> {
   Widget _timeCtr() {
     return Row(
       children: <Widget>[
-        CusText("${CusTime.ymd(_data.create_date)}", t_gray, 28),
+        CusText("${CusTime.ymd(widget.data.create_date)}", t_gray, 28),
       ],
     );
   }
 
   /// 临时设置，根据所求类型，动态更改类型颜色和背景色
   void _dynamicType() {
-    switch (_data.stat) {
+    switch (widget.data.stat) {
       case post_liuyao: // 六爻
         _type = "六爻";
         _typeColor = Color(0xFF78BA3B);

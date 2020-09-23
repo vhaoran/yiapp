@@ -4,8 +4,8 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/question/flash_post/flash_post_main.dart';
-import 'package:yiapp/ui/question/reward_post/reward_post_main.dart';
+import 'package:yiapp/ui/question/flash_post_main.dart';
+import 'package:yiapp/ui/question/reward_post_main.dart';
 
 // ------------------------------------------------------
 // author：suxing

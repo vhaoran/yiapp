@@ -1,3 +1,5 @@
+import 'package:yiapp/model/bbs/bbs_content.dart';
+
 import 'bbs-Reply.dart';
 
 class BBSPrize {
@@ -8,7 +10,7 @@ class BBSPrize {
   String title;
   String brief;
   int content_type;
-  dynamic content;
+  BBSContent content;
   List<String> images;
 
   int score;
@@ -43,7 +45,8 @@ class BBSPrize {
     // 来决定解析content为不同的数据结构
     var c = null;
     int i = json['content_type'] as int;
-    c = json["content"];
+//    c = json["content"];
+    c = json["content"] != null ? BBSContent.fromJson(json['content']) : null;
 
     if (i == 0) {}
     if (i == 1) {}
@@ -86,7 +89,8 @@ class BBSPrize {
     data['title'] = this.title;
     data['uid'] = this.uid;
     if (this.content != null) {
-      data['content'] = this.content as Map<String, dynamic>;
+//      data['content'] = this.content as Map<String, dynamic>;
+      data['content'] = this.content.toJson();
     }
     if (this.images != null) {
       data['images'] = this.images;
