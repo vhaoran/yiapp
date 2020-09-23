@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
-import 'package:yiapp/ui/question/reward_post/ask_question.dart';
+import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -61,13 +62,13 @@ class ChoseAskType extends StatelessWidget {
       case 1: // 四柱
         CusRoutes.pushReplacement(
           context,
-          AskQuestionPage(content_type: 2),
+          AskQuestionPage(content_type: post_sizhu),
         );
         break;
       case 2: // 合婚
         CusRoutes.pushReplacement(
           context,
-          AskQuestionPage(content_type: 3),
+          AskQuestionPage(content_type: post_hehun),
         );
         break;
       case 3: // 其他

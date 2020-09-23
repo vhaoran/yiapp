@@ -3,14 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
+import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
+import 'package:yiapp/ui/question/ask_question/post_liuyao.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -63,13 +67,14 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
               _show("卦主", _user_nick),
               _show(
                   "时间",
-                  "公元 ${YiTool.fullDateGong(
+                  "${YiTool.fullDateGong(
                     YiDateTime(
-                        year: riqi.year,
-                        month: riqi.month,
-                        day: riqi.day,
-                        hour: riqi.hour,
-                        minute: riqi.minute),
+                      year: riqi.year,
+                      month: riqi.month,
+                      day: riqi.day,
+                      hour: riqi.hour,
+                      minute: riqi.minute,
+                    ),
                   )}"),
               _show(
                 "干支",
@@ -93,7 +98,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
       children: <Widget>[
         Expanded(
           child: CusRaisedBtn(
-            text: "智能解盘",
+            text: "闪断帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFED9951),
             height: 90,
@@ -102,11 +107,20 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
         ),
         Expanded(
           child: CusRaisedBtn(
-            text: "发帖求测",
+            text: "悬赏帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE96C62),
             height: 90,
-            onPressed: () {},
+            onPressed: () => CusRoutes.push(
+              context,
+              AskQuestionPage(
+                content_type: post_liuyao,
+                res: widget.res,
+                l: widget.l,
+                guaTime: widget.guaTime,
+                user_nick: _user_nick,
+              ),
+            ),
           ),
         ),
       ],

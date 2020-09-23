@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/demo/demo_main.dart';
@@ -26,7 +27,7 @@ import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
-import 'package:yiapp/ui/mine/order_page.dart';
+import 'package:yiapp/ui/mine/my_post/all_my_post.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 
 // ------------------------------------------------------
@@ -49,7 +50,7 @@ class _MinePageState extends State<MinePage>
 
   @override
   void initState() {
-    print(">>>进入了个人主页");
+    Debug.log("进入了个人主页");
     super.initState();
   }
 
@@ -72,8 +73,8 @@ class _MinePageState extends State<MinePage>
         _avatarAndMore(), // 用户头像、昵称、背景墙
         if (!ApiState.isGuest)
           NormalBox(
-            title: "我的订单",
-            onTap: () => CusRoutes.push(context, OrderPage()),
+            title: "我的帖子",
+            onTap: () => CusRoutes.push(context, AllMyPostPage()),
           ),
         NormalBox(
           title: "账户与安全",
@@ -182,7 +183,7 @@ class _MinePageState extends State<MinePage>
   }
 
   void _selectFile(File file) {
-    print(">>>当前选择的图片：$file");
+    Debug.log("当前选择的图片：$file");
     _file = file;
     setState(() {});
   }
