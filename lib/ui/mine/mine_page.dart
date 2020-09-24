@@ -27,8 +27,9 @@ import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
-import 'package:yiapp/ui/mine/my_post/all_my_post.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
+
+import 'my_orders/all_my_post.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -73,7 +74,7 @@ class _MinePageState extends State<MinePage>
         _avatarAndMore(), // 用户头像、昵称、背景墙
         if (!ApiState.isGuest)
           NormalBox(
-            title: "我的帖子",
+            title: "我的订单",
             onTap: () => CusRoutes.push(context, AllMyPostPage()),
           ),
         NormalBox(

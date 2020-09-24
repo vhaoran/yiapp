@@ -4,8 +4,8 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/question/flash_post_main.dart';
-import 'package:yiapp/ui/question/reward_post_main.dart';
+import 'package:yiapp/ui/question/flash_post_page.dart';
+import 'package:yiapp/ui/question/reward_post_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -62,8 +62,8 @@ class _QuestionPageState extends State<QuestionPage>
         Expanded(
           child: TabBarView(
             children: <Widget>[
-              RewardPostMain(), // 悬赏帖
-              FlashPostMain(), // 闪断帖
+              RewardPostPage(), // 悬赏帖
+              FlashPostPage(), // 闪断帖
             ],
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
@@ -51,6 +52,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String _snackErr; // 提示信息
   bool _isLunar = false; // 是否选择了阴历
+  bool _isLiuYao = false; // 类型是否为六爻
 
   var _nameCtrl = TextEditingController(); // 姓名
   var _scoreCtrl = TextEditingController(); // 悬赏金额
@@ -58,6 +60,12 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   var _briefCtrl = TextEditingController(); // 帖子摘要
   YiDateTime _birth; // 出生日期
   int _male = 1; // 性别
+
+  @override
+  void initState() {
+    _isLiuYao = widget.content_type == post_liuyao ? true : false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +87,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(25)),
       children: <Widget>[
-        if (widget.content_type == post_liuyao) // 六爻排盘信息
+        if (_isLiuYao) // 六爻排盘信息
           PostLiuYaoCtr(
             res: widget.res,
             l: widget.l,
@@ -130,18 +138,20 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
     }
     // 满足发帖条件
     else {
-      String code = "";
-      widget.l.forEach((e) => code += e.toString());
+      String code = ""; // 六爻编码
+      if (_isLiuYao) {
+        widget.l.forEach((e) => code += e.toString());
+      }
       var m = {
         "score": num.parse(_scoreCtrl.text.trim()),
         "title": _titleCtrl.text.trim(),
         "brief": _briefCtrl.text.trim(),
         "content_type": widget.content_type,
         "content_liuyao": {
-          "year": widget.guaTime.year,
-          "month": widget.guaTime.month,
-          "day": widget.guaTime.day,
-          "hour": widget.guaTime.hour,
+          "year": _isLiuYao ? widget.guaTime.year : 0,
+          "month": _isLiuYao ? widget.guaTime.month : 0,
+          "day": _isLiuYao ? widget.guaTime.day : 0,
+          "hour": _isLiuYao ? widget.guaTime.hour : 0,
           "yao_code": code,
         },
         "content": {
@@ -164,6 +174,14 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
           Navigator.pop(context);
         }
       } catch (e) {
+        if (e.toString().contains("余额")) {
+          CusDialog.normal(
+            context,
+            title: "余额不足，请充值",
+            textAgree: "充值",
+            onApproval: () => Debug.log("前往充值页面"),
+          );
+        }
         Debug.logError("出现异常：$e");
       }
     }

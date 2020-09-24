@@ -10,14 +10,14 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 // usage ：闪断帖主页面
 // ------------------------------------------------------
 
-class FlashPostMain extends StatefulWidget {
-  FlashPostMain({Key key}) : super(key: key);
+class FlashPostPage extends StatefulWidget {
+  FlashPostPage({Key key}) : super(key: key);
 
   @override
-  _FlashPostMainState createState() => _FlashPostMainState();
+  _FlashPostPageState createState() => _FlashPostPageState();
 }
 
-class _FlashPostMainState extends State<FlashPostMain> {
+class _FlashPostPageState extends State<FlashPostPage> {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(

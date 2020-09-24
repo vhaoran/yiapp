@@ -14,19 +14,19 @@ import 'package:yiapp/ui/question/com_post/post_content.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/21 10:52
-// usage ：封装的单个悬赏帖封面组件
+// usage ：帖子封面
 // ------------------------------------------------------
 
-class RewardCover extends StatefulWidget {
+class PostCover extends StatefulWidget {
   final BBSPrize data;
 
-  RewardCover({this.data, Key key}) : super(key: key);
+  PostCover({this.data, Key key}) : super(key: key);
 
   @override
-  _RewardCoverState createState() => _RewardCoverState();
+  _PostCoverState createState() => _PostCoverState();
 }
 
-class _RewardCoverState extends State<RewardCover> {
+class _PostCoverState extends State<PostCover> {
   Color _typeColor = Colors.blueGrey;
 
   // 所求类型图片的背景色
@@ -48,7 +48,7 @@ class _RewardCoverState extends State<RewardCover> {
           child: Column(
             children: <Widget>[
               _iconNameScore(), // 发帖人头像，昵称，悬赏金
-              _briefAndType(), // 帖子摘要和类型显示
+              _briefAndType(), // 帖子标题和类型显示
               _timeCtr(), // 显示发布帖子时间
             ],
           ),
@@ -77,14 +77,14 @@ class _RewardCoverState extends State<RewardCover> {
     );
   }
 
-  /// 帖子摘要和所求类型的图片（目前先用文字代替）
+  /// 帖子标题和所求类型的图片（目前先用文字代替）
   Widget _briefAndType() {
     _dynamicType();
     return Row(
       children: <Widget>[
         Expanded(
           child: Text(
-            widget.data.brief, // 帖子摘要
+            widget.data.title, // 帖子标题
             style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,

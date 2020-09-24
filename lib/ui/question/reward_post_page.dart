@@ -17,14 +17,14 @@ import 'package:yiapp/ui/question/com_post/post_cover.dart';
 // usage ：悬赏帖主页面
 // ------------------------------------------------------
 
-class RewardPostMain extends StatefulWidget {
-  RewardPostMain({Key key}) : super(key: key);
+class RewardPostPage extends StatefulWidget {
+  RewardPostPage({Key key}) : super(key: key);
 
   @override
-  _RewardPostMainState createState() => _RewardPostMainState();
+  _RewardPostPageState createState() => _RewardPostPageState();
 }
 
-class _RewardPostMainState extends State<RewardPostMain>
+class _RewardPostPageState extends State<RewardPostPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
@@ -42,12 +42,17 @@ class _RewardPostMainState extends State<RewardPostMain>
   _fetch() async {
     if (_pageNo * _count > _rowsCount) return; // 默认每页查询20条
     _pageNo++;
-    var m = {"page_no": _pageNo, "rows_per_page": _count};
+    var m = {
+      "page_no": _pageNo,
+      "rows_per_page": _count,
+//      "where": {"stat": 1}
+    };
     try {
       PageBean pb = await await ApiBBSPrize.bbsPrizePage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
-      var l = pb.data.map((e) => e as BBSPrize).toList();
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       Debug.log("总的悬赏帖个数：$_rowsCount");
+      var l = pb.data.map((e) => e as BBSPrize).toList();
+      Debug.log("已支付过，可显示的帖子个数:${l.length}");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -81,7 +86,7 @@ class _RewardPostMainState extends State<RewardPostMain>
           child: ListView(
             children: List.generate(
               _l.length,
-              (i) => RewardCover(data: _l[i]),
+              (i) => PostCover(data: _l[i]),
             ),
           ),
           onLoad: () async {

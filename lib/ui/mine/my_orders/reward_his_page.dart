@@ -36,7 +36,7 @@ class _RewardPostHisPageState extends State<RewardPostHisPage> {
     super.initState();
   }
 
-  /// 分页查询悬赏帖
+  /// 分页查询悬赏帖历史
   _fetch() async {
     if (_pageNo * _count > _rowsCount) return;
     _pageNo++;
@@ -80,7 +80,7 @@ class _RewardPostHisPageState extends State<RewardPostHisPage> {
           child: ListView(
             children: List.generate(
               _l.length,
-              (i) => RewardCover(data: _l[i]),
+              (i) => PostCover(data: _l[i]),
             ),
           ),
           onLoad: () async {
