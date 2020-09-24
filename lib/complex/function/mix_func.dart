@@ -1,4 +1,5 @@
 import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -14,3 +15,6 @@ Future<bool> hadLogin() async {
   }
   return false;
 }
+
+/// 是否本人发帖
+bool isMe(int uid) => uid == ApiBase.uid ? true : false;

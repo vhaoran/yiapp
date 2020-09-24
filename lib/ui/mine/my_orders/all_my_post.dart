@@ -46,10 +46,12 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _count,
-//      "where": {"uid": ApiBase.uid}
+      "where": {"uid": ApiBase.uid},
+      "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await await ApiBBSPrize.bbsPrizeHisPage(m);
+//      PageBean pb = await await ApiBBSPrize.bbsPrizeHisPage(m);
+      PageBean pb = await await ApiBBSPrize.bbsPrizePage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as BBSPrize).toList();
       Debug.log("总的历史悬赏帖个数：$_rowsCount");
@@ -114,12 +116,19 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   children: <Widget>[
-                    ...myList.map((e) => PostCover(data: e)),
+                    ...myList.map((e) => PostCover(
+                          data: e,
+                          show: e.stat == 0,
+                          onChanged: () {
+                            _pageNo = _rowsCount = 0;
+                            _l.clear();
+                            _refresh();
+                          },
+                        )),
                   ],
                 ),
-                onLoad: () async {
-                  await _fetch();
-                  setState(() {});
+                onLoad: () {
+                  _refresh();
                 },
               );
             }),
@@ -127,5 +136,10 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
         ),
       ],
     );
+  }
+
+  void _refresh() async {
+    await _fetch();
+    setState(() {});
   }
 }

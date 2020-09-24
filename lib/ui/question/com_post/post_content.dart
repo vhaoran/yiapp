@@ -45,7 +45,7 @@ class _PostContentState extends State<PostContent> {
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
       children: <Widget>[
         PostHeader(data: _data), // 帖子头部信息
-        ..._data.reply.map((e) => PostReply(reply: e)), // 回复帖子区域
+        PostReply(l: _data.reply), // 回复帖子区域
       ],
     );
   }

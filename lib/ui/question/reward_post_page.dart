@@ -45,14 +45,14 @@ class _RewardPostPageState extends State<RewardPostPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _count,
-//      "where": {"stat": 1}
+//      "where": {"stat": 1} // 这里的 stat 应设为 1 已支付 和 2 已打赏
+      "sort": {"create_date": -1},
     };
     try {
       PageBean pb = await await ApiBBSPrize.bbsPrizePage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       Debug.log("总的悬赏帖个数：$_rowsCount");
       var l = pb.data.map((e) => e as BBSPrize).toList();
-      Debug.log("已支付过，可显示的帖子个数:${l.length}");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -89,13 +89,22 @@ class _RewardPostPageState extends State<RewardPostPage>
               (i) => PostCover(data: _l[i]),
             ),
           ),
-          onLoad: () async {
-            await _fetch();
-            setState(() {});
+          onLoad: () {
+            _refresh();
+          },
+          onRefresh: () async {
+            _pageNo = _rowsCount = 0;
+            _l.clear();
+            _refresh();
           },
         );
       },
     );
+  }
+
+  void _refresh() async {
+    await _fetch();
+    setState(() {});
   }
 
   @override

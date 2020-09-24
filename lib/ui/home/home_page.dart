@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
       BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
       if (res != null) context.read<BrokerInfoState>().init(res);
     } catch (e) {
-      Debug.logError("获取大师个人信息出现异常：$e");
+      Debug.logError("获取代理个人信息出现异常：$e");
     }
   }
 

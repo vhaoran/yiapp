@@ -5,10 +5,10 @@ import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/ui/question/com_post/cover_time_btn.dart';
 import 'package:yiapp/ui/question/com_post/post_content.dart';
 
 // ------------------------------------------------------
@@ -19,17 +19,23 @@ import 'package:yiapp/ui/question/com_post/post_content.dart';
 
 class PostCover extends StatefulWidget {
   final BBSPrize data;
+  final bool show; // 是否显示取消和支付按钮
+  VoidCallback onChanged; // 取消和支付的回调
 
-  PostCover({this.data, Key key}) : super(key: key);
+  PostCover({
+    this.data,
+    this.show: false,
+    this.onChanged,
+    Key key,
+  }) : super(key: key);
 
   @override
   _PostCoverState createState() => _PostCoverState();
 }
 
 class _PostCoverState extends State<PostCover> {
-  Color _typeColor = Colors.blueGrey;
-
-  // 所求类型图片的背景色
+  // 临时设置，后边改为图片显示
+  Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
   String _type = "未知"; // 所求类型的文字
 
   @override
@@ -43,13 +49,18 @@ class _PostCoverState extends State<PostCover> {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(25), vertical: Adapt.px(10)),
+          padding: EdgeInsets.only(
+              left: Adapt.px(25), right: Adapt.px(25), top: Adapt.px(10)),
           child: Column(
             children: <Widget>[
               _iconNameScore(), // 发帖人头像，昵称，悬赏金
               _briefAndType(), // 帖子标题和类型显示
-              _timeCtr(), // 显示发布帖子时间
+              // 发帖时间。 如果本人帖子订单待支付，显示取消和支付按钮
+              CoverTimeBtn(
+                data: widget.data,
+                show: widget.show,
+                onChanged: widget.onChanged,
+              ),
             ],
           ),
         ),
@@ -104,18 +115,9 @@ class _PostCoverState extends State<PostCover> {
     );
   }
 
-  /// 显示发布帖子时间以及后续补充
-  Widget _timeCtr() {
-    return Row(
-      children: <Widget>[
-        CusText("${CusTime.ymd(widget.data.create_date)}", t_gray, 28),
-      ],
-    );
-  }
-
   /// 临时设置，根据所求类型，动态更改类型颜色和背景色
   void _dynamicType() {
-    switch (widget.data.stat) {
+    switch (widget.data.content_type) {
       case post_liuyao: // 六爻
         _type = "六爻";
         _typeColor = Color(0xFF78BA3B);
