@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
@@ -9,6 +10,7 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _autoLogin(context);
+    if (!ApiBase.login) _autoLogin(context);
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -86,18 +88,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// 如果已经登录过一次，则自动登录,没有则默认游客登录
+  /// 如果已经登录过一次，则自动登录,反之为第一次登录程序
   void _autoLogin(BuildContext context) async {
     if (await hadLogin()) {
-      Debug.log("用户已经登录过，现在自动登录");
+      try {
+        Debug.log("用户已经登录过，现在自动登录");
+        String loginData = await KV.getStr(kv_login);
+        var loginRes = LoginResult.fromJson(json.decode(loginData));
+        if (loginRes != null) {
+          await setLoginInfo(loginRes);
+        }
+        context.read<UserInfoState>().init(loginRes.user_info);
+      } catch (e) {
+        print("用户已经登录过，但登录出现异常$e");
+      }
     } else {
       Debug.log("用户第一次进入程序，以游客登录模式进入");
       try {
         var res = await ApiLogin.guestLogin({});
         Debug.log("游客登录结果：${res.toJson()}");
         if (res != null) {
-          await KV.setStr(kv_jwt, res.jwt);
-          await KV.setStr(kv_login, "${res.toJson()}");
+          await KV.setStr(kv_jwt, res.jwt); // 存储本地token
+          await KV.setStr(kv_login, json.encode(res.toJson()));
           await setLoginInfo(res);
           ApiState.isGuest = true;
           context.read<UserInfoState>().init(res.user_info);

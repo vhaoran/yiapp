@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -133,8 +135,6 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 请求登录
   void _doLogin() async {
-    print(">>>_user_code：${_mobileCtrl.text}");
-    print(">>>_pwd：${_pwdCtrl.text}");
     if (_pwdCtrl.text.isEmpty || _mobileCtrl.text.isEmpty) {
       _pwdErr = "手机号或者密码不能为空";
       setState(() {});
@@ -160,9 +160,9 @@ class _LoginPageState extends State<LoginPage> {
       try {
         var r = await ApiLogin.login(m);
         if (r != null) {
-          await KV.setStr(kv_user_code, _mobileCtrl.text);
-          await KV.setStr(kv_pwd, _pwdCtrl.text);
+          await KV.clear(); // 先清空之前存储的数据
           await KV.setStr(kv_jwt, r.jwt);
+          await KV.setStr(kv_login, json.encode(r.toJson()));
           await setLoginInfo(r);
           ApiState.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());
