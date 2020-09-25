@@ -20,8 +20,8 @@ initWSChan() {
     "Jwt": jwt,
   });
 
-  // TODO 隐藏掉上线通知
-  // _notifyOnline();
+  //上线通知
+  _notifyOnline();
 
   _chan.stream.listen((message) {
     print(message);
