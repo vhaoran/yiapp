@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ApiBase.login) _autoLogin(context);
+    _autoLogin(context);
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -90,27 +90,14 @@ class _HomePageState extends State<HomePage> {
   void _autoLogin(BuildContext context) async {
     if (await hadLogin()) {
       Debug.log("用户已经登录过，现在自动登录");
-      try {
-        String mobile = await KV.getStr(kv_user_code);
-        String pwd = await KV.getStr(kv_pwd);
-        var m = {"user_code": mobile, "pwd": pwd};
-        var r = await ApiLogin.login(m);
-        if (r != null) {
-          await setLoginInfo(r);
-          ApiState.isGuest = false;
-          context.read<UserInfoState>().init(r.user_info);
-          if (ApiState.isMaster) _fetchMaster();
-          if (ApiState.isBroker) _fetchBroker();
-        }
-      } catch (e) {
-        Debug.logError("自动登录出现异常：$e");
-      }
     } else {
-      Debug.log("游客登录");
+      Debug.log("用户第一次进入程序，以游客登录模式进入");
       try {
         var res = await ApiLogin.guestLogin({});
         Debug.log("游客登录结果：${res.toJson()}");
         if (res != null) {
+          await KV.setStr(kv_jwt, res.jwt);
+          await KV.setStr(kv_login, "${res.toJson()}");
           await setLoginInfo(res);
           ApiState.isGuest = true;
           context.read<UserInfoState>().init(res.user_info);

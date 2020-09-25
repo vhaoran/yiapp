@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/demo/demo_main.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -15,11 +17,14 @@ import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/master/backstage_manage.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/broker/broker_info_page.dart';
@@ -111,6 +116,43 @@ class _MinePageState extends State<MinePage>
         NormalBox(
           title: "demo 测试",
           onTap: () => CusRoutes.push(context, CusDemoMain()),
+        ),
+        CusRaisedBtn(
+          text: "测试游客登录",
+          onPressed: () async {
+            try {
+              var res = await ApiLogin.guestLogin({});
+              Debug.log("游客登录结果：${res.toJson()}");
+              Debug.log("json.encode:${json.encode(res.toJson())}");
+              if (res != null) {
+                await KV.setStr(kv_jwt, res.jwt);
+                await KV.setStr(kv_login, json.encode(res.toJson()));
+//                context.read<UserInfoState>().init(res.user_info);
+              }
+            } catch (e) {
+              Debug.logError("游客登录异常：$e");
+            }
+          },
+        ),
+        CusRaisedBtn(
+          text: "获取登录过的信息",
+          onPressed: () async {
+            String login = await KV.getStr(kv_login);
+            Debug.log("获取到的信息：${login}");
+            Map map = json.decode(login);
+            Debug.log("${map['is_admin']}");
+            var info = UserInfo.fromJson(map).id;
+            Debug.log("+++++++：${info}");
+            String jwt = await KV.getStr(kv_jwt);
+            Debug.log("获取的token是：$jwt");
+          },
+        ),
+        CusRaisedBtn(
+          text: "清理",
+          onPressed: () async {
+            bool ok = await KV.clear();
+            Debug.log("结果：$ok");
+          },
         ),
       ],
     );

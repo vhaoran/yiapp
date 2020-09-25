@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_avatar.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
-import 'package:yiapp/ui/question/com_post/sim_reply_data.dart';
+import 'package:yiapp/ui/question/com_post/all_reply.dart';
+import 'package:yiapp/ui/question/com_post/first_reply.dart';
+import 'package:yiapp/ui/question/com_post/reply_item.dart';
+import 'package:yiapp/ui/question/com_post/temp_reply_data.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -15,8 +17,15 @@ import 'package:yiapp/ui/question/com_post/sim_reply_data.dart';
 
 class PostReply extends StatefulWidget {
   final List<BBSReply> l;
+  final int level; // 楼层
+  final bool showAll; // 是否显示全部评论
 
-  PostReply({this.l, Key key}) : super(key: key);
+  PostReply({
+    this.l,
+    this.showAll: false,
+    this.level,
+    Key key,
+  }) : super(key: key);
 
   @override
   _PostReplyState createState() => _PostReplyState();
@@ -29,7 +38,7 @@ class _PostReplyState extends State<PostReply> {
   void initState() {
     // 模拟回复数据
     if (widget.l.isEmpty) {
-      for (var i = 0; i < 4; i++) {
+      for (var i = 0; i < 12; i++) {
         _l.insertAll(i, [BBSReply.fromJson(replyJson['reply'][i])]);
       }
     } else {
@@ -40,72 +49,39 @@ class _PostReplyState extends State<PostReply> {
 
   @override
   Widget build(BuildContext context) {
-    if (_l.isEmpty) return Container();
-    return Column(
-      children: List.generate(
-        _l.length,
+    var tl = widget.showAll ? _l : _l.length >= 5 ? _l.take(5).toList() : _l;
+    return Column(children: _buildView(tl));
+  }
+
+  List<Widget> _buildView(List<BBSReply> l) {
+    return <Widget>[
+      ...List.generate(
+        l.length,
         (i) => Column(
           children: <Widget>[
-            if (i == 0) _maFirstComment(_l[i]), // 大师的第一条评论
-            if (i != 0)
-              _otherReply(_l[i]), // 剩余的评论
+            if (i == 0) // 大师的第一条评论
+              FirstReply(data: l[i], level: widget.level),
+            if (i != 0) // 剩余的评论
+              ReplyItem(data: l[i]),
           ],
         ),
       ),
-    );
-  }
-
-  /// 大师第一条评论中的头像，昵称，评论时间
-  Widget _maFirstComment(BBSReply e) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          leading: CusAvatar(
-            url: e.icon ?? "", // 大师头像
-            circle: true,
-            size: 50,
-          ),
-          // 大师昵称
-          title: CusText(e.nick.isEmpty ? "唐僧" : e.nick, t_primary, 28),
-          subtitle: Padding(
-            padding: EdgeInsets.only(top: Adapt.px(10)),
-            child: CusText(e.create_date, t_gray, 28), // 大师评论时间
-          ),
-          contentPadding: EdgeInsets.all(0),
-        ),
-        InkWell(
-          onTap: () {},
-          child: Text(
-            e.text.first, // 大师评论内容
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-          ),
-        ),
-        SizedBox(height: Adapt.px(40)),
-      ],
-    );
-  }
-
-  /// 剩余的评论
-  Widget _otherReply(BBSReply e) {
-    return Column(
-      children: <Widget>[
-        InkWell(
-          onTap: () {
-            Debug.log("当前评论人的uid:${e.uid}");
-          },
-          child: Container(
-            color: fif_primary,
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(
-                horizontal: Adapt.px(20), vertical: Adapt.px(15)),
-            margin: EdgeInsets.only(bottom: Adapt.px(5)), // 评论间隔
-            child: Text(
-              e.text.first,
-              style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+      // 根据评论长度是否大于 5，显示还有多少条回复
+      if (_l.length >= 5 && !widget.showAll)
+        Padding(
+          padding: EdgeInsets.only(top: Adapt.px(10), bottom: Adapt.px(20)),
+          child: InkWell(
+            onTap: () => CusRoutes.push(
+              context,
+              AllReply(l: _l, level: widget.level),
             ),
+            child: CusText("还有 ${_l.length - 5} 条回复...", Color(0xFF4D95E4), 28),
           ),
         ),
-      ],
-    );
+      Padding(
+        padding: EdgeInsets.only(bottom: Adapt.px(20)), // 楼层间隔
+        child: Divider(thickness: 0.4, height: 0, color: Colors.white),
+      ),
+    ];
   }
 }

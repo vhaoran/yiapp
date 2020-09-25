@@ -44,18 +44,15 @@ class PostHeader extends StatelessWidget {
         _show("姓名", _content?.name ?? "至尊宝"),
         _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
         _show(
-            "出生日期",
-            _content.is_solar
-                ? "${YiTool.fullDateGong(_yiDate)}"
-                : "${YiTool.fullDateNong(_yiDate)}"),
-        _show("所问类型", _type()),
-        CusDivider(),
-        Text(
-          data.title, // 帖子标题
-          style: TextStyle(color: t_primary, fontSize: Adapt.px(30)),
-          maxLines: 6,
+          "出生日期",
+          _content.is_solar
+              ? "${YiTool.fullDateGong(_yiDate)}"
+              : "${YiTool.fullDateNong(_yiDate)}",
         ),
-        SizedBox(height: Adapt.px(30)),
+        _show("所问类型", _type()),
+        _show("标题", "${data.title}"),
+        _show("内容", "${data.brief}"),
+        CusDivider(),
       ],
     );
   }
