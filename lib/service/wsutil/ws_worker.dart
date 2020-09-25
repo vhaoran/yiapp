@@ -12,7 +12,7 @@ import 'package:yiapp/service/bus/im-bus.dart';
 const String _url = "ws://0755yicai.com:8083/ws";
 IOWebSocketChannel glbWSChan;
 
-initWSChan() {
+initWSChan() async{
   String jwt = ApiBase.jwt;
   //String jwt = "test/1";
 
@@ -56,6 +56,7 @@ initWSChan() {
   glbWSChan = _chan;
 }
 
+
 void _notifyOnline() {
   Future.delayed(Duration(seconds: 5), () {
     ApiMsg.OnLineNotify().then((e) {
@@ -66,7 +67,7 @@ void _notifyOnline() {
 
 void _sleep() {
   sleep(Duration(
-    seconds: 5,
+    seconds: 10,
   ));
 }
 
