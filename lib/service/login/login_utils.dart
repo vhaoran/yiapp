@@ -2,7 +2,6 @@ import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/service/wsutil/ws_worker.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/storage_util/sq_init.dart';
 
 Future<bool> setLoginInfo(LoginResult r) async {
   ApiBase.login = true;
@@ -18,5 +17,5 @@ Future<bool> setLoginInfo(LoginResult r) async {
   ApiBase.jwt = r.jwt;
   ApiBase.loginInfo = r;
   initWSChan(); // 初始化 web socket 连接
-  await initDB();
+  //await initDB();
 }

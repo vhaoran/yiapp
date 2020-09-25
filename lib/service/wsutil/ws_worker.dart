@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:web_socket_channel/io.dart';
-import 'package:yiapp/model/msg/info_recent.dart';
+import 'package:yiapp/model/msg/msg-notify.dart';
+import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/msg/msg_body.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/service/storage_util/msg_his_dao.dart';
-import 'package:yiapp/service/storage_util/msg_top_dao.dart';
-import 'package:yiapp/service/storage_util/sq_init.dart';
 
 //const String _url = "ws://192.168.0.99:8889/ws";
 const String _url = "ws://0755yicai.com:8083/ws";
@@ -30,7 +28,7 @@ initWSChan() {
     _pump(message);
   }, onError: (err) {
     print("-------error-----------");
-    print(err.toString());
+    print("***error---initWSChan:" + err.toString());
 
     //_chan.sink.close(-1, "on-error" + err.toString());
 
@@ -82,63 +80,54 @@ void _pump(String text) {
   }
 
   //------pump to MsgBody listener---------------------
-  MsgBody bean = MsgBody.fromJsonStr(text);
+  MsgBody src = MsgBody.fromJsonStr(text);
   //flush to local storage
 
-  if (bean != null) {
-    _pushLocalStorageAck(bean);
+  //---notify msg--通知消息的解析-------------------------
+  if (src.content_type == "notify") {
+    parseNotify(src);
+  }
+  //----yi order--大师订单
+  if (src.content_type == "yi-order") {
+    parseYiOrder(src);
+  }
 
-    _pushLocalStorage_top(bean);
-    //通知到首面（首頁不用時，將來去掉）
-    glbEventBus.fire(bean);
+  //通知到首面（首頁不用時，將來去掉）
+}
 
-    //通知到首页
-    var infoRecent = InfoRecent.from(bean);
-    if (infoRecent != null) {
-      glbEventBus.fire(infoRecent);
+void parseYiOrder(MsgBody src) {
+  try {
+    MsgYiOrder dst = MsgYiOrder.fromJson(src.content as Map<String, dynamic>);
+    if (dst != null) {
+      glbEventBus.fire(dst);
+      print("-----解析 大师订单-消息 完成---------------");
+      print("${dst.toJson()}");
     }
+  } catch (e) {
+    print("***error---parseYiOrder:" + e.toString());
   }
 }
 
-Future<bool> _msgAck(MsgBody src) async {
-  var l = [
-    {"msg_type": src.msg_type, "id": src.id},
-  ];
-  return await ApiMsg.AckMsg(l);
+//通知消息的解析
+void parseNotify(MsgBody src) {
+  try {
+    MsgNotify dst = MsgNotify.fromJson(src.content as Map<String, dynamic>);
+    if (dst != null) {
+      glbEventBus.fire(dst);
+      print("-----解析通知消息完成---------------");
+      print("${dst.toJson()}");
+    }
+  } catch (e) {
+    print("***error---parseNotify:" + e.toString());
+  }
 }
 
-_pushLocalStorageAck(MsgBody bean) {
-  MsgHisDao dao = new MsgHisDao(glbDB);
-  bean.not_read_count = 1;
-  dao.push(bean).whenComplete(() {
-    print(
-        "------msgBody to local sqflite---${DateTime.now().toString()}--------------");
-    print("${bean.toJson()}");
-    _msgAck(bean).then((ok) {
-      print(
-          "------msgBody ack ok---${DateTime.now().toString()}-------${bean.id}-------");
-    });
-  }).catchError((e) {
-    print(
-        "*****************msgTop to local sqflite---${DateTime.now().toString()}--------------");
-    print("${bean.toJson()}");
-    print("************ ${e.toString()}");
-  });
-}
-
-_pushLocalStorage_top(MsgBody bean) {
-  MsgTopDao dao = new MsgTopDao(glbDB);
-  dao.push(bean).whenComplete(() {
-    print(
-        "------msgTop to local sqflite---${DateTime.now().toString()}--------------");
-    print("${bean.toJson()}");
-  }).catchError((e) {
-    print(
-        "*****************msgTop to local sqflite---${DateTime.now().toString()}--------------");
-    print("${bean.toJson()}");
-    print("************ ${e.toString()}");
-  });
-}
+// Future<bool> _msgAck(MsgBody src) async {
+//   var l = [
+//     {"msg_type": src.msg_type, "id": src.id},
+//   ];
+//   return await ApiMsg.AckMsg(l);
+// }
 
 bool _isPong(String text) {
   if (text.trim().toLowerCase() == "pong") {
