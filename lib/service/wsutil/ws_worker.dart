@@ -11,55 +11,69 @@ import 'package:yiapp/service/bus/im-bus.dart';
 //const String _url = "ws://192.168.0.99:8889/ws";
 const String _url = "ws://0755yicai.com:8083/ws";
 IOWebSocketChannel glbWSChan;
+bool _init_doing = false;
 
 initWSChan() async {
-  print("-------initWSChan web socket ---------------");
+  if (_init_doing) {
+    return;
+  }
+  try {
+    print("-------initWSChan web socket ---------------");
 
-  String jwt = ApiBase.jwt;
-  //String jwt = "test/1";
+    String jwt = ApiBase.jwt;
+    //String jwt = "test/1";
 
-  IOWebSocketChannel _chan = new IOWebSocketChannel.connect(_url, headers: {
-    "Jwt": jwt,
-  });
+    IOWebSocketChannel _chan = new IOWebSocketChannel.connect(_url, headers: {
+      "Jwt": jwt,
+    });
 
-  //上线通知
-  _notifyOnline();
+    //上线通知
+    _notifyOnline();
 
-  _chan.stream.listen((message) {
-    print(message);
-    _pump(message);
-  }, onError: (err) {
-    print("-------error-----------");
-    print("***error---initWSChan:" + err.toString());
+    _chan.stream.listen((message) {
+      print(message);
+      _pump(message);
+    }, onError: (err) {
+      print("-------error-----------");
+      print("***error---initWSChan:" + err.toString());
 
-    //_chan.sink.close(-1, "on-error" + err.toString());
-
-    _sleep();
-    initWSChan();
-  }, onDone: () {
-    print("---websocket----done-----------");
-
-    _sleep();
-    initWSChan();
-  });
-
-  Timer.periodic(Duration(seconds: 10), (timer) {
-    try {
-      _ping(_chan);
-    } catch (e) {
-      timer.cancel();
-      //glbWSChan.sink.close(-1, "on-error" + e.toString());
+      //_chan.sink.close(-1, "on-error" + err.toString());
 
       _sleep();
-      initWSChan();
-    }
-  });
+      if (!_init_doing) {
+        initWSChan();
+      }
+    }, onDone: () {
+      print("---websocket----done-----------");
 
-  glbWSChan = _chan;
+      _sleep();
+      if (!_init_doing) {
+        initWSChan();
+      }
+    }, cancelOnError: true);
+
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      try {
+        _ping(_chan);
+      } catch (e) {
+        timer.cancel();
+        //glbWSChan.sink.close(-1, "on-error" + e.toString());
+
+        _sleep();
+        if (!_init_doing) {
+          initWSChan();
+        }
+      }
+    });
+
+    glbWSChan = _chan;
+  } finally {
+    _init_doing = false;
+  }
 }
 
 void _notifyOnline() {
-  Future.delayed(Duration(seconds: 5), () {
+  Future.delayed(Duration(seconds: 30), () {
     ApiMsg.OnLineNotify().then((e) {
       print("-------onLineNotify-----上线通知服务器-----------");
     });
