@@ -40,6 +40,15 @@ class ApiMsg {
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
+  //---------大师聊天消息 ack--//未来考虑实现为服务-------------------------------------
+  static Future<bool> yiOrderMsgAckService(String id) async {
+    try {
+      return yiOrderMsgAck([id]);
+    } catch (e) {
+      print("***error---ApiMsg.yiOrderMsgAckService:" + e.toString());
+    }
+  }
+
   //----系统通知消息----分页查询------------
   static notifyMsgPage(Map<String, dynamic> pb) async {
     var url = pre + "NotifyMsgPage";
@@ -54,5 +63,15 @@ class ApiMsg {
     };
 
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  //未来考虑实现为服务
+  static Future<bool> notifyMsgAckService(String id) async {
+    try {
+      return notifyMsgAck([id]);
+    } catch (e) {
+      print("***error,file: " + e.toString());
+      return false;
+    }
   }
 }

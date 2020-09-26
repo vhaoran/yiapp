@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:web_socket_channel/io.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/model/msg/msg-notify.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/msg/msg_body.dart';
@@ -17,59 +18,57 @@ initWSChan() async {
   if (_init_doing) {
     return;
   }
+
   try {
-    print("-------initWSChan web socket ---------------");
-
-    String jwt = ApiBase.jwt;
-    //String jwt = "test/1";
-
-    IOWebSocketChannel _chan = new IOWebSocketChannel.connect(_url, headers: {
-      "Jwt": jwt,
-    });
-
-    //上线通知
-    _notifyOnline();
-
-    _chan.stream.listen((message) {
-      print(message);
-      _pump(message);
-    }, onError: (err) {
-      print("-------error-----------");
-      print("***error---initWSChan:" + err.toString());
-
-      //_chan.sink.close(-1, "on-error" + err.toString());
-
-      _sleep();
-      if (!_init_doing) {
-        initWSChan();
-      }
-    }, onDone: () {
-      print("---websocket----done-----------");
-
-      _sleep();
-      if (!_init_doing) {
-        initWSChan();
-      }
-    }, cancelOnError: true);
-
-    Timer.periodic(Duration(seconds: 10), (timer) {
-      try {
-        _ping(_chan);
-      } catch (e) {
-        timer.cancel();
-        //glbWSChan.sink.close(-1, "on-error" + e.toString());
-
-        _sleep();
-        if (!_init_doing) {
-          initWSChan();
-        }
-      }
-    });
-
-    glbWSChan = _chan;
+    initWSChanSingle();
+  } catch (e) {
+    _delayInit();
   } finally {
     _init_doing = false;
   }
+}
+
+initWSChanSingle() {
+  print("-------initWSChan web socket ---------------");
+
+  String jwt = ApiBase.jwt;
+  //String jwt = "test/1";
+
+  IOWebSocketChannel _chan = new IOWebSocketChannel.connect(_url, headers: {
+    "Jwt": jwt,
+  });
+
+  //上线通知
+  _notifyOnline();
+
+  _chan.stream.listen((message) {
+    print(message);
+    _pump(message);
+  }, onError: (err) {
+    print("-------error-----------");
+    print("***error---initWSChan:" + err.toString());
+    _delayInit();
+  }, onDone: () {
+    print("---websocket----done-----------");
+    _delayInit();
+  }, cancelOnError: true);
+
+  Timer.periodic(Duration(seconds: 10), (timer) {
+    try {
+      _ping(_chan);
+    } catch (e) {
+      timer.cancel();
+      _delayInit();
+    }
+  });
+
+  glbWSChan = _chan;
+}
+
+void _delayInit() {
+  Future.delayed(Duration(seconds: 5), () {
+    initWSChan();
+  });
 }
 
 void _notifyOnline() {
@@ -116,6 +115,8 @@ void parseYiOrder(MsgBody src) {
     MsgYiOrder dst = MsgYiOrder.fromJson(src.content as Map<String, dynamic>);
     if (dst != null) {
       glbEventBus.fire(dst);
+      //ack
+      ApiMsg.yiOrderMsgAckService(dst.id);
       print("-----解析 大师订单-消息 完成---------------");
       print("${dst.toJson()}");
     }
@@ -127,9 +128,11 @@ void parseYiOrder(MsgBody src) {
 //通知消息的解析
 void parseNotify(MsgBody src) {
   try {
-    MsgNotify dst = MsgNotify.fromJson(src.content as Map<String, dynamic>);
+    MsgNotifyHis dst =
+        MsgNotifyHis.fromJson(src.content as Map<String, dynamic>);
     if (dst != null) {
       glbEventBus.fire(dst);
+      ApiMsg.notifyMsgAckService(dst.id);
       print("-----解析通知消息完成---------------");
       print("${dst.toJson()}");
     }
