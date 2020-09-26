@@ -130,23 +130,17 @@ class _MinePageState extends State<MinePage>
         children: <Widget>[
           BackgroundWall(
             url: "", // 背景墙
-//            onTap: ApiState.isGuest
-//                ? () => CusToast.toast(context, text: "请先登录")
-//                : () => CusBottomSheet(context, OnFile: _selectFile),
             onTap: () => CusBottomSheet(context, OnFile: _selectFile),
           ),
           Align(
             alignment: Alignment(0, 0), // 头像
             child: InkWell(
               child: CusAvatar(url: _u.icon ?? "", circle: true),
-//              onTap: ApiState.isGuest
-//                  ? () => CusToast.toast(context, text: "请先登录")
-//                  : () => CusRoutes.push(context, PersonalPage()),
               onTap: () => CusRoutes.push(context, PersonalPage()),
             ),
           ),
           Align(
-            alignment: Alignment(0, 0.75),
+            alignment: Alignment(0, ApiState.isGuest ? 0.95 : 0.75),
             child: _userCodeCt(), // 已登录显示用户名，未登录则显示登录丨注册
           ),
         ],
@@ -156,47 +150,47 @@ class _MinePageState extends State<MinePage>
 
   /// 已登录显示用户名，未登录则显示登录丨注册
   Widget _userCodeCt() {
-//    TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
-    return Text(
-      _u.nick, // 用户昵称
-      style: TextStyle(
-        color: t_gray,
-        fontSize: Adapt.px(30),
-        fontWeight: FontWeight.w500,
-      ),
-    );
-
-//    return ApiState.isGuest
-//        ? Column(
-//            mainAxisSize: MainAxisSize.min,
-//            children: <Widget>[
-//              Row(
-//                mainAxisSize: MainAxisSize.min,
-//                children: <Widget>[
-//                  InkWell(
-//                    onTap: () => CusRoutes.push(
-//                      context,
-//                      LoginPage(showDefault: true),
-//                    ),
-//                    child: Text("登录", style: ts),
-//                  ),
-//                  Text("丨", style: ts),
-//                  InkWell(
-//                    onTap: () => CusRoutes.push(context, RegisterPage()),
-//                    child: Text("注册", style: ts),
-//                  ),
-//                ],
-//              ),
-//            ],
-//          )
-//        : Text(
-//            _u.nick, // 用户昵称
-//            style: TextStyle(
-//              color: t_gray,
-//              fontSize: Adapt.px(30),
-//              fontWeight: FontWeight.w500,
-//            ),
-//          );
+    TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
+    return ApiState.isGuest
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                _u.nick, // 用户昵称
+                style: TextStyle(
+                  color: t_gray,
+                  fontSize: Adapt.px(30),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(width: Adapt.px(20)),
+                  InkWell(
+                    onTap: () => CusRoutes.push(
+                      context,
+                      LoginPage(showDefault: true),
+                    ),
+                    child: Text("登录", style: ts),
+                  ),
+                  Text("丨", style: ts),
+                  InkWell(
+                    onTap: () => CusRoutes.push(context, RegisterPage()),
+                    child: Text("注册", style: ts),
+                  ),
+                ],
+              ),
+            ],
+          )
+        : Text(
+            _u.nick, // 用户昵称
+            style: TextStyle(
+              color: t_gray,
+              fontSize: Adapt.px(30),
+              fontWeight: FontWeight.w500,
+            ),
+          );
   }
 
   void _selectFile(File file) {

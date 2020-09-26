@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
@@ -85,7 +87,10 @@ class _PersonalPageState extends State<PersonalPage> {
         subtitle: CusTool.sex(_u.sex),
         onTap: () => CusRoutes.push(context, ChUserSex(sex: _u.sex)),
       ),
-      NormalBox(title: "手机号码", subtitle: _u.user_code),
+      NormalBox(
+        title: "手机号码",
+        subtitle: ApiState.isGuest ? "绑定手机" : _u.user_code,
+      ),
     ];
   }
 
@@ -104,14 +109,15 @@ class _PersonalPageState extends State<PersonalPage> {
         onTap: () => CusRoutes.push(context, UserAddressPage()),
       ),
       SizedBox(height: Adapt.px(50)),
-      SingleTextBox(
-        title: "退出登录",
-        onTap: () =>
-            CusDialog.err(context, title: "您确定退出当前账号吗?", onApproval: () async {
-          await KV.clear();
-          CusRoutes.push(context, LoginPage());
-        }),
-      ),
+      if (!ApiState.isGuest)
+        SingleTextBox(
+          title: "退出登录",
+          onTap: () => CusDialog.err(context, title: "您确定退出当前账号吗?",
+              onApproval: () async {
+            await KV.clear();
+            CusRoutes.push(context, LoginPage());
+          }),
+        ),
     ];
   }
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
     // 鸿运号是否存在，存在再登录
     bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
     if (exist) {
-      print(">>>存在该账号");
+      Debug.log("存在该账号");
       var m = {
         "user_code": _mobileCtrl.text.trim(),
         "pwd": _pwdCtrl.text.trim(),
@@ -169,10 +168,10 @@ class _LoginPageState extends State<LoginPage> {
           context.read<UserInfoState>().init(r.user_info);
           if (ApiState.isMaster) _fetchMaster();
           if (ApiState.isBroker) _fetchBroker();
-          print(">>>登录成功");
+          Debug.log("登录成功");
         }
       } catch (e) {
-        print("<<<登录出现异常：$e");
+        Debug.log("登录出现异常：$e");
         _pwdErr = "密码错误";
         setState(() {});
       }
