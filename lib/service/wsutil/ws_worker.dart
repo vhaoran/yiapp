@@ -73,7 +73,7 @@ initWSChan() async {
 }
 
 void _notifyOnline() {
-  Future.delayed(Duration(seconds: 30), () {
+  Future.delayed(Duration(seconds: 15), () {
     ApiMsg.OnLineNotify().then((e) {
       print("-------onLineNotify-----上线通知服务器-----------");
     });
