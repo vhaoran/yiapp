@@ -76,4 +76,11 @@ class ApiBBSPrize {
     var data = m;
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
+
+  //-----------w单个悬赏贴回帖-------------------------------------
+  static Future<bool> bbsPrizeReply(Map<String, dynamic> m) async {
+    var url = pre + "BBSPrizeReply";
+    var data = m;
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
 }

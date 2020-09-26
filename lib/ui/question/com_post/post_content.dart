@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/com_post/post_header.dart';
+import 'package:yiapp/ui/question/com_post/post_input.dart';
 import 'package:yiapp/ui/question/com_post/post_reply.dart';
 
 // ------------------------------------------------------
@@ -15,72 +20,98 @@ import 'package:yiapp/ui/question/com_post/post_reply.dart';
 // ------------------------------------------------------
 
 class PostContent extends StatefulWidget {
-  final BBSPrize data;
+  final String id;
 
-  PostContent({this.data, Key key}) : super(key: key);
+  PostContent({this.id, Key key}) : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
 }
 
 class _PostContentState extends State<PostContent> {
+  var _bbsPrize = BBSPrize();
+  var _future;
+  bool _isPoster = false; // 是否发帖人
+  var _scrollCtrl = ScrollController();
+
+  @override
+  void initState() {
+    _future = _fetch();
+    _isPoster = _bbsPrize.uid == ApiBase.uid;
+    super.initState();
+  }
+
+  /// 查询单条帖子内容
+  _fetch() async {
+    try {
+      BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.id);
+      if (res != null) {
+        Debug.log("单条帖子的详情：${res.toJson()}");
+        _bbsPrize = res;
+      }
+    } catch (e) {
+      Debug.logError("查询单条悬赏帖出现异常：$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(text: "问题详情"),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-              children: <Widget>[
-                PostHeader(data: widget.data), // 帖子头部信息
-                ...List.generate(
-                  3, // 回复帖子区域，该处为模拟数据
-                  (i) => PostReply(l: widget.data.reply, level: i + 1),
+      body: FutureBuilder(
+        future: _future,
+        builder: (context, snap) {
+          if (!snapDone(snap)) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  controller: _scrollCtrl,
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+                  children: <Widget>[
+                    PostHeader(data: _bbsPrize), // 帖子头部信息
+                    ...List.generate(
+                      _bbsPrize.reply.length,
+                      (i) => PostReply(
+                        reply: _bbsPrize.reply[i],
+                        level: i + 1,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          _input(),
-        ],
+              ),
+              // 大师和发帖人可以回复
+              if (ApiState.isMaster || _isPoster)
+                PostInput(
+                  data: _bbsPrize,
+                  onSend: () async {
+                    await _refresh();
+                    Timer(
+                      Duration(milliseconds: 100),
+                      () => _scrollCtrl
+                          .jumpTo(_scrollCtrl.position.maxScrollExtent),
+                    );
+                  },
+                ),
+            ],
+          );
+        },
       ),
       backgroundColor: primary,
     );
   }
 
-  ///  回复评论输入框
-  Widget _input() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 9,
-          child: Container(
-            child: TextField(
-              style: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
-              decoration: InputDecoration(
-                hintText: "回复内容...",
-                hintStyle:
-                    TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
-                contentPadding: EdgeInsets.only(left: Adapt.px(20)),
-              ),
-            ),
-            color: Colors.grey,
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            color: t_yi,
-            child: FlatButton(
-              onPressed: () {},
-              child: CusText("发送", Colors.black, 28),
-              padding: EdgeInsets.all(0),
-            ),
-          ),
-        ),
-      ],
-    );
+  void _refresh() async {
+    await _fetch();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _scrollCtrl.dispose();
+    super.dispose();
   }
 }

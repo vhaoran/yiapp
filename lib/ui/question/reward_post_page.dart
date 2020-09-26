@@ -45,11 +45,11 @@ class _RewardPostPageState extends State<RewardPostPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _count,
-//      "where": {"stat": 1} // 这里的 stat 应设为 1 已支付 和 2 已打赏
+//      "where": {"stat": 1}, // 这里的 stat 应设为 1 已支付 和 2 已打赏
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await await ApiBBSPrize.bbsPrizePage(m);
+      PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       Debug.log("总的悬赏帖个数：$_rowsCount");
       var l = pb.data.map((e) => e as BBSPrize).toList();

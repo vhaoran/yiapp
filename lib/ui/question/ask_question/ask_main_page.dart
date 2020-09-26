@@ -60,6 +60,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   var _briefCtrl = TextEditingController(); // 帖子摘要
   YiDateTime _birth; // 出生日期
   int _male = 1; // 性别
+  String _nick = "";
 
   @override
   void initState() {
@@ -163,6 +164,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
           "day": _birth.day,
           "hour": _birth.hour,
           "minutes": _birth.minute,
+          "nick": "苏醒",
         },
       };
       Debug.log("发帖详情：${m.toString()}");

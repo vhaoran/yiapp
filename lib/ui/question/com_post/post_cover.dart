@@ -19,15 +19,9 @@ import 'package:yiapp/ui/question/com_post/post_content.dart';
 
 class PostCover extends StatefulWidget {
   final BBSPrize data;
-  final bool show; // 是否显示取消和支付按钮
   VoidCallback onChanged; // 取消和支付的回调
 
-  PostCover({
-    this.data,
-    this.show: false,
-    this.onChanged,
-    Key key,
-  }) : super(key: key);
+  PostCover({this.data, this.onChanged, Key key}) : super(key: key);
 
   @override
   _PostCoverState createState() => _PostCoverState();
@@ -41,7 +35,7 @@ class _PostCoverState extends State<PostCover> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CusRoutes.push(context, PostContent(data: widget.data)),
+      onTap: () => CusRoutes.push(context, PostContent(id: widget.data.id)),
       child: Card(
         color: fif_primary,
         margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
@@ -58,7 +52,6 @@ class _PostCoverState extends State<PostCover> {
               // 发帖时间。 如果本人帖子订单待支付，显示取消和支付按钮
               CoverTimeBtn(
                 data: widget.data,
-                show: widget.show,
                 onChanged: widget.onChanged,
               ),
             ],

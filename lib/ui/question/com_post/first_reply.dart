@@ -25,6 +25,7 @@ class _FirstReplyState extends State<FirstReply> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _infoCtr(), // 大师第一条评论中的头像、昵称、评论时间
         InkWell(

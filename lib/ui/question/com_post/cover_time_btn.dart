@@ -9,6 +9,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api_base.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -18,15 +19,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class CoverTimeBtn extends StatefulWidget {
   final BBSPrize data;
-  final bool show;
   VoidCallback onChanged; // 取消和支付的回调
 
-  CoverTimeBtn({
-    this.data,
-    this.show,
-    this.onChanged,
-    Key key,
-  }) : super(key: key);
+  CoverTimeBtn({this.data, this.onChanged, Key key}) : super(key: key);
 
   @override
   _CoverTimeBtnState createState() => _CoverTimeBtnState();
@@ -40,26 +35,30 @@ class _CoverTimeBtnState extends State<CoverTimeBtn> {
         // 发帖时间
         CusText("${CusTime.ymd(widget.data.create_date)}", t_gray, 28),
         Spacer(),
-        if (widget.show) ...[
-          CusRaisedBtn(
-            text: "取消",
-            fontSize: 26,
-            pdHor: 24,
-            pdVer: 5,
-            backgroundColor: primary,
-            borderRadius: 100,
-            onPressed: _doCancel, // 取消订单
-          ),
+        if (widget.data.uid == ApiBase.uid) ...[
+          // 本人帖子，且没有人回复时可以取消帖子
+          if (widget.data.reply.isEmpty)
+            CusRaisedBtn(
+              text: "取消",
+              fontSize: 26,
+              pdHor: 24,
+              pdVer: 5,
+              backgroundColor: primary,
+              borderRadius: 100,
+              onPressed: _doCancel, // 取消订单
+            ),
           SizedBox(width: Adapt.px(20)),
-          CusRaisedBtn(
-            text: "支付",
-            fontSize: 26,
-            pdHor: 24,
-            pdVer: 5,
-            backgroundColor: primary,
-            borderRadius: 100,
-            onPressed: _doPay, // 支付订单
-          ),
+          // 订单未支付
+          if (widget.data.stat == 0)
+            CusRaisedBtn(
+              text: "支付",
+              fontSize: 26,
+              pdHor: 24,
+              pdVer: 5,
+              backgroundColor: primary,
+              borderRadius: 100,
+              onPressed: _doPay, // 支付订单
+            ),
         ],
       ],
     );

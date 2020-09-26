@@ -118,7 +118,6 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
                   children: <Widget>[
                     ...myList.map((e) => PostCover(
                           data: e,
-                          show: e.stat == 0,
                           onChanged: () {
                             _pageNo = _rowsCount = 0;
                             _l.clear();

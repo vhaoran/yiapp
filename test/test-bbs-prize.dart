@@ -182,4 +182,18 @@ void main() {
     expect(1, equals(1));
     print(" ------------end------------  ");
   });
+
+  test("bbsPrizeReply", () async {
+    ApiBase.jwt = "test/1";
+
+    Map<String, dynamic> m = {
+      "id": "5f59cf88506a5a960749eb77",
+      "text":["aaa","bbb","cc"],
+    };
+
+    var r = await ApiBBSPrize.bbsPrizeReply(m);
+    print("-----result--bbsPrizeReply  -$r---------");
+    expect(1, equals(1));
+    print(" ------------end------------  ");
+  });
 }

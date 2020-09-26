@@ -4,7 +4,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
-import 'post_reply.dart';
+import 'newpost_reply.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -37,7 +37,7 @@ class _AllReplyState extends State<AllReply> {
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
       children: <Widget>[
-        PostReply(l: widget.l, showAll: true, level: widget.level), // 回复帖子区域
+        NewwPostReply(l: widget.l, showAll: true, level: widget.level), // 回复帖子区域
         Container(
           color: fif_primary,
           width: double.infinity,

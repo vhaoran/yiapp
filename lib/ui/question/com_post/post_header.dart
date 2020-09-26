@@ -106,19 +106,10 @@ class PostHeader extends StatelessWidget {
 
   Widget _show(String title, subtitle) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Adapt.px(5)),
-      child: Row(
-        children: <Widget>[
-          Text(
-            "$title:",
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-          ),
-          SizedBox(width: Adapt.px(30)),
-          Text(
-            "$subtitle",
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-          ),
-        ],
+      padding: EdgeInsets.only(bottom: Adapt.px(10)),
+      child: Text(
+        "$title:  $subtitle",
+        style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
       ),
     );
   }
