@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:yiapp/complex/class/yi_date_time.dart';
-import 'package:yiapp/complex/const/const_int.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -58,23 +57,6 @@ class YiTool {
       minute: date.minute,
     );
     return yiDate;
-  }
-
-  /// 符号，老阴、老阳显示 X 和 O，少阴少阳不显示
-  static String xoSymbol(int code) {
-    String str;
-    switch (code) {
-      case lao_yin: // 老阴
-        str = "X";
-        break;
-      case lao_yang: // 老阳
-        str = "O";
-        break;
-      default:
-        str = "";
-        break;
-    }
-    return str;
   }
 
   /// 根据数字，转换为对应的中文，如 79 to 七十九，支持三位数以内的

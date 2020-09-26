@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/function/swicht_case.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 
@@ -92,8 +92,8 @@ class LiuYaoSymRes extends StatelessWidget {
             SizedBox(
               width: Adapt.px(20),
               child: Text(
-                YiTool.xoSymbol(code),
-                style: TextStyle(fontWeight: FontWeight.bold),
+                YiSwitch.xoSymbol(code),
+                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],

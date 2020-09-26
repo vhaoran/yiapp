@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/function/swicht_case.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
@@ -49,7 +50,7 @@ class PostHeader extends StatelessWidget {
               ? "${YiTool.fullDateGong(_yiDate)}"
               : "${YiTool.fullDateNong(_yiDate)}",
         ),
-        _show("所问类型", _type()),
+        _show("所问类型", YiSwitch.contentType(data.content_type)),
         _show("标题", "${data.title}"),
         _show("内容", "${data.brief}"),
         CusDivider(),
@@ -83,25 +84,6 @@ class PostHeader extends StatelessWidget {
       ),
       contentPadding: EdgeInsets.all(0),
     );
-  }
-
-  /// 所问类型
-  String _type() {
-    String str = "";
-    switch (data.content_type) {
-      case post_liuyao: // 六爻
-        str = "六爻";
-        break;
-      case post_sizhu: // 四柱
-        str = "四柱";
-        break;
-      case he_hun: // 合婚
-        str = "合婚";
-        break;
-      default:
-        str = "未知";
-    }
-    return str;
   }
 
   Widget _show(String title, subtitle) {
