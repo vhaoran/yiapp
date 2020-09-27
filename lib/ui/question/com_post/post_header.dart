@@ -67,7 +67,7 @@ class PostHeader extends StatelessWidget {
         size: 50,
       ),
       // 昵称
-      title: CusText(data.nick.isEmpty ? "至尊宝" : data.nick, t_primary, 28),
+      title: CusText(data.content.nick, t_primary, 28),
       subtitle: Padding(
         padding: EdgeInsets.only(top: Adapt.px(10)),
         child: CusText(data.create_date, t_gray, 28), // 发帖时间

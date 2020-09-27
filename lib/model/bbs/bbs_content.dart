@@ -13,6 +13,7 @@ class BBSContent {
   bool is_male;
   bool is_solar;
   String name;
+  String nick;
 
   BBSContent({
     this.year,
@@ -23,6 +24,7 @@ class BBSContent {
     this.is_male,
     this.is_solar,
     this.name,
+    this.nick,
   });
 
   factory BBSContent.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class BBSContent {
       is_male: json['is_male'],
       is_solar: json['is_solar'],
       name: json['name'],
+      nick: json['nick'],
     );
   }
 
@@ -48,6 +51,7 @@ class BBSContent {
     data['is_male'] = this.is_male;
     data['is_solar'] = this.is_solar;
     data['name'] = this.name;
+    data['nick'] = this.nick;
     return data;
   }
 }

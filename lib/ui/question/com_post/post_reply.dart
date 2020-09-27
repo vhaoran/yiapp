@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
@@ -13,10 +14,10 @@ import 'package:yiapp/model/bbs/bbs-Reply.dart';
 // ------------------------------------------------------
 
 class PostReply extends StatefulWidget {
-  final BBSReply reply;
-  final int level;
+  final List<BBSReply> l;
+  final int uid; // 发帖人的uid
 
-  PostReply({this.reply, this.level, Key key}) : super(key: key);
+  PostReply({this.l, this.uid, Key key}) : super(key: key);
 
   @override
   _PostReplyState createState() => _PostReplyState();
@@ -27,34 +28,47 @@ class _PostReplyState extends State<PostReply> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // 评论人头像、昵称、评论时间
-          _info(widget.reply),
-          // 评论内容
-          Padding(
-            padding: EdgeInsets.only(left: Adapt.px(15), bottom: Adapt.px(5)),
-            child: Text(
-              widget.reply.text.first,
-              style:
-                  TextStyle(color: t_gray, fontSize: Adapt.px(_localSize + 2)),
+    return Column(
+      children: <Widget>[
+        ...List.generate(widget.l.length, (i) => _item(widget.l[i], i + 1)),
+      ],
+    );
+  }
+
+  Widget _item(BBSReply e, int level) {
+    return InkWell(
+      onTap: () {
+        Debug.log("评论人详情：${e.toJson()}");
+      },
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // 评论人头像、昵称、评论时间
+            _info(e, level),
+            // 评论内容
+            Padding(
+              padding: EdgeInsets.only(left: Adapt.px(15), bottom: Adapt.px(5)),
+              child: Text(
+                e.text.first,
+                style: TextStyle(
+                    color: t_gray, fontSize: Adapt.px(_localSize + 2)),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: fif_primary,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: EdgeInsets.all(Adapt.px(10)),
+        margin: EdgeInsets.only(bottom: Adapt.px(10)), // 评论间隔
       ),
-      decoration: BoxDecoration(
-        color: fif_primary,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: EdgeInsets.all(Adapt.px(10)),
-      margin: EdgeInsets.only(bottom: Adapt.px(10)), // 评论间隔
     );
   }
 
   /// 评论人头像、昵称、评论时间
-  Widget _info(BBSReply e) {
+  Widget _info(BBSReply e, int level) {
     return ListTile(
       // 评论人头像
       leading: CusAvatar(url: e.icon ?? "", circle: true, size: 45),
@@ -67,11 +81,13 @@ class _PostReplyState extends State<PostReply> {
           if (!(e.is_master))
             Padding(
               padding: EdgeInsets.only(left: Adapt.px(10)),
-              child: CusText("(帖主)", Colors.grey, _localSize - 2),
+              child: e.uid == widget.uid
+                  ? CusText("(帖主)", Colors.grey, _localSize - 2)
+                  : null,
             ),
           Spacer(),
           // 显示层数
-          CusText("${widget.level}层", Colors.grey, _localSize - 2),
+          CusText("$level层", Colors.grey, _localSize - 2),
         ],
       ),
       // 评论时间
