@@ -9,11 +9,8 @@ import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
-import 'package:yiapp/model/msg/msg_body.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/ui/question/com_post/post_event.dart';
 import 'package:yiapp/ui/question/com_post/post_header.dart';
 import 'package:yiapp/ui/question/com_post/post_input.dart';
 import 'package:yiapp/ui/question/com_post/post_reply.dart';
@@ -39,32 +36,15 @@ class _PostContentState extends State<PostContent> {
   var _future;
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
-  int _count = 0;
-//  StreamSubscription<PostEvent> _busSub;
-  StreamSubscription<MsgBody> _busSub;
+  bool _loadAll = false; // 是否加载完毕
 
   int _pageNo = 0;
   int _rowsCount = 0;
 
   @override
   void initState() {
-    _prepareBusEvent(); // 初始化监听
     _future = _fetch();
     super.initState();
-  }
-
-  _prepareBusEvent() {
-    Debug.log("这里是消息监听");
-//    _busSub = glbEventBus.on<PostEvent>().listen((event) {
-//      Debug.log("event:${event.action == "suxing"}");
-//      _fetch();
-//    });
-    _busSub = glbEventBus.on<MsgBody>().listen((event) {
-      if (event.content_type == "comment") {
-        Debug.log("有人发布评论了");
-        Debug.log("发帖的详情：${event.toJson()}");
-      }
-    });
   }
 
   /// 查询单条帖子内容
@@ -75,31 +55,22 @@ class _PostContentState extends State<PostContent> {
         _bbsPrize = bbsPrize;
         _rowsCount = _bbsPrize.reply.length;
         Debug.log("帖子总长度：$_rowsCount");
-        if (_l.isEmpty) {
-          _fetchAll();
-        } else {
-          _l.add(_bbsPrize.reply.last);
-        }
+        if (_l.isEmpty) _fetchAll();
       }
     } catch (e) {
       Debug.logError("查询单条悬赏帖出现异常：$e");
     }
   }
 
-  void _fetchAllReply() async {
-    try {
-      List<BBSReply> res = await ApiBBSPrize.bbsPrizeReplyList(widget.id);
-      if (res != null) {}
-    } catch (e) {
-      Debug.logError("获取帖子所有的回复内容时出现异常：$e");
-    }
-  }
-
   /// 模拟分页添加评论列表
   void _fetchAll() async {
-    if (_pageNo * 5 > _rowsCount) return;
+    Debug.log("_pageNO是多少：${_pageNo}");
+    if (_pageNo * 20 > _rowsCount) {
+      setState(() => _loadAll = true);
+      return;
+    }
     _pageNo++;
-    _l = _bbsPrize.reply.take(_pageNo * 5).toList();
+    _l = _bbsPrize.reply.take(_pageNo * 20).toList();
     Debug.log("_l的长度：${_l.length}");
     setState(() {});
   }
@@ -130,11 +101,14 @@ class _PostContentState extends State<PostContent> {
                       PostReply(l: _l, uid: _bbsPrize.uid),
                     ],
                   ),
-                  onLoad: () async {
-                    await Future.delayed(Duration(milliseconds: 100));
-                    await _fetchAll();
-//                    _easyCtrl.finishLoad(
-//                        noMore: _l.length >= _bbsPrize.reply.length);
+                  onLoad: _loadAll
+                      ? null
+                      : () async {
+                          await Future.delayed(Duration(milliseconds: 100));
+                          await _fetchAll();
+                        },
+                  onRefresh: () async {
+                    await _refresh();
                   },
                 ),
               ),
@@ -145,7 +119,7 @@ class _PostContentState extends State<PostContent> {
                   onSend: () async {
                     await _refresh();
                     Timer(
-                      Duration(milliseconds: 100),
+                      Duration(milliseconds: 500),
                       () => _scrollCtrl
                           .jumpTo(_scrollCtrl.position.maxScrollExtent),
                     );
@@ -160,13 +134,15 @@ class _PostContentState extends State<PostContent> {
   }
 
   void _refresh() async {
+    _l.clear();
+    _pageNo = _rowsCount = 0;
+    _loadAll = false;
     await _fetch();
     setState(() {});
   }
 
   @override
   void dispose() {
-    _busSub.cancel();
     _scrollCtrl.dispose();
     _easyCtrl.dispose();
     super.dispose();

@@ -5,10 +5,9 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/model/msg/msg_body.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/ui/question/com_post/post_event.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -68,7 +67,7 @@ class _PostInputState extends State<PostInput> {
         _replyCtrl.clear();
         _focusNode.unfocus();
         CusToast.toast(context, text: "回帖成功");
-        glbEventBus.fire(MsgBody(content_type: "comment"));
+        glbEventBus.fire(MsgNotifyHis());
         if (widget.onSend != null) widget.onSend();
       }
     } catch (e) {

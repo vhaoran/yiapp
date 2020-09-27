@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,10 +13,12 @@ import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
@@ -46,6 +49,7 @@ class _HomePageState extends State<HomePage> {
   bool _isMid = false; // 是否为中间提问
   // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
   PageController _pc = PageController();
+//  StreamSubscription<MsgNotifyHis> _busSub;
 
   @override
   void initState() {
@@ -56,8 +60,21 @@ class _HomePageState extends State<HomePage> {
       MasterPage(),
       MinePage(),
     ];
+//    _prepareBusEvent(); // 初始化监听
     super.initState();
   }
+
+  /// 系统通知类型
+//  _prepareBusEvent() {
+//    _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
+//      Debug.log("监听到了吗");
+//      if (event.to == ApiBase.uid) {
+//        Debug.log("有大师给发帖人发布评论了");
+//        Debug.log("回帖的详情：${event.toJson()}");
+//      }
+//    });
+//  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +161,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+//    _busSub.cancel();
     _pc.dispose();
     super.dispose();
   }
