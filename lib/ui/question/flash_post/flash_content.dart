@@ -3,35 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/ui/question/com_post/post_header.dart';
-import 'package:yiapp/ui/question/com_post/post_input.dart';
-import 'package:yiapp/ui/question/com_post/post_reply.dart';
+import 'flash_header.dart';
+import 'flash_input.dart';
+import 'flash_reply.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/23 14:56
-// usage ：帖子内容组件
+// date  ：2020/9/28 11:16
+// usage ：闪断帖内容
 // ------------------------------------------------------
 
-class PostContent extends StatefulWidget {
+class FlashContent extends StatefulWidget {
   final String id;
 
-  PostContent({this.id, Key key}) : super(key: key);
+  FlashContent({this.id, Key key}) : super(key: key);
 
   @override
-  _PostContentState createState() => _PostContentState();
+  _FlashContentState createState() => _FlashContentState();
 }
 
-class _PostContentState extends State<PostContent> {
-  var _bbsPrize = BBSPrize(); // 帖子全部内容
+class _FlashContentState extends State<FlashContent> {
+  var _bbsVie = BBSVie(); // 帖子全部内容
   List<BBSReply> _l = []; // 帖子评论列表
   var _future;
   var _scrollCtrl = ScrollController();
@@ -50,10 +49,10 @@ class _PostContentState extends State<PostContent> {
   /// 查询单条帖子内容
   _fetch() async {
     try {
-      BBSPrize bbsPrize = await ApiBBSPrize.bbsPrizeGet(widget.id);
+      BBSVie bbsPrize = await ApiBBSVie.bbsVieGet(widget.id);
       if (bbsPrize != null) {
-        _bbsPrize = bbsPrize;
-        _rowsCount = _bbsPrize.reply.length;
+        _bbsVie = bbsPrize;
+        _rowsCount = _bbsVie.reply.length;
         Debug.log("帖子总长度：$_rowsCount");
         if (_l.isEmpty) _fetchAll();
       }
@@ -70,7 +69,7 @@ class _PostContentState extends State<PostContent> {
       return;
     }
     _pageNo++;
-    _l = _bbsPrize.reply.take(_pageNo * 20).toList();
+    _l = _bbsVie.reply.take(_pageNo * 20).toList();
     Debug.log("_l的长度：${_l.length}");
     setState(() {});
   }
@@ -93,12 +92,11 @@ class _PostContentState extends State<PostContent> {
                   child: ListView(
                     controller: _scrollCtrl,
                     physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
                     children: <Widget>[
                       // 帖子头部信息
-                      PostHeader(data: _bbsPrize),
+                      FlashHeader(data: _bbsVie),
                       // 帖子评论区域
-                      PostReply(l: _l, uid: _bbsPrize.uid),
+                      FlashReply(data: _bbsVie),
                     ],
                   ),
                   onLoad: _loadAll
@@ -113,9 +111,9 @@ class _PostContentState extends State<PostContent> {
                 ),
               ),
               // 大师和发帖人可以回复
-              if (ApiState.isMaster || _bbsPrize.uid == ApiBase.uid)
-                PostInput(
-                  data: _bbsPrize,
+              if (ApiState.isMaster || _bbsVie.uid == ApiBase.uid)
+                FlashInput(
+                  data: _bbsVie,
                   onSend: () async {
                     await _refresh();
                     Timer(

@@ -7,27 +7,27 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/24 17:35
-// usage ：帖子封面中的时间、取消和支付按钮
+// date  ：2020/9/28 10:53
+// usage ：闪断帖、取消和支付按钮
 // ------------------------------------------------------
 
-class CoverTimeBtn extends StatefulWidget {
-  final BBSPrize data;
+class FlashPayCancel extends StatefulWidget {
+  final BBSVie data;
   VoidCallback onChanged; // 取消和支付的回调
 
-  CoverTimeBtn({this.data, this.onChanged, Key key}) : super(key: key);
+  FlashPayCancel({this.data, this.onChanged, Key key}) : super(key: key);
 
   @override
-  _CoverTimeBtnState createState() => _CoverTimeBtnState();
+  _FlashPayCancelState createState() => _FlashPayCancelState();
 }
 
-class _CoverTimeBtnState extends State<CoverTimeBtn> {
+class _FlashPayCancelState extends State<FlashPayCancel> {
   @override
   Widget build(BuildContext context) {
     return Row(

@@ -1,10 +1,10 @@
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/23 15:49
-// usage ：帖子内容
+// usage ：自定义悬赏帖内容
 // ------------------------------------------------------
 
-class BBSContent {
+class RewardContent {
   int year;
   int month;
   int day;
@@ -15,7 +15,7 @@ class BBSContent {
   String name;
   String nick;
 
-  BBSContent({
+  RewardContent({
     this.year,
     this.month,
     this.day,
@@ -27,8 +27,8 @@ class BBSContent {
     this.nick,
   });
 
-  factory BBSContent.fromJson(Map<String, dynamic> json) {
-    return BBSContent(
+  factory RewardContent.fromJson(Map<String, dynamic> json) {
+    return RewardContent(
       year: json['year'],
       month: json['month'],
       day: json['day'],

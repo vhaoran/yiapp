@@ -7,27 +7,27 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/ui/question/com_post/cover_time_btn.dart';
-import 'package:yiapp/ui/question/com_post/post_content.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'flash_content.dart';
+import 'flash_pay_cancel.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/21 10:52
-// usage ：帖子封面
+// date  ：2020/9/28 10:45
+// usage ：闪断帖封面
 // ------------------------------------------------------
 
-class PostCover extends StatefulWidget {
-  final BBSPrize data;
+class FlashCover extends StatefulWidget {
+  final BBSVie data;
   VoidCallback onChanged; // 取消和支付的回调
 
-  PostCover({this.data, this.onChanged, Key key}) : super(key: key);
+  FlashCover({this.data, this.onChanged, Key key}) : super(key: key);
 
   @override
-  _PostCoverState createState() => _PostCoverState();
+  _FlashCoverState createState() => _FlashCoverState();
 }
 
-class _PostCoverState extends State<PostCover> {
+class _FlashCoverState extends State<FlashCover> {
   // 临时设置，后边改为图片显示
   Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
   String _type = "未知"; // 所求类型的文字
@@ -35,7 +35,7 @@ class _PostCoverState extends State<PostCover> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CusRoutes.push(context, PostContent(id: widget.data.id)),
+      onTap: () => CusRoutes.push(context, FlashContent(id: widget.data.id)),
       child: Card(
         color: fif_primary,
         margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
@@ -50,7 +50,7 @@ class _PostCoverState extends State<PostCover> {
               _iconNameScore(), // 发帖人头像，昵称，悬赏金
               _briefAndType(), // 帖子标题和类型显示
               // 发帖时间。 如果本人帖子订单待支付，显示取消和支付按钮
-              CoverTimeBtn(
+              FlashPayCancel(
                 data: widget.data,
                 onChanged: widget.onChanged,
               ),

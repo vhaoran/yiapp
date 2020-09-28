@@ -10,7 +10,7 @@ class BBSPrize {
   String title;
   String brief;
   int content_type;
-  BBSContent content;
+  RewardContent content;
   List<String> images;
 
   int score;
@@ -46,7 +46,7 @@ class BBSPrize {
     var c = null;
     int i = json['content_type'] as int;
 //    c = json["content"];
-    c = json["content"] != null ? BBSContent.fromJson(json['content']) : null;
+    c = json["content"] != null ? RewardContent.fromJson(json['content']) : null;
 
     if (i == 0) {}
     if (i == 1) {}

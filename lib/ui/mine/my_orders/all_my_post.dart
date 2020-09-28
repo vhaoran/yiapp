@@ -10,7 +10,7 @@ import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/ui/question/com_post/post_cover.dart';
+import 'package:yiapp/ui/question/reward_post/reward_cover.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -116,7 +116,7 @@ class _AllMyPostPageState extends State<AllMyPostPage> {
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   children: <Widget>[
-                    ...myList.map((e) => PostCover(
+                    ...myList.map((e) => RewardCover(
                           data: e,
                           onChanged: () {
                             _pageNo = _rowsCount = 0;

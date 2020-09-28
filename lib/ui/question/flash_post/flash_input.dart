@@ -4,28 +4,29 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/26 18:17
-// usage ：回复帖子输入框
+// date  ：2020/9/28 11:17
+// usage ：闪断帖回复评论输入框
 // ------------------------------------------------------
 
-class PostInput extends StatefulWidget {
-  final BBSPrize data;
+class FlashInput extends StatefulWidget {
+  final BBSVie data;
   final VoidCallback onSend;
 
-  PostInput({this.data, this.onSend, Key key}) : super(key: key);
+  FlashInput({this.data, this.onSend, Key key}) : super(key: key);
 
   @override
-  _PostInputState createState() => _PostInputState();
+  _FlashInputState createState() => _FlashInputState();
 }
 
-class _PostInputState extends State<PostInput> {
+class _FlashInputState extends State<FlashInput> {
   var _replyCtrl = TextEditingController();
   var _focusNode = FocusNode();
 
@@ -62,7 +63,7 @@ class _PostInputState extends State<PostInput> {
       "text": [_replyCtrl.text],
     };
     try {
-      bool ok = await ApiBBSPrize.bbsPrizeReply(m);
+      bool ok = await ApiBBSVie.bbsVieReply(m);
       if (ok) {
         _replyCtrl.clear();
         _focusNode.unfocus();

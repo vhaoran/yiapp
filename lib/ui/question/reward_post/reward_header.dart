@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/function/swicht_case.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
@@ -10,18 +9,18 @@ import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs_content.dart';
-import 'package:yiapp/ui/question/com_post/yuan_bao_ctr.dart';
+import 'package:yiapp/ui/question/yuan_bao_ctr.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/23 15:00
-// usage ：帖子头部
+// usage ：悬赏帖头部信息
 // ------------------------------------------------------
 
-class PostHeader extends StatelessWidget {
+class RewardHeader extends StatelessWidget {
   final BBSPrize data;
 
-  PostHeader({this.data, Key key}) : super(key: key) {
+  RewardHeader({this.data, Key key}) : super(key: key) {
     _content = data.content;
     _yiDate = YiDateTime(
       year: _content.year,
@@ -32,29 +31,32 @@ class PostHeader extends StatelessWidget {
     );
   }
 
-  BBSContent _content;
+  RewardContent _content;
   YiDateTime _yiDate;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _postTop(), // 头像、昵称、赏金、发帖时间
-        CusDivider(),
-        _show("姓名", _content?.name ?? "至尊宝"),
-        _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
-        _show(
-          "出生日期",
-          _content.is_solar
-              ? "${YiTool.fullDateGong(_yiDate)}"
-              : "${YiTool.fullDateNong(_yiDate)}",
-        ),
-        _show("所问类型", YiSwitch.contentType(data.content_type)),
-        _show("标题", "${data.title}"),
-        _show("内容", "${data.brief}"),
-        CusDivider(),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _postTop(), // 头像、昵称、赏金、发帖时间
+          CusDivider(),
+          _show("姓名", _content?.name ?? "至尊宝"),
+          _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
+          _show(
+            "出生日期",
+            _content.is_solar
+                ? "${YiTool.fullDateGong(_yiDate)}"
+                : "${YiTool.fullDateNong(_yiDate)}",
+          ),
+          _show("所问类型", YiSwitch.contentType(data.content_type)),
+          _show("标题", "${data.title}"),
+          _show("内容", "${data.brief}"),
+          CusDivider(),
+        ],
+      ),
     );
   }
 

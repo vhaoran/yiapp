@@ -9,7 +9,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/ui/question/com_post/post_cover.dart';
+import 'package:yiapp/ui/question/reward_post/reward_cover.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -40,7 +40,7 @@ class _RewardPostPageState extends State<RewardPostPage>
 
   /// 分页查询悬赏帖
   _fetch() async {
-    if (_pageNo * _count > _rowsCount) return; // 默认每页查询20条
+    if (_pageNo * _count > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
@@ -86,11 +86,11 @@ class _RewardPostPageState extends State<RewardPostPage>
           child: ListView(
             children: List.generate(
               _l.length,
-              (i) => PostCover(data: _l[i]),
+              (i) => RewardCover(data: _l[i]),
             ),
           ),
-          onLoad: () {
-            _refresh();
+          onLoad: () async {
+            await _refresh();
           },
           onRefresh: () async {
             _pageNo = _rowsCount = 0;
