@@ -50,10 +50,7 @@ class _FlashCoverState extends State<FlashCover> {
               _iconNameScore(), // 发帖人头像，昵称，悬赏金
               _briefAndType(), // 帖子标题和类型显示
               // 发帖时间。 如果本人帖子订单待支付，显示取消和支付按钮
-              FlashPayCancel(
-                data: widget.data,
-                onChanged: widget.onChanged,
-              ),
+              FlashPayCancel(data: widget.data, onChanged: widget.onChanged),
             ],
           ),
         ),

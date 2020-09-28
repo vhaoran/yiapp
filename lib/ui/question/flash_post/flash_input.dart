@@ -6,7 +6,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
 
@@ -73,6 +72,10 @@ class _FlashInputState extends State<FlashInput> {
       }
     } catch (e) {
       Debug.logError("回帖出现异常：$e");
+      if (e.toString().contains("没有抢单")) {
+        _replyCtrl.clear();
+        CusToast.toast(context, text: "您还没有抢单，无法评论");
+      }
     }
   }
 

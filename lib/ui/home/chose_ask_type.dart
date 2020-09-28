@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
@@ -14,8 +16,9 @@ import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
 // ------------------------------------------------------
 
 class ChoseAskType extends StatelessWidget {
-  bool isMid;
-  ChoseAskType({this.isMid, Key key}) : super(key: key);
+  bool isMid; // 是否中间发布提问按钮
+
+  ChoseAskType({this.isMid: false, Key key}) : super(key: key);
 
   // 提问类型
   final List<String> _queTypes = ["六爻", "四柱", "合婚", "其他", "取消"];

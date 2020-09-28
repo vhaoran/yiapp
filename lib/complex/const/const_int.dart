@@ -12,6 +12,12 @@ const int male = 1; // 男性
 const int m_disable = 0; // 停用大师
 const int m_enable = 1; // 启用大师
 
+// ------------------------- 帖子状态 ------------------------
+const int post_cancelled = -1; // 已取消
+const int post_no_pay = 0; // 未付款
+const int post_had_pay = 1; // 已付款
+const int post_had_reward = 2; // 已打赏
+
 // ------------------------- 悬赏帖类型 ------------------------
 const int post_liuyao = 1; // 六爻类型
 const int post_sizhu = 2; // 四柱类型

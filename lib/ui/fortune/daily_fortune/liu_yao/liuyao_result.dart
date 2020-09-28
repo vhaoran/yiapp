@@ -14,7 +14,6 @@ import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
-import 'package:yiapp/ui/question/ask_question/post_liuyao.dart';
 
 // ------------------------------------------------------
 // author：suxing

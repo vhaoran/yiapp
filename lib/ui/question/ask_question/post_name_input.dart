@@ -42,7 +42,6 @@ class _PostNameInputState extends State<PostNameInput> {
             hintText: "请输入您的姓名",
             autofocus: false,
             hideBorder: true,
-            maxLength: 10,
           ),
         ),
       ],

@@ -5,14 +5,17 @@ import 'package:yiapp/complex/class/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/ask_question/post_liuyao.dart';
 import 'post_brief_input.dart';
 import 'post_name_input.dart';
@@ -34,6 +37,7 @@ class AskQuestionPage extends StatefulWidget {
   final List<int> l; // 六爻编码
   final YiDateTime guaTime;
   final String user_nick; // 卦主姓名
+  final bool isFlash; // 是否闪断帖
 
   AskQuestionPage({
     this.content_type,
@@ -41,6 +45,7 @@ class AskQuestionPage extends StatefulWidget {
     this.l,
     this.guaTime,
     this.user_nick,
+    this.isFlash: false,
     Key key,
   }) : super(key: key);
 
@@ -60,7 +65,6 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   var _briefCtrl = TextEditingController(); // 帖子摘要
   YiDateTime _birth; // 出生日期
   int _male = 1; // 性别
-  String _nick = "";
 
   @override
   void initState() {
@@ -169,9 +173,12 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
       };
       Debug.log("发帖详情：${m.toString()}");
       try {
-        BBSPrize res = await ApiBBSPrize.bbsPrizeAdd(m);
-        if (res != null) {
-          Debug.log("发帖结果：${res.toJson()}");
+        var data;
+        data = ApiState.isFlash
+            ? await ApiBBSVie.bbsVieAdd(m)
+            : await ApiBBSPrize.bbsPrizeAdd(m);
+        if (data != null) {
+          Debug.log("发帖结果：${data.toJson()}");
           CusToast.toast(context, text: "发帖成功，订单待支付");
           Navigator.pop(context);
         }
