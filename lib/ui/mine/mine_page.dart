@@ -34,6 +34,7 @@ import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
+import 'package:yiapp/ui/mine/product/product_main.dart';
 import 'my_orders/all_my_post.dart';
 
 // ------------------------------------------------------
@@ -77,11 +78,15 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
-        if (!ApiState.isGuest)
-          NormalBox(
-            title: "我的订单",
-            onTap: () => CusRoutes.push(context, AllMyPostPage()),
-          ),
+//        if (!ApiState.isGuest)
+        NormalBox(
+          title: "我的订单",
+          onTap: () => CusRoutes.push(context, AllMyPostPage()),
+        ),
+        NormalBox(
+          title: "商城",
+          onTap: () => CusRoutes.push(context, ProductMainPage()),
+        ),
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoutes.push(context, AccountSafePage()),
@@ -96,6 +101,7 @@ class _MinePageState extends State<MinePage>
           title: "大师信息",
           onTap: () => CusRoutes.push(context, MasterInfoPage()),
         ),
+//        if (!ApiState.isAdmin)
         NormalBox(
           title: "申请代理",
           onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
