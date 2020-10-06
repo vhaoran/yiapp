@@ -19,6 +19,7 @@ class CusAvatar extends StatelessWidget {
   final int rate;
   final String defaultImage; // 指定默认图片
   final bool circle; // 是否圆形头像，默认 false
+  final BoxFit boxFit;
 
   CusAvatar({
     this.url: "",
@@ -28,6 +29,7 @@ class CusAvatar extends StatelessWidget {
     this.rate: 4,
     this.defaultImage: "assets/images/avatar.jpg",
     this.circle: false,
+    this.boxFit: BoxFit.cover,
     Key key,
   })  : assert(size > 4),
         super(key: key);
@@ -45,7 +47,7 @@ class CusAvatar extends StatelessWidget {
               borderRadius:
                   BorderRadius.circular(circle ? borderRadius : size / rate),
               child: CachedNetworkImage(
-                fit: BoxFit.cover,
+                fit: boxFit,
                 imageUrl: "${ApiImage.thumbnail(
                   url ?? "", // 缩略图头像
                   width: size.toInt(),

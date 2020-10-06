@@ -2,6 +2,7 @@
 
 - account_safe 账号与安全
 - address 我的收货地址
+- mall 商城
 - my_orders 我的订单
 - personal_info 个人信息
 - product 商品

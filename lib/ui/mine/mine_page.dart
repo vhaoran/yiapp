@@ -34,7 +34,7 @@ import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
-import 'package:yiapp/ui/mine/product/product_main.dart';
+import 'package:yiapp/ui/mine/mall/product_main.dart';
 import 'my_orders/all_my_post.dart';
 
 // ------------------------------------------------------
