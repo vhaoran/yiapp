@@ -7,7 +7,7 @@ import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
+import 'package:yiapp/complex/widgets/small/fn_dialog.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
 import 'package:yiapp/complex/widgets/small/cus_select.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -68,7 +68,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
               CusSelect(
                 title: "男生生肖：",
                 subtitle: _maleStr.isEmpty ? "请选择生肖" : "属$_maleStr",
-                onTap: () => PairDialog(context,
+                onTap: () => FnDialog(context,
                     sex: male,
                     groupValue: _maleZodiac,
                     l: c_zodiacs,
@@ -80,7 +80,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
                 child: CusSelect(
                   title: "女生生肖：",
                   subtitle: _femaleStr.isEmpty ? "请选择生肖" : "属$_femaleStr",
-                  onTap: () => PairDialog(context,
+                  onTap: () => FnDialog(context,
                       sex: female,
                       groupValue: _femaleZodiac,
                       l: c_zodiacs,

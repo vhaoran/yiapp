@@ -4,18 +4,18 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/26 20:12
-// usage ：星座、生肖配通用的 dialog 回调
+// usage ：dialog 弹框选择的回调(如选择星座、问命类型等)
 // ------------------------------------------------------
 
 typedef FnPair = void Function(int sex, int select, String name);
 
-class PairDialog {
+class FnDialog {
   final int sex;
   final int groupValue;
   final List<String> l;
   final FnPair fnPair;
 
-  PairDialog(
+  FnDialog(
     BuildContext context, {
     this.sex: 0,
     this.groupValue: -1,

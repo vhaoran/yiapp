@@ -8,7 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
+import 'package:yiapp/complex/widgets/small/fn_dialog.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
 
@@ -106,7 +106,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
       SizedBox(height: Adapt.px(30)),
       _tip("项目名称"),
       InkWell(
-        onTap: () => PairDialog(context, l: c_service, groupValue: _cate_id,
+        onTap: () => FnDialog(context, l: c_service, groupValue: _cate_id,
             fnPair: (int sex, int select, String name) {
           if (select != null) _cate_id = select;
           if (name != null) _cate_name = name;

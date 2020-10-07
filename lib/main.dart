@@ -22,7 +22,7 @@ class HongYunApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     // 获取权限
-    // Permissions.requestAll();
+//     Permissions.requestAll();
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,

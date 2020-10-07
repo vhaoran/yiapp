@@ -7,7 +7,7 @@ import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/small/cus_datalog.dart';
+import 'package:yiapp/complex/widgets/small/fn_dialog.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
 import 'package:yiapp/complex/widgets/small/cus_select.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -68,7 +68,7 @@ class _ConPairPageState extends State<ConPairPage> {
               CusSelect(
                 title: "男生星座：",
                 subtitle: _maleStr.isEmpty ? "请选择星座" : "$_maleStr座",
-                onTap: () => PairDialog(context,
+                onTap: () => FnDialog(context,
                     sex: male,
                     groupValue: _maleCon,
                     l: c_constellation,
@@ -80,7 +80,7 @@ class _ConPairPageState extends State<ConPairPage> {
                 child: CusSelect(
                   title: "女生星座：",
                   subtitle: _femaleStr.isEmpty ? "请选择星座" : "$_femaleStr座",
-                  onTap: () => PairDialog(context,
+                  onTap: () => FnDialog(context,
                       sex: female,
                       groupValue: _femaleCon,
                       l: c_constellation,

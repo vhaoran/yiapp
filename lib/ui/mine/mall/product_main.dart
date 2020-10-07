@@ -4,7 +4,7 @@ import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/mine/mall/product_store.dart';
+import 'package:yiapp/ui/mine/mall/product/product_store.dart';
 import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
 
 // ------------------------------------------------------

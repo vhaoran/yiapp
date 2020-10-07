@@ -87,7 +87,7 @@ class _ProductTypeCoverState extends State<ProductTypeCover> {
           if (widget.onChanged != null) widget.onChanged();
         }
       } catch (e) {
-        Debug.logError("移除商品出现异常：$e");
+        Debug.logError("移除商品分类出现异常：$e");
       }
     });
   }
