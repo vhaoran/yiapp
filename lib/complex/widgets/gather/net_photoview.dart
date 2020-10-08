@@ -3,25 +3,24 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/17 11:15
-// usage ：点击图片后，可左右滑动、放大缩小
+// date  ：2020/10/8 17:36
+// usage ：适合查看七牛云上的图片，点击图片后可左右滑动、放大缩小
 // ------------------------------------------------------
 
-class CusPhotoView extends StatefulWidget {
+class NetPhotoView extends StatefulWidget {
   final List imageList;
   final int index;
 
-  CusPhotoView({this.imageList, this.index = 0});
+  NetPhotoView({this.imageList, this.index = 0});
 
   @override
-  _CusPhotoViewState createState() => _CusPhotoViewState();
+  _NetPhotoViewState createState() => _NetPhotoViewState();
 }
 
-class _CusPhotoViewState extends State<CusPhotoView> {
+class _NetPhotoViewState extends State<NetPhotoView> {
   int curIndex = 0; // 当前选中图片的索引
 
   @override
@@ -51,7 +50,7 @@ class _CusPhotoViewState extends State<CusPhotoView> {
       child: Stack(
         children: <Widget>[
           PhotoViewGallery.builder(
-            onPageChanged: onPageChanged, // 根据当前选中图片的索引显示页面
+            onPageChanged: _onPageChanged, // 根据当前选中图片的索引显示页面
             scrollDirection: Axis.horizontal, // 左右滑动
             itemCount: widget.imageList.length,
             backgroundDecoration: BoxDecoration(color: Colors.black),
@@ -88,7 +87,7 @@ class _CusPhotoViewState extends State<CusPhotoView> {
     );
   }
 
-  void onPageChanged(int index) {
+  void _onPageChanged(int index) {
     curIndex = index;
     setState(() {});
   }

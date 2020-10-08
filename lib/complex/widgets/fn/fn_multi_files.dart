@@ -1,69 +1,75 @@
-import 'dart:typed_data';
-import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/service/api/api_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 
-class CusMultiImage extends StatefulWidget {
-  CusMultiImage({Key key}) : super(key: key);
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/10/8 14:43
+// usage ：显示选择的多选图片
+// ------------------------------------------------------
+
+class ShowMultiImages extends StatefulWidget {
+  final List<Asset> images; // 选择的图片
+
+  ShowMultiImages({this.images, Key key}) : super(key: key);
 
   @override
-  _CusMultiImageState createState() => _CusMultiImageState();
+  _ShowMultiImagesState createState() => _ShowMultiImagesState();
 }
 
-class _CusMultiImageState extends State<CusMultiImage> {
-  List<Asset> _images = []; // 返回的选择的图片
+class _ShowMultiImagesState extends State<ShowMultiImages> {
+  int _width = 0; // 图片的宽高
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "测试"),
-      body: _lv(),
-      backgroundColor: primary,
-    );
-  }
-
-  Future<void> _selectImages() async {
-    List<Asset> res = [];
-    String error = '';
-    try {
-      res = await MultiImagePicker.pickImages(
-        maxImages: 9,
-        enableCamera: true,
-        selectedAssets: _images,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
-          actionBarColor: "#CECECE",
-          actionBarTitleColor: "#000000",
-          actionBarTitle: "选择图片",
-          allViewTitle: "所有图片",
-          useDetailsView: false,
-          selectCircleStrokeColor: "#000000",
+    double res = (MediaQuery.of(context).size.width - 60) / 3;
+    _width = res.floor();
+    if (widget.images != null)
+      return Container(
+        width: double.infinity,
+        child: Wrap(
+          runSpacing: 5, // 上下间隔
+          spacing: 5,
+          children: List.generate(
+            widget.images.length,
+            (i) => GestureDetector(
+              onTap: () {
+                Debug.log("当前选择的图片名称:${widget.images[i].name}");
+              },
+              child: AssetThumb(
+                  asset: widget.images[i], width: _width, height: _width),
+            ),
+          ),
         ),
       );
-      for (var i = 0; i < res.length; i++) {
-        ByteData byteData = await res[i].getByteData();
-        String key =
-            await ApiImage.uploadQiniuData(byteData.buffer.asUint8List());
-        String url = await ApiImage.GetVisitURL(key.trim());
-        print(">>>菜单栏选中的图片地址是:$url");
-//        await widget.onSend(MsgImage(key: key, url: url ?? key));
-      }
-    } catch (e) {
-      print("<<<设置图片异常：$e");
-      error = e.toString();
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _images = res;
-    });
+    return SizedBox.shrink();
   }
+}
 
-  Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+/// 单独封装选择图片的功能
+Future<List<Asset>> multiImages() async {
+  List<Asset> l = [];
+  try {
+    l = await MultiImagePicker.pickImages(
+      maxImages: 9,
+      enableCamera: true,
+      cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+      materialOptions: MaterialOptions(
+        actionBarTitle: "选择图片",
+        allViewTitle: "所有图片",
+        textOnNothingSelected: "未选择图片",
+        actionBarColor: "#302E32", // AppBar 背景色
+        actionBarTitleColor: "#ffffff", // AppBar 中文字颜色
+        statusBarColor: "#302E32", // AppBar 顶部颜色
+        useDetailsView: false,
+      ),
     );
+  } catch (e) {
+    Debug.log("设置图片异常：$e");
   }
+  if (l != null && l.isNotEmpty) {
+    return l;
+  }
+  return [];
 }

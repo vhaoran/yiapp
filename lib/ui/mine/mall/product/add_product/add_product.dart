@@ -8,6 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
+import 'package:yiapp/ui/mine/mall/product/add_product/add_color_price.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_images.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/chose_p_type.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_name.dart';
@@ -26,9 +27,12 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  var _nameCtrl = TextEditingController(); // 商品名称
   var _future;
+  var _nameCtrl = TextEditingController(); // 商品名称
+  var _colorCtrl = TextEditingController(); // 商品颜色
+  var _priceCtrl = TextEditingController(); // 商品价格
   List<Category> _l = []; // 已有的商品分类
+  String _snackErr; // 提示信息
 
   @override
   void initState() {
@@ -70,6 +74,9 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  /// 执行添加商品
+  void _doAdd() async {}
+
   Widget _lv() {
     return ScrollConfiguration(
       behavior: CusBehavior(),
@@ -81,14 +88,27 @@ class _AddProductState extends State<AddProduct> {
           AddProductName(controller: _nameCtrl), // 商品名称
           ChoseProductType(l: _l), // 选择商品种类
           AddProductImages(), // 添加商品图片
+          ProductColorPrice(
+            colorCtrl: _colorCtrl,
+            priceCtrl: _priceCtrl,
+          ), // 商品颜色和价格
         ],
       ),
     );
   }
 
+  /// 验证输入信息
+  void _verify() {
+    setState(() {
+
+    });
+  }
+
   @override
   void dispose() {
     _nameCtrl.dispose();
+    _colorCtrl.dispose();
+    _priceCtrl.dispose();
     super.dispose();
   }
 }

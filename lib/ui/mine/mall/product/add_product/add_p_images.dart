@@ -1,8 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/fn/fn_single_file.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/fn/fn_multi_files.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -18,26 +22,54 @@ class AddProductImages extends StatefulWidget {
 }
 
 class _AddProductImagesState extends State<AddProductImages> {
-  List<File> _files = []; // 当前选择的图片
+  List<Asset> _images = []; // 返回的选择的图片
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Adapt.px(30),
-        vertical: Adapt.px(20),
-      ),
-      margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
-      decoration: BoxDecoration(
-        color: fif_primary,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Container(
-        child: SelectFiles(fnFiles: (List<File> files) {
-          if (files == null || files.isEmpty) return;
-          setState(() => _files = files);
-        }),
-      ),
+    if (_images != null) {
+      Debug.log("已选多少张图片：${_images.length}");
+    }
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(left: Adapt.px(30)),
+          margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
+          decoration: BoxDecoration(
+              color: fif_primary, borderRadius: BorderRadius.circular(10)),
+          child: _buildView(),
+        ),
+        if (_images != null && _images.isNotEmpty)
+          ShowMultiImages(images: _images),
+      ],
+    );
+  }
+
+  Widget _buildView() {
+    return Row(
+      children: <Widget>[
+        CusText("商品图片", t_yi, 30),
+        Expanded(
+          child: CusRectField(
+            hintText: "请选择商品图片",
+            autofocus: false,
+            hideBorder: true,
+            enable: false,
+          ),
+        ),
+        CusRaisedBtn(
+          text: "选择",
+          pdVer: 0,
+          pdHor: 10,
+          fontSize: 28,
+          textColor: Colors.black,
+          backgroundColor: t_gray,
+          onPressed: () async {
+            if (!mounted) return;
+            _images = await multiImages();
+            setState(() {});
+          },
+        ),
+      ],
     );
   }
 }
