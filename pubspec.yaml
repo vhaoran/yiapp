@@ -36,6 +36,8 @@ dependencies:
   cached_network_image: ^2.2.0+1
   # 调用摄像机或相册
   image_picker: ^0.6.7+4
+  # 可以一次选择多张图片
+  multi_image_picker: ^4.7.14
   # 仿微信选择图片
   wechat_assets_picker: ^4.1.0+4
   # 多张图片的左右滑动

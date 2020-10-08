@@ -8,8 +8,9 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mine/mall/product/chose_p_type.dart';
-import 'package:yiapp/ui/mine/mall/product/p_name_input.dart';
+import 'package:yiapp/ui/mine/mall/product/add_product/add_p_images.dart';
+import 'package:yiapp/ui/mine/mall/product/add_product/chose_p_type.dart';
+import 'package:yiapp/ui/mine/mall/product/add_product/add_p_name.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -77,8 +78,9 @@ class _AddProductState extends State<AddProduct> {
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
         children: <Widget>[
           SizedBox(height: Adapt.px(30)),
-          ProductNameInput(controller: _nameCtrl), // 商品名称
+          AddProductName(controller: _nameCtrl), // 商品名称
           ChoseProductType(l: _l), // 选择商品种类
+          AddProductImages(), // 添加商品图片
         ],
       ),
     );

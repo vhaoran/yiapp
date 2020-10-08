@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/cus_box.dart';
+import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/mine/my_orders/flash_post_his.dart';
 import 'package:yiapp/ui/mine/my_orders/reward_post_his.dart';

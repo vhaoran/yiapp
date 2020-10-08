@@ -13,7 +13,7 @@ import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product.dart';
 import 'package:yiapp/ui/mine/mall/product/product_cover.dart';
-import 'add_product.dart';
+import 'add_product/add_product.dart';
 
 // ------------------------------------------------------
 // author：suxing

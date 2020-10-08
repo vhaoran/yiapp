@@ -8,7 +8,7 @@ import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/complex/widgets/cus_bg_wall.dart';
+import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-images.dart';

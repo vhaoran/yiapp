@@ -4,7 +4,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/fn_wrap_dialog.dart';
+import 'package:yiapp/complex/widgets/fn/fn_wrap_dialog.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 
 // ------------------------------------------------------
@@ -23,6 +23,9 @@ class ChoseProductType extends StatefulWidget {
 }
 
 class _ChoseProductTypeState extends State<ChoseProductType> {
+  int _selected = -1; // 选择过的商品种类序号(非商品的id)
+  Category _category = Category(); // 选择过的商品详情
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +43,8 @@ class _ChoseProductTypeState extends State<ChoseProductType> {
         CusText("商品种类", t_yi, 30),
         Expanded(
           child: CusRectField(
-            hintText: "请选择商品种类",
+            hintText: _selected == -1 ? "请选择商品种类" : _category.name,
+            textAlign: _selected == -1 ? TextAlign.start : TextAlign.center,
             autofocus: false,
             hideBorder: true,
             enable: false,
@@ -55,9 +59,15 @@ class _ChoseProductTypeState extends State<ChoseProductType> {
           backgroundColor: t_gray,
           onPressed: () => FnWrapDialog(
             context,
+            selected: _selected,
             l: widget.l,
-            fnWrap: (int selected, int current, dynamic data) {
-              print(">>>选择的名称：${data.name}");
+            fnWrap: (int selected, dynamic data) {
+              if (selected == null && data == null) return;
+              setState(() {
+                _selected = selected;
+                _category = data as Category;
+              });
+              Navigator.pop(context);
             },
           ),
         ),

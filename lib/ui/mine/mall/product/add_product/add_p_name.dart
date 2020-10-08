@@ -10,16 +10,16 @@ import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 // usage ：商品名称
 // ------------------------------------------------------
 
-class ProductNameInput extends StatefulWidget {
+class AddProductName extends StatefulWidget {
   final TextEditingController controller;
 
-  ProductNameInput({this.controller, Key key}) : super(key: key);
+  AddProductName({this.controller, Key key}) : super(key: key);
 
   @override
-  _ProductNameInputState createState() => _ProductNameInputState();
+  _AddProductNameState createState() => _AddProductNameState();
 }
 
-class _ProductNameInputState extends State<ProductNameInput> {
+class _AddProductNameState extends State<AddProductName> {
   @override
   Widget build(BuildContext context) {
     return Container(
