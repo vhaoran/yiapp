@@ -1,14 +1,17 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/service/api/api_image.dart';
+
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/24 11:37
 // usage ：自定义混合工具类
 // ------------------------------------------------------
-
-import 'dart:io';
-
-import 'package:yiapp/complex/tools/cus_reg.dart';
-import 'package:yiapp/model/login/userInfo.dart';
-import 'package:yiapp/service/api/api_image.dart';
 
 class CusTool {
   /// 处理性别
@@ -50,6 +53,7 @@ class CusTool {
     return "转换格式异常";
   }
 
+  /// 单个 file 类型文件的上传
   static Future<String> fileUrl(File file) async {
     String url = "";
     try {
@@ -59,6 +63,23 @@ class CusTool {
       print("<<<出现异常：$e");
     }
     return url;
+  }
+
+  /// 多个文件的上传
+  static Future<List<Map>> assetsKeyPath(List<Asset> assets) async {
+    List<Map> res = [];
+    try {
+      for (var i = 0; i < assets.length; i++) {
+        ByteData byteData = await assets[i].getByteData();
+        Uint8List u = byteData.buffer.asUint8List();
+        String key = await ApiImage.uploadQiniuData(u);
+        String url = await ApiImage.GetVisitURL(key.trim());
+        res.add({"key": key, "path": url});
+      }
+    } catch (e) {
+      Debug.log("转换Asset时出现异常:$e");
+    }
+    return res;
   }
 }
 

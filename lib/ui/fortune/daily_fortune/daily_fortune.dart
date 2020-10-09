@@ -44,7 +44,7 @@ class _DailyFortuneState extends State<DailyFortune> {
   // 算命功能区分类
   final List<Map> _assorts = [
     {"text": "八字精批", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": liu_yao},
+    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": r_liu_yao},
     {"text": "八字合婚", "icon": 0xe615, "color": tmp_color, "route": "temp"},
     {"text": "八字事业", "icon": 0xe615, "color": tmp_color, "route": "temp"},
     {"text": "数字测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},

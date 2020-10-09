@@ -27,11 +27,31 @@ class _FreeCalculateState extends State<FreeCalculate>
     with AutomaticKeepAliveClientMixin {
   // 热门推荐
   final List<Map> _populars = [
-    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": con_pair},
-    {"text": "生肖配对", "icon": 0xe6b1, "color": 0xFF78BA3B, "route": zodiac_pair},
-    {"text": "血型配对", "icon": 0xe656, "color": 0xFFDE524B, "route": blood_pair},
-    {"text": "生日配对", "icon": 0xe728, "color": 0xFF74C1FA, "route": birth_pair},
-    {"text": "阴阳八卦", "icon": 0xe615, "color": def_color, "route": "temp"},
+    {
+      "text": "星座配对",
+      "icon": 0xe69e,
+      "color": 0xFFF0D15F,
+      "route": r_con_pair,
+    },
+    {
+      "text": "生肖配对",
+      "icon": 0xe6b1,
+      "color": 0xFF78BA3B,
+      "route": r_zodiac_pair
+    },
+    {
+      "text": "血型配对",
+      "icon": 0xe656,
+      "color": 0xFFDE524B,
+      "route": r_blood_pair
+    },
+    {
+      "text": "生日配对",
+      "icon": 0xe728,
+      "color": 0xFF74C1FA,
+      "route": r_birth_pair
+    },
+    {"text": "精选文章", "icon": 0xe6b5, "color": 0xFFB991DB, "route": r_article},
     {"text": "手机号码", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "人体节律", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "指纹吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
@@ -41,13 +61,13 @@ class _FreeCalculateState extends State<FreeCalculate>
 
   // 个性推荐
   final List<Map> _personality = [
-    {"text": "大仙灵签", "icon": 0xe600, "color": 0xFF67C76C, "route": com_draw},
-    {"text": "关公灵签", "icon": 0xe627, "color": 0xFFEB7949, "route": com_draw},
-    {"text": "观音灵签", "icon": 0xe601, "color": 0xFFB991DB, "route": com_draw},
-    {"text": "妈祖灵签", "icon": 0xe668, "color": 0xFFEDBF4F, "route": com_draw},
-    {"text": "月老灵签", "icon": 0xe606, "color": 0xFFE1567C, "route": com_draw},
-    {"text": "车公灵签", "icon": 0xe604, "color": 0xFF75C1E9, "route": com_draw},
-    {"text": "吕祖灵签", "icon": 0xebcd, "color": 0xFF81D755, "route": com_draw},
+    {"text": "大仙灵签", "icon": 0xe600, "color": 0xFF67C76C, "route": r_com_draw},
+    {"text": "关公灵签", "icon": 0xe627, "color": 0xFFEB7949, "route": r_com_draw},
+    {"text": "观音灵签", "icon": 0xe601, "color": 0xFFB991DB, "route": r_com_draw},
+    {"text": "妈祖灵签", "icon": 0xe668, "color": 0xFFEDBF4F, "route": r_com_draw},
+    {"text": "月老灵签", "icon": 0xe606, "color": 0xFFE1567C, "route": r_com_draw},
+    {"text": "车公灵签", "icon": 0xe604, "color": 0xFF75C1E9, "route": r_com_draw},
+    {"text": "吕祖灵签", "icon": 0xebcd, "color": 0xFF81D755, "route": r_com_draw},
     {"text": "周公解梦", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "狐仙灵签", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "好友合盘", "icon": 0xe615, "color": def_color, "route": "temp"},

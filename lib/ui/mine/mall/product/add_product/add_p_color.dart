@@ -4,8 +4,8 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/model/dicts/product.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -16,12 +16,12 @@ import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 class ProductColorPrice extends StatefulWidget {
   final TextEditingController colorCtrl;
   final TextEditingController priceCtrl;
-  final FnBool noErr;
+  final FnColorPrice fnColorPrice; // 已添加商品颜色和价格的回调
 
   ProductColorPrice({
     this.colorCtrl,
     this.priceCtrl,
-    this.noErr,
+    this.fnColorPrice,
     Key key,
   }) : super(key: key);
 
@@ -30,8 +30,7 @@ class ProductColorPrice extends StatefulWidget {
 }
 
 class _ProductColorPriceState extends State<ProductColorPrice> {
-  List<Map<String, dynamic>> _l = []; // 商品的颜色和价格列表
-  String _err; // 错误提示信息
+  List<ProductColor> _l = []; // 商品的颜色和价格列表
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
             children: <Widget>[
               Expanded(child: Column(children: _inputs())),
               CusRaisedBtn(
-                text: "添加第一种",
+                text: "添加",
                 pdVer: 0,
                 pdHor: 10,
                 fontSize: 28,
@@ -57,35 +56,56 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
             ],
           ),
         ),
-        if (_err != null)
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: Adapt.px(30)),
-            child: CusText(_err, t_yi, 28),
-          ),
+        CusText("已添加颜色和价格表", t_yi, 30),
+        _colorPrice(), // 显示已添加商品的颜色和价格
       ],
     );
   }
 
-//  // 将商品的颜色和价格添加到列表中
-  void _doAdd() {
-    setState(() {
-      _err = widget.colorCtrl.text.isEmpty || widget.priceCtrl.text.isEmpty
-          ? "商品的价格和颜色不能为空"
-          : null;
-    });
-    if (widget.noErr != null) {
-      widget.noErr(_err == null ? true : false);
+  // 将商品的颜色和价格添加到列表中
+  void _doAdd() async {
+    if (widget.colorCtrl.text.isNotEmpty && widget.priceCtrl.text.isNotEmpty) {
+      await _l.add(
+        ProductColor(
+          code: widget.colorCtrl.text.trim(),
+          price: num.parse(widget.priceCtrl.text.trim()),
+        ),
+      );
+      widget.colorCtrl.clear();
+      widget.priceCtrl.clear();
+      if (widget.fnColorPrice != null) {
+        widget.fnColorPrice(_l);
+      }
+      setState(() {});
     }
-    if (_err == null) {
-      setState(() {
-        _l.add({
-          "code": widget.colorCtrl.text.trim(),
-          "price": num.parse(widget.priceCtrl.text.trim()),
-        });
-        CusToast.toast(context, text: "已添加${_l.length}一种");
-      });
-    }
+  }
+
+  /// 显示已添加商品的颜色和价格
+  Widget _colorPrice() {
+    if (_l.isNotEmpty)
+      return Column(
+        children: <Widget>[
+          CusText("已添加颜色和价格表", t_yi, 30),
+          SizedBox(height: Adapt.px(10)),
+          ...List.generate(
+            _l.length,
+            (i) {
+              var e = _l[i];
+              return Row(
+                children: <Widget>[
+                  CusText("第 ${i + 1} 种", t_gray, 30),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+                    child: CusText("颜色：${e.code}", t_gray, 28),
+                  ),
+                  CusText("价格：${e.price}", t_gray, 28),
+                ],
+              );
+            },
+          )
+        ],
+      );
+    return SizedBox.shrink();
   }
 
   // 商品颜色和价格的输入框
@@ -97,7 +117,7 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
           Expanded(
             child: CusRectField(
               controller: widget.colorCtrl,
-              hintText: "商品颜色",
+              hintText: "请输入商品颜色",
               autofocus: false,
               hideBorder: true,
             ),
@@ -110,9 +130,10 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
           Expanded(
             child: CusRectField(
               controller: widget.priceCtrl,
-              hintText: "商品价格",
+              hintText: "请输入商品价格",
               autofocus: false,
               hideBorder: true,
+              formatter: true,
             ),
           ),
         ],

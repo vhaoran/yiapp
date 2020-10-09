@@ -10,23 +10,39 @@ import 'package:yiapp/model/dicts/ProductCate.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/7 17:21
-// usage ：选择商品类别
+// date  ：2020/10/9 15:13
+// usage ：修改已上线的商品类别
 // ------------------------------------------------------
 
-class ChoseProductType extends StatefulWidget {
+class ChLineProductType extends StatefulWidget {
+  final String type; // 显示当前商品的种类
   final List<Category> pTypes; // 已有的商品分类
   final FnCategory fnCategory; // 当前选择的商品种类信息
 
-  ChoseProductType({this.pTypes, this.fnCategory, Key key}) : super(key: key);
+  ChLineProductType({
+    this.type,
+    this.pTypes,
+    this.fnCategory,
+    Key key,
+  }) : super(key: key);
 
   @override
-  _ChoseProductTypeState createState() => _ChoseProductTypeState();
+  _ChLineProductTypeState createState() => _ChLineProductTypeState();
 }
 
-class _ChoseProductTypeState extends State<ChoseProductType> {
+class _ChLineProductTypeState extends State<ChLineProductType> {
   int _selected = -1; // 选择过的商品种类序号(非商品的id)
   Category _category; // 选择过的商品详情
+
+  @override
+  void initState() {
+    // 找到当前类型在商品种类列表中的索引
+    List<String> l = [];
+    widget.pTypes.forEach((e) => l.add(e.name));
+    int index = l.indexOf(widget.type);
+    if (index != -1) _selected = index;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +61,7 @@ class _ChoseProductTypeState extends State<ChoseProductType> {
         CusText("商品种类", t_yi, 30),
         Expanded(
           child: CusRectField(
-            hintText: _selected == -1 ? "请选择商品种类" : _category.name,
+            hintText: _category == null ? widget.type : _category.name,
             autofocus: false,
             hideBorder: true,
             enable: false,

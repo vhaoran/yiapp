@@ -74,7 +74,7 @@ class _ProductStoreState extends State<ProductStore> {
         FlatButton(
           child: CusText("新增", Colors.orangeAccent, 28),
           onPressed: () => CusRoutes.push(context, AddProduct()).then((val) {
-            if (val != null) _refresh();
+            if (val != null) setState(() => _l.add(val));
           }),
         ),
       ]),
@@ -136,6 +136,18 @@ class _ProductStoreState extends State<ProductStore> {
               if (val == null) return;
               _l.removeWhere((e) => e.id_of_es == val);
               setState(() {});
+            },
+            onChange: (val) async {
+              try {
+                Product res = await ApiProduct.productGet(val);
+                if (res != null) {
+                  Product p = _l.singleWhere((e) => e.id_of_es == res.id_of_es);
+                  _l[_l.indexOf(p)] = res;
+                  setState(() {});
+                }
+              } catch (e) {
+                Debug.logError("回调中修改商品时，根据id获取商品出现异常：$e");
+              }
             },
           ),
         )

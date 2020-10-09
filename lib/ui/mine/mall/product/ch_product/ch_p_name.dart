@@ -6,20 +6,21 @@ import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/7 17:13
-// usage ：商品名称
+// date  ：2020/10/9 14:49
+// usage ：修改商品名称
 // ------------------------------------------------------
 
-class AddProductName extends StatefulWidget {
+class ChProductName extends StatefulWidget {
   final TextEditingController nameCtrl;
+  final String name;
 
-  AddProductName({this.nameCtrl, Key key}) : super(key: key);
+  ChProductName({this.nameCtrl, this.name, Key key}) : super(key: key);
 
   @override
-  _AddProductNameState createState() => _AddProductNameState();
+  _ChProductNameState createState() => _ChProductNameState();
 }
 
-class _AddProductNameState extends State<AddProductName> {
+class _ChProductNameState extends State<ChProductName> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,6 +35,7 @@ class _AddProductNameState extends State<AddProductName> {
             child: CusRectField(
               controller: widget.nameCtrl,
               hintText: "请输入商品名称",
+              fromValue: widget.name,
               autofocus: false,
               hideBorder: true,
             ),

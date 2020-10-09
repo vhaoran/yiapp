@@ -10,13 +10,14 @@ const String kv_pwd = "/login/pwd"; // 本地存储密码的键
 const String kv_jwt = "/login/jwt"; // 本地存储jwt的键
 const String kv_login = "/login/login"; // 本地存储个人信息
 
-/// 命名路由名称
-const String con_pair = "con_pair"; // 星座配对
-const String zodiac_pair = "zodiac_pair"; // 生肖配对
-const String blood_pair = "blood_pair"; // 血型配对
-const String birth_pair = "birth_pair"; // 生日配对
-const String com_draw = "com_draw"; // 共用的免费抽灵签页面
-const String liu_yao = "liu_yao"; // 六爻排盘
+/// 命名路由名称 r 是 route 的缩写
+const String r_con_pair = "con_pair"; // 星座配对
+const String r_zodiac_pair = "zodiac_pair"; // 生肖配对
+const String r_blood_pair = "blood_pair"; // 血型配对
+const String r_birth_pair = "birth_pair"; // 生日配对
+const String r_com_draw = "com_draw"; // 共用的免费抽灵签页面
+const String r_liu_yao = "liu_yao"; // 六爻排盘
+const String r_article = "article"; // 文章
 
 /// 综合
 const String jwt_134 = "test/134"; // jwt = 134;

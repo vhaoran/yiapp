@@ -17,6 +17,7 @@ class CusRectField extends StatefulWidget {
   final String fromValue; // 初始值文字
   final String hintText;
   final String prefixText; // 前置提示信息
+  final Widget prefixIcon; // 前置组件
   final int maxLength;
   final int maxLines;
   final bool formatter;
@@ -35,6 +36,7 @@ class CusRectField extends StatefulWidget {
     this.fromValue: "",
     this.hintText: "",
     this.prefixText,
+    this.prefixIcon,
     this.maxLength: -1,
     this.maxLines: 1,
     this.formatter: false,
@@ -101,6 +103,7 @@ class _CusRectFieldState extends State<CusRectField> {
         prefixText: widget.prefixText,
         prefixStyle:
             TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
+        prefixIcon: widget.prefixIcon,
         contentPadding: EdgeInsets.symmetric(
             horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
         counterText: "",
