@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:yiapp/complex/class/yi_date_time.dart';
+import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
 
@@ -28,3 +29,4 @@ typedef FnAssets = void Function(List<Asset>);
 // yiapp 中指定类型的回调
 typedef FnCategory = Function(Category category); // 商品
 typedef FnColorPrice = void Function(List<ProductColor>); // 商品颜色和价格的回调
+typedef FnArticles = void Function(List<ArticleResult>); // 文章

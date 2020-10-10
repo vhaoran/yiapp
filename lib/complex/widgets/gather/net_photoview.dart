@@ -13,8 +13,14 @@ import 'package:yiapp/complex/tools/adapt.dart';
 class NetPhotoView extends StatefulWidget {
   final List imageList;
   final int index;
+  final String path;
 
-  NetPhotoView({this.imageList, this.index = 0});
+  NetPhotoView({
+    this.imageList,
+    this.index: 0,
+    this.path: "path", // 适应后端定义的url字段
+    Key key,
+  }) : super(key: key);
 
   @override
   _NetPhotoViewState createState() => _NetPhotoViewState();
@@ -63,7 +69,8 @@ class _NetPhotoViewState extends State<NetPhotoView> {
             },
             builder: (context, index) {
               return PhotoViewGalleryPageOptions(
-                imageProvider: NetworkImage(widget.imageList[index]['path']),
+                imageProvider:
+                    NetworkImage(widget.imageList[index][widget.path]),
                 initialScale: PhotoViewComputedScale.contained * 1,
                 minScale: PhotoViewComputedScale.contained * 0.3,
                 maxScale: PhotoViewComputedScale.contained * 2,
@@ -81,8 +88,8 @@ class _NetPhotoViewState extends State<NetPhotoView> {
       ),
       onTap: () => Navigator.of(context).pop(),
       onLongPress: () {
-        var item = widget.imageList[curIndex];
-        _showBottomSheet(item['key'], item['path']);
+//        var item = widget.imageList[curIndex];
+//        _showBottomSheet(item['key'], item[widget.path]);
       },
     );
   }

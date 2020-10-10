@@ -14,20 +14,23 @@ class Product {
 
   String created;
   String last_updated;
+  int visit_count;
 
-  Product(
-      {this.cate_id,
-      this.cate_name,
-      this.colors,
-      this.created,
-      this.enabled,
-      this.id_of_es,
-      this.image_main,
-      this.images,
-      this.key_word,
-      this.last_updated,
-      this.name,
-      this.remark});
+  Product({
+    this.cate_id,
+    this.cate_name,
+    this.colors,
+    this.created,
+    this.enabled,
+    this.id_of_es,
+    this.image_main,
+    this.images,
+    this.key_word,
+    this.last_updated,
+    this.name,
+    this.remark,
+    this.visit_count,
+  });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -51,6 +54,7 @@ class Product {
       last_updated: json['last_updated'],
       name: json['name'],
       remark: json['remark'],
+      visit_count: json['visit_count'],
     );
   }
 
@@ -66,6 +70,7 @@ class Product {
     data['last_updated'] = this.last_updated;
     data['name'] = this.name;
     data['remark'] = this.remark;
+    data['visit_count'] = this.visit_count;
     if (this.colors != null) {
       data['colors'] = this.colors.map((v) => v.toJson()).toList();
     }

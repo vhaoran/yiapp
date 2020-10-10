@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/model/article/article_type.dart';
+import 'package:yiapp/service/api/api_article.dart';
+import 'package:yiapp/ui/fortune/free_calculate/article/article_type.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/9 19:06
-// usage ：文章主入口
+// usage ：文章主入口函数
 // ------------------------------------------------------
 
 class ArticleMain extends StatefulWidget {
@@ -20,34 +24,72 @@ class ArticleMain extends StatefulWidget {
 }
 
 class _ArticleMainState extends State<ArticleMain> {
+  var _future;
+  List<ArticleType> _l = []; // 已有文章类别列表
+
+  @override
+  void initState() {
+    _future = _fetch();
+    super.initState();
+  }
+
+  /// 获取文章类别列表
+  _fetch() async {
+    try {
+      var res = await ApiArticle.articleCateList();
+      if (res != null) _l = res;
+    } catch (e) {
+      Debug.logError("获取文章类别列表出现异常：$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(
-        showLeading: false,
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              child: CusRectField(
-                hintText: "搜索",
-                prefixIcon: Icon(Icons.search, color: t_gray),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: Adapt.px(30)),
-              child: InkWell(child: CusText("取消", Colors.blue, 28)),
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future: _future,
+        builder: (context, snap) {
+          if (!snapDone(snap)) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return _lv();
+        },
       ),
-      body: _lv(),
       backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 30, bottom: 10),
+            child: Center(child: CusText("热门文章类型", t_gray, 32)),
+          ),
+          Wrap(
+            spacing: 40,
+            children: <Widget>[
+              ..._l.map(
+                (e) => CusRaisedBtn(
+                  text: e.name,
+                  textColor: Colors.black,
+                  pdHor: 25,
+                  pdVer: 5,
+                  borderRadius: 30,
+                  backgroundColor: Colors.grey,
+                  onPressed: () => CusRoutes.push(
+                    context,
+                    ArticleTypePage(article: e),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -18,18 +19,22 @@ class CusRectField extends StatefulWidget {
   final String hintText;
   final String prefixText; // 前置提示信息
   final Widget prefixIcon; // 前置组件
+  final Widget suffixIcon; // 后置组件
   final int maxLength;
   final int maxLines;
   final bool formatter;
   final bool autofocus;
   final bool enable;
   final bool hideBorder;
+  final bool isClear; // 为true代表suffixIcon是清空内容组件，false为自定义组件
   final double pdHor;
   final double fontSize;
+  final double borderRadius;
   final FocusNode focusNode;
   final TextAlign textAlign;
   String errorText; // 错误提示
   TextInputType keyboardType;
+  final VoidCallback onChanged;
 
   CusRectField({
     this.controller,
@@ -37,18 +42,22 @@ class CusRectField extends StatefulWidget {
     this.hintText: "",
     this.prefixText,
     this.prefixIcon,
+    this.suffixIcon,
     this.maxLength: -1,
     this.maxLines: 1,
     this.formatter: false,
     this.autofocus: true,
     this.enable: true,
     this.hideBorder: false,
+    this.isClear: false,
     this.pdHor: 30,
     this.fontSize: 30,
+    this.borderRadius: 5,
     this.focusNode,
     this.textAlign: TextAlign.start,
     this.errorText,
     this.keyboardType: TextInputType.text,
+    this.onChanged,
     Key key,
   }) : super(key: key);
 
@@ -71,7 +80,7 @@ class _CusRectFieldState extends State<CusRectField> {
         Container(
           decoration: BoxDecoration(
             color: fif_primary,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
           ),
           child: _input(),
         ),
@@ -104,6 +113,7 @@ class _CusRectFieldState extends State<CusRectField> {
         prefixStyle:
             TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
         prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
         contentPadding: EdgeInsets.symmetric(
             horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
         counterText: "",
@@ -122,10 +132,42 @@ class _CusRectFieldState extends State<CusRectField> {
         if (widget.errorText != null) {
           widget.errorText = null;
         }
+        if (widget.onChanged != null) {
+          widget.onChanged();
+        }
         setState(() {});
       },
       inputFormatters:
           widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,
     );
+  }
+
+  /// 清空输入信息
+  Widget _clearInput() {
+    bool hadData;
+    if (widget.maxLength == -1) {
+      hadData = widget.controller.text.isNotEmpty;
+    } else {
+      // 到最大输入长度时，隐藏清空组件
+      hadData = widget.controller.text.isNotEmpty &&
+          widget.controller.text.length < widget.maxLength;
+    }
+    if (hadData) {
+      return IconButton(
+        icon: Icon(
+          FontAwesomeIcons.timesCircle,
+          size: Adapt.px(32),
+          color: Colors.white54,
+        ),
+        onPressed: () {
+          widget.controller.clear();
+          if (widget.onChanged != null) {
+            widget.onChanged();
+          }
+          setState(() {});
+        },
+      );
+    }
+    return null;
   }
 }
