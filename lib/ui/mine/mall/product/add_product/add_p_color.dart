@@ -56,7 +56,7 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
             ],
           ),
         ),
-        CusText("已添加颜色和价格表", t_yi, 30),
+        Center(child: CusText("已添加颜色和价格表", t_yi, 30)),
         _colorPrice(), // 显示已添加商品的颜色和价格
       ],
     );
@@ -85,7 +85,6 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
     if (_l.isNotEmpty)
       return Column(
         children: <Widget>[
-          CusText("已添加颜色和价格表", t_yi, 30),
           SizedBox(height: Adapt.px(10)),
           ...List.generate(
             _l.length,

@@ -84,6 +84,7 @@ class _ArticleSearchState extends State<ArticleSearch> {
           borderRadius: 15,
           hideBorder: true,
           isClear: true,
+          autofocus: false,
           onChanged: () {
             if (widget.fnHide != null) {
               widget.fnHide(widget.searchCtrl.text.isNotEmpty);

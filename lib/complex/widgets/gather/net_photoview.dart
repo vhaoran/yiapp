@@ -2,6 +2,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 
 // ------------------------------------------------------
@@ -11,7 +12,7 @@ import 'package:yiapp/complex/tools/adapt.dart';
 // ------------------------------------------------------
 
 class NetPhotoView extends StatefulWidget {
-  final List imageList;
+  final List imageList; // List格式为{'url的key':xxx}的格式
   final int index;
   final String path;
 

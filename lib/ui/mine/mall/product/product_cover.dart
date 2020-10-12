@@ -11,7 +11,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
 import 'ch_product/ch_product.dart';
-import 'product_details.dart';
+import 'product_detail/product_details.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -39,12 +39,11 @@ class _ProductCoverState extends State<ProductCover> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          CusRoutes.push(context, ProductDetails(product: widget.product)),
-      child: Container(
-        color: fif_primary,
-        child: _items(),
+      onTap: () => CusRoutes.push(
+        context,
+        ProductDetails(id_of_es: widget.product.id_of_es),
       ),
+      child: _items(),
     );
   }
 
@@ -54,43 +53,54 @@ class _ProductCoverState extends State<ProductCover> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         // 商品主图片
-        CusAvatar(url: p.image_main, rate: 8, size: 120),
-        SizedBox(height: Adapt.px(10)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // 商品名称、分类
-            CusText("${p.name}", t_gray, 30),
-            SizedBox(width: Adapt.px(30)),
-            // 商品价格
-            CusText("￥${p.colors.first.price}", t_yi, 32),
-            PopupMenuButton<String>(
-              color: t_gray,
-              offset: Offset(0, 40),
-              padding: EdgeInsets.all(0),
-              onSelected: (val) {
-                switch (val) {
-                  case "修改":
-                    CusRoutes.push(context, ChProduct(id: p.id_of_es))
-                        .then((val) {
-                      if (val != null && widget.onChange != null)
-                        widget.onChange(val);
-                    });
-                    break;
-                  case "删除":
-                    _doProductRm(p);
-                    break;
-                  default:
-                    break;
-                }
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
+          child:
+              CusAvatar(url: p.image_main, rate: 10, size: Adapt.screenW() / 2),
+        ),
+        Container(
+          color: CusColors.systemGrey6(context),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // 商品名称
+              Padding(
+                padding:
+                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(15)),
+                child: CusText("${p.name}", Colors.black, 30),
               ),
-              icon: Icon(Icons.more_horiz, color: Colors.grey),
-              itemBuilder: (context) => _buildPopup(),
-            ),
-          ],
+              // 商品价格
+              CusText("￥${p.colors.first.price}", t_yi, 32),
+              Expanded(
+                child: PopupMenuButton<String>(
+                  color: t_gray,
+                  offset: Offset(0, 40),
+                  padding: EdgeInsets.all(0),
+                  onSelected: (val) {
+                    switch (val) {
+                      case "修改":
+                        CusRoutes.push(context, ChProduct(id: p.id_of_es))
+                            .then((val) {
+                          if (val != null && widget.onChange != null)
+                            widget.onChange(val);
+                        });
+                        break;
+                      case "删除":
+                        _doProductRm(p);
+                        break;
+                      default:
+                        break;
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  icon: Icon(Icons.more_horiz, color: Colors.grey),
+                  itemBuilder: (context) => _buildPopup(),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
