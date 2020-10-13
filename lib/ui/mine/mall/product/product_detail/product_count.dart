@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -11,13 +12,17 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 // ------------------------------------------------------
 
 class ProductCount extends StatefulWidget {
-  ProductCount({Key key}) : super(key: key);
+  final FnInt OnChanged;
+
+  ProductCount({this.OnChanged, Key key}) : super(key: key);
 
   @override
   _ProductCountState createState() => _ProductCountState();
 }
 
 class _ProductCountState extends State<ProductCount> {
+  int _count = 0; // 购买数量
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,12 +44,14 @@ class _ProductCountState extends State<ProductCount> {
   Widget _showCount() {
     return InkWell(
       child: Container(
+        width: Adapt.px(100),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.all(color: Colors.grey),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        child: CusText("1", Colors.white, 28),
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: CusText("$_count", Colors.white, 28),
       ),
     );
   }
@@ -52,6 +59,17 @@ class _ProductCountState extends State<ProductCount> {
   /// 减少数量
   Widget _doReduce() {
     return InkWell(
+      onTap: () {
+        _count--;
+        if (_count < 0) {
+          _count = 0;
+          CusToast.toast(context, text: "亲，不能再减少了");
+        }
+        if (widget.OnChanged != null) {
+          widget.OnChanged(_count);
+        }
+        setState(() {});
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -66,6 +84,13 @@ class _ProductCountState extends State<ProductCount> {
   /// 增加数量
   Widget _doAdd() {
     return InkWell(
+      onTap: () {
+        _count++;
+        if (widget.OnChanged != null) {
+          widget.OnChanged(_count);
+        }
+        setState(() {});
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.transparent,

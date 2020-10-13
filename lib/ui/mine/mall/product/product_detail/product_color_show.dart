@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
+import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/product.dart';
 
 // ------------------------------------------------------
@@ -10,15 +17,15 @@ import 'package:yiapp/model/dicts/product.dart';
 // usage ：选择商品的颜色和价格
 // ------------------------------------------------------
 
-typedef onColor = void Function(String color, int price);
-
 class ProductColorShow extends StatefulWidget {
   final Product product;
-  final onColor fnColor;
+  final FnColorPrice fnColor;
+  final FnString OnPath; // 图片路径
 
   ProductColorShow({
     this.product,
     this.fnColor,
+    this.OnPath,
     Key key,
   }) : super(key: key);
 
@@ -28,65 +35,96 @@ class ProductColorShow extends StatefulWidget {
 
 class _ProductColorShowState extends State<ProductColorShow> {
   int _curSelect = -1; // 当前选择的哪一个
-  bool _selected = false;
+  List _l = []; // 图片地址列表
+  ProductColor _color; // 当前选择的商品颜色和价格
+  String _path; // 选择图片的路径
+
+  @override
+  void initState() {
+    _l = widget.product.images.map((e) => e.toJson()).toList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: fif_primary,
-      padding: EdgeInsets.all(Adapt.px(20)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "请选择颜色分类",
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+    return Scaffold(
+      appBar: CusAppBar(
+        text: "商品可选颜色",
+        actions: <Widget>[_doSure()],
+      ),
+      body: ScrollConfiguration(
+        behavior: CusBehavior(),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(height: Adapt.px(10)),
+            ...List.generate(
+              widget.product.colors.length,
+              (i) => _productItem(widget.product.colors[i], i),
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: primary,
+    );
+  }
+
+  /// 单个商品的价格和颜色
+  Widget _productItem(ProductColor e, int i) {
+    String path = widget.product.images[i].path;
+    return InkWell(
+      onTap: () => setState(() {
+        _curSelect = i;
+        _color = e;
+        _path = path;
+      }),
+      child: Card(
+        color: fif_primary,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: Row(
+            children: <Widget>[
+              InkWell(
+                onTap: () => CusRoutes.push(
+                  context,
+                  NetPhotoView(imageList: _l, index: i),
+                ),
+                child: CusAvatar(url: path, rate: 20, size: 100),
+              ),
+              SizedBox(width: Adapt.px(Adapt.px(50))),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CusText("颜色：${e.code}", t_gray, 28),
+                  SizedBox(height: Adapt.px(30)),
+                  CusText("价格：${e.price}", t_gray, 28),
+                ],
+              ),
+              Spacer(),
+              if (_curSelect == i)
+                Image.asset(
+                  'assets/images/icon_selected_20x20.png',
+                  scale: Adapt.px(2.5),
+                ),
+            ],
           ),
-          Wrap(children: <Widget>[..._show()]),
-        ],
+        ),
       ),
     );
   }
 
-  /// 显示商品的颜色和价格
-  List<Widget> _show() {
-    List<ProductColor> l = widget.product.colors;
-    return <Widget>[
-      ...List.generate(
-        l.length,
-        (i) {
-          _selected = _curSelect == i;
-          var e = l[i];
-          return Container(
-            child: RaisedButton(
-              onPressed: () {
-                setState(() => _curSelect = i);
-                if (widget.fnColor != null) {
-                  widget.fnColor(e.code, e.price);
-                }
-              },
-              color: _selected ? Colors.teal : Colors.white70,
-              child: RichText(
-                text: TextSpan(
-                  children: <InlineSpan>[
-                    // // 商品颜色和价格
-                    TextSpan(
-                      text: "${e.code}  ￥${e.price}",
-                      style: TextStyle(
-                        color: _selected ? Colors.white : Colors.black,
-                        fontSize: Adapt.px(28),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            margin: EdgeInsets.only(right: Adapt.px(15)),
-          );
-        },
-      ),
-    ];
+  /// 确定按钮
+  Widget _doSure() {
+    return FlatButton(
+      onPressed: () {
+        if (_color == null) {
+          CusToast.toast(context, text: "未选择商品");
+        } else {
+          if (widget.fnColor != null) widget.fnColor(_color);
+          if (widget.OnPath != null) widget.OnPath(_path);
+          Navigator.pop(context);
+        }
+      },
+      child: CusText("确定", Colors.orangeAccent, 28),
+    );
   }
 }

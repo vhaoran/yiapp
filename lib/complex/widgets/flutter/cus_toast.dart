@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../tools/adapt.dart';
 
@@ -24,6 +25,7 @@ class CusToast {
   int time; // 显示的时间毫秒
   bool showing; // 是否正在显示 toast
   bool showChild;
+  bool loading; // 正在等待界面
   Widget child; // 文字下面显示的图标
   ToastPos pos; // 显示位置
 
@@ -38,6 +40,7 @@ class CusToast {
     this.time = 1000,
     this.showing = false,
     this.showChild = false,
+    this.loading = false,
     this.child,
     this.pos = ToastPos.center,
   }) {
@@ -107,6 +110,7 @@ class CusToast {
                   Image.asset('assets/images/icon_selected_20x20.png',
                       scale: Adapt.px(2.5)),
             ],
+            if (loading) CupertinoActivityIndicator(radius: 30),
           ],
         ),
       ),

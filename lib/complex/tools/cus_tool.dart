@@ -69,6 +69,7 @@ class CusTool {
   static Future<List<Map>> assetsKeyPath(List<Asset> assets) async {
     List<Map> res = [];
     try {
+      Debug.log("-111111${DateTime.now()}");
       for (var i = 0; i < assets.length; i++) {
         ByteData byteData = await assets[i].getByteData();
         Uint8List u = byteData.buffer.asUint8List();
@@ -76,10 +77,12 @@ class CusTool {
         String url = await ApiImage.GetVisitURL(key.trim());
         res.add({"key": key, "path": url});
       }
+      Debug.log("00000${DateTime.now()}");
+      return res;
     } catch (e) {
       Debug.log("转换Asset时出现异常:$e");
+      return [];
     }
-    return res;
   }
 }
 

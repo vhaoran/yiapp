@@ -16,7 +16,7 @@ import 'package:yiapp/model/dicts/product.dart';
 class ProductColorPrice extends StatefulWidget {
   final TextEditingController colorCtrl;
   final TextEditingController priceCtrl;
-  final FnColorPrice fnColorPrice; // 已添加商品颜色和价格的回调
+  final FnColorPrices fnColorPrice; // 已添加商品颜色和价格的回调
 
   ProductColorPrice({
     this.colorCtrl,

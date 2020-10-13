@@ -17,7 +17,7 @@ class ChProductColor extends StatefulWidget {
   final TextEditingController colorCtrl;
   final TextEditingController priceCtrl;
   final List<ProductColor> colorPrices; // 已添加商品的颜色和价格
-  final FnColorPrice fnColorPrice; // 已添加商品颜色和价格的回调
+  final FnColorPrices fnColorPrice; // 已添加商品颜色和价格的回调
 
   ChProductColor({
     this.colorCtrl,

@@ -58,6 +58,8 @@ dependencies:
   city_pickers: ^0.2.0
   # 上拉加载、下拉刷新
   pull_to_refresh: ^1.6.2
+  # 加载指示器
+  flutter_spinkit: ^4.1.2
   ###### suxing #####
 
 dev_dependencies:

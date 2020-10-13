@@ -10,9 +10,11 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
+import 'package:yiapp/ui/fortune/almanac/utils/solar_term_util.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_color.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_images.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_name.dart';
@@ -42,6 +44,7 @@ class _AddProductState extends State<AddProduct> {
   String _snackErr; // 提示信息
   List<Category> _pTypes = []; // 已有的商品分类
   var _future;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -86,7 +89,9 @@ class _AddProductState extends State<AddProduct> {
 
   /// 满足新增商品条件，执行添加商品
   void _doAdd() async {
+    CusLoading(context);
     List<Map> s = await CusTool.assetsKeyPath(_images);
+    Navigator.pop(context);
     var res = List<ProductImage>();
     s.forEach((e) {
       res.add(ProductImage(path: e['path'], sort_no: 0));
@@ -105,7 +110,12 @@ class _AddProductState extends State<AddProduct> {
       "image_main": res.first.path, // 商品主图片暂时使用第一张
     };
     try {
+      if (_loading) {}
       Product res = await ApiProduct.productAdd(m);
+      setState(() {
+        _loading = res == null ? true : false;
+      });
+
       if (res != null) {
         CusToast.toast(context, text: "添加成功");
         Navigator.of(context).pop(res);

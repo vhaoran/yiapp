@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -19,10 +20,12 @@ import 'package:yiapp/ui/mine/address/add_or_ch.dart';
 class AddrItem extends StatelessWidget {
   final AddressResult res;
   final VoidCallback onChanged;
+  final FnAddr onAddr; // 下单时更改收货地址
 
   AddrItem({
     this.res,
     this.onChanged,
+    this.onAddr,
     Key key,
   }) : super(key: key);
 
@@ -31,17 +34,22 @@ class AddrItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _isDefault = res.is_default == 1 ? true : false;
-    return Card(
-      margin: EdgeInsets.only(bottom: Adapt.px(5)),
-      color: fif_primary,
-      elevation: 1,
-      shadowColor: Colors.white,
-      child: CupertinoLeftScroll(
-        closeOnPop: false,
-        key: Key(res.id.toString()),
-        closeTag: LeftScrollCloseTag('address'),
-        child: _addr(context),
-        buttons: _leftScroll(context),
+    return InkWell(
+      onTap: () {
+        if (onAddr != null) onAddr(res);
+      },
+      child: Card(
+        margin: EdgeInsets.only(bottom: Adapt.px(5)),
+        color: fif_primary,
+        elevation: 1,
+        shadowColor: Colors.white,
+        child: CupertinoLeftScroll(
+          closeOnPop: false,
+          key: Key(res.id.toString()),
+          closeTag: LeftScrollCloseTag('address'),
+          child: _addr(context),
+          buttons: _leftScroll(context),
+        ),
       ),
     );
   }

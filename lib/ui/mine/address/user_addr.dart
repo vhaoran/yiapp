@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -83,7 +84,14 @@ class _UserAddressPageState extends State<UserAddressPage> {
           padding: EdgeInsets.only(top: Adapt.px(10)),
           children: List.generate(
             _l.length,
-            (i) => AddrItem(res: _l[i], onChanged: _refresh),
+            (i) => AddrItem(
+                res: _l[i],
+                onChanged: _refresh,
+                onAddr: (val) {
+                  if (val != null) {
+                    Navigator.of(context).pop(val);
+                  }
+                }),
           ),
         );
       },
