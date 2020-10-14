@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/ui/mine/mall/goods/await_send_goods_his.dart';
 import 'package:yiapp/ui/mine/mall/product/product_store.dart';
 import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
 
@@ -36,7 +36,19 @@ class ProductMainPage extends StatelessWidget {
           title: "商品分类",
           onTap: () => CusRoutes.push(context, ProductType()),
         ),
-        NormalBox(title: "发货", onTap: () {}),
+        NormalBox(
+          title: "未完成订单",
+          onTap: () => CusRoutes.push(context, ProductType()),
+        ),
+        NormalBox(
+          title: "已完成订单",
+          onTap: () => CusRoutes.push(context, ProductType()),
+        ),
+//        if (ApiState.isAdmin)
+        NormalBox(
+          title: "后台待发货",
+          onTap: () => CusRoutes.push(context, SendGoodsHisPage()),
+        ),
       ],
     );
   }

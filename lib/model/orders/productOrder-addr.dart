@@ -14,8 +14,17 @@ class ProductOrderAddr {
   //邮编
   String zipcode;
 
-  ProductOrderAddr(
-      {this.area, this.city, this.detail, this.province, this.zipcode});
+  //手机号
+  String mobile;
+
+  ProductOrderAddr({
+    this.area,
+    this.city,
+    this.detail,
+    this.province,
+    this.zipcode,
+    this.mobile,
+  });
 
   factory ProductOrderAddr.fromJson(Map<String, dynamic> json) {
     return ProductOrderAddr(
@@ -24,6 +33,7 @@ class ProductOrderAddr {
       detail: json['detail'],
       province: json['province'],
       zipcode: json['zipcode'],
+      mobile: json['mobile'],
     );
   }
 
@@ -34,6 +44,7 @@ class ProductOrderAddr {
     data['detail'] = this.detail;
     data['province'] = this.province;
     data['zipcode'] = this.zipcode;
+    data['mobile'] = this.mobile;
     return data;
   }
 }

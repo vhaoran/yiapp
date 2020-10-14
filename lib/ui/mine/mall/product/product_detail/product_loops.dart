@@ -44,6 +44,7 @@ class _ProductLoopsState extends State<ProductLoops> {
   Widget _loops() {
     return Swiper(
       key: UniqueKey(),
+      autoplay: true,
       itemCount: _images.length,
       itemBuilder: (context, i) {
         return BackgroundWall(

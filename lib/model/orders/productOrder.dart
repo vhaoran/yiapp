@@ -34,7 +34,7 @@ class ProductOrder {
   factory ProductOrder.fromJson(Map<String, dynamic> json) {
     return ProductOrder(
       addr:
-          json['addr'] != null ? ProductOrderAddr.fromJson(json['addr']) : null,
+          json['Addr'] != null ? ProductOrderAddr.fromJson(json['Addr']) : null,
       bill_no: json['bill_no'],
       contact: json['contact'],
       createDate: json['createDate'],
@@ -68,7 +68,7 @@ class ProductOrder {
     data['total_amt'] = this.total_amt;
     data['uid'] = this.uid;
     if (this.addr != null) {
-      data['addr'] = this.addr.toJson();
+      data['Addr'] = this.addr.toJson();
     }
     if (this.items != null) {
       data['items'] = this.items.map((v) => v.toJson()).toList();

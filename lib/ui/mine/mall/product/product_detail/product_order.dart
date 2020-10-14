@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
@@ -7,8 +6,6 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -24,14 +21,14 @@ import 'package:yiapp/ui/mine/address/user_addr.dart';
 // usage ：商品订单详情
 // ------------------------------------------------------
 
-class ProductOrder extends StatefulWidget {
+class ProductOrderPage extends StatefulWidget {
   final Product product;
   final AddressResult firstAddr; // 所有的收货地址
   final ProductColor color;
   final String path;
   final int count;
 
-  ProductOrder({
+  ProductOrderPage({
     this.product,
     this.firstAddr,
     this.color,
@@ -41,10 +38,10 @@ class ProductOrder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProductOrderState createState() => _ProductOrderState();
+  _ProductOrderPageState createState() => _ProductOrderPageState();
 }
 
-class _ProductOrderState extends State<ProductOrder> {
+class _ProductOrderPageState extends State<ProductOrderPage> {
   AddressResult _addr; // 收货地址
 
   @override
@@ -55,6 +52,8 @@ class _ProductOrderState extends State<ProductOrder> {
 
   /// 提交订单
   void _doBuy() async {
+    CusLoading(context);
+    Navigator.pop(context);
     var m = {
       "items": [
         {
@@ -63,14 +62,15 @@ class _ProductOrderState extends State<ProductOrder> {
           "color_code": widget.color.code,
           "price": widget.color.price, // 单价
           "qty": widget.count, // 购买个数
-//          "amt":50 // 总价，这个我不需要传给后台
         }
       ],
+      "contact": _addr.contact_person, // 联系人
+      "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
     };
     try {
       var res = await ApiProductOrder.productOrderAdd(m);
-
       if (res != null) {
+        Navigator.of(context).pop("");
         CusToast.toast(context, text: "订单提交成功");
       }
     } catch (e) {
@@ -102,17 +102,10 @@ class _ProductOrderState extends State<ProductOrder> {
                   isDefault: _addr.is_default == 1,
                 ),
                 _colorPrice(widget.color), // 商品的颜色和价格
-                CusRaisedBtn(
-                  onPressed: () {
-                    CusLoading(context);
-                    Future.delayed(Duration(milliseconds: 2000))
-                        .then((value) => CusToast.toast(context, text: "提价陈宫"));
-                  },
-                ),
               ],
             ),
           ),
-          _bottomArea(),
+          _bottomArea(), // 底部结算区域
         ],
       ),
     );
@@ -204,7 +197,7 @@ class _ProductOrderState extends State<ProductOrder> {
           CusText("共${widget.count}件，合计:", t_gray, 28),
           CusText("￥${widget.color.price * widget.count}", t_yi, 32),
           InkWell(
-            onTap: () {},
+            onTap: _doBuy,
             child: Container(
               child: CusText("提交订单", Colors.white, 28),
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),

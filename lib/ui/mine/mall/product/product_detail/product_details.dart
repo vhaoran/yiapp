@@ -164,14 +164,14 @@ class _ProductDetailsState extends State<ProductDetails> {
           if (res != null) {
             CusRoutes.push(
               context,
-              ProductOrder(
+              ProductOrderPage(
                 product: _product,
                 firstAddr: res.first,
                 color: _color,
                 path: _path,
                 count: _count,
               ),
-            );
+            ).then((val) => {if (val != null) Navigator.pop(context)});
           }
         } catch (e) {
           Debug.logError("出现异常：$e");
