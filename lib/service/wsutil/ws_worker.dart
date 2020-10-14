@@ -90,6 +90,14 @@ void _sleep() {
 }
 
 void _pump(String text) {
+  try {
+    _pump_exec(text);
+  } catch (e) {
+    print("***error,_pump: ${e.oString()} ref msg: $text ");
+  }
+}
+
+void _pump_exec(String text) {
   print('-----  ${DateTime.now()} ----------');
 
   //----pump to text listener only for debug--------------------------------------------
