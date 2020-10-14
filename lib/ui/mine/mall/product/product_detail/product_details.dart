@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -95,7 +96,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         ),
-        _doReadyBuy(), // 点击购买
+        Row(
+          children: <Widget>[
+            _addShopCart(), // 加入购物车
+            _doReadyBuy(), // 点击购买
+          ],
+        ),
       ],
     );
   }
@@ -141,43 +147,62 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  /// 点击购买
-  Widget _doReadyBuy() {
-    return RaisedButton(
-      child: Container(
-        height: Adapt.px(80),
-        alignment: Alignment.center,
-        child: CusText("点击购买", Colors.white, 30),
+  /// 加入购物车
+  Widget _addShopCart() {
+    return Flexible(
+      flex: 1,
+      child: RaisedButton(
+        child: Container(
+          height: Adapt.px(80),
+          alignment: Alignment.center,
+          child: CusText("加入购物车", Colors.black, 30),
+        ),
+        color: Color(0xFFF2B83F),
+        onPressed: () async {},
       ),
-      color: Color(0xFFEB7E31),
-      onPressed: () async {
-        if (_color == null) {
-          CusToast.toast(context, text: "请选择商品颜色");
-          return;
-        }
-        if (_count == 0 || _count == null) {
-          CusToast.toast(context, text: "请选择商品数量");
-          return;
-        }
-        try {
-          var res = await ApiUser.userAddrList(ApiBase.uid);
-          if (res != null) {
-            CusRoutes.push(
-              context,
-              ProductOrderPage(
-                product: _product,
-                firstAddr: res.first,
-                color: _color,
-                path: _path,
-                count: _count,
-              ),
-            ).then((val) => {if (val != null) Navigator.pop(context)});
+    );
+  }
+
+  /// 立即购买
+  Widget _doReadyBuy() {
+    return Flexible(
+      flex: 1,
+      child: RaisedButton(
+        child: Container(
+          height: Adapt.px(80),
+          alignment: Alignment.center,
+          child: CusText("立即购买", Colors.black, 30),
+        ),
+        color: Color(0xFFEB7E31),
+        onPressed: () async {
+          if (_color == null) {
+            CusToast.toast(context, text: "请选择商品颜色");
+            return;
           }
-        } catch (e) {
-          Debug.logError("出现异常：$e");
-          CusDialog.tip(context, title: "请先在个人信息中添加收货地址");
-        }
-      },
+          if (_count == 0 || _count == null) {
+            CusToast.toast(context, text: "请选择商品数量");
+            return;
+          }
+          try {
+            var res = await ApiUser.userAddrList(ApiBase.uid);
+            if (res != null) {
+              CusRoutes.push(
+                context,
+                ProductOrderPage(
+                  product: _product,
+                  firstAddr: res.first,
+                  color: _color,
+                  path: _path,
+                  count: _count,
+                ),
+              ).then((val) => {if (val != null) Navigator.pop(context)});
+            }
+          } catch (e) {
+            Debug.logError("出现异常：$e");
+            CusDialog.tip(context, title: "请先在个人信息中添加收货地址");
+          }
+        },
+      ),
     );
   }
 }

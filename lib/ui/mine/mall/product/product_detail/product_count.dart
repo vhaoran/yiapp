@@ -21,13 +21,13 @@ class ProductCount extends StatefulWidget {
 }
 
 class _ProductCountState extends State<ProductCount> {
-  int _count = 0; // 购买数量
+  int _count = 1; // 购买数量
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: fif_primary,
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(
         children: <Widget>[
           CusText("购买数量", t_gray, 30),
@@ -61,8 +61,8 @@ class _ProductCountState extends State<ProductCount> {
     return InkWell(
       onTap: () {
         _count--;
-        if (_count < 0) {
-          _count = 0;
+        if (_count < 1) {
+          _count = 1;
           CusToast.toast(context, text: "亲，不能再减少了");
         }
         if (widget.OnChanged != null) {

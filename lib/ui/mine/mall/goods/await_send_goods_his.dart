@@ -31,7 +31,7 @@ class _SendGoodsHisPageState extends State<SendGoodsHisPage> {
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rows_per_page = 10; // 默认每页查询个数
-  List<ProductOrder> _l = []; // 列表
+  List<ProductOrder> _l = []; // 待发货订单列表
 
   @override
   void initState() {
@@ -43,7 +43,11 @@ class _SendGoodsHisPageState extends State<SendGoodsHisPage> {
   _fetch() async {
     if (_pageNo * _rows_per_page > _rowsCount) return;
     _pageNo++;
-    var m = {"page_no": _pageNo, "rows_per_page": _rows_per_page};
+    var m = {
+      "page_no": _pageNo,
+      "rows_per_page": _rows_per_page,
+      "where": {"stat": 1},
+    };
     try {
       PageBean pb = await ApiProductOrder.bOProductOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
@@ -138,9 +142,9 @@ class _SendGoodsHisPageState extends State<SendGoodsHisPage> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        CusText(e.name, t_gray, 30), // 商品名称
+                        CusText(e.name, t_gray, 30), // 商        品名称
                         SizedBox(width: Adapt.px(30)),
-                        CusText("${e.color_code}*${e.qty}", t_gray, 30), // 商品颜色
+                        CusText("${e.color_code}x${e.qty}", t_gray, 30), // 商品颜色
                         SizedBox(width: Adapt.px(30)),
                         CusText("总价：${e.amt}", t_gray, 30), // 商品总价
                       ],
