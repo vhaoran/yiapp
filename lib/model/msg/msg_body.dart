@@ -31,7 +31,7 @@ class MsgBody {
       MsgBody bean = MsgBody.fromJson(m);
       return bean;
     } catch (e) {
-      print("***error:" + e.toString());
+      print("*msg unmarshal ***** error:" + e.toString() + " ref: $jsonStr ");
       return null;
     }
   }

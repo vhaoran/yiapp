@@ -42,7 +42,11 @@ initWSChanSingle() {
   _notifyOnline();
 
   _chan.stream.listen((message) {
-    print(message);
+    print("-----------------------------------");
+    print("-----------------------------------");
+    print("-----------------------------------");
+    print("-----------------------------------");
+    print("--------------raw received: $message -----------");
     _pump(message);
   }, onError: (err) {
     print("-------error-----------");
@@ -89,23 +93,32 @@ void _pump(String text) {
   print('-----  ${DateTime.now()} ----------');
 
   //----pump to text listener only for debug--------------------------------------------
-  glbEventBus.fire(MessageEvent("common-msg-text", text));
+  // glbEventBus.fire(MessageEvent("common-msg-text", text));
   if (_isPong(text)) {
     return;
   }
 
+  print("------------after pong---------");
   //------pump to MsgBody listener---------------------
   MsgBody src = MsgBody.fromJsonStr(text);
+  if (src == null) {
+    return;
+  }
+
   //flush to local storage
+  print("------after msg body---------------");
+  print("-----------   ${src.toJson()}");
 
   //---notify msg--通知消息的解析-------------------------
   if (src.content_type == "notify") {
     parseNotify(src);
   }
+  print("------after notify---------------");
   //----yi order--大师订单
   if (src.content_type == "yi-order") {
     parseYiOrder(src);
   }
+  print("---------after yi order------------");
 
   //通知到首面（首頁不用時，將來去掉）
 }
@@ -121,7 +134,7 @@ void parseYiOrder(MsgBody src) {
       print("${dst.toJson()}");
     }
   } catch (e) {
-    print("***error---parseYiOrder:" + e.toString());
+    print("***error--WWWWWWWWW-parseYiOrder:" + e.toString());
   }
 }
 
@@ -137,7 +150,7 @@ void parseNotify(MsgBody src) {
       print("${dst.toJson()}");
     }
   } catch (e) {
-    print("***error---parseNotify:" + e.toString());
+    print("***error-WWWWWWWWWWWWWW--parseNotify:" + e.toString());
   }
 }
 
@@ -149,7 +162,7 @@ void parseNotify(MsgBody src) {
 // }
 
 bool _isPong(String text) {
-  if (text.trim().toLowerCase() == "pong") {
+  if (text.trim().toLowerCase().startsWith("pong")) {
     return true;
   }
   return false;
