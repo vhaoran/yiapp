@@ -16,17 +16,17 @@ import 'package:yiapp/ui/mine/mall/goods/send_good_page.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/14 14:09
-// usage ：商品待发货订单分页
+// usage ：管理员查看待发货记录
 // ------------------------------------------------------
 
-class SendGoodsHisPage extends StatefulWidget {
-  SendGoodsHisPage({Key key}) : super(key: key);
+class AdminSendGoodsPage extends StatefulWidget {
+  AdminSendGoodsPage({Key key}) : super(key: key);
 
   @override
-  _SendGoodsHisPageState createState() => _SendGoodsHisPageState();
+  _AdminSendGoodsPageState createState() => _AdminSendGoodsPageState();
 }
 
-class _SendGoodsHisPageState extends State<SendGoodsHisPage> {
+class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
@@ -125,7 +125,7 @@ class _SendGoodsHisPageState extends State<SendGoodsHisPage> {
                   SizedBox(width: Adapt.px(30)),
                   CusText(e.addr.mobile, t_primary, 30), // 手机号
                   Spacer(),
-                  CusText("$i", t_gray, 30), // 手机号
+                  CusText("$i", t_primary, 30), // 序号
                 ],
               ),
               Padding(

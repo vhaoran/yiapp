@@ -7,21 +7,15 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/product_color_show.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/product_count.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/product_loops.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/product_order.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/5 11:43
+// date  ：2020/10/15 09:56
 // usage ：单个商品详情
 // ------------------------------------------------------
 
@@ -37,9 +31,6 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   var _future;
   Product _product = Product();
-  ProductColor _color; // 选择的商品颜色和价格
-  int _count = 0; // 购买的数量
-  String _path = ""; // 选择的商品的图片链接
 
   @override
   void initState() {
@@ -63,145 +54,70 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: CusAppBar(text: "商品详情"),
       body: FutureBuilder(
-        future: _future,
-        builder: (context, snap) {
-          if (!snapDone(snap)) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return _lv();
-        },
-      ),
+          future: _future,
+          builder: (context, snap) {
+            if (!snapDone(snap)) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return Column(children: <Widget>[
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: CusBehavior(),
+                  child: _lv(),
+                ),
+              ),
+              Row(children: <Widget>[
+                _bottomBtn("加入购物车", Color(0xFFF2B83F), true),
+                _bottomBtn("立即购买", Color(0xFFEB7E31), false),
+              ])
+            ]);
+          }),
       backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    return Column(
+    return ListView(
       children: <Widget>[
-        Expanded(
-          child: ScrollConfiguration(
-            behavior: CusBehavior(),
-            child: ListView(
-              children: <Widget>[
-                ProductLoops(product: _product), // 商品轮播图
-                SizedBox(height: Adapt.px(15)),
-                _productName(), // 商品名称
-                SizedBox(height: Adapt.px(15)),
-                _colorPrice(), // 商品颜色和价格
-                SizedBox(height: Adapt.px(15)),
-                ProductCount(
-                  OnChanged: (val) => setState(() => _count = val),
-                ), // 商品的购买数量
-              ],
-            ),
+        // 商品轮播图
+        ProductLoops(product: _product),
+        // 商品名称
+        Container(
+          color: fif_primary,
+          margin: EdgeInsets.symmetric(vertical: Adapt.px(15)),
+          padding: EdgeInsets.all(Adapt.px(20)),
+          child: Text(
+            _product.name,
+            style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
-        Row(
-          children: <Widget>[
-            _addShopCart(), // 加入购物车
-            _doReadyBuy(), // 点击购买
-          ],
+        // 商品可选颜色
+        Container(
+          color: fif_primary,
+          padding: EdgeInsets.all(Adapt.px(20)),
+          child: CusText("${_product.colors.length} 种颜色可选", t_gray, 30),
         ),
       ],
     );
   }
 
-  /// 商品名称
-  Widget _productName() {
-    return Container(
-      color: fif_primary, // 商品名称
-      padding: EdgeInsets.all(Adapt.px(20)),
-      child: Text(
-        _product.name,
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
-  }
-
-  /// 商品颜色和价格
-  Widget _colorPrice() {
-    return InkWell(
-      onTap: () => CusRoutes.push(
-        context,
-        ProductColorShow(
-          product: _product,
-          fnColor: (val) => setState(() => _color = val),
-          OnPath: (val) => setState(() => _path = val),
-        ),
-      ),
-      child: Container(
-        color: fif_primary,
-        padding: EdgeInsets.all(Adapt.px(20)),
-        child: Row(
-          children: <Widget>[
-            CusText("请选择颜色分类", t_gray, 28),
-            SizedBox(width: Adapt.px(40)),
-            _color == null
-                ? CusText("共 ${_product.colors.length} 种颜色可选", t_gray, 28)
-                : CusText("已选：${_color.code}", t_gray, 28),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 加入购物车
-  Widget _addShopCart() {
+  /// 加入购物车和立即购买的按钮
+  Widget _bottomBtn(String text, Color color, bool shopCart) {
     return Flexible(
       flex: 1,
       child: RaisedButton(
         child: Container(
           height: Adapt.px(80),
           alignment: Alignment.center,
-          child: CusText("加入购物车", Colors.black, 30),
+          child: CusText(text, Colors.black, 30),
         ),
-        color: Color(0xFFF2B83F),
-        onPressed: () async {},
-      ),
-    );
-  }
-
-  /// 立即购买
-  Widget _doReadyBuy() {
-    return Flexible(
-      flex: 1,
-      child: RaisedButton(
-        child: Container(
-          height: Adapt.px(80),
-          alignment: Alignment.center,
-          child: CusText("立即购买", Colors.black, 30),
+        color: color,
+        onPressed: () => CusRoutes.push(
+          context,
+          ProductColorShow(product: _product, shopCart: shopCart),
         ),
-        color: Color(0xFFEB7E31),
-        onPressed: () async {
-          if (_color == null) {
-            CusToast.toast(context, text: "请选择商品颜色");
-            return;
-          }
-          if (_count == 0 || _count == null) {
-            CusToast.toast(context, text: "请选择商品数量");
-            return;
-          }
-          try {
-            var res = await ApiUser.userAddrList(ApiBase.uid);
-            if (res != null) {
-              CusRoutes.push(
-                context,
-                ProductOrderPage(
-                  product: _product,
-                  firstAddr: res.first,
-                  color: _color,
-                  path: _path,
-                  count: _count,
-                ),
-              ).then((val) => {if (val != null) Navigator.pop(context)});
-            }
-          } catch (e) {
-            Debug.logError("出现异常：$e");
-            CusDialog.tip(context, title: "请先在个人信息中添加收货地址");
-          }
-        },
       ),
     );
   }

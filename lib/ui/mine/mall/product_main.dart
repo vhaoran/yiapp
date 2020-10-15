@@ -5,8 +5,9 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/mine/mall/goods/await_send_goods_his.dart';
-import 'package:yiapp/ui/mine/mall/goods/incomplete_orders.dart';
+import 'package:yiapp/ui/mine/mall/goods/admin_send_goods.dart';
+import 'package:yiapp/ui/mine/mall/goods/shop_cart.dart';
+import 'package:yiapp/ui/mine/mall/goods/user_await_goods.dart';
 import 'package:yiapp/ui/mine/mall/product/product_store.dart';
 import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
 
@@ -35,6 +36,10 @@ class ProductMainPage extends StatelessWidget {
             title: "商品管理",
             onTap: () => CusRoutes.push(context, ProductStore()),
           ),
+          NormalBox(
+            title: "购物车",
+            onTap: () => CusRoutes.push(context, ShopCartPage()),
+          ),
 //        if (ApiState.isAdmin)
           NormalBox(
             title: "商品分类",
@@ -42,7 +47,7 @@ class ProductMainPage extends StatelessWidget {
           ),
           NormalBox(
             title: "未完成订单",
-            onTap: () => CusRoutes.push(context, IncompleteOrders()),
+            onTap: () => CusRoutes.push(context, UserAwaitGetGoods()),
           ),
           NormalBox(
             title: "已完成订单",
@@ -51,7 +56,7 @@ class ProductMainPage extends StatelessWidget {
 //        if (ApiState.isAdmin)
           NormalBox(
             title: "后台待发货",
-            onTap: () => CusRoutes.push(context, SendGoodsHisPage()),
+            onTap: () => CusRoutes.push(context, AdminSendGoodsPage()),
           ),
         ],
       ),

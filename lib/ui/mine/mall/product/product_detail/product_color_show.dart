@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -11,29 +13,23 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/product.dart';
+import 'package:yiapp/model/orders/cus_order_format.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/product_count.dart';
+import 'product_order.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/12 16:30
+// date  ：2020/10/15 11:08
 // usage ：选择商品的颜色和价格
 // ------------------------------------------------------
 
 class ProductColorShow extends StatefulWidget {
   final Product product;
   final bool shopCart; // 是否为加入购物车
-  final FnColorPrice fnColor;
-  final FnString OnPath; // 图片路径
-  final FnInt OnCount; // 选择商品的数量
 
-  ProductColorShow({
-    this.product,
-    this.shopCart: false,
-    this.fnColor,
-    this.OnPath,
-    this.OnCount,
-    Key key,
-  }) : super(key: key);
+  ProductColorShow({this.product, this.shopCart: false, Key key})
+      : super(key: key);
 
   @override
   _ProductColorShowState createState() => _ProductColorShowState();
@@ -42,9 +38,10 @@ class ProductColorShow extends StatefulWidget {
 class _ProductColorShowState extends State<ProductColorShow> {
   int _curSelect = -1; // 当前选择的哪一个
   int _count = 1; // 购买的数量
-  List _l = []; // 图片地址列表
+  List _l = []; // 图片地址列表,用于滑动查看图片
   ProductColor _color; // 当前选择的商品颜色和价格
-  String _path; // 选择图片的路径
+  String _path; // 选择图片的url
+  CusOrderData _order; // 当前选择的订单详情
 
   @override
   void initState() {
@@ -52,35 +49,58 @@ class _ProductColorShowState extends State<ProductColorShow> {
     super.initState();
   }
 
+  /// 立即购买
+  void _doBuyNow() async {
+    CusRoutes.push(
+      context,
+      ProductOrderPage(order: _order),
+    ).then((val) => {if (val != null) Navigator.pop(context)});
+  }
+
+  /// 添加进购物车
+  void _doAddShopCart() async {
+    bool ok = await KV.setStr(kv_shop, json.encode(_order.toJson()));
+    if (ok) {
+      CusToast.toast(context, text: "添加成功，在购物车等亲~", showChild: true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "商品可选颜色", actions: <Widget>[_doSure()]),
-      body: ScrollConfiguration(
-        behavior: CusBehavior(),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  SizedBox(height: Adapt.px(10)),
-                  ...List.generate(
-                    widget.product.colors.length,
-                    (i) => _productItem(widget.product.colors[i], i),
-                  ),
-                  ProductCount(
-                    OnChanged: (val) => setState(() => _count = val),
-                  ),
-                ],
-              ),
-            ),
-            widget.shopCart
-                ? _comBtn("加入购物车", onPressed: () {})
-                : _comBtn("立即购买", onPressed: () {})
-          ],
-        ),
-      ),
+      appBar: CusAppBar(text: "商品可选颜色"),
+      body: _co(),
       backgroundColor: primary,
+    );
+  }
+
+  Widget _co() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ScrollConfiguration(
+            behavior: CusBehavior(),
+            child: ListView(
+              children: <Widget>[
+                SizedBox(height: Adapt.px(10)),
+                // 商品的图片,价格和颜色
+                ...List.generate(
+                  widget.product.colors.length,
+                  (i) => _productItem(widget.product.colors[i], i),
+                ),
+                // 购买数量
+                ProductCount(
+                  OnChanged: (val) => setState(() => _count = val),
+                ),
+              ],
+            ),
+          ),
+        ),
+        // 加入购物车和立即购买
+        widget.shopCart
+            ? _bottomBtn("加入购物车", onPressed: _doAddShopCart)
+            : _bottomBtn("立即购买", onPressed: _doBuyNow),
+      ],
     );
   }
 
@@ -116,7 +136,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
                 ],
               ),
               Spacer(),
-              if (_curSelect == i)
+              if (_curSelect == i) // 显示已选择
                 Image.asset(
                   'assets/images/icon_selected_20x20.png',
                   scale: Adapt.px(2.5),
@@ -128,25 +148,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
     );
   }
 
-  /// 确定按钮
-  Widget _doSure() {
-    return FlatButton(
-      onPressed: () {
-        // 购买的数量不用判断，因为至少为1
-        if (_color == null) {
-          CusToast.toast(context, text: "未选择商品");
-        } else {
-          if (widget.fnColor != null) widget.fnColor(_color);
-          if (widget.OnPath != null) widget.OnPath(_path);
-          if (widget.OnCount != null) widget.OnCount(_count);
-          Navigator.pop(context);
-        }
-      },
-      child: CusText("确定", Colors.orangeAccent, 28),
-    );
-  }
-
-  Widget _comBtn(String text, {VoidCallback onPressed}) {
+  Widget _bottomBtn(String text, {VoidCallback onPressed}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: CusRaisedBtn(
@@ -157,7 +159,20 @@ class _ProductColorShowState extends State<ProductColorShow> {
         textColor: Colors.black,
         backgroundColor: Color(0xFFEB7E31),
         fontSize: 28,
-        onPressed: onPressed,
+        onPressed: () {
+          // 购买的数量不用判断，因为至少为1
+          if (_color == null) {
+            CusToast.toast(context, text: "未选择商品");
+            return;
+          }
+          _order = CusOrderData(
+            product: widget.product,
+            color: _color,
+            path: _path,
+            count: _count,
+          );
+          onPressed();
+        },
       ),
     );
   }

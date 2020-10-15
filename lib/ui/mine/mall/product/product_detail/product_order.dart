@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -12,30 +10,20 @@ import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/dicts/product.dart';
+import 'package:yiapp/model/orders/cus_order_format.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
-import 'package:yiapp/ui/mine/address/user_addr.dart';
+import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/13 14:22
+// date  ：2020/10/15 10:20
 // usage ：商品订单详情
 // ------------------------------------------------------
 
 class ProductOrderPage extends StatefulWidget {
-  final Product product;
-  final AddressResult firstAddr; // 所有的收货地址
-  final ProductColor color;
-  final String path;
-  final int count;
+  final CusOrderData order;
 
-  ProductOrderPage({
-    this.product,
-    this.firstAddr,
-    this.color,
-    this.path,
-    this.count,
-    Key key,
-  }) : super(key: key);
+  ProductOrderPage({this.order, Key key}) : super(key: key);
 
   @override
   _ProductOrderPageState createState() => _ProductOrderPageState();
@@ -43,10 +31,11 @@ class ProductOrderPage extends StatefulWidget {
 
 class _ProductOrderPageState extends State<ProductOrderPage> {
   AddressResult _addr; // 收货地址
+  CusOrderData _order; // 订单数据
 
   @override
   void initState() {
-    _addr = _addr == null ? widget.firstAddr : _addr;
+    _order = widget.order;
     super.initState();
   }
 
@@ -57,11 +46,11 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
     var m = {
       "items": [
         {
-          "product_id": widget.product.id_of_es,
-          "name": widget.product.name,
-          "color_code": widget.color.code,
-          "price": widget.color.price, // 单价
-          "qty": widget.count, // 购买个数
+          "product_id": _order.product.id_of_es,
+          "name": _order.product.name,
+          "color_code": _order.color.code,
+          "price": _order.color.price, // 单价
+          "qty": _order.count, // 购买个数
         }
       ],
       "contact": _addr.contact_person, // 联系人
@@ -97,11 +86,11 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
               physics: BouncingScrollPhysics(),
               children: <Widget>[
                 SizedBox(height: Adapt.px(10)),
-                _address(
-                  res: _addr,
-                  isDefault: _addr.is_default == 1,
+                // 显示和选择收货地址
+                ProOrderAddress(
+                  onChanged: (val) => setState(() => _addr = val),
                 ),
-                _colorPrice(widget.color), // 商品的颜色和价格
+                _colorPrice(_order.color), // 商品的颜色和价格
               ],
             ),
           ),
@@ -120,7 +109,7 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: Row(
           children: <Widget>[
-            CusAvatar(url: widget.path, rate: 20, size: 100),
+            CusAvatar(url: _order.path, rate: 20, size: 100),
             SizedBox(width: Adapt.px(Adapt.px(50))),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,53 +123,9 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
                 ),
                 SizedBox(height: Adapt.px(30)),
                 // 商品购买数量
-                CusText("购买数量：${widget.count}", t_gray, 28),
+                CusText("购买数量：${_order.count}", t_gray, 28),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 收货地址
-  Widget _address({AddressResult res, bool isDefault = false}) {
-    return InkWell(
-      onTap: () => CusRoutes.push(
-        context,
-        UserAddressPage(),
-      ).then((val) => setState(() => _addr = val)),
-      child: Container(
-        color: fif_primary,
-        padding: EdgeInsets.all(Adapt.px(20)),
-        child: Row(
-          children: <Widget>[
-            Icon(FontAwesomeIcons.mapMarker, color: t_yi),
-            SizedBox(width: Adapt.px(40)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      CusText(res.contact_person, t_gray, 30), // 收件人
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                        child: CusText(res.mobile, t_gray, 30),
-                      ), // 手机号
-                      if (isDefault) // 显示默认收件地址
-                        CusText("默认", t_primary, 28)
-                    ],
-                  ),
-                  Text(
-                    res.detail, // 收货地址
-                    style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
@@ -194,8 +139,8 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          CusText("共${widget.count}件，合计:", t_gray, 28),
-          CusText("￥${widget.color.price * widget.count}", t_yi, 32),
+          CusText("共${_order.count}件，合计:", t_gray, 28),
+          CusText("￥${_order.color.price * _order.count}", t_yi, 32),
           InkWell(
             onTap: _doBuy,
             child: Container(
