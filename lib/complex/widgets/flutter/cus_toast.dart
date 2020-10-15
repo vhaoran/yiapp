@@ -99,18 +99,26 @@ class CusToast {
         padding: EdgeInsets.symmetric(horizontal: pdHor, vertical: pdVer),
         child: Column(
           children: <Widget>[
+            if (showChild)
+              Padding(
+                padding: EdgeInsets.only(bottom: Adapt.px(20)),
+                child: child ??
+                    Image.asset('assets/images/icon_selected_20x20.png',
+                        scale: Adapt.px(2.5)),
+              ),
             Text(
               text,
               style: TextStyle(
                   fontSize: Adapt.px(textSize ?? 34), color: textColor),
             ),
-            if (showChild) ...[
-              SizedBox(height: Adapt.px(20)),
-              child ??
-                  Image.asset('assets/images/icon_selected_20x20.png',
-                      scale: Adapt.px(2.5)),
-            ],
-            if (loading) CupertinoActivityIndicator(radius: 30),
+//            if (showChild) ...[
+//              SizedBox(height: Adapt.px(20)),
+//              child ??
+//                  Image.asset('assets/images/icon_selected_20x20.png',
+//                      scale: Adapt.px(2.5)),
+//            ],
+            if (loading)
+              CupertinoActivityIndicator(radius: 30),
           ],
         ),
       ),

@@ -10,7 +10,7 @@ import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/dicts/product.dart';
-import 'package:yiapp/model/orders/cus_order_format.dart';
+import 'package:yiapp/model/orders/cus_order_data.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';
 
@@ -21,7 +21,7 @@ import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';
 // ------------------------------------------------------
 
 class ProductOrderPage extends StatefulWidget {
-  final CusOrderData order;
+  final SingleShopData order;
 
   ProductOrderPage({this.order, Key key}) : super(key: key);
 
@@ -31,7 +31,7 @@ class ProductOrderPage extends StatefulWidget {
 
 class _ProductOrderPageState extends State<ProductOrderPage> {
   AddressResult _addr; // 收货地址
-  CusOrderData _order; // 订单数据
+  SingleShopData _order; // 订单数据
 
   @override
   void initState() {

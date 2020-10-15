@@ -13,8 +13,9 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 
 class ProductCount extends StatefulWidget {
   final FnInt OnChanged;
+  final int count;
 
-  ProductCount({this.OnChanged, Key key}) : super(key: key);
+  ProductCount({this.OnChanged, this.count, Key key}) : super(key: key);
 
   @override
   _ProductCountState createState() => _ProductCountState();
@@ -25,6 +26,7 @@ class _ProductCountState extends State<ProductCount> {
 
   @override
   Widget build(BuildContext context) {
+    _count = widget.count;
     return Container(
       color: fif_primary,
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),

@@ -29,6 +29,17 @@ class KV {
     }
   }
 
+  static Future<bool> remove(String key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove(key);
+      return true;
+    } catch (e) {
+      print(">>>share_preference 执行 remove 操作时出现异常");
+      return false;
+    }
+  }
+
   static Future<bool> clear() async {
     try {
       final prefs = await SharedPreferences.getInstance();
