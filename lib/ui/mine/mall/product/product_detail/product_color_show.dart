@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/function/shopcart_func.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
@@ -13,7 +12,6 @@ import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/model/orders/cus_order_data.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/product_count.dart';
 import 'product_order.dart';
 
@@ -40,7 +38,8 @@ class _ProductColorShowState extends State<ProductColorShow> {
   List _l = []; // 图片地址列表,用于滑动查看图片
   ProductColor _color; // 当前选择的商品颜色和价格
   String _path; // 选择图片的url
-  SingleShopData _order; // 当前选择的订单详情
+  SingleShopData _order; // 当前选择的单个订单详情
+  AllShopData _allShop; // 所有订单详情
 
   @override
   void initState() {
@@ -50,37 +49,20 @@ class _ProductColorShowState extends State<ProductColorShow> {
 
   /// 立即购买
   void _doBuyNow() async {
+    _allShop = AllShopData(shops: [_order]);
     CusRoutes.push(
       context,
-      ProductOrderPage(order: _order),
+      ProductOrderPage(allShop: _allShop),
     ).then((val) => {if (val != null) Navigator.pop(context)});
   }
 
   /// 添加进购物车
   void _doAddShopCart() async {
-    String res = await KV.getStr(kv_shop);
-    AllShopData data = AllShopData();
-    // 第一次添加商品到购物车
-    if (res == null) {
-      data = AllShopData(shops: [_order]);
-    }
-    // 后续添加商品到购物车
-    else {
-      data = AllShopData.fromJson(json.decode(res));
-      SingleShopData shop = data.shops.singleWhere(
-          (e) =>
-              e.product.id_of_es == _order.product.id_of_es &&
-              e.color.code == _order.color.code,
-          orElse: () => null);
-      if (shop == null) {
-        // 1、添加新商品。
-        data.shops.add(_order);
-      } else {
-        // 2、添加同一商品的同一颜色时，只需要增加对应数量即可
-        shop.count += _order.count;
-      }
-    }
-    bool ok = await KV.setStr(kv_shop, json.encode(data.toJson()));
+    String res = await ShopKV.load();
+    _allShop = res == null
+        ? AllShopData(shops: [_order]) // 第一次添加
+        : await ShopKV.add(res, _order); // 后续添加
+    bool ok = await ShopKV.refresh(_allShop);
     if (ok) {
       CusToast.toast(context, text: "添加成功，在购物车等亲~", showChild: true);
       _clear();

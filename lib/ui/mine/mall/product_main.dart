@@ -8,6 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/mine/mall/goods/admin_send_goods.dart';
 import 'package:yiapp/ui/mine/mall/goods/shop_cart.dart';
 import 'package:yiapp/ui/mine/mall/goods/user_await_goods.dart';
+import 'package:yiapp/ui/mine/mall/goods/user_wait_pay.dart';
 import 'package:yiapp/ui/mine/mall/product/product_store.dart';
 import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
 
@@ -46,8 +47,12 @@ class ProductMainPage extends StatelessWidget {
             onTap: () => CusRoutes.push(context, ProductType()),
           ),
           NormalBox(
-            title: "未完成订单",
-            onTap: () => CusRoutes.push(context, UserAwaitGetGoods()),
+            title: "待付款",
+            onTap: () => CusRoutes.push(context, AwaitPayment()),
+          ),
+          NormalBox(
+            title: "待收货",
+            onTap: () => CusRoutes.push(context, AwaitGetGoods()),
           ),
           NormalBox(
             title: "已完成订单",

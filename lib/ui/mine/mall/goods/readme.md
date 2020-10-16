@@ -5,3 +5,4 @@
 - send_good_page 发货页面
 - shop_cart 购物车
 - user_await_goods 用户待收货记录
+- user_wait_pay 用户待付款

@@ -42,7 +42,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   _fetch() async {
     try {
       Product res = await ApiProduct.productGet(widget.id_of_es);
-      Debug.log("产品详情：${res.toJson()}");
       if (res != null) _product = res;
     } catch (e) {
       Debug.logError("查看商品时，根据id获取商品出现异常：$e");

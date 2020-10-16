@@ -41,7 +41,6 @@ class _ProOrderAddressState extends State<ProOrderAddress> {
   _fetch() async {
     try {
       var res = await ApiUser.userAddrList(ApiBase.uid);
-      Debug.log("地址个数：${res.length}");
       if (res != null && res?.isNotEmpty) {
         _res = res.first; // 第一个为默认地址
         if (widget.onChanged != null) {

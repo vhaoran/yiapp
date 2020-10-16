@@ -91,7 +91,7 @@ class _ChPwdPageState extends State<ChPwdPage> {
         bool ok = await ApiUser.chUserPwd(_oldCtrl.text, _newCtrl.text);
         if (ok) {
           CusToast.toast(context, text: "修改密码成功，请重新登录", time: 1300);
-          if (await KV.clear()) {
+          if (await KV.setStr(kv_pwd, _newCtrl.text)) {
             CusRoutes.push(context, LoginPage());
           }
         }

@@ -167,6 +167,9 @@ class _AddProductState extends State<AddProduct> {
       } else if (_cpList.isEmpty) {
         _snackErr = "未添加商品颜色和价格";
       }
+      if (_images.length != _cpList.length) {
+        _snackErr = "商品图片与颜色价格表个数保持不一致";
+      }
     });
     // 不满足新增商品条件
     if (_snackErr != null) {

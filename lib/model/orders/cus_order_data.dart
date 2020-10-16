@@ -9,8 +9,17 @@ import 'package:yiapp/model/dicts/product.dart';
 /// 定义购物车的数据
 class AllShopData {
   List<SingleShopData> shops;
+  int counts = 0; // 总购买数量
+  int amt = 0; // 总价
 
-  AllShopData({this.shops});
+  AllShopData({this.shops}) {
+    if (this.shops != null) {
+      this.shops.forEach((e) {
+        this.counts += e.count;
+        this.amt += e.count * e.color.price;
+      });
+    }
+  }
 
   factory AllShopData.fromJson(Map<String, dynamic> json) {
     return AllShopData(

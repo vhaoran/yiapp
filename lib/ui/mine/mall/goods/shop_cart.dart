@@ -1,20 +1,20 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/function/shopcart_func.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/orders/cus_order_data.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/product_details.dart';
+import 'package:yiapp/ui/mine/mall/product/product_detail/product_order.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -30,9 +30,11 @@ class ShopCartPage extends StatefulWidget {
 }
 
 class _ShopCartPageState extends State<ShopCartPage> {
-  List<SingleShopData> _l = []; // 购物车数据
   var _future;
-  List<String> _tl = [];
+  List<SingleShopData> _l = []; // 购物车数据
+  var _m = Map<String, SingleShopData>(); // 选中商品
+  AllShopData _allShop; // 所有的订单详情
+  bool _selectAll = false; // 是否全选
 
   @override
   void initState() {
@@ -42,15 +44,31 @@ class _ShopCartPageState extends State<ShopCartPage> {
 
   /// 获取本地购物车数据
   _localData() async {
-    String res = await KV.getStr(kv_shop);
+    String res = await ShopKV.load();
     if (res != null) {
-      AllShopData r = AllShopData.fromJson(json.decode(res));
+      AllShopData r = await ShopKV.from(res);
       _l = r.shops;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CusAppBar(
+        text: "购物车",
+        actions: <Widget>[
+          FlatButton(
+            onPressed: _clearShopCart, // 清空购物车
+            child: CusText("清空购物车", t_gray, 28),
+          )
+        ],
+      ),
+      body: _buildFb(),
+      backgroundColor: primary,
+    );
+  }
+
+  Widget _buildFb() {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
@@ -60,101 +78,122 @@ class _ShopCartPageState extends State<ShopCartPage> {
         if (_l.isEmpty) {
           return Center(child: CusText("购物车竟然是空的~", t_gray, 30));
         }
-        return Scaffold(
-          appBar: CusAppBar(
-            text: "购物车(${_l.length})",
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {},
-                child: CusText("管理", t_gray, 28),
-              )
-            ],
-          ),
-          body: _lv(),
-          backgroundColor: primary,
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: CusBehavior(),
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: <Widget>[
+                    ...List.generate(_l.length, (i) => _shopItem(_l[i], i)),
+                  ],
+                ),
+              ),
+            ),
+            _bottomArea(), // 底部结算区域
+          ],
         );
       },
     );
   }
 
-  Widget _lv() {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: ScrollConfiguration(
-            behavior: CusBehavior(),
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: <Widget>[
-                ...List.generate(
-                  _l.length,
-                  (i) => _shopItem(_l[i], i),
-                ),
-              ],
+  /// 底部结算区域
+  Widget _bottomArea() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      color: fif_primary,
+      child: Row(
+        children: <Widget>[
+          _checkItem(
+              checked: _selectAll, // 全选/取消全选
+              onTap: () {
+                _selectAll = !_selectAll;
+                if (_selectAll) {
+                  for (var i = 0; i < _l.length; i++) {
+                    _m.addAll({"$i": _l[i]});
+                  }
+                } else {
+                  _m.clear();
+                }
+                _allShop = AllShopData(shops: _m.values.toList());
+                if (_allShop.shops.isEmpty) _allShop = null;
+                setState(() {});
+              }),
+          CusText("全选", t_gray, 28),
+          SizedBox(width: Adapt.px(30)),
+          if (_m.isNotEmpty) // 删除购物车商品
+            InkWell(
+              onTap: () async {
+                CusDialog.err(context,
+                    title: "确认将这${_allShop.shops.length}个宝贝删除吗",
+                    textCancel: "我再想想", onApproval: () async {
+                  AllShopData data = await ShopKV.remove(_allShop);
+                  bool ok = await ShopKV.refresh(data);
+                  if (ok) {
+                    _refresh();
+                    CusToast.toast(context, text: "移除成功");
+                  }
+                });
+              },
+              child: CusText("删除", t_yi, 28),
             ),
+          Spacer(),
+          CusText("合计:", t_gray, 28),
+          CusText("￥${_allShop == null ? 0 : _allShop.amt}", t_yi, 28),
+          SizedBox(width: Adapt.px(30)),
+          CusRaisedBtn(
+            text: "结算${_allShop == null ? '' : '(${_allShop.counts})'}",
+            pdHor: 40,
+            borderRadius: 100,
+            backgroundColor: Color(0xFFEA6F30),
+            onPressed: () {
+              if (_m.isEmpty) {
+                CusToast.toast(context, text: "至少选择一个商品");
+              } else {
+                CusRoutes.push(
+                  context,
+                  ProductOrderPage(allShop: _allShop),
+                ).then((val) {
+                  if (val != null) _refresh();
+                });
+              }
+            },
           ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-          child: Row(
-            children: <Widget>[
-              Spacer(),
-              CusText("合计", t_gray, 28),
-              CusRaisedBtn(
-                text: "结算",
-                pdHor: 40,
-                borderRadius: 100,
-                backgroundColor: Color(0xFFEA6F30),
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _shopItem(SingleShopData e, int i) {
-    bool check = _tl.contains(e.product.id_of_es + e.color.code);
+    bool checked = _m.containsKey("$i");
     return InkWell(
-      onTap: () {
-        Debug.log("点了第几个：${i + 1}");
-        CusRoutes.push(
-          context,
-          ProductDetails(id_of_es: e.product.id_of_es),
-        ).then((val) {
-          if (val != null) _refresh();
-        });
-      },
+      onTap: () => CusRoutes.push(
+        context,
+        ProductDetails(id_of_es: e.product.id_of_es),
+      ).then((val) {
+        if (val != null) _refresh();
+      }),
       child: Card(
         color: fif_primary,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: 5),
           child: Row(
             children: <Widget>[
-              InkWell(
+              _checkItem(
+                checked: checked,
                 onTap: () {
-                  if (_tl.contains(e.product.id_of_es + e.color.code)) {
-                    _tl.remove(e.product.id_of_es + e.color.code);
-                  } else {
-                    _tl.add(e.product.id_of_es + e.color.code);
-                  }
-                  Debug.log("购物详情：${e.color.toJson()}");
+                  // 已经选中则取消，未选中则添加
+                  checked ? _m.remove("$i") : _m.addAll({"$i": e});
+                  // 点击时如果处于全选状态，则设置false
+                  if (_selectAll) _selectAll = false;
+                  // 当手动点选的和购物车长度一样时，自动开启全选
+                  if (_m.length == _l.length) _selectAll = true;
+                  _allShop = AllShopData(shops: _m.values.toList());
+                  if (_allShop.shops.isEmpty) _allShop = null;
                   setState(() {});
                 },
-                child: Container(
-                  height: 20,
-                  width: 20,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                    color: check ? Color(0xFFEA742E) : Colors.grey,
-                  ),
-                  margin: EdgeInsets.only(right: 15),
-                  child: check
-                      ? Icon(FontAwesomeIcons.check,
-                          size: 12, color: Colors.white)
-                      : Container(),
-                ),
-              ),
+              ), //  已选中商品的标识
               CusAvatar(url: e.path, rate: 20, size: 100),
               SizedBox(width: Adapt.px(Adapt.px(50))),
               Column(
@@ -171,7 +210,6 @@ class _ShopCartPageState extends State<ShopCartPage> {
                   ),
                 ],
               ),
-              Spacer(),
             ],
           ),
         ),
@@ -179,9 +217,43 @@ class _ShopCartPageState extends State<ShopCartPage> {
     );
   }
 
+  /// 是否选中的组件
+  Widget _checkItem({bool checked, VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 20,
+        width: 20,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(60),
+          color: checked ? Color(0xFFEA742E) : Colors.grey,
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: checked
+            ? Icon(FontAwesomeIcons.check, size: 12, color: Colors.white)
+            : null,
+      ),
+    );
+  }
+
+  /// 清空购物车
+  void _clearShopCart() async {
+    CusDialog.err(context, title: "确定清空购物车吗?", onApproval: () async {
+      await ShopKV.clear();
+      _m.clear();
+      _l.clear();
+      await _localData();
+      setState(() {});
+      CusToast.toast(context, text: "已清空购物车");
+    });
+  }
+
   /// 刷新数据
   void _refresh() async {
     _l.clear();
+    _m.clear();
+    _allShop = null;
+    _selectAll = false;
     await _localData();
     setState(() {});
   }

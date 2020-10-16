@@ -159,7 +159,6 @@ class _LoginPageState extends State<LoginPage> {
       try {
         var r = await ApiLogin.login(m);
         if (r != null) {
-          await KV.clear(); // 先清空之前存储的数据
           await KV.setStr(kv_jwt, r.jwt);
           await KV.setStr(kv_login, json.encode(r.toJson()));
           await setLoginInfo(r);
