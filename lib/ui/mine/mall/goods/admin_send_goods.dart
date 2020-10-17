@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
@@ -12,6 +14,7 @@ import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/mall/goods/send_good_page.dart';
+import 'package:yiapp/ui/mine/mall/product/product_detail/product_details.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -106,9 +109,9 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
     );
   }
 
-  Widget _goodsItem(ProductOrder e, int i) {
+  Widget _goodsItem(ProductOrder p, int i) {
     return InkWell(
-      onTap: () => CusRoutes.push(context, SendGoodsPage(order: e)).then((val) {
+      onTap: () => CusRoutes.push(context, SendGoodsPage(order: p)).then((val) {
         if (val != null) _refresh();
       }),
       child: Card(
@@ -121,9 +124,9 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  CusText(e.contact, t_primary, 30), // 收件人
+                  CusText(p.contact, t_primary, 30), // 收件人
                   SizedBox(width: Adapt.px(30)),
-                  CusText(e.addr.mobile, t_primary, 30), // 手机号
+                  CusText(p.addr.mobile, t_primary, 30), // 手机号
                   Spacer(),
                   CusText("$i", t_primary, 30), // 序号
                 ],
@@ -131,27 +134,33 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  e.addr.detail, // 收货地址
+                  p.addr.detail, // 收货地址
                   style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
               ),
-              ...e.items.map(
-                (e) => Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        CusText(e.name, t_gray, 30), // 商        品名称
-                        SizedBox(width: Adapt.px(30)),
-                        CusText("${e.color_code}x${e.qty}", t_gray, 30), // 商品颜色
-                        SizedBox(width: Adapt.px(30)),
-                        CusText("总价：${e.amt}", t_gray, 30), // 商品总价
-                      ],
-                    ),
-                  ],
+              ...p.items.map(
+                (m) => InkWell(
+                  onTap: () => CusRoutes.push(
+                    context,
+                    ProductDetails(id_of_es: m.product_id),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      CusText(m.name, t_gray, 30), // 商品名称
+                      SizedBox(width: Adapt.px(30)),
+                      CusText("${m.color_code}x${m.qty}", t_gray, 30), // 商品颜色
+                      SizedBox(width: Adapt.px(30)),
+                      CusText("总价：${m.amt}", t_gray, 30), // 商品总价
+                    ],
+                  ),
                 ),
               ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: CusText("合计:${p.total_amt}", t_primary, 30),
+              ), // 合计
             ],
           ),
         ),

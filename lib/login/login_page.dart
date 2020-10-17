@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/function/shopcart_func.dart';
 import 'package:yiapp/complex/provider/broker_state.dart';
 import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
@@ -167,6 +168,7 @@ class _LoginPageState extends State<LoginPage> {
           context.read<UserInfoState>().init(r.user_info);
           if (ApiState.isMaster) _fetchMaster();
           if (ApiState.isBroker) _fetchBroker();
+          ShopKV.key = "shop${ApiBase.uid}";
           Debug.log("登录成功");
         }
       } catch (e) {

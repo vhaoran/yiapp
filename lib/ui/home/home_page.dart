@@ -26,6 +26,7 @@ import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
 import 'package:yiapp/ui/worship/worship_page.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/complex/function/shopcart_func.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -130,6 +131,7 @@ class _HomePageState extends State<HomePage> {
     if (ApiState.isMaster) _fetchMaster();
     if (ApiState.isBroker) _fetchBroker();
     context.read<UserInfoState>().init(result.user_info);
+    ShopKV.key = "shop${ApiBase.uid}";
     ApiState.isGuest = !CusRegExp.phone(result.user_info.user_code);
   }
 

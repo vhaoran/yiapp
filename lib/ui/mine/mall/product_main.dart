@@ -8,6 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/mine/mall/goods/admin_send_goods.dart';
 import 'package:yiapp/ui/mine/mall/goods/shop_cart.dart';
 import 'package:yiapp/ui/mine/mall/goods/user_await_goods.dart';
+import 'package:yiapp/ui/mine/mall/goods/user_completed_goods.dart';
 import 'package:yiapp/ui/mine/mall/goods/user_wait_pay.dart';
 import 'package:yiapp/ui/mine/mall/product/product_store.dart';
 import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
@@ -56,7 +57,7 @@ class ProductMainPage extends StatelessWidget {
           ),
           NormalBox(
             title: "已完成订单",
-            onTap: () => CusRoutes.push(context, ProductType()),
+            onTap: () => CusRoutes.push(context, CompletedGoods()),
           ),
 //        if (ApiState.isAdmin)
           NormalBox(

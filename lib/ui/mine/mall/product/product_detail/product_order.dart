@@ -11,6 +11,7 @@ import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/orders/cus_order_data.dart';
+import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';
 
@@ -43,38 +44,58 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
   void _doBuy() async {
     CusLoading(context);
     Navigator.pop(context);
-    bool success = false;
-    for (var i = 0; i < _l.length; i++) {
-      SingleShopData order = _l[i];
-      var m = {
-        "items": [
-          {
-            "product_id": order.product.id_of_es,
-            "name": order.product.name,
-            "color_code": order.color.code,
-            "price": order.color.price, // 单价
-            "qty": order.count, // 购买个数
-          }
-        ],
-        "contact": _addr.contact_person, // 联系人
-        "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
-      };
-      try {
-        var res = await ApiProductOrder.productOrderAdd(m);
-        if (res != null) success = true;
-      } catch (e) {
-        success = false;
-        Debug.logError("提交订单id:${order.product.id_of_es}出现异常：$e");
+    List<Map> maps = [];
+    _l.forEach((e) {
+      maps.add({
+        "product_id": e.product.id_of_es,
+        "name": e.product.name,
+        "color_code": e.color.code,
+        "price": e.color.price, // 单价
+        "qty": e.count, // 购买个数
+      });
+    });
+    var m = {
+      "items": maps,
+      "contact": _addr.contact_person, // 联系人
+      "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
+    };
+    try {
+      var res = await ApiProductOrder.productOrderAdd(m);
+      if (res != null) {
+        AllShopData data = await ShopKV.remove(widget.allShop);
+        bool ok = await ShopKV.refresh(data);
+        if (ok) {
+          Navigator.of(context).pop("");
+          CusToast.toast(context, text: "订单提交成功");
+        }
       }
+    } catch (e) {
+      Debug.logError("提交订单出现异常：$e");
     }
-    if (success) {
-      AllShopData data = await ShopKV.remove(widget.allShop);
-      bool ok = await ShopKV.refresh(data);
-      if (ok) {
-        Navigator.of(context).pop("");
-        CusToast.toast(context, text: "订单提交成功");
-      }
-    }
+
+//    for (var i = 0; i < _l.length; i++) {
+//      SingleShopData order = _l[i];
+//      var m = {
+//        "items": [
+//          {
+//            "product_id": order.product.id_of_es,
+//            "name": order.product.name,
+//            "color_code": order.color.code,
+//            "price": order.color.price, // 单价
+//            "qty": order.count, // 购买个数
+//          }
+//        ],
+//        "contact": _addr.contact_person, // 联系人
+//        "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
+//      };
+//      try {
+//        var res = await ApiProductOrder.productOrderAdd(m);
+//        if (res != null) success = true;
+//      } catch (e) {
+//        success = false;
+//        Debug.logError("提交订单id:${order.product.id_of_es}出现异常：$e");
+//      }
+//    }
   }
 
   @override

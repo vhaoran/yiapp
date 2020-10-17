@@ -37,7 +37,7 @@ class ProductOrder {
           json['Addr'] != null ? ProductOrderAddr.fromJson(json['Addr']) : null,
       bill_no: json['bill_no'],
       contact: json['contact'],
-      createDate: json['createDate'],
+      createDate: json['CreateDate'],
       create_time_int: json['create_time_int'],
       deliver: json['deliver'],
       delivery_time: json['delivery_time'],
@@ -58,7 +58,7 @@ class ProductOrder {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['bill_no'] = this.bill_no;
     data['contact'] = this.contact;
-    data['createDate'] = this.createDate;
+    data['CreateDate'] = this.createDate;
     data['create_time_int'] = this.create_time_int;
     data['deliver'] = this.deliver;
     data['delivery_time'] = this.delivery_time;

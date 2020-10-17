@@ -153,45 +153,5 @@ class _ProductStoreState extends State<ProductStore> {
         ),
       ],
     );
-//    return GridView.count(
-//      shrinkWrap: true,
-//      // 解决 GridView 滑动父级 Listview 无法滑动
-//      physics: NeverScrollableScrollPhysics(),
-//      crossAxisCount: 2,
-//      mainAxisSpacing: 5,
-//      crossAxisSpacing: 5,
-//      children: <Widget>[
-//        ..._l.map(
-//          (e) => ProductCover(
-//            product: e,
-//            // 移除商品回调
-//            onRemove: (val) {
-//              if (val == null) return;
-//              _l.removeWhere((e) => e.id_of_es == val);
-//              setState(() {});
-//            },
-//            onChange: (val) async {
-//              try {
-//                Product res = await ApiProduct.productGet(val);
-//                if (res != null) {
-//                  Product p = _l.singleWhere((e) => e.id_of_es == res.id_of_es);
-//                  _l[_l.indexOf(p)] = res;
-//                  setState(() {});
-//                }
-//              } catch (e) {
-//                Debug.logError("回调中修改商品时，根据id获取商品出现异常：$e");
-//              }
-//            },
-//          ),
-//        )
-//      ],
-//    );
-  }
-
-  void _refresh() async {
-    _pageNo = _rowsCount = 0;
-    _l.clear();
-    await _fetch();
-    setState(() {});
   }
 }

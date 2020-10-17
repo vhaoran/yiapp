@@ -5,6 +5,7 @@ import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
+import 'package:yiapp/model/orders/productOrder.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -33,3 +34,4 @@ typedef FnColorPrices = void Function(List<ProductColor>); // 添加商品颜色
 typedef FnArticles = void Function(List<ArticleResult>); // 文章
 typedef FnColorPrice = void Function(ProductColor); // 选择商品的颜色和价格
 typedef FnAddr = void Function(AddressResult); // 选择收货地址后的回调
+typedef FnProOrder = void Function(ProductOrder); // 返回订单详情
