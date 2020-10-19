@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/complex/class/yi_date_time.dart';
+import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';

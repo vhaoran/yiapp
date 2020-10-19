@@ -128,7 +128,7 @@ class CusYiBtn extends StatelessWidget {
     return CusRaisedBtn(
       backgroundColor: t_primary,
       textColor: Colors.black,
-      fontSize: 20,
+      fontSize: 24,
       text: btnName,
       borderRadius: 50,
       pdHor: 20,

@@ -60,6 +60,7 @@ class _QuestionPageState extends State<QuestionPage>
             (i) => Text(_tabs[i], style: TextStyle(fontSize: Adapt.px(32))),
           ),
           onTap: (index) {
+            // 在这里设置悬赏帖还是闪断帖
             ApiState.isFlash = index == 1 ? true : false;
           },
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/class/yi_date_time.dart';
+import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -37,7 +37,6 @@ class AskQuestionPage extends StatefulWidget {
   final List<int> l; // 六爻编码
   final YiDateTime guaTime;
   final String user_nick; // 卦主姓名
-  final bool isFlash; // 是否闪断帖
 
   AskQuestionPage({
     this.content_type,
@@ -45,7 +44,6 @@ class AskQuestionPage extends StatefulWidget {
     this.l,
     this.guaTime,
     this.user_nick,
-    this.isFlash: false,
     Key key,
   }) : super(key: key);
 

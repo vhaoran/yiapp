@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/yi_date_time.dart';
+import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/function/swicht_case.dart';
 import 'package:yiapp/complex/tools/adapt.dart';

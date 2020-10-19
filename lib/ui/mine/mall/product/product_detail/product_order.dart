@@ -10,7 +10,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
-import 'package:yiapp/model/orders/cus_order_data.dart';
+import 'package:yiapp/complex/model/cus_order_data.dart';
 import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';

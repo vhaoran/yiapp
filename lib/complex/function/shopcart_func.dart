@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:yiapp/model/orders/cus_order_data.dart';
+import 'package:yiapp/complex/model/cus_order_data.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 

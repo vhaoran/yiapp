@@ -11,6 +11,8 @@ import 'package:yiapp/complex/widgets/master/cus_fivestar.dart';
 import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/master/user_comment.dart';
+import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/service/api/api-master.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -21,18 +23,9 @@ import 'package:yiapp/complex/widgets/master/user_comment.dart';
 const double _fontSize = 24; // 个签、订单数、评论等字体大小
 
 class MasterHomePage extends StatefulWidget {
-  final String name;
-  final String status; // 状态 在线/离线
-  final String signature; // 个性签名
-  final String defaultImage; // 默认图片（测试时用的，有数据时可以删除）
+  final int master_id;
 
-  MasterHomePage({
-    this.name,
-    this.status,
-    this.signature,
-    this.defaultImage,
-    Key key,
-  }) : super(key: key);
+  MasterHomePage({this.master_id, Key key}) : super(key: key);
 
   @override
   _MasterHomePageState createState() => _MasterHomePageState();
@@ -40,6 +33,7 @@ class MasterHomePage extends StatefulWidget {
 
 class _MasterHomePageState extends State<MasterHomePage> {
   var _future;
+  var _m = MasterInfo();
 
   @override
   void initState() {
@@ -48,19 +42,27 @@ class _MasterHomePageState extends State<MasterHomePage> {
     super.initState();
   }
 
-  _fetch() async {}
+  _fetch() async {
+    try {
+      var res = await ApiMaster.masterInfoGet(widget.master_id);
+      if (res != null) _m = res;
+    } catch (e) {
+      Debug.logError("获取大师信息出现异常：$e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          future: _future,
-          builder: (context, snap) {
-            return _bodyCtr();
-            if (!snapDone(snap)) {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+        future: _future,
+        builder: (context, snap) {
+          if (!snapDone(snap)) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return _bodyCtr();
+        },
+      ),
       backgroundColor: primary,
     );
   }
@@ -76,7 +78,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
         Padding(
           padding: EdgeInsets.all(Adapt.px(15)),
           child: Text(
-            widget.signature,
+            _m.brief,
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
             style: TextStyle(color: t_gray, fontSize: Adapt.px(_fontSize)),
@@ -123,11 +125,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
           // 头像
           Align(
             alignment: Alignment(-0.95, 1.6),
-            child: CusAvatar(
-              url: "",
-              borderRadius: 100,
-              defaultImage: widget.defaultImage,
-            ),
+            child: CusAvatar(url: "", borderRadius: 100),
           ),
         ],
       ),
@@ -146,7 +144,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
               padding:
                   EdgeInsets.only(left: Adapt.px(180), right: Adapt.px(10)),
               child: Text(
-                widget.name, // 大师姓名
+                _m.nick, // 大师姓名
                 style: TextStyle(
                   color: t_primary,
                   fontSize: Adapt.px(30),
@@ -154,14 +152,14 @@ class _MasterHomePageState extends State<MasterHomePage> {
                 ),
               ),
             ),
-            Text(
-              widget.status, // 大师状态
-              style: TextStyle(
-                color: widget.status.contains("在线") ? t_green : t_red,
-                fontSize: Adapt.px(24),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+//            Text(
+//              widget.status, // 大师状态
+//              style: TextStyle(
+//                color: widget.status.contains("在线") ? t_green : t_red,
+//                fontSize: Adapt.px(24),
+//                fontWeight: FontWeight.w500,
+//              ),
+//            ),
           ],
         ),
         // 关注和立即约聊按钮
@@ -187,8 +185,8 @@ class _MasterHomePageState extends State<MasterHomePage> {
                 backgroundColor: t_primary,
                 textColor: Colors.black,
                 fontSize: 26,
-                pdHor: 10,
-                pdVer: 3,
+                pdHor: 20,
+                pdVer: 4,
                 borderRadius: 20,
                 onPressed: () {},
               ),

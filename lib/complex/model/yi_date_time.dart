@@ -1,4 +1,4 @@
-import 'package:yiapp/complex/class/old_time.dart';
+import 'package:yiapp/complex/model/old_time.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 
 // ------------------------------------------------------
