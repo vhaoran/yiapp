@@ -5,9 +5,10 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/broker/broker_apply_his.dart';
-import 'package:yiapp/ui/master/master_apply_his.dart';
-import 'package:yiapp/ui/master/master_enable.dart';
+import 'package:yiapp/ui/back_stage/admin_master_orders.dart';
+import 'package:yiapp/ui/back_stage/broker_apply_his.dart';
+import 'package:yiapp/ui/back_stage/master_apply_his.dart';
+import 'package:yiapp/ui/back_stage/master_enable.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -40,6 +41,10 @@ class BackstageManage extends StatelessWidget {
         NormalBox(
           title: "启用停用大师",
           onTap: () => CusRoutes.push(context, MasterEnable()),
+        ),
+        NormalBox(
+          title: "大师未完成订单",
+          onTap: () => CusRoutes.push(context, AdminMasterOrders()),
         ),
       ],
     );

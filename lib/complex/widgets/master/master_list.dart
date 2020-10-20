@@ -4,7 +4,6 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -13,7 +12,6 @@ import 'package:yiapp/complex/widgets/master/master_base_info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-master.dart';
-import '../../../ui/master/master_homepage.dart';
 
 // ------------------------------------------------------
 // author：suxing

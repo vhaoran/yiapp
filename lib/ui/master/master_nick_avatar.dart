@@ -51,7 +51,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
         Align(
           alignment: Alignment(0, 0.75),
           child: InkWell(
-            child: CusText(widget.m.nick ?? "", t_primary, 28),
+            child: CusText(widget.m.nick ?? "", t_primary, 30),
             onTap: ApiState.isMaster
                 ? () => CusRoutes.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))

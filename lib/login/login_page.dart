@@ -220,6 +220,7 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 如果是大师，获取大师基本资料
   _fetchMaster() async {
+    Debug.log("是大师");
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
       if (res != null) context.read<MasterInfoState>().init(res);
@@ -230,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 如果是代理，获取代理基本资料
   _fetchBroker() async {
+    Debug.log("是代理");
     try {
       BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
       if (res != null) context.read<BrokerInfoState>().init(res);

@@ -21,9 +21,10 @@ import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/broker/broker_info_page.dart';
-import 'package:yiapp/ui/master/backstage_manage.dart';
+import 'package:yiapp/ui/back_stage/backstage_manage.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
+import 'package:yiapp/ui/master/master_tmp_manag.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/mall/product_main.dart';
@@ -71,11 +72,11 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
-//        if (!ApiState.isGuest)
-        NormalBox(
-          title: "我的订单",
-          onTap: () => CusRoutes.push(context, AllMyPostPage()),
-        ),
+        if (!ApiState.isGuest)
+          NormalBox(
+            title: "我的订单",
+            onTap: () => CusRoutes.push(context, AllMyPostPage()),
+          ),
         NormalBox(
           title: "商城",
           onTap: () => CusRoutes.push(context, ProductMainPage()),
@@ -84,15 +85,19 @@ class _MinePageState extends State<MinePage>
           title: "账户与安全",
           onTap: () => CusRoutes.push(context, AccountSafePage()),
         ),
-//        if (!ApiState.isMaster)
+        if (!ApiState.isMaster)
+          NormalBox(
+            title: "申请大师",
+            onTap: () => CusRoutes.push(context, ApplyMasterPage()),
+          ),
+        if (ApiState.isMaster)
+          NormalBox(
+            title: "大师信息",
+            onTap: () => CusRoutes.push(context, MasterInfoPage()),
+          ),
         NormalBox(
-          title: "申请大师",
-          onTap: () => CusRoutes.push(context, ApplyMasterPage()),
-        ),
-//        if (ApiState.isMaster)
-        NormalBox(
-          title: "大师信息",
-          onTap: () => CusRoutes.push(context, MasterInfoPage()),
+          title: "大师功能",
+          onTap: () => CusRoutes.push(context, MasterTmpManage()),
         ),
 //        if (!ApiState.isAdmin)
         NormalBox(
@@ -104,11 +109,11 @@ class _MinePageState extends State<MinePage>
             title: "代理信息",
             onTap: () => CusRoutes.push(context, BrokerInfoPage()),
           ),
-//        if (ApiState.isAdmin)
-        NormalBox(
-          title: "后台管理",
-          onTap: () => CusRoutes.push(context, BackstageManage()),
-        ),
+        if (ApiState.isAdmin)
+          NormalBox(
+            title: "后台管理",
+            onTap: () => CusRoutes.push(context, BackstageManage()),
+          ),
         NormalBox(
           title: "绑定代理",
           onTap: () => CusRoutes.push(context, BindSerCodePage()),

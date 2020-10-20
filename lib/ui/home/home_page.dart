@@ -137,6 +137,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 如果是大师，获取大师基本资料
   _fetchMaster() async {
+    Debug.log("是大师");
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
       if (res != null) {
@@ -149,6 +150,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 如果是代理，获取代理基本资料
   _fetchBroker() async {
+    Debug.log("是管理员");
     try {
       BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
       if (res != null) context.read<BrokerInfoState>().init(res);

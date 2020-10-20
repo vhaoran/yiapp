@@ -21,7 +21,7 @@ class CusNumData extends StatelessWidget {
   CusNumData({
     @required this.titles,
     @required this.subtitles,
-    this.titleSize: 32,
+    this.titleSize: 28,
     this.subSize: 24,
     this.paddingV: 5,
     this.backGroundColor: fif_primary,

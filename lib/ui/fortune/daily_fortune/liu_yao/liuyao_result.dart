@@ -128,7 +128,6 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             backgroundColor: Color(0xFFE8493E),
             height: 90,
             onPressed: () async {
-              print("_codes:$_codes");
               CusLiuYaoData data = CusLiuYaoData(res: _res, codes: _codes);
               String str = json.encode(data.toJson());
               bool ok = await KV.setStr(kv_liuyao, str);

@@ -1,6 +1,6 @@
 ### yiapp 功能分类
 
-- admin 后台管理员
+- back_stage 后台管理
 - broker 代理
 - chat 聊天
 - fortune 运势

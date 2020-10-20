@@ -34,6 +34,7 @@ class MasterHomePage extends StatefulWidget {
 class _MasterHomePageState extends State<MasterHomePage> {
   var _future;
   var _m = MasterInfo();
+  List<String> _tabs = ["主页", "服务", "订单"];
 
   @override
   void initState() {
@@ -53,17 +54,25 @@ class _MasterHomePageState extends State<MasterHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snap) {
-          if (!snapDone(snap)) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return _bodyCtr();
-        },
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        body: FutureBuilder(
+          future: _future,
+          builder: (context, snap) {
+            if (!snapDone(snap)) {
+              return Center(child: CircularProgressIndicator());
+            }
+//            return Column(
+//              children: <Widget>[
+//                _bodyCtr(),
+//              ],
+//            );
+            return _bodyCtr();
+          },
+        ),
+        backgroundColor: primary,
       ),
-      backgroundColor: primary,
     );
   }
 

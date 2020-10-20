@@ -10,9 +10,11 @@ import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -94,6 +96,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
           ),
           CusText("排盘结果", t_gray, 30),
           LiuYaoSymRes(res: _data.res, codes: _data.codes),
+          CusDivider(),
           CusText("问题描述", t_gray, 30),
           SizedBox(height: Adapt.px(20)),
           CusRectField(
@@ -120,6 +123,8 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
       _err = _contentCtrl.text.isEmpty ? "提交的内容不能为空" : null;
     });
     if (_err != null) return;
+    CusLoading(context);
+    Navigator.pop(context);
     LiuYaoRiqi riqi = _data.res.riqi;
     var m = {
       "master_id": widget.master_id,
@@ -130,6 +135,8 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         "month": riqi.month,
         "day": riqi.day,
         "hour": riqi.hour,
+        "minute": riqi.minute,
+        "is_male": riqi.is_male,
         "yao_code": _data.strCode
       },
     };
@@ -141,7 +148,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         CusRoutes.pushReplacement(context, HomePage());
       }
     } catch (e) {
-      Debug.logError("出现异常：$e");
+      Debug.logError("六爻下大师单出现异常：$e");
     }
   }
 

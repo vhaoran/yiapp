@@ -44,7 +44,7 @@ class _MasterServicePageState extends State<MasterServicePage>
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      Debug.logError("获取大师项目列表出现异常：$e");
+      Debug.logError("获取大师项目列表出现异常，是否暂未添加：$e");
     }
   }
 
@@ -57,7 +57,16 @@ class _MasterServicePageState extends State<MasterServicePage>
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: CusText("暂未添加项目", t_gray, 30));
+          return InkWell(
+            onTap: _doFn,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CusText("暂未添加项目，", t_gray, 30),
+                CusText("现在添加?", Colors.lightBlue, 30)
+              ],
+            ),
+          );
         }
         return _co();
       },
@@ -75,21 +84,19 @@ class _MasterServicePageState extends State<MasterServicePage>
               (i) => CusService(
                 m: _l[i],
                 onRm: _doRm,
-                onChange: (m) =>
-                    CusRoutes.push(context, AddChServicePage(res: m)).then(
-                  (val) => _refresh(),
-                ),
+                onChange: (m) => _doFn(m: m),
               ),
             ),
           ),
         ),
-        CusRaisedBtn(
-          text: "添加服务",
-          minWidth: double.infinity,
-          backgroundColor: fif_primary,
-          pdVer: 20,
-          onPressed: () => CusRoutes.push(context, AddChServicePage()).then(
-            (val) => _refresh(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 0),
+          child: CusRaisedBtn(
+            text: "添加服务",
+            minWidth: double.infinity,
+            backgroundColor: fif_primary,
+            pdVer: 20,
+            onPressed: _doFn,
           ),
         ),
       ],
@@ -117,7 +124,15 @@ class _MasterServicePageState extends State<MasterServicePage>
     );
   }
 
+  /// 跳转回本页面的回调
+  void _doFn({MasterCate m}) {
+    CusRoutes.push(context, AddChServicePage(res: m)).then((val) {
+      if (val != null) _refresh();
+    });
+  }
+
   void _refresh() async {
+    _l.clear();
     await _fetch();
     setState(() {});
   }

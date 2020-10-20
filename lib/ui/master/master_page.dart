@@ -39,18 +39,21 @@ class _MasterPageState extends State<MasterPage>
   Widget _co() {
     return Column(
       children: <Widget>[
-        TabBar(
-          indicatorWeight: Adapt.px(6),
-          indicatorSize: TabBarIndicatorSize.label,
-          indicatorColor: t_primary,
-          labelPadding: EdgeInsets.all(Adapt.px(8)),
-          labelColor: t_primary,
-          unselectedLabelColor: t_gray,
-          tabs: List.generate(
-            _tabs.length,
-            (index) => Text(
-              _tabs[index],
-              style: TextStyle(fontSize: Adapt.px(28)),
+        Container(
+          color: ter_primary,
+          child: TabBar(
+            indicatorWeight: Adapt.px(6),
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorColor: t_primary,
+            labelPadding: EdgeInsets.all(Adapt.px(8)),
+            labelColor: t_primary,
+            unselectedLabelColor: t_gray,
+            tabs: List.generate(
+              _tabs.length,
+              (index) => Text(
+                _tabs[index],
+                style: TextStyle(fontSize: Adapt.px(28)),
+              ),
             ),
           ),
         ),

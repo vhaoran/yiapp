@@ -57,7 +57,7 @@ class LiuYaoSymRes extends StatelessWidget {
               ],
             ),
           ),
-          CusDivider(),
+//          CusDivider(),
         ],
       ),
     );

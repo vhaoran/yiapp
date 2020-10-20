@@ -71,7 +71,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
       MasterCate res = await ApiMaster.masterItemAdd(m);
       if (res != null) {
         CusToast.toast(context, text: "添加成功");
-        Navigator.pop(context);
+        Navigator.of(context).pop("");
       }
     } catch (e) {
       Debug.logError("添加大师服务出现异常：$e");
@@ -93,7 +93,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
       bool ok = await ApiMaster.masterItemCh(m);
       if (ok) {
         CusToast.toast(context, text: "修改成功");
-        Navigator.pop(context);
+        Navigator.of(context).pop("");
       }
     } catch (e) {
       Debug.logError("修改大师服务出现异常：$e");

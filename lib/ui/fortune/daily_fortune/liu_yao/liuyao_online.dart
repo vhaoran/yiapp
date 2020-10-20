@@ -54,6 +54,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   Widget build(BuildContext context) {
     _hadShaken = widget.l.length == 6 ? true : false;
     _sex = context.watch<UserInfoState>()?.userInfo?.sex ?? -1;
+    Debug.log("用户性别：$_sex");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
       child: Column(
