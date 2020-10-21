@@ -83,6 +83,7 @@ class _MasterHomePageState extends State<MasterHomePage> {
       children: <Widget>[
         _masterImage(), // 大师背景墙、头像
         _masterStatus(), // 大师姓名、状态、关注大师、立即约聊
+        Container(color: Colors.red, height: 20),
         // 大师个性签名
         Padding(
           padding: EdgeInsets.all(Adapt.px(15)),

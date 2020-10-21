@@ -15,7 +15,7 @@ import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/master/master_nick_avatar.dart';
 import 'package:yiapp/ui/master/master_service.dart';
-import 'master_comple_orders.dart';
+import 'master_complete_orders.dart';
 import 'master_loops.dart';
 
 // ------------------------------------------------------
