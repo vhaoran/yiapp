@@ -18,7 +18,9 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // ------------------------------------------------------
 
 class MasterCompletedOrders extends StatefulWidget {
-  MasterCompletedOrders({Key key}) : super(key: key);
+  final int master_id;
+
+  MasterCompletedOrders({this.master_id, Key key}) : super(key: key);
 
   @override
   _MasterCompletedOrdersState createState() => _MasterCompletedOrdersState();
@@ -46,6 +48,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
       "page_no": _pageNo,
       "rows_per_page": _rows_per_page,
       "sort": {"create_date": -1},
+      "where": {"master_id": widget.master_id},
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderHisPage(m);

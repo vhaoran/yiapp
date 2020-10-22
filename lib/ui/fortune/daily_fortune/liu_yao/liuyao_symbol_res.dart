@@ -29,7 +29,6 @@ class LiuYaoSymRes extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CusDivider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -57,7 +56,6 @@ class LiuYaoSymRes extends StatelessWidget {
               ],
             ),
           ),
-//          CusDivider(),
         ],
       ),
     );

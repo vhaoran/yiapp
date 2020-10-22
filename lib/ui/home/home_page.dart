@@ -21,7 +21,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
 import 'package:yiapp/ui/home/chose_ask_type.dart';
 import 'package:yiapp/ui/home/navigation_type.dart';
-import 'package:yiapp/ui/master/master_page.dart';
+import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
 import 'package:yiapp/ui/worship/worship_page.dart';
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
       FortunePage(),
       WorshipPage(),
       QuestionPage(),
-      MasterPage(),
+      MasterListPage(),
       MinePage(),
     ];
 //    _prepareBusEvent(); // 初始化监听

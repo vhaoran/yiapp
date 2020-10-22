@@ -88,16 +88,17 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
             padding: EdgeInsets.symmetric(vertical: Adapt.px(20)),
             child: Row(
               children: <Widget>[
-                CusText("服务类型", t_gray, 30),
+                CusText("服务类型", t_primary, 30),
                 SizedBox(width: Adapt.px(40)),
-                CusText("六爻排盘", t_primary, 30),
+                CusText("六爻排盘", t_gray, 30),
               ],
             ),
           ),
-          CusText("排盘结果", t_gray, 30),
+          CusText("排盘结果", t_primary, 30),
+          CusDivider(),
           LiuYaoSymRes(res: _data.res, codes: _data.codes),
           CusDivider(),
-          CusText("问题描述", t_gray, 30),
+          CusText("问题描述", t_primary, 30),
           SizedBox(height: Adapt.px(20)),
           CusRectField(
             controller: _contentCtrl,

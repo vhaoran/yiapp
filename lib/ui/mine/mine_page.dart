@@ -24,7 +24,6 @@ import 'package:yiapp/ui/broker/broker_info_page.dart';
 import 'package:yiapp/ui/back_stage/backstage_manage.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
-import 'package:yiapp/ui/master/master_tmp_manag.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/mall/product_main.dart';
@@ -95,10 +94,6 @@ class _MinePageState extends State<MinePage>
             title: "大师信息",
             onTap: () => CusRoutes.push(context, MasterInfoPage()),
           ),
-        NormalBox(
-          title: "大师功能",
-          onTap: () => CusRoutes.push(context, MasterTmpManage()),
-        ),
 //        if (!ApiState.isAdmin)
         NormalBox(
           title: "申请代理",

@@ -11,6 +11,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
+import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -132,9 +133,9 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
             _buildSiZhu(),
           if (widget.barName.contains("合婚"))
             _buildHeHun(),
-          SizedBox(height: 10),
-          CusText("问题描述", t_primary, 30),
           _dividerCtr(),
+          CusText("问题描述", t_primary, 30),
+          SizedBox(height: 10),
           Text(
             _order.comment,
             style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
@@ -154,12 +155,23 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 大师以及下单人的头像和昵称
   List<Widget> _avatarNick() {
+    LiuYaoRiqi t = _liuYaoRes.riqi;
     return <Widget>[
+      Row(
+        children: <Widget>[
+          CusText("时间", t_primary, 30),
+          SizedBox(width: Adapt.px(30)),
+          CusText("${t.year}年${t.month}月${t.day}日${t.hour}时${t.minute}分",
+              t_gray, 30),
+        ],
+      ),
+      _dividerCtr(),
       // 大师不用看到自己的个人信息
       if (_order.master_id != ApiBase.uid) ...[
         // 大师信息
         CusText("大师信息", t_primary, 30),
-        _dividerCtr(),
+        SizedBox(height: 10),
+//        _dividerCtr(),
         Row(
           children: <Widget>[
             CusAvatar(url: _order.master_icon_ref, rate: 20), // 大师头像
@@ -167,12 +179,12 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
             CusText(_order.master_nick_ref, t_gray, 28), // 大师昵称
           ],
         ),
+        _dividerCtr(),
       ],
       // 下单人不用看到自己的信息
       if (_order.uid != ApiBase.uid) ...[
-        SizedBox(height: 10),
         CusText("下单人信息", t_primary, 30),
-        _dividerCtr(),
+        SizedBox(height: 10),
         Row(
           children: <Widget>[
             CusAvatar(url: _order.icon_ref, rate: 20), // 下单人头像
@@ -180,6 +192,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
             CusText(_order.nick_ref, t_gray, 28), // 下单人昵称
           ],
         ),
+        _dividerCtr(),
       ],
     ];
   }
@@ -189,8 +202,8 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 30),
         CusText("六爻排盘结果", t_primary, 30),
+        SizedBox(height: 15),
         LiuYaoSymRes(res: _liuYaoRes, codes: _codes),
       ],
     );

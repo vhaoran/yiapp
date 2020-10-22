@@ -13,13 +13,13 @@ import '../../complex/widgets/master/master_list.dart';
 // usage ：底部导航栏 - 大师页面
 // ------------------------------------------------------
 
-class MasterPage extends StatefulWidget {
-  MasterPage({Key key}) : super(key: key);
+class MasterListPage extends StatefulWidget {
+  MasterListPage({Key key}) : super(key: key);
   @override
-  _MasterPageState createState() => _MasterPageState();
+  _MasterListPageState createState() => _MasterListPageState();
 }
 
-class _MasterPageState extends State<MasterPage>
+class _MasterListPageState extends State<MasterListPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final List<String> _tabs = ["推荐榜", "好评榜", "资深榜", "订单榜"];
 

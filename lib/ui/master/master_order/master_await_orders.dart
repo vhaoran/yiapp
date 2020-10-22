@@ -66,11 +66,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "订单详情"),
-      body: _buildFb(),
-      backgroundColor: primary,
-    );
+    return _buildFb();
   }
 
   Widget _buildFb() {

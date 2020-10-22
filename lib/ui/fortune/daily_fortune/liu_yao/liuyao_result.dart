@@ -14,6 +14,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -88,8 +89,10 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
                 "${riqi.nian_gan}${riqi.nian_zhi}  ${riqi.yue_gan}${riqi.yue_zhi}"
                     "  ${riqi.ri_gan}${riqi.ri_zhi}  ${riqi.shi_gan}${riqi.shi_zhi}",
               ),
+              CusDivider(),
               // 卦象
               LiuYaoSymRes(res: _res, codes: _codes),
+              CusDivider(),
             ],
           ),
         ),
