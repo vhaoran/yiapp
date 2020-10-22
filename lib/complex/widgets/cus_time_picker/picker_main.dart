@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
@@ -104,7 +105,11 @@ class _PickerViewState extends State<PickerView> {
     int day = _dayIndex + 1;
     // time 是当前选择的阳历时间
     DateTime time = DateTime(year, month, day, _hourIndex, _minuteIndex);
+    Debug.log("time:${time}");
     Lunar lunar = Lunar.fromDate(time);
+    print(">>>是否阴历：$_isLunar");
+    Debug.log("lunmonth:${lunar.month}");
+    Debug.log("moustr:${_fnSelectMonth(_monthIndex)}");
     YiDateTime yiDt = YiDateTime(
       year: year,
       month: _isLunar ? lunar.month : month, // 根据阴阳历选择月
@@ -117,6 +122,7 @@ class _PickerViewState extends State<PickerView> {
       hourStr: _isZhouYi ? c_old_times[_hourIndex].substring(14) : null,
     );
     YiDateTime res = yiDt.fromPickMode(widget.pickMode);
+    print(">>>res.tojson:${res.toJson()}");
     widget.onConfirm(res);
     Navigator.pop(context);
   }

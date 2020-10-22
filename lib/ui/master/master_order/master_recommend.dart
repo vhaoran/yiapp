@@ -3,6 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
@@ -13,9 +14,11 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/master/master_base_info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/ui/master/master_order/meet_liuyao.dart';
+import 'package:yiapp/ui/master/master_order/meet_sizhu.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,7 +27,16 @@ import 'package:yiapp/ui/master/master_order/meet_liuyao.dart';
 // ------------------------------------------------------
 
 class MasterRecommend extends StatefulWidget {
-  MasterRecommend({Key key}) : super(key: key);
+  final int type;
+  final YiOrderSiZhu siZhu;
+  final String timeStr;
+
+  MasterRecommend({
+    this.type,
+    this.siZhu,
+    this.timeStr,
+    Key key,
+  }) : super(key: key);
 
   @override
   _MasterRecommendState createState() => _MasterRecommendState();
@@ -102,10 +114,7 @@ class _MasterRecommendState extends State<MasterRecommend> {
                 children: <Widget>[
                   MasterCover(
                     info: e,
-                    onPressed: () => CusRoutes.push(
-                      context,
-                      MeetLiuyaoPage(master_id: e.uid),
-                    ),
+                    onPressed: () => _pushPage(e),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 10),
@@ -122,6 +131,30 @@ class _MasterRecommendState extends State<MasterRecommend> {
         ),
       ),
     );
+  }
+
+  /// 根据类型跳转路由
+  void _pushPage(MasterInfo e) {
+    switch (widget.type) {
+      case post_liuyao:
+        CusRoutes.push(
+          context,
+          MeetLiuyaoPage(master_id: e.uid),
+        );
+        break;
+      case post_sizhu:
+        CusRoutes.push(
+          context,
+          MeetSiZhuPage(
+            master_id: e.uid,
+            siZhu: widget.siZhu,
+            timeStr: widget.timeStr,
+          ),
+        );
+        break;
+      default:
+        break;
+    }
   }
 
   /// 刷新数据

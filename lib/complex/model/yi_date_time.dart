@@ -58,6 +58,16 @@ class YiDateTime {
     return dt;
   }
 
+  String yiTimeShow(YiDateTime t, bool isLunar) {
+    if (t != null) {
+      if (isLunar) {
+        return "${t.year}年${t.monthStr}${t.dayStr} ${t.hourStr}";
+      }
+      return "${t.year}-${t.month}-${t.day}- ${t.hourStr}";
+    }
+    return "转换YiDateTime为字符串出错";
+  }
+
   /// 根据 PickMode 给不同的数据，方便看实际需求参数
   /// 也可不用判断，只是看数据比较乱
   YiDateTime fromPickMode(PickerMode mode) {

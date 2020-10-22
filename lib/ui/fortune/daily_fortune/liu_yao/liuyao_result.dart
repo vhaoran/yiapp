@@ -135,7 +135,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
               String str = json.encode(data.toJson());
               bool ok = await KV.setStr(kv_liuyao, str);
               if (ok) {
-                CusRoutes.push(context, MasterRecommend());
+                CusRoutes.push(context, MasterRecommend(type: post_liuyao));
               }
             },
           ),
