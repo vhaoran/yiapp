@@ -5,7 +5,6 @@ import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/master/master_order_cover.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
@@ -25,7 +24,8 @@ class MasterAwaitOrders extends StatefulWidget {
   _MasterAwaitOrdersState createState() => _MasterAwaitOrdersState();
 }
 
-class _MasterAwaitOrdersState extends State<MasterAwaitOrders> {
+class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
+    with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
@@ -104,4 +104,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders> {
     await _fetch();
     setState(() {});
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

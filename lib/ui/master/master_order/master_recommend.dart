@@ -14,9 +14,11 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/master/master_base_info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-master.dart';
+import 'package:yiapp/ui/master/master_order/meet_hehun.dart';
 import 'package:yiapp/ui/master/master_order/meet_liuyao.dart';
 import 'package:yiapp/ui/master/master_order/meet_sizhu.dart';
 
@@ -28,13 +30,20 @@ import 'package:yiapp/ui/master/master_order/meet_sizhu.dart';
 
 class MasterRecommend extends StatefulWidget {
   final int type;
-  final YiOrderSiZhu siZhu;
-  final String timeStr;
+  final YiOrderSiZhu siZhu; // 四柱结果
+  final YiOrderHeHun heHun; // 合婚结果
+  // 之所以传递时间字符串是不需要再由日期转换，也不用区分阴阳历
+  final String timeSiZhu; // 四柱日期
+  final String timeHunMale; // 显示合婚类型男生出生日期
+  final String timeHunFemale; // 显示合婚类型女生出生日期
 
   MasterRecommend({
     this.type,
     this.siZhu,
-    this.timeStr,
+    this.heHun,
+    this.timeSiZhu,
+    this.timeHunMale,
+    this.timeHunFemale,
     Key key,
   }) : super(key: key);
 
@@ -148,7 +157,18 @@ class _MasterRecommendState extends State<MasterRecommend> {
           MeetSiZhuPage(
             master_id: e.uid,
             siZhu: widget.siZhu,
-            timeStr: widget.timeStr,
+            timeSiZhu: widget.timeSiZhu,
+          ),
+        );
+        break;
+      case post_hehun:
+        CusRoutes.push(
+          context,
+          MeetHeHunPage(
+            master_id: e.uid,
+            heHun: widget.heHun,
+            timeHunMale: widget.timeHunMale,
+            timeHunFemale: widget.timeHunFemale,
           ),
         );
         break;

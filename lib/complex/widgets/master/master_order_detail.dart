@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -9,11 +10,14 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/master/hehun_res_show.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
+import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
+import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_yi.dart';
@@ -155,14 +159,15 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 大师以及下单人的头像和昵称
   List<Widget> _avatarNick() {
-    LiuYaoRiqi t = _liuYaoRes.riqi;
+//    LiuYaoRiqi t = _liuYaoRes.riqi;
     return <Widget>[
       Row(
         children: <Widget>[
           CusText("时间", t_primary, 30),
           SizedBox(width: Adapt.px(30)),
-          CusText("${t.year}年${t.month}月${t.day}日${t.hour}时${t.minute}分",
-              t_gray, 30),
+//          CusText("${t.year}年${t.month}月${t.day}日${t.hour}时${t.minute}分",
+//              t_gray, 30),
+          CusText(CusTime.ymd(_order.create_date), t_gray, 30),
         ],
       ),
       _dividerCtr(),
@@ -192,7 +197,6 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
             CusText(_order.nick_ref, t_gray, 28), // 下单人昵称
           ],
         ),
-        _dividerCtr(),
       ],
     ];
   }
@@ -211,15 +215,44 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 显示四柱结果
   Widget _buildSiZhu() {
-    return Container(
-      child: Text("四柱"),
+    YiOrderSiZhu siZhu = _order.content as YiOrderSiZhu;
+    return Column(
+      children: <Widget>[
+        _dividerCtr(),
+        SizedBox(height: Adapt.px(20)),
+        Row(
+          children: <Widget>[
+            CusText("姓名：", t_primary, 30),
+            CusText(siZhu.name, t_gray, 30),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: Adapt.px(10)),
+          child: Row(
+            children: <Widget>[
+              CusText("性别：", t_primary, 30),
+              CusText(siZhu.is_male ? "男" : "女", t_gray, 30),
+            ],
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            CusText("出生日期：", t_primary, 30),
+            CusText("显示时间", t_gray, 30),
+          ],
+        ),
+      ],
     );
   }
 
   /// 显示合婚结果
   Widget _buildHeHun() {
-    return Container(
-      child: Text("合婚"),
+    YiOrderHeHun heHun = _order.content as YiOrderHeHun;
+    return Column(
+      children: <Widget>[
+        HeHunResShow(name: heHun.name_male, sex: "男", time: "男生时间"),
+        HeHunResShow(name: heHun.name_female, sex: "女", time: "女生时间"),
+      ],
     );
   }
 

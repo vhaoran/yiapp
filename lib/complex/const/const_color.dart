@@ -16,7 +16,6 @@ const Color fif_primary = Color(0xFF413F42); // 五级背景色
 const Color six_primary = Color(0xFFCFCFCF); // 六级背景色(待定)
 const Color tipBg = Color(0xFFC7C7CC); // 提示框背景色
 
-
 // 文本
 const Color t_primary = Color(0xFFFFC679); // 主文本颜色
 const Color t_gray = Color(0xFFCFCFCF); // 灰白色
@@ -26,6 +25,9 @@ const Color t_red = Color(0xFFC74444); // 红
 const Color t_price = Color(0xFFFA6400); // "价格"橙
 const Color t_ji = Color(0xFF83C677); // 忌之绿
 const Color t_yi = Color(0xFFEB827F); // 宜之红
+
+// 按钮背景色
+const Color btn_red = Color(0xFFBF3F3E);
 
 // 边框颜色
 const Color b_border = Color(0xFF6E5A3E);

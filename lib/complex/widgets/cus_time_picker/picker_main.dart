@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/lunar.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_list.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
@@ -105,11 +104,7 @@ class _PickerViewState extends State<PickerView> {
     int day = _dayIndex + 1;
     // time 是当前选择的阳历时间
     DateTime time = DateTime(year, month, day, _hourIndex, _minuteIndex);
-    Debug.log("time:${time}");
     Lunar lunar = Lunar.fromDate(time);
-    print(">>>是否阴历：$_isLunar");
-    Debug.log("lunmonth:${lunar.month}");
-    Debug.log("moustr:${_fnSelectMonth(_monthIndex)}");
     YiDateTime yiDt = YiDateTime(
       year: year,
       month: _isLunar ? lunar.month : month, // 根据阴阳历选择月
@@ -122,7 +117,6 @@ class _PickerViewState extends State<PickerView> {
       hourStr: _isZhouYi ? c_old_times[_hourIndex].substring(14) : null,
     );
     YiDateTime res = yiDt.fromPickMode(widget.pickMode);
-    print(">>>res.tojson:${res.toJson()}");
     widget.onConfirm(res);
     Navigator.pop(context);
   }
@@ -257,11 +251,14 @@ class _PickerViewState extends State<PickerView> {
           ? null
           : DateTime(widget.end.year, widget.end.month);
       String resMonth;
+
+      // Lunar.fromDate之前只设置了年月，没设置日，导致月份计算和显示出现问题，之前
+      // 写好时并未出现这个问题，特此记录，bug发现时间:2020年10月22日,23日解决。
       if (_isLunar) {
         resMonth = CusTime.isRange(nowDate, start, end)
             ? widget.padLeft
                 ? "${monthIndex.toString().padLeft(2, "0")}月"
-                : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, monthIndex)).monthInChinese}月"
+                : "${Lunar.fromDate(DateTime(_now.year + _yearIndex, monthIndex, _dayIndex + 1)).monthInChinese}月"
             : null;
       } else {
         resMonth = CusTime.isRange(nowDate, start, end)
