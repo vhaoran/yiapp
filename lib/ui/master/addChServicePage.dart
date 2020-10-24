@@ -135,7 +135,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
         errorText: _priceErr,
         autofocus: false,
         maxLines: 1,
-        formatter: true,
+        onlyNumber: true,
         fromValue: _isAdd ? null : widget.res.price.toString(),
       ),
     ];

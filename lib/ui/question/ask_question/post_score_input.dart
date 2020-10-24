@@ -42,7 +42,7 @@ class _PostScoreInputState extends State<PostScoreInput> {
             hintText: "请输入$yuan_bao金额",
             autofocus: false,
             hideBorder: true,
-            formatter: true,
+            onlyNumber: true,
           ),
         ),
       ],

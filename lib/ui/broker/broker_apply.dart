@@ -63,7 +63,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           controller: _serCodeCtrl,
           hintText: "输入服务代码",
           errorText: _serCodeErr,
-          formatter: true,
+          onlyNumber: true,
         ),
         SizedBox(height: space),
         CusRectField(

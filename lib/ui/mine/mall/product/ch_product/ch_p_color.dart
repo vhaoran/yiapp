@@ -174,7 +174,7 @@ class _ChProductColorState extends State<ChProductColor> {
               hintText: "请输入商品价格",
               autofocus: false,
               hideBorder: true,
-              formatter: true,
+              onlyNumber: true,
             ),
           ),
         ],

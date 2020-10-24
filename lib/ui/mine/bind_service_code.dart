@@ -50,7 +50,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
         CusRectField(
           controller: _codeCtrl,
           errorText: _err,
-          formatter: true,
+          onlyNumber: true,
         ),
         SizedBox(height: Adapt.px(90)),
         CusRaisedBtn(

@@ -8,6 +8,10 @@
 const int female = 0; // 女性
 const int male = 1; // 男性
 
+// ------------------------- 支付类型 ------------------------
+const int pay_alipay = 0; // 支付宝
+const int pay_wechat = 1; // 微信
+
 // ------------------------- 启用停用大师 ------------------------
 const int m_disable = 0; // 停用大师
 const int m_enable = 1; // 启用大师

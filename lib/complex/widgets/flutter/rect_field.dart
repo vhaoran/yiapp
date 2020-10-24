@@ -22,7 +22,9 @@ class CusRectField extends StatefulWidget {
   final Widget suffixIcon; // 后置组件
   final int maxLength;
   final int maxLines;
-  final bool formatter;
+  final bool onlyNumber; // 限制只能输入数字
+  final bool onlyChinese; // 限制只能输入汉字
+  final List<TextInputFormatter> inputFormatters;
   final bool autofocus;
   final bool enable;
   final bool hideBorder;
@@ -45,7 +47,9 @@ class CusRectField extends StatefulWidget {
     this.suffixIcon,
     this.maxLength: -1,
     this.maxLines: 1,
-    this.formatter: false,
+    this.onlyNumber: false,
+    this.onlyChinese: false,
+    this.inputFormatters,
     this.autofocus: true,
     this.enable: true,
     this.hideBorder: false,
@@ -96,50 +100,55 @@ class _CusRectFieldState extends State<CusRectField> {
   /// 输入框
   Widget _input() {
     return TextField(
-      autofocus: widget.autofocus,
-      focusNode: widget.focusNode,
-      enabled: widget.enable,
-      keyboardType: widget.keyboardType,
-      style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
-      maxLength: widget.maxLength,
-      maxLines: widget.maxLines,
-      controller: widget.controller,
-      textAlign: widget.textAlign,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        hintStyle:
-            TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
-        prefixText: widget.prefixText,
-        prefixStyle:
-            TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
-        prefixIcon: widget.prefixIcon,
-        suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
-        counterText: "",
-        border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
-        focusedBorder: widget.hideBorder
-            ? InputBorder.none
-            : cusOutlineBorder(color: Colors.white24),
-        errorBorder: widget.hideBorder
-            ? InputBorder.none
-            : cusOutlineBorder(color: Colors.white24),
-        focusedErrorBorder: widget.hideBorder
-            ? InputBorder.none
-            : cusOutlineBorder(color: Colors.white24),
-      ),
-      onChanged: (val) {
-        if (widget.errorText != null) {
-          widget.errorText = null;
-        }
-        if (widget.onChanged != null) {
-          widget.onChanged();
-        }
-        setState(() {});
-      },
-      inputFormatters:
-          widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,
-    );
+        autofocus: widget.autofocus,
+        focusNode: widget.focusNode,
+        enabled: widget.enable,
+        keyboardType: widget.keyboardType,
+        style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+        maxLength: widget.maxLength,
+        maxLines: widget.maxLines,
+        controller: widget.controller,
+        textAlign: widget.textAlign,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          hintStyle:
+              TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+          prefixText: widget.prefixText,
+          prefixStyle:
+              TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
+          counterText: "",
+          border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
+          focusedBorder: widget.hideBorder
+              ? InputBorder.none
+              : cusOutlineBorder(color: Colors.white24),
+          errorBorder: widget.hideBorder
+              ? InputBorder.none
+              : cusOutlineBorder(color: Colors.white24),
+          focusedErrorBorder: widget.hideBorder
+              ? InputBorder.none
+              : cusOutlineBorder(color: Colors.white24),
+        ),
+        onChanged: (val) {
+          if (widget.errorText != null) {
+            widget.errorText = null;
+          }
+          if (widget.onChanged != null) {
+            widget.onChanged();
+          }
+          setState(() {});
+        },
+        inputFormatters: widget.inputFormatters == null
+            ? [
+                if (widget.onlyNumber)
+                  WhitelistingTextInputFormatter.digitsOnly,
+                if (widget.onlyChinese)
+                  WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
+              ]
+            : widget.inputFormatters);
   }
 
   /// 清空输入信息

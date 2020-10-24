@@ -4,6 +4,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
+import 'package:yiapp/ui/mine/fund_account/bill_history.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -30,7 +31,10 @@ class FundMain extends StatelessWidget {
           title: "个人支付账号",
           onTap: () => CusRoutes.push(context, FundListPage()),
         ),
-        NormalBox(title: "对账单历史", onTap: () {}),
+        NormalBox(
+          title: "对账单记录",
+          onTap: () => CusRoutes.push(context, BillHistoryPage()),
+        ),
       ],
     );
   }

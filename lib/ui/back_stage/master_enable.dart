@@ -49,7 +49,7 @@ class _MasterEnableState extends State<MasterEnable> {
             controller: _masterCtrl, // 大师 id 输入框
             hintText: "请输入大师 id",
             errorText: _err,
-            formatter: true,
+            onlyNumber: true,
             fontSize: 32,
           ),
         ),

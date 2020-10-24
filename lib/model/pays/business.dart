@@ -33,15 +33,15 @@ class Business {
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
-      action: json['action'],
-      amt: json['amt'],
-      amtStart: json['amtStart'],
+      action: json['Action'],
+      amt: json['Amt'],
+      amtStart: json['AmtStart'],
       created_at: json['created_at'],
       icon_ref: json['icon_ref'],
       id: json['id'],
       nick_ref: json['nick_ref'],
-      summary: json['summary'],
-      tradeNo: json['tradeNo'],
+      summary: json['Summary'],
+      tradeNo: json['TradeNo'],
       uid: json['uid'],
       update_at: json['update_at'],
       user_code_ref: json['user_code_ref'],
@@ -51,15 +51,15 @@ class Business {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['action'] = this.action;
-    data['amt'] = this.amt;
-    data['amtStart'] = this.amtStart;
+    data['Action'] = this.action;
+    data['Amt'] = this.amt;
+    data['AmtStart'] = this.amtStart;
     data['created_at'] = this.created_at;
     data['icon_ref'] = this.icon_ref;
     data['id'] = this.id;
     data['nick_ref'] = this.nick_ref;
-    data['summary'] = this.summary;
-    data['tradeNo'] = this.tradeNo;
+    data['Summary'] = this.summary;
+    data['TradeNo'] = this.tradeNo;
     data['uid'] = this.uid;
     data['update_at'] = this.update_at;
     data['user_code_ref'] = this.user_code_ref;

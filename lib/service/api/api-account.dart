@@ -53,7 +53,7 @@ class ApiAccount {
   }
 
 //------------------------------------------------
-  //通讯录--------分页查询
+  // 对账单历史--------分页查询
   static businessPage(Map<String, dynamic> pb) async {
     var url = "/yi/trade/BusinessPage";
     return await ApiBase.postPage(url, pb, (m) => Business.fromJson(m));

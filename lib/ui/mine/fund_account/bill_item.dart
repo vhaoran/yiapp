@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_time.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/model/pays/business.dart';
+
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/10/24 15:32
+// usage ：单个对账单对象
+// ------------------------------------------------------
+
+// Business 类参数解释
+
+// [action]:业务类型 大于0为收入，小于0为支出，具体如
+// 1 充值、2 分润、3 退款、-1 测算消费、-2 商城消费 更多扩充待定
+
+// [amt] 具体金额、
+
+// [amtStart] 这笔账单结束后的余额、[summary] 账单类型概要
+
+// [tradeNo] 账单id、[id] 当前账单位于总订单历史记录的哪一位置
+
+class BillItem extends StatefulWidget {
+  final Business business;
+  final bool isPay; // 是否支付助手
+
+  BillItem({this.business, this.isPay, Key key}) : super(key: key);
+
+  @override
+  _BillItemState createState() => _BillItemState();
+}
+
+class _BillItemState extends State<BillItem> {
+  Business _b; // 单个账单详情
+
+  @override
+  void initState() {
+    _b = widget.business;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: fif_primary,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: _buildPayment(),
+      ),
+    );
+  }
+
+  /// 收付款布局
+  Widget _buildPayment() {
+    String tip = widget.isPay ? "付款成功" : "收款成功";
+    Color color = widget.isPay ? btn_red : t_ji; // 余额中支付为红，收款为绿
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            CusText(tip, t_gray, 28),
+            Spacer(), // 时间
+            CusText("${CusTime.ymd(_b.created_at)}", Colors.grey, 30),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            children: <Widget>[
+              CusText("${_b.amt}", color, 50), // 金额
+              CusText(" 元", color, 30),
+            ],
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            CusText("交易对象:", Colors.grey, 30),
+            SizedBox(width: Adapt.px(30)),
+            CusText("${_b.summary}", t_gray, 30),
+          ],
+        ),
+      ],
+    );
+  }
+}
