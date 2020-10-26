@@ -63,10 +63,17 @@ class _ArticleMainState extends State<ArticleMain> {
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
         children: <Widget>[
+          InkWell(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Icon(Icons.arrow_back_ios, color: t_gray, size: 20),
+            ),
+            onTap: () => Navigator.pop(context),
+          ),
           Padding(
-            padding: EdgeInsets.only(top: 30, bottom: 10),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
             child: Center(child: CusText("热门文章类型", t_gray, 32)),
           ),
           Wrap(

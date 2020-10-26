@@ -5,6 +5,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
 import 'package:yiapp/ui/mine/fund_account/bill_history.dart';
+import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -34,6 +35,10 @@ class FundMain extends StatelessWidget {
         NormalBox(
           title: "对账单记录",
           onTap: () => CusRoutes.push(context, BillHistoryPage()),
+        ),
+        NormalBox(
+          title: "充值",
+          onTap: () => CusRoutes.push(context, RechargePage()),
         ),
       ],
     );

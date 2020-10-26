@@ -147,4 +147,15 @@ void main() {
       print("<<<测试---吕祖灵签出现异常：$e");
     }
   });
+
+  // 12 ------------ 周公解梦 ------------
+  test("周公解梦", () async {
+    ApiBase.jwt = jwt_134;
+    try {
+      var res = await ApiFree.dreamSearch("桌子");
+      print(">>>测试---周公解梦结果：${res.first.toJson()}");
+    } catch (e) {
+      print("<<<测试---周公解梦出现异常：$e");
+    }
+  });
 }

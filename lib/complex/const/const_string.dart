@@ -16,6 +16,14 @@ const String w_yi_user = "/yi/user/";
 const String w_yi_trade = "/yi/trade/";
 const String w_yi_msg = "/yi/msg/";
 
+/// 业务类型(business)
+const String b_p_order = "p_order"; // 商城订单付款
+const String b_yi_order = "yi_order"; // 大师订单付款
+const String b_bbs_prize = "bbs_prize"; // 悬赏贴付款
+const String b_bbs_vie = "bbs_vie"; // 闪断贴付款
+const String b_recharge = "recharge"; // 充值
+const String b_master_draw_money = "master_draw_money"; // 大师提现
+
 /// 命名路由名称 r 是 route 的缩写
 const String r_con_pair = "con_pair"; // 星座配对
 const String r_zodiac_pair = "zodiac_pair"; // 生肖配对
@@ -26,10 +34,10 @@ const String r_liu_yao = "liu_yao"; // 六爻排盘
 const String r_sizhu = "sizhu"; // 四柱测算
 const String r_he_hun = "he_hun"; // 合婚测算
 const String r_article = "article"; // 文章
+const String r_zhou_gong = "zhou_gong"; // 周公
 
 /// 综合
 const String jwt_134 = "test/134"; // jwt = 134;
 const String ali_font = "AliIcon"; // 阿里图标字体
 const String post_comment = "post_comment"; // 回帖事件
-
 const String yuan_bao = "元宝"; // 目前先以元宝为货币单位

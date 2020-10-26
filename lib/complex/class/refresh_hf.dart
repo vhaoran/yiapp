@@ -50,8 +50,8 @@ class CusFooter extends ClassicalFooter {
     this.loadText: "上拉加载",
     this.loadReadyText: "准备加载",
     this.loadingText: "加载中...",
-    this.loadedText: "- - - 我是有底线的 - - -", // 应该是 加载完成，先用这个代替
-    this.noMoreText: "- - - 我是有底线的 - - -",
+    this.loadedText: "我是有底线的", // 应该是 加载完成，先用这个代替
+    this.noMoreText: "我是有底线的",
     this.infoText: "更新于 %T",
     this.bgColor: Colors.transparent,
     this.textColor: t_gray,

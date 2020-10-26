@@ -24,7 +24,8 @@ class BillPayGetHisPage extends StatefulWidget {
   _BillPayGetHisPageState createState() => _BillPayGetHisPageState();
 }
 
-class _BillPayGetHisPageState extends State<BillPayGetHisPage> {
+class _BillPayGetHisPageState extends State<BillPayGetHisPage>
+    with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
@@ -106,4 +107,7 @@ class _BillPayGetHisPageState extends State<BillPayGetHisPage> {
     await _fetch();
     setState(() {});
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -9,6 +9,7 @@ import 'package:yiapp/ui/fortune/free_calculate/birth_pair.dart';
 import 'package:yiapp/ui/fortune/free_calculate/blood_pair.dart';
 import 'package:yiapp/ui/fortune/free_calculate/com_draw.dart';
 import 'package:yiapp/ui/fortune/free_calculate/con_pair.dart';
+import 'package:yiapp/ui/fortune/free_calculate/zhou_gong_page.dart';
 import 'package:yiapp/ui/fortune/free_calculate/zodiac_pair.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 
@@ -29,5 +30,6 @@ final Map<String, WidgetBuilder> mainRoutes = {
   r_sizhu: (BuildContext context) => SiZhuMeasure(), // 四柱测算
   r_he_hun: (BuildContext context) => HeHunMeasure(), // 合婚测算
   r_article: (BuildContext context) => ArticleMain(), // 精选文章
+  r_zhou_gong: (BuildContext context) => ZhouGongPage(), // 周公解梦
   "temp": (BuildContext context) => TempPage(), // 临时页面[待删]
 };

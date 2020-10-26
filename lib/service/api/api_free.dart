@@ -1,3 +1,4 @@
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/free_model/draws/chegong_result.dart';
 import 'package:yiapp/free_model/draws/daxian_result.dart';
 import 'package:yiapp/free_model/draws/guandi_result.dart';
@@ -9,6 +10,7 @@ import 'package:yiapp/free_model/pairs/birth_result.dart';
 import 'package:yiapp/free_model/pairs/blood_result.dart';
 import 'package:yiapp/free_model/pairs/con_result.dart';
 import 'package:yiapp/free_model/pairs/zodiac_result.dart';
+import 'package:yiapp/model/complex/zhou_gong_res.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------
@@ -93,5 +95,14 @@ class ApiFree {
     var url = "/yi/cms/LvZuDraw";
     var data = m;
     return await ApiBase.postObj(url, data, (m) => LvZuResult.fromJson(m));
+  }
+
+  /// 周公解梦
+  static Future<List<ZhouGongRes>> dreamSearch(String key_words) async {
+    var url = w_yi_cms + "DreamSearch";
+    var data = {"key_words": key_words};
+    return await ApiBase.postList(
+        url, data, (l) => l.map((x) => ZhouGongRes.fromJson(x)).toList(),
+        enableJwt: true);
   }
 }

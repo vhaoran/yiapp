@@ -68,7 +68,7 @@ class _FreeCalculateState extends State<FreeCalculate>
     {"text": "月老灵签", "icon": 0xe606, "color": 0xFFE1567C, "route": r_com_draw},
     {"text": "车公灵签", "icon": 0xe604, "color": 0xFF75C1E9, "route": r_com_draw},
     {"text": "吕祖灵签", "icon": 0xebcd, "color": 0xFF81D755, "route": r_com_draw},
-    {"text": "周公解梦", "icon": 0xe615, "color": def_color, "route": "temp"},
+    {"text": "周公解梦", "icon": 0xe6ce, "color": 0xFFDE524B, "route": r_zhou_gong},
     {"text": "狐仙灵签", "icon": 0xe615, "color": def_color, "route": "temp"},
     {"text": "好友合盘", "icon": 0xe615, "color": def_color, "route": "temp"},
   ];

@@ -32,6 +32,7 @@ class CusRectField extends StatefulWidget {
   final double pdHor;
   final double fontSize;
   final double borderRadius;
+  final Color backgroundColor;
   final FocusNode focusNode;
   final TextAlign textAlign;
   String errorText; // 错误提示
@@ -57,6 +58,7 @@ class CusRectField extends StatefulWidget {
     this.pdHor: 30,
     this.fontSize: 30,
     this.borderRadius: 5,
+    this.backgroundColor: fif_primary,
     this.focusNode,
     this.textAlign: TextAlign.start,
     this.errorText,
@@ -83,7 +85,7 @@ class _CusRectFieldState extends State<CusRectField> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: fif_primary,
+            color: widget.backgroundColor,
             borderRadius: BorderRadius.circular(widget.borderRadius),
           ),
           child: _input(),
