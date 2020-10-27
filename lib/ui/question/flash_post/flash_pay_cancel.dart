@@ -41,7 +41,7 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
         if (widget.data.uid == ApiBase.uid) ...[
           if (widget.data.reply.isEmpty)
             _comBtnCtr("取消", onPressed: _doCancel), // 取消订单
-          if (widget.data.stat == post_no_pay)
+          if (widget.data.stat == pay_await)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
               child: _comBtnCtr("支付", onPressed: _doPay),

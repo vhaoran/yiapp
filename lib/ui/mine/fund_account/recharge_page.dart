@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/complex/class/api_business_type.dart';
+import 'package:yiapp/complex/class/cus_dot_format.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_string.dart';
@@ -8,8 +10,9 @@ import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_checked.dart';
+import 'package:yiapp/service/api/api-pay.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -25,12 +28,21 @@ class RechargePage extends StatefulWidget {
 }
 
 class _RechargePageState extends State<RechargePage> {
-  var _nameCtrl = TextEditingController(); // 充值金额输入框
-  String _err;
+  var _amtCtrl = TextEditingController(); // 充值金额输入框
   int _account_type = pay_alipay; // 0:支付宝 1:微信
 
   /// 添加资金账号
-  void _doAdd() async {}
+  void _doAdd() async {
+    num amt = num.parse(_amtCtrl.text);
+    if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
+      CusToast.toast(context, text: "充值金额必须大于0", milliseconds: 1500);
+      return;
+    }
+    Debug.log("amt:$amt");
+    String url = ApiPay.PayReqURL(b_recharge, _account_type, "充值", amt);
+    if (url != null) ApiBrowser.launchIn(url);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +62,14 @@ class _RechargePageState extends State<RechargePage> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 40, bottom: 15),
-            child: CusText("充值金额", t_primary, 30),
+            child: CusText("充值金额(￥)", t_primary, 30),
           ),
           CusRectField(
-            controller: _nameCtrl,
-            errorText: _err,
+            controller: _amtCtrl,
+            fromValue: "0.01",
             hintText: "请输入充值金额",
-            onlyChinese: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [DotFormatter()],
           ),
           Padding(
             padding: EdgeInsets.only(top: 20),
@@ -64,13 +77,13 @@ class _RechargePageState extends State<RechargePage> {
           ),
           SizedBox(height: Adapt.px(20)),
           _typeAliPay(),
-          SizedBox(height: Adapt.px(30)),
+          SizedBox(height: Adapt.px(5)),
           _typeWeChat(),
-//          _typeTwo(),
           SizedBox(height: Adapt.px(60)),
           CusRaisedBtn(
             text: "确定",
-            backgroundColor: Colors.blueGrey,
+            textColor: t_gray,
+            backgroundColor: fif_primary,
             onPressed: _doAdd,
           ),
         ],
@@ -82,14 +95,15 @@ class _RechargePageState extends State<RechargePage> {
   Widget _typeAliPay() {
     return Container(
       color: fif_primary,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
-          CusChecked(
-            defValue: pay_alipay,
-            fromValue: _account_type,
+          Radio(
+            value: pay_alipay,
+            groupValue: _account_type,
+            activeColor: t_primary,
+            onChanged: (val) => setState(() => _account_type = val),
           ),
-          SizedBox(width: Adapt.px(30)),
           CusText("支付宝", t_gray, 30),
           Spacer(),
           Icon(
@@ -105,14 +119,15 @@ class _RechargePageState extends State<RechargePage> {
   Widget _typeWeChat() {
     return Container(
       color: fif_primary,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
-          CusChecked(
-            defValue: pay_wechat,
-            fromValue: _account_type,
+          Radio(
+            value: pay_wechat,
+            groupValue: _account_type,
+            activeColor: t_primary,
+            onChanged: (val) => setState(() => _account_type = val),
           ),
-          SizedBox(width: Adapt.px(30)),
           CusText("微信", t_gray, 30),
           Spacer(),
           Icon(
@@ -122,40 +137,6 @@ class _RechargePageState extends State<RechargePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _typeTwo() {
-    bool checked = _account_type == pay_wechat;
-    return Row(
-      children: <Widget>[
-        InkWell(
-          onTap: () {
-            if (_account_type != pay_wechat) {
-              _account_type = pay_wechat;
-              setState(() {});
-            }
-          },
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(60),
-              color: checked ? Color(0xFFEA742E) : Colors.grey,
-            ),
-            child: checked
-                ? Icon(FontAwesomeIcons.check, size: 12, color: Colors.white)
-                : null,
-          ),
-        ),
-        CusText("微信", t_gray, 30),
-        Spacer(),
-        Icon(
-          IconData(0xe607, fontFamily: ali_font),
-          color: Color(0xFF5AB535),
-          size: Adapt.px(100),
-        ),
-      ],
     );
   }
 }

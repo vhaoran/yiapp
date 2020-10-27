@@ -24,7 +24,7 @@ class CusRaisedBtn extends StatelessWidget {
   CusRaisedBtn({
     this.text = '确定',
     this.pdHor = 0,
-    this.pdVer = 10,
+    this.pdVer = 20,
     this.fontSize: 30,
     this.borderRadius = 5,
     this.minWidth = 40,

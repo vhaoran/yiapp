@@ -30,7 +30,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   var _future;
-  Product _product = Product();
+  Product _product;
 
   @override
   void initState() {
@@ -57,6 +57,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           builder: (context, snap) {
             if (!snapDone(snap)) {
               return Center(child: CircularProgressIndicator());
+            }
+            if (_product == null) {
+              return Center(
+                child: CusText("暂未有商品详情", t_gray, 30),
+              );
             }
             return Column(children: <Widget>[
               Expanded(

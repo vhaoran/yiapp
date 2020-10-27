@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
@@ -45,7 +46,11 @@ class _FlashPostPageState extends State<FlashPostPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _count,
-//      "where": {"stat": 1}, // 这里的 stat 应设为 1 已支付 和 2 已打赏
+      "where": {
+        "stat": {
+          "\$in": [1, 2] // 1 已支付 和 2 已打赏
+        }
+      },
       "sort": {"create_date": -1},
     };
     try {
@@ -82,11 +87,18 @@ class _FlashPostPageState extends State<FlashPostPage>
           return Center(child: CusText("暂时还没有人发帖", t_gray, 28));
         }
         return EasyRefresh(
+          header: CusHeader(),
+          footer: CusFooter(),
           child: ListView(
-            children: List.generate(
-              _l.length,
-              (i) => FlashCover(data: _l[i]),
-            ),
+            children: <Widget>[
+              if (_l.isEmpty)
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(top: 200),
+                  child: CusText("暂时还没有人发帖", t_gray, 32),
+                ),
+              ..._l.map((e) => FlashCover(data: e)),
+            ],
           ),
           onLoad: () async {
             await _refresh();

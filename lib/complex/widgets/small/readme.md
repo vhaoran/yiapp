@@ -4,7 +4,6 @@
 - cus_avatar 头像
 - cus_bg_wall 背景墙
 - cus_box 组件盒（如带右侧箭头的盒子）
-- cus_checked 自定义单选按钮
 - cus_circle_item 上圆图下文字
 - cus_description 描述组件
 - cus_option 选项卡

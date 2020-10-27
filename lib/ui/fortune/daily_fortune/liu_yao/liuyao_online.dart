@@ -128,6 +128,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   void _doQiGua() async {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
+    print(">>>guaTime:${_guaTime.toJson()}");
     var m = {
       "year": _guaTime.year,
       "month": _guaTime.month,

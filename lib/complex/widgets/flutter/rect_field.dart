@@ -105,7 +105,8 @@ class _CusRectFieldState extends State<CusRectField> {
         autofocus: widget.autofocus,
         focusNode: widget.focusNode,
         enabled: widget.enable,
-        keyboardType: widget.keyboardType,
+        keyboardType:
+            widget.onlyNumber ? TextInputType.number : widget.keyboardType,
         style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,

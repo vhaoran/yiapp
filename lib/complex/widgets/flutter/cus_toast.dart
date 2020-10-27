@@ -22,7 +22,7 @@ class CusToast {
   double pdVer; // 上下边距
   Color bgColor; // 背景颜色
   Color textColor; // 文本颜色
-  int time; // 显示的时间毫秒
+  int milliseconds; // 显示的时间毫秒
   bool showing; // 是否正在显示 toast
   bool showChild;
   bool loading; // 正在等待界面
@@ -37,7 +37,7 @@ class CusToast {
     this.pdVer = 14,
     this.bgColor = Colors.black,
     this.textColor = Colors.white,
-    this.time = 1000,
+    this.milliseconds = 1000,
     this.showing = false,
     this.showChild = false,
     this.loading = false,
@@ -81,8 +81,8 @@ class CusToast {
 
   /// 等待时间
   void _delayed(DateTime startedTime, OverlayEntry overlayEntry) async {
-    await Future.delayed(Duration(milliseconds: time));
-    if (DateTime.now().difference(startedTime).inMilliseconds >= time) {
+    await Future.delayed(Duration(milliseconds: milliseconds));
+    if (DateTime.now().difference(startedTime).inMilliseconds >= milliseconds) {
       showing = false;
       overlayEntry?.markNeedsBuild();
       await Future.delayed(Duration(milliseconds: 400));

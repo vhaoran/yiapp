@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
@@ -45,20 +46,27 @@ class _RewardPostPageState extends State<RewardPostPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _count,
-//      "where": {"stat": 1}, // 这里的 stat 应设为 1 已支付 和 2 已打赏
-      "sort": {"create_date": -1},
+      "where": {
+        "stat": {
+          "\$in": [1, 2] // 1 已支付 和 2 已打赏
+        }
+      },
+      "sort": {"create_date": -1}, // 按时间倒序排列
     };
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
-      Debug.log("总的悬赏帖个数：$_rowsCount");
-      var l = pb.data.map((e) => e as BBSPrize).toList();
-      l.forEach((src) {
-        // 在原来的基础上继续添加新的数据
-        var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
-        if (dst == null) _l.add(src);
-      });
-      Debug.log("当前已查询多少条悬赏帖：${_l.length}");
+      if (pb != null) {
+        Debug.log("总个数:${pb.toJson()}");
+        if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
+        Debug.log("总的悬赏帖个数：$_rowsCount");
+        var l = pb.data.map((e) => e as BBSPrize).toList();
+        l.forEach((src) {
+          // 在原来的基础上继续添加新的数据
+          var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
+          if (dst == null) _l.add(src);
+        });
+        Debug.log("当前已查询多少条悬赏帖：${_l.length}");
+      }
     } catch (e) {
       Debug.logError("分页查询悬赏帖出现异常：$e");
     }
@@ -79,15 +87,19 @@ class _RewardPostPageState extends State<RewardPostPage>
         if (!snapDone(snap)) {
           return Center(child: CircularProgressIndicator());
         }
-        if (_l.isEmpty) {
-          return Center(child: CusText("暂时还没有人发帖", t_gray, 28));
-        }
         return EasyRefresh(
+          header: CusHeader(),
+          footer: CusFooter(),
           child: ListView(
-            children: List.generate(
-              _l.length,
-              (i) => RewardCover(data: _l[i]),
-            ),
+            children: <Widget>[
+              if (_l.isEmpty)
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(top: 200),
+                  child: CusText("暂时还没有人发帖", t_gray, 32),
+                ),
+              ..._l.map((e) => RewardCover(data: e)),
+            ],
           ),
           onLoad: () async {
             await _refresh();

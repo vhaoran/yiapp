@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
@@ -35,7 +36,6 @@ class _FlashContentState extends State<FlashContent> {
   var _future;
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
-  bool _loadAll = false; // 是否加载完毕
 
   int _pageNo = 0;
   int _rowsCount = 0;
@@ -53,7 +53,7 @@ class _FlashContentState extends State<FlashContent> {
       if (bbsPrize != null) {
         _bbsVie = bbsPrize;
         _rowsCount = _bbsVie.reply.length;
-        Debug.log("帖子总长度：$_rowsCount");
+        Debug.log("帖子评论总长度：$_rowsCount");
         if (_l.isEmpty) _fetchAll();
       }
     } catch (e) {
@@ -63,11 +63,7 @@ class _FlashContentState extends State<FlashContent> {
 
   /// 模拟分页添加评论列表
   void _fetchAll() async {
-    Debug.log("_pageNO是多少：${_pageNo}");
-    if (_pageNo * 20 > _rowsCount) {
-      setState(() => _loadAll = true);
-      return;
-    }
+    if (_pageNo * 20 > _rowsCount) return;
     _pageNo++;
     _l = _bbsVie.reply.take(_pageNo * 20).toList();
     Debug.log("_l的长度：${_l.length}");
@@ -88,6 +84,8 @@ class _FlashContentState extends State<FlashContent> {
             children: <Widget>[
               Expanded(
                 child: EasyRefresh(
+                  header: CusHeader(),
+                  footer: CusFooter(),
                   controller: _easyCtrl,
                   child: ListView(
                     controller: _scrollCtrl,
@@ -99,12 +97,10 @@ class _FlashContentState extends State<FlashContent> {
                       FlashReply(data: _bbsVie),
                     ],
                   ),
-                  onLoad: _loadAll
-                      ? null
-                      : () async {
-                          await Future.delayed(Duration(milliseconds: 100));
-                          await _fetchAll();
-                        },
+                  onLoad: () async {
+                    await Future.delayed(Duration(milliseconds: 100));
+                    await _fetchAll();
+                  },
                   onRefresh: () async {
                     await _refresh();
                   },
@@ -134,7 +130,6 @@ class _FlashContentState extends State<FlashContent> {
   void _refresh() async {
     _l.clear();
     _pageNo = _rowsCount = 0;
-    _loadAll = false;
     await _fetch();
     setState(() {});
   }

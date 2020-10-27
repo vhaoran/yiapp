@@ -41,7 +41,7 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
           if (widget.data.reply.isEmpty)
             _comBtnCtr("取消", onPressed: _doCancel), // 取消订单
           SizedBox(width: Adapt.px(20)),
-          if (widget.data.stat == post_no_pay)
+          if (widget.data.stat == pay_await)
             _comBtnCtr("支付", onPressed: _doPay), // 支付订单
         ],
       ],
