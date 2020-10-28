@@ -3,23 +3,25 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/ui/mine/my_orders/flash_cancel_pay.dart';
+import 'package:yiapp/ui/mine/my_orders/flash_paid_pay.dart';
 import 'package:yiapp/ui/mine/my_orders/reward_cancel_pay.dart';
 import 'package:yiapp/ui/mine/my_orders/reward_paid_pay.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/28 14:18
-// usage ：悬赏帖历史
+// date  ：2020/10/28 10:47
+// usage ：闪断帖历史
 // ------------------------------------------------------
 
-class RewardHisMain extends StatefulWidget {
-  RewardHisMain({Key key}) : super(key: key);
+class FlashHisMain extends StatefulWidget {
+  FlashHisMain({Key key}) : super(key: key);
 
   @override
-  _RewardHisMainState createState() => _RewardHisMainState();
+  _FlashHisMainState createState() => _FlashHisMainState();
 }
 
-class _RewardHisMainState extends State<RewardHisMain> {
+class _FlashHisMainState extends State<FlashHisMain> {
   final List<String> _tabs = ["已付款", "已取消"];
 
   @override
@@ -27,7 +29,7 @@ class _RewardHisMainState extends State<RewardHisMain> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: '悬赏帖订单'),
+        appBar: CusAppBar(text: '闪断帖订单'),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -54,8 +56,8 @@ class _RewardHisMainState extends State<RewardHisMain> {
         Expanded(
           child: TabBarView(
             children: [
-              RewardPaidPay(), // 已付款
-              RewardCancelPay(), // 已取消
+              FlashPaidPay(), // 已付款
+              FlashCancelPay(), // 已取消
             ],
           ),
         ),

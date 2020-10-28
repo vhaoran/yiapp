@@ -12,6 +12,7 @@ import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -39,32 +40,16 @@ class CusDemoMain extends StatelessWidget {
         ),
         NormalBox(
           title: "02 支付功能测试",
-          onTap: _testPay,
+          onTap: () => _testPay(context),
         ),
       ],
     );
   }
 
-  void _testPay() async {
-    String url =
-        ApiPay.PayReqURL("recharge", pay_alipay, "${ApiBase.uid}", 0.01);
-    print(">>>url:$url");
-    if (url != null) {
-      await _launchInBrowser(url);
-    }
-  }
-
-  Future<void> _launchInBrowser(String url) async {
-    print(">>>进来了");
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
+  void _testPay(context) async {
+    CusRoutes.push(
+      context,
+      ComPayPage(tip: "悬赏帖付款", b_type: b_bbs_prize, orderId: "", amt: 0.01),
+    );
   }
 }

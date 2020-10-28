@@ -33,6 +33,7 @@ class CusRectField extends StatefulWidget {
   final double fontSize;
   final double borderRadius;
   final Color backgroundColor;
+  final Color prefixColor;
   final FocusNode focusNode;
   final TextAlign textAlign;
   String errorText; // 错误提示
@@ -59,6 +60,7 @@ class CusRectField extends StatefulWidget {
     this.fontSize: 30,
     this.borderRadius: 5,
     this.backgroundColor: fif_primary,
+    this.prefixColor: t_yi,
     this.focusNode,
     this.textAlign: TextAlign.start,
     this.errorText,
@@ -117,8 +119,10 @@ class _CusRectFieldState extends State<CusRectField> {
           hintStyle:
               TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
           prefixText: widget.prefixText,
-          prefixStyle:
-              TextStyle(color: t_yi, fontSize: Adapt.px(widget.fontSize + 2)),
+          prefixStyle: TextStyle(
+            color: widget.prefixColor,
+            fontSize: Adapt.px(widget.fontSize + 2),
+          ),
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
           contentPadding: EdgeInsets.symmetric(

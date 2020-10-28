@@ -33,7 +33,7 @@ class BBSVie {
   List<String> images;
 
   //悬赏分值
-  int score;
+  num score;
 
   //回复内容
   List<BBSReply> reply;

@@ -1,30 +1,29 @@
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
-
 import 'api_base.dart';
 
 // ------------------------------------------------------
 // author: whr    除本人外请勿更改，如果确有必要，请征得本人同意
 // date  : 2020/9/11 09:19
-// usage : 悬赏贴
+// usage : 闪断帖
 //
 // ------------------------------------------------------
 class ApiBBSVie {
   static final String pre = "/yi/trade/";
 
-  //-----------w悬赏贴分页查询v-------------------------------------
+  //-----------w闪断帖分页查询v-------------------------------------
   static bbsViePage(Map<String, dynamic> pb) async {
     var url = pre + "BBSViePage";
     return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
   }
 
-  //-----------悬赏贴   历史 ---分页查询v-------------------------------------
+  //-----------闪断帖   历史 ---分页查询v-------------------------------------
   static bbsVieHisPage(Map<String, dynamic> pb) async {
     var url = pre + "BBSVieHisPage";
     return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
   }
 
-//-----------w单个悬赏贴get v-------------------------------------
+//-----------w单个闪断帖get v-------------------------------------
   static Future<BBSVie> bbsVieGet(String id) async {
     var url = pre + "BBSVieGet";
     var data = {"id": id};
@@ -54,7 +53,7 @@ class ApiBBSVie {
     }, enableJwt: true);
   }
 
-//-----------w发布悬赏贴--用户使用v-------------------------------------
+//-----------w发布闪断帖--用户使用v-------------------------------------
   static Future<BBSVie> bbsVieAdd(Map<String, dynamic> m) async {
     var url = pre + "BBSVieAdd";
     var data = m;
@@ -63,14 +62,14 @@ class ApiBBSVie {
     }, enableJwt: true);
   }
 
-//-----------w取消 悬赏贴v----在没有人回复的情况下---------------------------------
+//-----------w取消 闪断帖v----在没有人回复的情况下---------------------------------
   static Future<bool> bbsVieCancel(String id) async {
     var url = pre + "BBSVieCancel";
     var data = {"id": id};
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
-  //-----------w悬赏贴打赏,兑现分值v-------------------------------------
+  //-----------w闪断帖打赏,兑现分值v-------------------------------------
   static Future<bool> bbsVieDue(Map<String, dynamic> m) async {
     var url = pre + "BBSVieDue";
     var data = m;

@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -30,7 +31,7 @@ class RewardContent extends StatefulWidget {
 }
 
 class _RewardContentState extends State<RewardContent> {
-  var _bbsPrize = BBSPrize(); // 帖子全部内容
+  BBSPrize _bbsPrize; // 帖子全部内容
   List<BBSReply> _l = []; // 帖子评论列表
   var _future;
   var _scrollCtrl = ScrollController();
@@ -83,6 +84,9 @@ class _RewardContentState extends State<RewardContent> {
         builder: (context, snap) {
           if (!snapDone(snap)) {
             return Center(child: CircularProgressIndicator());
+          }
+          if (_bbsPrize == null) {
+            return Center(child: CusText("帖子找不到了~", t_gray, 32));
           }
           return Column(
             children: <Widget>[

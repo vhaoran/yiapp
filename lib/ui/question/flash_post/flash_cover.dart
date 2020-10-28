@@ -30,7 +30,7 @@ class FlashCover extends StatefulWidget {
 class _FlashCoverState extends State<FlashCover> {
   // 临时设置，后边改为图片显示
   Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
-  String _type = "未知"; // 所求类型的文字
+  String _type = "其他"; // 所求类型的文字
 
   @override
   Widget build(BuildContext context) {

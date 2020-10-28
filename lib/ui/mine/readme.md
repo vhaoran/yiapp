@@ -7,4 +7,5 @@
 - my_orders 我的订单
 - personal_info 个人信息
 - bind_service_code 绑定服务代码
+- com_pay_page 通用的支付页面
 - mine_page 底部导航栏-我的页面

@@ -53,7 +53,16 @@ class RewardHeader extends StatelessWidget {
           ),
           _show("所问类型", YiSwitch.contentType(data.content_type)),
           _show("标题", "${data.title}"),
-          _show("内容", "${data.brief}"),
+
+          Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 5),
+            child: CusText("内容：", t_gray, 30),
+          ),
+          Text(
+            "${data.brief}",
+            style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+          ),
+//          _show("内容", "${data.brief}"),
           CusDivider(),
         ],
       ),

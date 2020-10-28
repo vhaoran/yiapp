@@ -13,7 +13,7 @@ class BBSPrize {
   RewardContent content;
   List<String> images;
 
-  int score;
+  num score;
   List<BBSReply> reply;
 
   int stat;

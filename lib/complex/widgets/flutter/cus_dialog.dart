@@ -20,8 +20,11 @@ class _ComDialog {
   Color titleColor; // 提示内容颜色
   Color agreeColor; // 同意按钮颜色
   Color cancelColor; // 取消按钮颜色
+  dynamic fnDataApproval; // 点击同意关闭弹窗后的返回内容
+  dynamic fnDataCancel; // 点击同意关闭弹窗后的返回内容
   VoidCallback onApproval; // 同意按钮事件
   VoidCallback onCancel; // 取消按钮事件
+  VoidCallback onThen; //
   Widget child; // 按钮上面的组件
   bool barrierDismissible;
 
@@ -34,8 +37,11 @@ class _ComDialog {
     this.titleColor,
     this.agreeColor,
     this.cancelColor,
+    this.fnDataApproval,
+    this.fnDataCancel,
     this.onApproval,
     this.onCancel,
+    this.onThen,
     this.child,
     this.barrierDismissible: false,
   }) {
@@ -45,7 +51,12 @@ class _ComDialog {
       builder: (BuildContext context) {
         return _dialogCtr(context);
       },
-    );
+    ).then((value) {
+      print(">>>value:$value");
+      if (value != null) {
+        if (onThen != null) onThen();
+      }
+    });
   }
 
   Widget _dialogCtr(BuildContext context) {
@@ -62,8 +73,14 @@ class _ComDialog {
                 children: <Widget>[
                   if (onCancel != null) ...[
                     Expanded(
-                        child: _buildBtn(context, onCancel, textCancel,
-                            color: cancelColor ?? CusColors.label(context))),
+                      child: _buildBtn(
+                        context,
+                        onCancel,
+                        textCancel,
+                        fnData: fnDataCancel,
+                        color: cancelColor ?? CusColors.label(context),
+                      ),
+                    ),
                     Container(
                       width: 1,
                       height: 40,
@@ -78,8 +95,13 @@ class _ComDialog {
                     ),
                   ],
                   Expanded(
-                    child: _buildBtn(context, onApproval ?? () {}, textAgree,
-                        color: agreeColor ?? CusColors.systemRed(context)),
+                    child: _buildBtn(
+                      context,
+                      onApproval ?? () {},
+                      textAgree,
+                      fnData: fnDataApproval,
+                      color: agreeColor ?? CusColors.systemRed(context),
+                    ),
                   ),
                 ],
               ),
@@ -94,12 +116,13 @@ class _ComDialog {
 
   /// 下面的按钮模板
   Widget _buildBtn(BuildContext context, VoidCallback onPressed, String text,
-      {Color color}) {
+      {dynamic fnData, Color color}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         onPressed();
-        Navigator.pop(context);
+        Navigator.pop(context, fnData);
+        // fnData 根据是否需要返回内容，决定弹窗关闭后要做的事情
       },
       child: Semantics(
         button: true,
@@ -121,24 +144,30 @@ class _ComDialog {
 
 class CusDialog {
   /// 警告弹框，一般用于执行不可回退的操作(如删除),可选择确定或取消
-  static err(BuildContext context,
-      {@required String title,
-      String subTitle,
-      String textAgree,
-      String textCancel,
-      Color titleColor,
-      Color agreeColor,
-      Color cancelColor,
-      VoidCallback onApproval,
-      VoidCallback onCancel}) {
+  static err(
+    BuildContext context, {
+    @required String title,
+    String subTitle,
+    String textAgree,
+    String textCancel,
+    Color titleColor,
+    Color agreeColor,
+    Color cancelColor,
+    dynamic fnDataApproval,
+    VoidCallback onApproval,
+    VoidCallback onCancel,
+    VoidCallback onThen,
+  }) {
     _ComDialog(
       context,
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
+      fnDataApproval: fnDataApproval,
       agreeColor: agreeColor,
       cancelColor: cancelColor,
       onApproval: onApproval,
       onCancel: () {},
+      onThen: onThen,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(15),
@@ -173,26 +202,32 @@ class CusDialog {
   }
 
   /// 普通弹框，可选择确定或取消
-  static normal(BuildContext context,
-      {@required String title,
-      String subTitle,
-      String textAgree,
-      String textCancel,
-      Color titleColor,
-      Color agreeColor,
-      Color cancelColor,
-      bool barrierDismissible,
-      VoidCallback onApproval,
-      VoidCallback onCancel}) {
+  static normal(
+    BuildContext context, {
+    @required String title,
+    String subTitle,
+    String textAgree,
+    String textCancel,
+    Color titleColor,
+    Color agreeColor,
+    Color cancelColor,
+    bool barrierDismissible,
+    dynamic fnDataApproval,
+    VoidCallback onApproval,
+    VoidCallback onCancel,
+    VoidCallback onThen,
+  }) {
     _ComDialog(
       context,
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
       agreeColor: agreeColor ?? Colors.lightBlue,
+      fnDataApproval: fnDataApproval,
       cancelColor: cancelColor,
       onApproval: onApproval,
       barrierDismissible: barrierDismissible ?? false,
       onCancel: onCancel ?? () {},
+      onThen: onThen,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 15),

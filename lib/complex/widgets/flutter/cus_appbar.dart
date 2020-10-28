@@ -25,6 +25,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData leadingIcon;
   @override
   final Size preferredSize;
+  final VoidCallback leadingFn;
 
   CusAppBar({
     Key key,
@@ -41,6 +42,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.barHeight: appBarH,
     this.leadingSize: 32,
     this.leadingIcon: Icons.arrow_back_ios,
+    this.leadingFn,
   })  : preferredSize = Size.fromHeight(barHeight),
         super(key: key);
 
@@ -65,8 +67,11 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   icon: Icon(leadingIcon,
                       color: leadingColor, size: Adapt.px(leadingSize)),
-                  onPressed: () =>
-                      Navigator.of(context).pop(refresh ? "" : null),
+                  onPressed: () {
+                    leadingFn != null
+                        ? leadingFn()
+                        : Navigator.of(context).pop(refresh ? "" : null);
+                  },
                 )
             : null,
       ),

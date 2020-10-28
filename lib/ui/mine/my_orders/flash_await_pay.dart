@@ -7,32 +7,32 @@ import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/pagebean.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/ui/question/reward_post/reward_cover.dart';
+import 'package:yiapp/ui/question/flash_post/flash_cover.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/27 17:56
-// usage ：悬赏帖 -- 待付款
+// date  ：2020/10/28 11:07
+// usage ：闪断帖 -- 待付款
 // ------------------------------------------------------
 
-class RewardAwaitPay extends StatefulWidget {
-  RewardAwaitPay({Key key}) : super(key: key);
+class FlashAwaitPay extends StatefulWidget {
+  FlashAwaitPay({Key key}) : super(key: key);
 
   @override
-  _RewardAwaitPayState createState() => _RewardAwaitPayState();
+  _FlashAwaitPayState createState() => _FlashAwaitPayState();
 }
 
-class _RewardAwaitPayState extends State<RewardAwaitPay>
+class _FlashAwaitPayState extends State<FlashAwaitPay>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rows_per_page = 10; // 默认每页查询个数
-  List<BBSPrize> _l = []; // 悬赏帖待付款列表
+  List<BBSVie> _l = []; // 闪断帖待付款列表
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _RewardAwaitPayState extends State<RewardAwaitPay>
     super.initState();
   }
 
-  /// 悬赏帖待付款分页查询
+  /// 闪断帖待付款分页查询
   _fetch() async {
     if (_pageNo * _rows_per_page > _rowsCount) return;
     _pageNo++;
@@ -51,18 +51,18 @@ class _RewardAwaitPayState extends State<RewardAwaitPay>
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
+      PageBean pb = await ApiBBSVie.bbsViePage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
-      var l = pb.data.map((e) => e as BBSPrize).toList();
-      Debug.log("总的悬赏帖待付款个数：$_rowsCount");
+      var l = pb.data.map((e) => e as BBSVie).toList();
+      Debug.log("总的闪断帖待付款个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Debug.log("当前已查询悬赏帖待付款个数：${_l.length}");
+      Debug.log("当前已查询闪断帖待付款个数：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询悬赏帖待付款出现异常：$e");
+      Debug.logError("分页查询闪断帖待付款出现异常：$e");
     }
   }
 
@@ -91,7 +91,7 @@ class _RewardAwaitPayState extends State<RewardAwaitPay>
                     child: CusText("暂无相关订单", t_gray, 32),
                   ),
                 ..._l.map(
-                  (e) => RewardCover(data: e, onChanged: _refresh),
+                  (e) => FlashCover(data: e, onChanged: _refresh),
                 ),
               ],
             ),

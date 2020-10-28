@@ -30,32 +30,36 @@ class RewardCover extends StatefulWidget {
 class _RewardCoverState extends State<RewardCover> {
   // 临时设置，后边改为图片显示
   Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
-  String _type = "未知"; // 所求类型的文字
+  String _type = "其他"; // 所求类型的文字
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => CusRoutes.push(context, RewardContent(id: widget.data.id)),
-      child: Card(
-        color: fif_primary,
-        margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
-        shadowColor: Colors.white70,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: EdgeInsets.only(
-              left: Adapt.px(25), right: Adapt.px(25), top: Adapt.px(10)),
-          child: Column(
-            children: <Widget>[
-              _iconNameScore(), // 发帖人头像，昵称，悬赏金
-              _briefAndType(), // 帖子标题和类型显示
-              // 发帖时间。 如果本人帖子订单待支付，显示取消和支付按钮
-              RewardPayCancel(
-                data: widget.data,
-                onChanged: widget.onChanged,
-              ),
-            ],
-          ),
+      child: _coverItem(),
+    );
+  }
+
+  Widget _coverItem() {
+    return Card(
+      color: fif_primary,
+      margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
+      shadowColor: Colors.white70,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: Adapt.px(25), right: Adapt.px(25), top: Adapt.px(10)),
+        child: Column(
+          children: <Widget>[
+            _iconNameScore(), // 发帖人头像，昵称，悬赏金
+            _briefAndType(), // 帖子标题和类型显示
+            // 如果本人帖子订单待支付，显示取消和支付按钮
+            RewardPayCancel(
+              data: widget.data,
+              onChanged: widget.onChanged,
+            ),
+          ],
         ),
       ),
     );

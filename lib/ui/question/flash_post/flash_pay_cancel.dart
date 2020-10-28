@@ -34,21 +34,28 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        // 发帖时间
-        CusText("${CusTime.ymd(widget.data.create_date)}", t_gray, 28),
+        Padding(
+          padding: EdgeInsets.only(
+              bottom: Adapt.px(widget.data.stat != pay_await ? 20 : 0)),
+          child: CusText(
+            "${CusTime.ymd(widget.data.create_date)}", // 发帖时间
+            t_gray,
+            28,
+          ),
+        ),
         Spacer(),
-        // 本人帖子，且没有人回复时可以取消帖子
-        if (widget.data.uid == ApiBase.uid) ...[
+        // 待付款状态，且本人帖子
+        if (widget.data.stat == pay_await &&
+            widget.data.uid == ApiBase.uid) ...[
+          // 没有人回复时显示取消按钮(取消帖子功能)
           if (widget.data.reply.isEmpty)
             _comBtnCtr("取消", onPressed: _doCancel), // 取消订单
-          if (widget.data.stat == pay_await)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-              child: _comBtnCtr("支付", onPressed: _doPay),
-            ), // 支付订单
+          SizedBox(width: Adapt.px(20)),
+          _comBtnCtr("支付", onPressed: _doPay), // 支付订单
         ],
-        // 是大师，并且该单还没有被抢
-        if (ApiState.isMaster && widget.data.master_id == 0)
+        // 已付款状态，是大师，并且该单没有被抢，则显示抢单
+        if (widget.data.stat == pay_paid &&
+            (ApiState.isMaster && widget.data.master_id == 0))
           _comBtnCtr("抢单", onPressed: _doGrab), // 大师抢单
       ],
     );

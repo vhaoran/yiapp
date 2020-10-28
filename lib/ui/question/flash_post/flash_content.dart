@@ -7,6 +7,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -31,7 +32,7 @@ class FlashContent extends StatefulWidget {
 }
 
 class _FlashContentState extends State<FlashContent> {
-  var _bbsVie = BBSVie(); // 帖子全部内容
+  BBSVie _bbsVie; // 帖子全部内容
   List<BBSReply> _l = []; // 帖子评论列表
   var _future;
   var _scrollCtrl = ScrollController();
@@ -79,6 +80,9 @@ class _FlashContentState extends State<FlashContent> {
         builder: (context, snap) {
           if (!snapDone(snap)) {
             return Center(child: CircularProgressIndicator());
+          }
+          if (_bbsVie == null) {
+            return Center(child: CusText("帖子找不到了~", t_gray, 32));
           }
           return Column(
             children: <Widget>[

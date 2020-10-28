@@ -1,21 +1,23 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/home/home_page.dart';
+import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/question/ask_question/post_liuyao.dart';
 import 'post_brief_input.dart';
 import 'post_name_input.dart';
@@ -70,13 +72,52 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
     super.initState();
   }
 
+  /// 满足发帖条件
+  void _doPost(m) async {
+    try {
+      var data;
+      data = ApiState.isFlash
+          ? await ApiBBSVie.bbsVieAdd(m)
+          : await ApiBBSPrize.bbsPrizeAdd(m);
+      if (data != null) {
+        Debug.log("发帖成功，详情：${data.toJson()}");
+        CusToast.toast(
+          context,
+          text: "发帖成功，即将跳转到支付界面",
+          milliseconds: 1500,
+        );
+        Future.delayed(Duration(milliseconds: 1500)).then(
+          (value) => CusRoutes.pushReplacement(
+            context,
+            ComPayPage(
+              tip: ApiState.isFlash ? "闪断帖付款" : "悬赏帖付款",
+              b_type: ApiState.isFlash ? b_bbs_vie : b_bbs_prize,
+              orderId: data.id,
+              amt: num.parse(_scoreCtrl.text.trim()),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (e.toString().contains("余额")) {
+        CusDialog.normal(
+          context,
+          title: "余额不足，请充值",
+          textAgree: "充值",
+          onApproval: () => Debug.log("前往充值页面"),
+        );
+      }
+      Debug.logError("我要提问出现异常：$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(
         text: "我要提问",
         actions: <Widget>[
-          FlatButton(onPressed: _doPost, child: CusText("发帖", t_gray, 28)),
+          FlatButton(onPressed: _verify, child: CusText("发帖", t_gray, 28)),
         ],
       ),
       body: _lv(),
@@ -126,9 +167,22 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
     );
   }
 
-  /// 发帖
-  void _doPost() async {
-    _verify(); // 验证输入信息
+  /// 验证输入信息
+  void _verify() {
+    setState(() {
+      if (_snackErr != null) _snackErr = null; // 清空错误信息
+      if (_nameCtrl.text.isEmpty) {
+        _snackErr = "姓名不能为空";
+      } else if (_birth == null) {
+        _snackErr = "请选择出生日期";
+      } else if (_scoreCtrl.text.isEmpty) {
+        _snackErr = "悬赏金额不能为空";
+      } else if (_titleCtrl.text.isEmpty) {
+        _snackErr = "帖子标题不能为空";
+      } else if (_briefCtrl.text.isEmpty) {
+        _snackErr = "帖子内容不能为空";
+      }
+    });
     // 不满足发帖条件
     if (_snackErr != null) {
       CusSnackBar(
@@ -136,11 +190,9 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
         scaffoldKey: _scaffoldKey,
         text: _snackErr,
         milliseconds: 1200,
-        backgroundColor: fif_primary,
+        backgroundColor: primary,
       );
-    }
-    // 满足发帖条件
-    else {
+    } else {
       String code = ""; // 六爻编码
       if (_isLiuYao) {
         widget.l.forEach((e) => code += e.toString());
@@ -170,46 +222,8 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
         },
       };
       Debug.log("发帖详情：${m.toString()}");
-      try {
-        var data;
-        data = ApiState.isFlash
-            ? await ApiBBSVie.bbsVieAdd(m)
-            : await ApiBBSPrize.bbsPrizeAdd(m);
-        if (data != null) {
-          Debug.log("发帖结果：${data.toJson()}");
-          CusToast.toast(context, text: "发帖成功，订单待支付");
-          Navigator.pop(context);
-        }
-      } catch (e) {
-        if (e.toString().contains("余额")) {
-          CusDialog.normal(
-            context,
-            title: "余额不足，请充值",
-            textAgree: "充值",
-            onApproval: () => Debug.log("前往充值页面"),
-          );
-        }
-        Debug.logError("出现异常：$e");
-      }
+      _doPost(m); // 满足发帖条件
     }
-  }
-
-  /// 验证输入信息
-  void _verify() {
-    setState(() {
-      if (_snackErr != null) _snackErr = null; // 清空错误信息
-      if (_nameCtrl.text.isEmpty) {
-        _snackErr = "姓名不能为空";
-      } else if (_birth == null) {
-        _snackErr = "请选择出生日期";
-      } else if (_scoreCtrl.text.isEmpty) {
-        _snackErr = "悬赏金额不能为空";
-      } else if (_titleCtrl.text.isEmpty) {
-        _snackErr = "帖子标题不能为空";
-      } else if (_briefCtrl.text.isEmpty) {
-        _snackErr = "帖子内容不能为空";
-      }
-    });
   }
 
   @override

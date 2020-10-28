@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/cus_dot_format.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -43,6 +44,7 @@ class _PostScoreInputState extends State<PostScoreInput> {
             autofocus: false,
             hideBorder: true,
             onlyNumber: true,
+            inputFormatters: [DotFormatter()],
           ),
         ),
       ],

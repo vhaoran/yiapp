@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
@@ -11,6 +13,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -33,16 +36,24 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        // 发帖时间
-        CusText("${CusTime.ymd(widget.data.create_date)}", t_gray, 28),
+        Padding(
+          padding: EdgeInsets.only(
+              bottom: Adapt.px(widget.data.stat != pay_await ? 20 : 0)),
+          child: CusText(
+            "${CusTime.ymd(widget.data.create_date)}", // 发帖时间
+            t_gray,
+            28,
+          ),
+        ),
         Spacer(),
-        // 本人帖子，且没有人回复时可以取消帖子
-        if (widget.data.uid == ApiBase.uid) ...[
+        // 待付款状态，且本人帖子
+        if (widget.data.stat == pay_await &&
+            widget.data.uid == ApiBase.uid) ...[
+          // 没有人回复时显示取消按钮(取消帖子功能)
           if (widget.data.reply.isEmpty)
             _comBtnCtr("取消", onPressed: _doCancel), // 取消订单
           SizedBox(width: Adapt.px(20)),
-          if (widget.data.stat == pay_await)
-            _comBtnCtr("支付", onPressed: _doPay), // 支付订单
+          _comBtnCtr("支付", onPressed: _doPay), // 支付订单
         ],
       ],
     );
@@ -68,7 +79,15 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
 
   /// 支付订单
   void _doPay() async {
-    Debug.log("支付订单");
+    CusRoutes.push(
+      context,
+      ComPayPage(
+        tip: "悬赏帖付款",
+        b_type: b_bbs_prize,
+        amt: widget.data.score,
+        orderId: widget.data.id,
+      ),
+    );
   }
 
   /// 该页面通用按钮
