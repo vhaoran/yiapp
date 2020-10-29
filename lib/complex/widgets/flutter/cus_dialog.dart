@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/login/login_page.dart';
-import '../../const/const_color.dart';
-import '../../tools/adapt.dart';
+import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,7 +22,8 @@ class _ComDialog {
   dynamic fnDataCancel; // 点击同意关闭弹窗后的返回内容
   VoidCallback onApproval; // 同意按钮事件
   VoidCallback onCancel; // 取消按钮事件
-  VoidCallback onThen; //
+  // 如果 fnDataApproval 和 fnDataCancel 有值，则弹框关闭后，执行 onThen 方法
+  VoidCallback onThen;
   Widget child; // 按钮上面的组件
   bool barrierDismissible;
 
@@ -45,14 +44,13 @@ class _ComDialog {
     this.child,
     this.barrierDismissible: false,
   }) {
-    showDialog<Null>(
+    showDialog<dynamic>(
       context: context,
       barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
         return _dialogCtr(context);
       },
     ).then((value) {
-      print(">>>value:$value");
       if (value != null) {
         if (onThen != null) onThen();
       }
@@ -121,8 +119,8 @@ class _ComDialog {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         onPressed();
-        Navigator.pop(context, fnData);
         // fnData 根据是否需要返回内容，决定弹窗关闭后要做的事情
+        Navigator.pop(context, fnData);
       },
       child: Semantics(
         button: true,
@@ -154,6 +152,7 @@ class CusDialog {
     Color agreeColor,
     Color cancelColor,
     dynamic fnDataApproval,
+    dynamic fnDataCancel,
     VoidCallback onApproval,
     VoidCallback onCancel,
     VoidCallback onThen,
@@ -163,10 +162,11 @@ class CusDialog {
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
       fnDataApproval: fnDataApproval,
+      fnDataCancel: fnDataCancel,
       agreeColor: agreeColor,
       cancelColor: cancelColor,
-      onApproval: onApproval,
-      onCancel: () {},
+      onApproval: onApproval ?? () {},
+      onCancel: onCancel ?? () {},
       onThen: onThen,
       child: Container(
         alignment: Alignment.center,
@@ -213,6 +213,7 @@ class CusDialog {
     Color cancelColor,
     bool barrierDismissible,
     dynamic fnDataApproval,
+    dynamic fnDataCancel,
     VoidCallback onApproval,
     VoidCallback onCancel,
     VoidCallback onThen,
@@ -222,12 +223,13 @@ class CusDialog {
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
       agreeColor: agreeColor ?? Colors.lightBlue,
-      fnDataApproval: fnDataApproval,
       cancelColor: cancelColor,
-      onApproval: onApproval,
-      barrierDismissible: barrierDismissible ?? false,
+      fnDataApproval: fnDataApproval,
+      fnDataCancel: fnDataCancel,
+      onApproval: onApproval ?? () {},
       onCancel: onCancel ?? () {},
       onThen: onThen,
+      barrierDismissible: barrierDismissible ?? false,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -263,17 +265,21 @@ class CusDialog {
   }
 
   /// 提醒弹框，比如发布朋友圈内容不能为空的提醒，只有确定按钮
-  static tip(BuildContext context,
-      {@required String title,
-      String subTitle,
-      String textAgree,
-      Color titleColor,
-      Color agreeColor,
-      Widget child,
-      VoidCallback onApproval}) {
+  static tip(
+    BuildContext context, {
+    @required String title,
+    String subTitle,
+    String textAgree,
+    Color titleColor,
+    Color agreeColor,
+    Widget child,
+    VoidCallback onApproval,
+    dynamic fnDataApproval,
+  }) {
     _ComDialog(
       context,
-      onApproval: onApproval,
+      onApproval: onApproval ?? () {},
+      fnDataApproval: fnDataApproval,
       textAgree: textAgree ?? "确定",
       agreeColor: agreeColor ?? Colors.black,
       child: Container(

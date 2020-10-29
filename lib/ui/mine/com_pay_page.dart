@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/api_business_type.dart';
 import 'package:yiapp/complex/class/cus_dot_format.dart';
@@ -14,8 +16,10 @@ import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 
 // ------------------------------------------------------
@@ -50,26 +54,29 @@ class _ComPayPageState extends State<ComPayPage> {
 
   bool _def = false; // 是否有默认金额
   bool _success = false; // 是否支付完成
+  StreamSubscription<MsgNotifyHis> _busSub;
 
   @override
   void initState() {
     _def = widget.amt == null ? false : true;
+    _prepareBusEvent(); // 初始化监听
     super.initState();
+  }
+
+  /// 系统通知类型
+  _prepareBusEvent() {
+    _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
+      Debug.log("监听到了吗");
+      Debug.log("返回的详情：${event.toJson()}");
+      if (event.to == ApiBase.uid) {
+        _success = true;
+        Debug.log("是发给本人的");
+      }
+    });
   }
 
   /// 支付功能
   void _doStartPay() async {
-    CusDialog.normal(
-      context,
-      title: "订单支付后大师们才可以看到，您可以到"
-          "【我的订单】-【待付款】下支付未完成的订单",
-      textAgree: "继续支付",
-      onApproval: () {},
-//      fnDataApproval: "返回",
-//      onCancel: null,
-      onThen: () => CusRoutes.push(context, HomePage()),
-    );
-    return;
     num amt = num.parse(_amtCtrl.text);
     if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
       CusToast.toast(context, text: "金额数必须大于0", milliseconds: 1500);
@@ -84,17 +91,17 @@ class _ComPayPageState extends State<ComPayPage> {
 
     // TODO 这里根据服务器返回的结果来显示ui和跳转
     // 这里让 _success 将等于服务器返回的交易结果
-
     if (_success) {
       CusToast.toast(context, text: "支付成功", milliseconds: 1500);
       CusRoutes.push(context, HomePage());
     } else {
-      CusDialog.tip(
-        context,
-        title: "支付失败",
-        titleColor: Colors.red,
-      );
+//      CusDialog.tip(
+//        context,
+//        title: "支付失败",
+//        titleColor: Colors.red,
+//      );
     }
+    Navigator.pop(context);
   }
 
   @override
@@ -102,14 +109,19 @@ class _ComPayPageState extends State<ComPayPage> {
     return Scaffold(
       appBar: CusAppBar(
         text: widget.appBarName,
-//        leadingFn: () {
-//          CusDialog.tip(
-//            context,
-//            title: "订单支付后大师们才可以看到，您可以到"
-//                "【我的订单】-【待付款】下支付未完成的订单",
-//            onApproval: () => CusRoutes.push(context, HomePage()),
-//          );
-//        },
+        leadingFn: () {
+          if (!_success) {
+            CusDialog.normal(
+              context,
+              title: "订单支付后大师们才可以看到哦",
+              textAgree: "继续支付",
+              fnDataCancel: "取消支付",
+              cancelColor: btn_red,
+              agreeColor: Colors.black,
+              onThen: () => Navigator.pop(context),
+            );
+          }
+        },
       ),
       body: _lv(),
       backgroundColor: primary,
@@ -201,5 +213,12 @@ class _ComPayPageState extends State<ComPayPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _amtCtrl.dispose();
+//    _busSub.cancel();
+    super.dispose();
   }
 }

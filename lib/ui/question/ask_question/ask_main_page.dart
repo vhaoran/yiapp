@@ -13,6 +13,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -74,6 +75,8 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
 
   /// 满足发帖条件
   void _doPost(m) async {
+    CusLoading(context);
+    Navigator.pop(context);
     try {
       var data;
       data = ApiState.isFlash
