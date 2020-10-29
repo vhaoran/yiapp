@@ -14,7 +14,6 @@ import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/fortune/almanac/utils/solar_term_util.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_color.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_images.dart';
 import 'package:yiapp/ui/mine/mall/product/add_product/add_p_name.dart';
@@ -168,7 +167,7 @@ class _AddProductState extends State<AddProduct> {
         _snackErr = "未添加商品颜色和价格";
       }
       if (_images.length != _cpList.length) {
-        _snackErr = "商品图片与颜色价格表个数保持不一致";
+        _snackErr = "商品图片个数与颜色价格表个数不相同";
       }
     });
     // 不满足新增商品条件

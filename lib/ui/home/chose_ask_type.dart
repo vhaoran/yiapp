@@ -65,17 +65,18 @@ class ChoseAskType extends StatelessWidget {
       case 1: // 四柱
         CusRoutes.pushReplacement(
           context,
-          AskQuestionPage(content_type: post_sizhu),
+          AskQuestionPage(content_type: post_sizhu, barName: "四柱"),
         );
         break;
       case 2: // 合婚
         CusRoutes.pushReplacement(
           context,
-          AskQuestionPage(content_type: post_hehun),
+          AskQuestionPage(content_type: post_hehun, barName: "合婚"),
         );
         break;
       case 3: // 其他
-        CusRoutes.pushReplacement(context, AskQuestionPage(content_type: 0));
+        CusRoutes.pushReplacement(
+            context, AskQuestionPage(content_type: 0, barName: "其他"));
         break;
       default:
         Navigator.pop(context);

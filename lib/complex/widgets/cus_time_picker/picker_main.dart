@@ -116,8 +116,8 @@ class _PickerViewState extends State<PickerView> {
       // 目前只能周易日历需要显示 hourStr
       hourStr: _isZhouYi ? c_old_times[_hourIndex].substring(14) : null,
     );
-    YiDateTime res = yiDt.fromPickMode(widget.pickMode);
-    widget.onConfirm(res);
+//    YiDateTime res = yiDt.fromPickMode(widget.pickMode);
+    widget.onConfirm(yiDt);
     Navigator.pop(context);
   }
 

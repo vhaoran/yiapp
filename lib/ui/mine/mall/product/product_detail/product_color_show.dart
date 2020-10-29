@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/function/shopcart_func.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -79,6 +80,8 @@ class _ProductColorShowState extends State<ProductColorShow> {
   }
 
   Widget _co() {
+    // 这里如果颜色和图片保持一致的话，这个判断就不需要了
+    bool b = widget.product.colors.length <= widget.product.images.length;
     return Column(
       children: <Widget>[
         Expanded(
@@ -88,10 +91,16 @@ class _ProductColorShowState extends State<ProductColorShow> {
               children: <Widget>[
                 SizedBox(height: Adapt.px(10)),
                 // 商品的图片,价格和颜色
-                ...List.generate(
-                  widget.product.colors.length,
-                  (i) => _productItem(widget.product.colors[i], i),
-                ),
+                if (b)
+                  ...List.generate(
+                    widget.product.colors.length,
+                    (i) => _productItem(widget.product.colors[i], i),
+                  ),
+                if (!b)
+                  ...List.generate(
+                    widget.product.images.length,
+                    (i) => _productItem(widget.product.colors[i], i),
+                  ),
                 // 购买数量
                 ProductCount(
                   count: _count,
@@ -111,7 +120,11 @@ class _ProductColorShowState extends State<ProductColorShow> {
 
   /// 单个商品的价格和颜色
   Widget _productItem(ProductColor e, int i) {
-    String path = widget.product.images[i].path;
+    if (i > widget.product.images.length) {
+      Debug.log("66666666");
+      i = widget.product.images.length;
+    }
+    String path = widget.product.images[i]?.path ?? "";
     return InkWell(
       onTap: () => setState(() {
         _curSelect = i;

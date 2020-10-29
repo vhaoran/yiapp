@@ -40,6 +40,7 @@ class AskQuestionPage extends StatefulWidget {
   final List<int> l; // 六爻编码
   final YiDateTime guaTime;
   final String user_nick; // 卦主姓名
+  final String barName;
 
   AskQuestionPage({
     this.content_type,
@@ -47,6 +48,7 @@ class AskQuestionPage extends StatefulWidget {
     this.l,
     this.guaTime,
     this.user_nick,
+    this.barName: "",
     Key key,
   }) : super(key: key);
 
@@ -118,7 +120,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(
-        text: "我要提问",
+        text: "我要提问 ${_isLiuYao ? '六爻' : widget.barName}",
         actions: <Widget>[
           FlatButton(onPressed: _verify, child: CusText("发帖", t_gray, 28)),
         ],

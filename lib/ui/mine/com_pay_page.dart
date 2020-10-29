@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/api_business_type.dart';
 import 'package:yiapp/complex/class/cus_dot_format.dart';
@@ -101,7 +100,6 @@ class _ComPayPageState extends State<ComPayPage> {
 //        titleColor: Colors.red,
 //      );
     }
-    Navigator.pop(context);
   }
 
   @override

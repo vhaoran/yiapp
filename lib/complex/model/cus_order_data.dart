@@ -10,7 +10,7 @@ import 'package:yiapp/model/dicts/product.dart';
 class AllShopData {
   List<SingleShopData> shops;
   int counts = 0; // 总购买数量
-  int amt = 0; // 总价
+  num amt = 0; // 总价
 
   AllShopData({this.shops}) {
     if (this.shops != null) {

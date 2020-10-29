@@ -65,37 +65,14 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
         AllShopData data = await ShopKV.remove(widget.allShop);
         bool ok = await ShopKV.refresh(data);
         if (ok) {
-          Navigator.of(context).pop("");
+          // toast push
           CusToast.toast(context, text: "订单提交成功");
+
         }
       }
     } catch (e) {
       Debug.logError("提交订单出现异常：$e");
     }
-
-//    for (var i = 0; i < _l.length; i++) {
-//      SingleShopData order = _l[i];
-//      var m = {
-//        "items": [
-//          {
-//            "product_id": order.product.id_of_es,
-//            "name": order.product.name,
-//            "color_code": order.color.code,
-//            "price": order.color.price, // 单价
-//            "qty": order.count, // 购买个数
-//          }
-//        ],
-//        "contact": _addr.contact_person, // 联系人
-//        "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
-//      };
-//      try {
-//        var res = await ApiProductOrder.productOrderAdd(m);
-//        if (res != null) success = true;
-//      } catch (e) {
-//        success = false;
-//        Debug.logError("提交订单id:${order.product.id_of_es}出现异常：$e");
-//      }
-//    }
   }
 
   @override

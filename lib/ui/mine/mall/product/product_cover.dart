@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -60,45 +61,48 @@ class _ProductCoverState extends State<ProductCover> {
         ),
         Container(
           color: CusColors.systemGrey6(context),
+          padding: EdgeInsets.symmetric(vertical: ApiState.isAdmin ? 0 : 5),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              SizedBox(width: Adapt.px(5)),
               // 商品名称
-              Padding(
-                padding:
-                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(15)),
+              Flexible(
+                flex: 2,
                 child: CusText("${p.name}", Colors.black, 30),
               ),
               // 商品价格
               CusText("￥${p.colors.first.price}", t_yi, 32),
-              Expanded(
-                child: PopupMenuButton<String>(
-                  color: t_gray,
-                  offset: Offset(0, 40),
-                  padding: EdgeInsets.all(0),
-                  onSelected: (val) {
-                    switch (val) {
-                      case "修改":
-                        CusRoutes.push(context, ChProduct(id: p.id_of_es))
-                            .then((val) {
-                          if (val != null && widget.onChange != null)
-                            widget.onChange(val);
-                        });
-                        break;
-                      case "删除":
-                        _doProductRm(p);
-                        break;
-                      default:
-                        break;
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              if (ApiState.isAdmin)
+                Flexible(
+                  flex: 1,
+                  child: PopupMenuButton<String>(
+                    color: t_gray,
+                    offset: Offset(0, 40),
+                    padding: EdgeInsets.all(0),
+                    onSelected: (val) {
+                      switch (val) {
+                        case "修改":
+                          CusRoutes.push(context, ChProduct(id: p.id_of_es))
+                              .then((val) {
+                            if (val != null && widget.onChange != null)
+                              widget.onChange(val);
+                          });
+                          break;
+                        case "删除":
+                          _doProductRm(p);
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    icon: Icon(Icons.more_horiz, color: Colors.grey),
+                    itemBuilder: (context) => _buildPopup(),
                   ),
-                  icon: Icon(Icons.more_horiz, color: Colors.grey),
-                  itemBuilder: (context) => _buildPopup(),
                 ),
-              ),
             ],
           ),
         ),
