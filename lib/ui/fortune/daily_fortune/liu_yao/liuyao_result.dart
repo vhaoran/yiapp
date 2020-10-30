@@ -56,7 +56,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
   Widget build(BuildContext context) {
     _user_nick = context.watch<UserInfoState>()?.userInfo?.nick ?? "";
     return Scaffold(
-      appBar: CusAppBar(text: "六爻排盘"),
+      appBar: CusAppBar(text: "六爻排盘", backData: ""),
       body: _lv(),
       backgroundColor: primary,
     );

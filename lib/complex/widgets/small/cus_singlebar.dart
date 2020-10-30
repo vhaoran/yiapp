@@ -37,13 +37,13 @@ class CusSingleBar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: width ?? (Adapt.screenW() - Adapt.px(200)) / length,
+        width: width ?? (Adapt.screenW() - Adapt.px(100)) / length,
         padding: EdgeInsets.only(top: Adapt.px(16), bottom: Adapt.px(2)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(icon, size: Adapt.px(iconSize), color: iconColor),
-            SizedBox(height: Adapt.px(8)),
+            SizedBox(height: Adapt.px(20)),
             Text(
               title ?? "选项",
               style:

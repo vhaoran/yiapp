@@ -169,7 +169,6 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   /// 通用背景组件
   Widget _bgCtr({List<Widget> children}) {
     return Container(
-      height: Adapt.px(90),
       padding: EdgeInsets.only(left: Adapt.px(30)),
       margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
       decoration: BoxDecoration(

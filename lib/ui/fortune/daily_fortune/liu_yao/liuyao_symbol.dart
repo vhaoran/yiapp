@@ -43,13 +43,13 @@ class LiuYaoSymbol extends StatelessWidget {
         ),
         // 爻的符号
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+          padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
           child: code.isOdd // 是否奇数，奇数为阳，偶数为阴
-              ? _yaoSym(width: 2 * _width + 40)
+              ? _yaoSym(width: 2 * _width + 20)
               : Row(
                   children: <Widget>[
                     _yaoSym(),
-                    SizedBox(width: Adapt.px(40)),
+                    SizedBox(width: Adapt.px(20)),
                     _yaoSym(),
                   ],
                 ),

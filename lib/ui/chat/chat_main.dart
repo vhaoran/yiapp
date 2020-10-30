@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
@@ -19,15 +20,20 @@ class _ChatMainState extends State<ChatMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "测试"),
+      appBar: CusAppBar(text: "消息"),
       body: _lv(),
       backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        children: <Widget>[
+          Padding(padding: EdgeInsets.only()),
+        ],
+      ),
     );
   }
 }

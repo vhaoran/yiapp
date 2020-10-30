@@ -31,6 +31,18 @@ class HongYunApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: mainRoutes,
+      // 这段代码用于实现全局点击空白处隐藏键盘
+      builder: (context, child) => Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScopeNode curFocus = FocusScope.of(context);
+            if (!curFocus.hasPrimaryFocus && curFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus.unfocus();
+            }
+          },
+          child: child,
+        ),
+      ),
       home: HomePage(),
     );
   }

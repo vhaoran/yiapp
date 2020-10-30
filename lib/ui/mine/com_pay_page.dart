@@ -51,13 +51,15 @@ class _ComPayPageState extends State<ComPayPage> {
   var _amtCtrl = TextEditingController(); // 充值金额输入框
   int _account_type = pay_alipay; // 0:支付宝 1:微信
 
-  bool _def = false; // 是否有默认金额
+  bool _defAmt = false; // 是否默认金额
+  bool _recharge = false; // 是否充值类型
   bool _success = false; // 是否支付完成
   StreamSubscription<MsgNotifyHis> _busSub;
 
   @override
   void initState() {
-    _def = widget.amt == null ? false : true;
+    _defAmt = widget.amt == null ? false : true;
+    _recharge = widget.b_type == b_recharge;
     _prepareBusEvent(); // 初始化监听
     super.initState();
   }
@@ -76,14 +78,19 @@ class _ComPayPageState extends State<ComPayPage> {
 
   /// 支付功能
   void _doStartPay() async {
-    num amt = num.parse(_amtCtrl.text);
-    if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
-      CusToast.toast(context, text: "金额数必须大于0", milliseconds: 1500);
+    num amt = 0;
+    if (_amtCtrl.text.trim().isEmpty) {
+      CusToast.toast(context, text: "请输入充值金额");
       return;
+    } else {
+      amt = num.parse(_amtCtrl.text.trim());
+      if (amt == 0 || amt.isNaN) {
+        CusToast.toast(context, text: "金额数必须大于0", milliseconds: 1500);
+        return;
+      }
     }
-    String trade_no =
-        widget.b_type == b_recharge ? "${ApiBase.uid}" : widget.orderId;
-    Debug.log("支付类型：${widget.b_type}、方式：$_account_type");
+    String trade_no = widget.b_type == b_recharge ? null : widget.orderId;
+    Debug.log("支付类型：${widget.b_type}、支付方式：$_account_type");
     Debug.log("订单号：$trade_no、金额:$amt");
     String url = ApiPay.PayReqURL(widget.b_type, _account_type, trade_no, amt);
     if (url != null) ApiBrowser.launchIn(url);
@@ -108,17 +115,15 @@ class _ComPayPageState extends State<ComPayPage> {
       appBar: CusAppBar(
         text: widget.appBarName,
         leadingFn: () {
-          if (!_success) {
-            CusDialog.normal(
-              context,
-              title: "订单支付后大师们才可以看到哦",
-              textAgree: "继续支付",
-              fnDataCancel: "取消支付",
-              cancelColor: btn_red,
-              agreeColor: Colors.black,
-              onThen: () => Navigator.pop(context),
-            );
-          }
+          CusDialog.normal(
+            context,
+            title: "订单支付后大师们才可以看到哦",
+            textAgree: "继续支付",
+            fnDataCancel: "取消支付",
+            cancelColor: btn_red,
+            agreeColor: Colors.black,
+            onThen: () => Navigator.pop(context),
+          );
         },
       ),
       body: _lv(),
@@ -139,9 +144,9 @@ class _ComPayPageState extends State<ComPayPage> {
           ),
           CusRectField(
             controller: _amtCtrl,
-            fromValue: _def ? "${widget.amt}" : null,
-            enable: _def ? false : true,
-            hintText: "请输入充值金额",
+            fromValue: _defAmt ? "${widget.amt}" : null,
+            enable: _defAmt ? false : true,
+            hintText: _recharge ? "请输入充值金额" : null,
             keyboardType: TextInputType.number,
             inputFormatters: [DotFormatter()],
           ),
@@ -166,49 +171,55 @@ class _ComPayPageState extends State<ComPayPage> {
 
   /// 支付宝
   Widget _typeAliPay() {
-    return Container(
-      color: fif_primary,
-      padding: EdgeInsets.all(10),
-      child: Row(
-        children: <Widget>[
-          Radio(
-            value: pay_alipay,
-            groupValue: _account_type,
-            activeColor: t_primary,
-            onChanged: (val) => setState(() => _account_type = val),
-          ),
-          CusText("支付宝", t_gray, 30),
-          Spacer(),
-          Icon(
-            IconData(0xe638, fontFamily: ali_font),
-            color: Color(0xFF4C9FE3),
-            size: Adapt.px(100),
-          ),
-        ],
+    return InkWell(
+      onTap: () => setState(() => _account_type = pay_alipay),
+      child: Container(
+        color: fif_primary,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Radio(
+              value: pay_alipay,
+              groupValue: _account_type,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _account_type = val),
+            ),
+            CusText("支付宝", t_gray, 30),
+            Spacer(),
+            Icon(
+              IconData(0xe638, fontFamily: ali_font),
+              color: Color(0xFF4C9FE3),
+              size: Adapt.px(100),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _typeWeChat() {
-    return Container(
-      color: fif_primary,
-      padding: EdgeInsets.all(10),
-      child: Row(
-        children: <Widget>[
-          Radio(
-            value: pay_wechat,
-            groupValue: _account_type,
-            activeColor: t_primary,
-            onChanged: (val) => setState(() => _account_type = val),
-          ),
-          CusText("微信", t_gray, 30),
-          Spacer(),
-          Icon(
-            IconData(0xe607, fontFamily: ali_font),
-            color: Color(0xFF5AB535),
-            size: Adapt.px(100),
-          ),
-        ],
+    return InkWell(
+      onTap: () => setState(() => _account_type = pay_wechat),
+      child: Container(
+        color: fif_primary,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Radio(
+              value: pay_wechat,
+              groupValue: _account_type,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _account_type = val),
+            ),
+            CusText("微信", t_gray, 30),
+            Spacer(),
+            Icon(
+              IconData(0xe607, fontFamily: ali_font),
+              color: Color(0xFF5AB535),
+              size: Adapt.px(100),
+            ),
+          ],
+        ),
       ),
     );
   }

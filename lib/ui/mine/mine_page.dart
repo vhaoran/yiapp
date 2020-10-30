@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,9 @@ import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/login/register_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/broker/broker_info_page.dart';
 import 'package:yiapp/ui/back_stage/backstage_manage.dart';
@@ -49,10 +52,22 @@ class _MinePageState extends State<MinePage>
   File _file; // 返回的相册或者拍摄的图片
   UserInfo _u;
 
+  StreamSubscription<MsgYiOrder> _bubSub;
+
   @override
   void initState() {
     Debug.log("进入了个人主页");
     super.initState();
+    _prepareBusEvent();
+  }
+
+  void _prepareBusEvent() {
+    _bubSub = glbEventBus.on<MsgYiOrder>().listen((event) {
+      Debug.log("有订单消息了,消息详情：${event.toJson()}");
+      if (event.to == ApiBase.uid) {
+        Debug.log("是发给自己的");
+      }
+    });
   }
 
   @override
@@ -156,36 +171,34 @@ class _MinePageState extends State<MinePage>
   Widget _userCodeCt() {
     TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
     return ApiState.isGuest
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                _u.nick, // 用户昵称
-                style: TextStyle(
-                  color: t_gray,
-                  fontSize: Adapt.px(30),
-                  fontWeight: FontWeight.w500,
+        ? Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  _u.nick, // 用户昵称
+                  style: TextStyle(
+                    color: t_gray,
+                    fontSize: Adapt.px(30),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(width: Adapt.px(20)),
-                  InkWell(
-                    onTap: () => CusRoutes.push(
-                      context,
-                      LoginPage(showDefault: true),
-                    ),
-                    child: Text("登录", style: ts),
+                SizedBox(width: Adapt.px(30)),
+                InkWell(
+                  onTap: () => CusRoutes.push(
+                    context,
+                    LoginPage(showDefault: true),
                   ),
-                  Text("丨", style: ts),
-                  InkWell(
-                    onTap: () => CusRoutes.push(context, RegisterPage()),
-                    child: Text("注册", style: ts),
-                  ),
-                ],
-              ),
-            ],
+                  child: Text("登录", style: ts),
+                ),
+                Text("丨", style: ts),
+                InkWell(
+                  onTap: () => CusRoutes.push(context, RegisterPage()),
+                  child: Text("注册", style: ts),
+                ),
+              ],
+            ),
           )
         : Text(
             _u.nick, // 用户昵称
@@ -205,4 +218,10 @@ class _MinePageState extends State<MinePage>
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    _bubSub.cancel();
+    super.dispose();
+  }
 }

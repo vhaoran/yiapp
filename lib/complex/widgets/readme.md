@@ -1,6 +1,7 @@
 ### 自定义组件
 
 - admin 管理员通用组件
+- bubble 聊天气泡相关
 - cus_time_picker 自定义日期选择组件
 - flutter 二次封装flutter系统组件
 - fn 封装的带有回调的组件

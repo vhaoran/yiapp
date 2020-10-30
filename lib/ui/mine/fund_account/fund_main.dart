@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
 import 'package:yiapp/ui/mine/fund_account/bill_history.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
@@ -38,7 +40,11 @@ class FundMain extends StatelessWidget {
         ),
         NormalBox(
           title: "充值",
-          onTap: () => CusRoutes.push(context, RechargePage()),
+//          onTap: () => CusRoutes.push(context, RechargePage()),
+          onTap: () => CusRoutes.push(
+            context,
+            ComPayPage(tip: "充值金额", b_type: b_recharge, appBarName: "充值"),
+          ),
         ),
       ],
     );

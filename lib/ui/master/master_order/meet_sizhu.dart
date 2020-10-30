@@ -130,18 +130,19 @@ class _MeetSiZhuPageState extends State<MeetSiZhuPage> {
       _err = _contentCtrl.text.isEmpty ? "未填写描述的内容" : null;
     });
     if (_err != null) return;
-    CusLoading(context);
-    Navigator.pop(context);
     var m = {
       "master_id": widget.master_id,
-      "master_cate_id": ApiBase.uid,
+      "yi_cate_id": ApiBase.uid,
       "comment": _contentCtrl.text.trim(),
       "si_zhu": widget.siZhu.toJson(),
     };
     Debug.log("数据：${m.toString()}");
     try {
+      CusLoading(context);
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
+        Navigator.pop(context);
+        Debug.log("四柱下单后返回的订单id：${res.id}");
         CusToast.toast(context, text: "下单成功");
         CusRoutes.pushReplacement(context, HomePage());
       }

@@ -46,6 +46,10 @@ const int qi_ming = 9; // 起名
 const int hun_jia = 10; // 婚丧嫁娶吉日
 const int he_hun = 11; // 合婚
 
+// ----------------------- 消息类型 -----------------------
+const int msg_text = 0; // 文本
+const int msg_voice = 1; // 语音
+
 // ------------------------- 时辰 ------------------------
 const int zao_zi = 0; // 早子
 const int chou_shi = 1; // 丑时

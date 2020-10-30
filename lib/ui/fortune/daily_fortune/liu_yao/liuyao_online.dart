@@ -12,6 +12,7 @@ import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_result.dart';
@@ -54,7 +55,6 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   Widget build(BuildContext context) {
     _hadShaken = widget.l.length == 6 ? true : false;
     _sex = context.watch<UserInfoState>()?.userInfo?.sex ?? -1;
-    Debug.log("用户性别：$_sex");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
       child: Column(
@@ -126,6 +126,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
 
   /// 开始起卦
   void _doQiGua() async {
+    CusLoading(context);
     String code = "";
     widget.l.forEach((e) => code += e.toString());
     print(">>>guaTime:${_guaTime.toJson()}");
@@ -145,7 +146,9 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
         CusRoutes.pushReplacement(
           context,
           LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),
-        );
+        ).then((val) {
+          if (val != null) Navigator.pop(context);
+        });
       }
     } catch (e) {
       Debug.logError("六爻起卦出现异常：$e");

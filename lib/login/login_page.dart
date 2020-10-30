@@ -104,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
           textColor: Colors.black,
           backgroundColor: Color(0xFFEE9972),
           onPressed: _doLogin,
-          pdVer: Adapt.px(15),
           borderRadius: 50,
         ),
       ],

@@ -133,9 +133,13 @@ class _FlashReplyState extends State<FlashReply> {
                   ? CusText("(帖主)", Colors.grey, _localSize - 2)
                   : null,
             ),
-          Spacer(),
           // 显示层数
-          CusText("$level层", Colors.grey, _localSize - 2),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: CusText("$level层", Colors.grey, _localSize - 2),
+            ),
+          ),
         ],
       ),
       // 评论时间

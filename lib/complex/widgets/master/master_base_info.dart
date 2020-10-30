@@ -6,6 +6,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/ui/chat/chat_main.dart';
 import 'package:yiapp/ui/master/look_master_homepage.dart';
 
 // ------------------------------------------------------
@@ -30,12 +31,12 @@ class MasterCover extends StatelessWidget {
       child: Container(
         color: primary,
         padding: EdgeInsets.all(Adapt.px(18)),
-        child: _row(),
+        child: _row(context),
       ),
     );
   }
 
-  Widget _row() {
+  Widget _row(context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -47,27 +48,24 @@ class MasterCover extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: Adapt.px(50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      // 主标题
-                      CusText(info.nick, t_gray, 32),
-                      Spacer(),
-                      // 按钮
-                      CusRaisedBtn(
-                        text: "约聊大师",
-                        backgroundColor: Color(0xFFDF5A54),
-                        fontSize: 26,
-                        pdVer: 5,
-                        pdHor: 20,
-                        borderRadius: 100,
-                        onPressed: onPressed ??
-                            () => print(">>> 点了 ${info.nick} 上的按钮"),
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    // 主标题
+                    CusText(info.nick, t_gray, 32),
+                    Spacer(),
+                    // 按钮
+                    CusRaisedBtn(
+                      text: "约聊大师",
+                      backgroundColor: Color(0xFFDF5A54),
+                      fontSize: 26,
+                      pdVer: 10,
+                      pdHor: 20,
+                      borderRadius: 100,
+                      onPressed: onPressed ??
+                          () => CusRoutes.push(context, ChatMain()),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: Adapt.px(4)),

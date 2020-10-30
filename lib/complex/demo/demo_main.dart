@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_string.dart';
@@ -8,10 +9,12 @@ import 'package:yiapp/complex/demo/date_timed_demo.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -42,14 +45,37 @@ class CusDemoMain extends StatelessWidget {
           title: "02 支付功能测试",
           onTap: () => _testPay(context),
         ),
+        NormalBox(
+          title: "03 大师订单通知测试",
+          onTap: () => _testMasterNotify(context),
+        ),
       ],
     );
   }
 
+  /// 支付功能测试
   void _testPay(context) async {
     CusRoutes.push(
       context,
       ComPayPage(tip: "悬赏帖付款", b_type: b_bbs_prize, orderId: "", amt: 0.01),
     );
+  }
+
+  /// 大师订单通知测试
+  void _testMasterNotify(context) async {
+    var m = {
+      "id_of_order": "5f9bbd19c5ae742722738f6d",
+      "msg_type": msg_text,
+      "msg": "测试大师订单通知测试 用户149 to 大师134",
+    };
+    try {
+      var res = await ApiMsg.yiOrderMsgSend(m);
+      if (res != null) {
+        Debug.log("通知返回的内容详情：${res.toJson()}");
+        CusToast.toast(context, text: "通知成功");
+      }
+    } catch (e) {
+      Debug.logError("大师订单通知测试出现异常：$e");
+    }
   }
 }

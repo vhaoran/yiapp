@@ -31,7 +31,7 @@ class _BrokerUserItemState extends State<BrokerUserItem> {
     return Card(
       shadowColor: Colors.white,
       color: fif_primary,
-      margin: EdgeInsets.all(Adapt.px(3)),
+      margin: EdgeInsets.only(bottom: 5),
       child: _leftScroll(),
     );
   }

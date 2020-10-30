@@ -15,7 +15,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool showLeading;
   final bool showDefault; // 是否去除默认的返回按钮，默认 true 显示
-  final bool refresh; // 是否在点击返回按钮时携带参数
+  final dynamic backData; // 点击返回按钮时，是否携带参数，默认空
   final Color backGroundColor; // AppBar背景色
   final Color leadingColor; // leading 背景色
   final List<Widget> actions;
@@ -25,7 +25,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData leadingIcon;
   @override
   final Size preferredSize;
-  final VoidCallback leadingFn;
+  final VoidCallback leadingFn; // 点击返回按钮时要执行的函数，默认空
 
   CusAppBar({
     Key key,
@@ -34,7 +34,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.showLeading: true,
     this.showDefault: false,
-    this.refresh: false,
+    this.backData,
     this.backGroundColor: ter_primary,
     this.leadingColor: t_gray,
     this.actions,
@@ -70,7 +70,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     leadingFn != null
                         ? leadingFn()
-                        : Navigator.of(context).pop(refresh ? "" : null);
+                        : Navigator.of(context).pop(backData);
                   },
                 )
             : null,

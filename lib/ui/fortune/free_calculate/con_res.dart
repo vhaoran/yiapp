@@ -18,7 +18,7 @@ class ConResPage extends StatelessWidget {
 
   ConResPage({this.res, Key key}) : super(key: key);
 
-  List<Map> _parses= [];
+  List<Map> _parses = [];
 
   /// 设置解析后的数据
   void _resData() {
@@ -55,7 +55,7 @@ class ConResPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _resData(); // 设置解析后的数据
     return Scaffold(
-      appBar: CusAppBar(text: "星座配对结果"),
+      appBar: CusAppBar(text: "星座配对结果", backData: ""),
       body: _lv(context),
       backgroundColor: primary,
     );
@@ -78,7 +78,7 @@ class ConResPage extends StatelessWidget {
         // 解析
         ..._parses.map((e) => ParseContent(
             title: e['title'], contents: e['contents'], icon: e['icon'])),
-        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context))
+        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context, ""))
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
@@ -92,6 +93,8 @@ class _RewardContentState extends State<RewardContent> {
             children: <Widget>[
               Expanded(
                 child: EasyRefresh(
+                  header: CusHeader(),
+                  footer: CusFooter(),
                   controller: _easyCtrl,
                   child: ListView(
                     controller: _scrollCtrl,

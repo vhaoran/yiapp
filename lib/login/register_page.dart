@@ -50,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _lv() {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.only(left: Adapt.px(50), right: Adapt.px(50)),
+      padding: EdgeInsets.only(left: 10, right: 10),
       children: <Widget>[
         SizedBox(height: Adapt.px(140)),
         _mobileInput(), // 输入手机号
@@ -62,7 +62,6 @@ class _RegisterPageState extends State<RegisterPage> {
           textColor: Colors.black,
           fontSize: 28,
           backgroundColor: Color(0xFFEE9972),
-          pdVer: Adapt.px(15),
           onPressed: _doRegister,
         ),
         _userAgreement(), // 用户协议
@@ -197,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
       title: Text.rich(
         TextSpan(
           text: '我已阅读并同意',
-          style: TextStyle(fontSize: Adapt.px(28), color: t_gray),
+          style: TextStyle(fontSize: 14, color: t_gray),
           children: [
             TextSpan(
               text: '《鸿运来用户协议》',

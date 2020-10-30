@@ -34,7 +34,7 @@ class _FlashInputState extends State<FlashInput> {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 9,
+          flex: 4,
           child: Container(child: _input(), color: Colors.grey),
         ),
         Expanded(

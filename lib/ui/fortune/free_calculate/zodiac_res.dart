@@ -69,7 +69,7 @@ class ZodiacResPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _resData(); // 设置解析后的数据
     return Scaffold(
-      appBar: CusAppBar(text: "生肖配对结果"),
+      appBar: CusAppBar(text: "生肖配对结果", backData: ""),
       body: _lv(context),
       backgroundColor: primary,
     );
@@ -101,7 +101,7 @@ class ZodiacResPage extends StatelessWidget {
             icon: e['icon'],
           ),
         ),
-        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context))
+        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context, ""))
       ],
     );
   }

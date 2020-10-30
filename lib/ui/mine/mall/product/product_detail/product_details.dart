@@ -51,7 +51,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "商品详情", refresh: true),
+      appBar: CusAppBar(text: "商品详情", backData: true),
       body: FutureBuilder(
           future: _future,
           builder: (context, snap) {

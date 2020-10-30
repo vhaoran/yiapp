@@ -29,8 +29,8 @@ class RewardCover extends StatefulWidget {
 
 class _RewardCoverState extends State<RewardCover> {
   // 临时设置，后边改为图片显示
-  Color _typeColor = Colors.blueGrey; // 所求类型图片的背景色
-  String _type = "其他"; // 所求类型的文字
+  Color _typeColor = Colors.transparent; // 所求类型图片的背景色
+  String _type = ""; // 所求类型的文字
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +123,13 @@ class _RewardCoverState extends State<RewardCover> {
         _type = "四柱";
         _typeColor = Color(0xFF80DAEA);
         break;
-      case he_hun: // 合婚
+      case post_hehun: // 合婚
         _type = "合婚";
         _typeColor = Color(0xFFE0694D);
         break;
+      default:
+        _type = "其他";
+        _typeColor = Colors.blueGrey;
     }
   }
 }

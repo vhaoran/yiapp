@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import '../../../service/api/api_user.dart';
 import 'package:provider/provider.dart';
 
@@ -82,8 +87,14 @@ class _ChUserNickState extends State<ChUserNick> {
           print(">>>修改用户昵称结果：$ok");
           if (ok) {
             context.read<UserInfoState>().chNick(_nickCtrl.text);
-            CusToast.toast(context, text: "修改成功");
-            Navigator.pop(context);
+            String loginData = await KV.getStr(kv_login);
+            var login = LoginResult.fromJson(json.decode(loginData));
+            login.user_info.nick = _nickCtrl.text;
+            String res = json.encode(login.toJson());
+            if (await KV.setStr(kv_login, res)) {
+              CusToast.toast(context, text: "修改成功");
+              Navigator.pop(context);
+            }
           }
         } catch (e) {
           print("<<<修改用户昵称出现异常：$e");

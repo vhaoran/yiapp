@@ -37,7 +37,10 @@ class _QuestionPageState extends State<QuestionPage>
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "悬赏提问区", showLeading: false),
+        appBar: CusAppBar(
+          text:"提问区",
+          showLeading: false,
+        ),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
