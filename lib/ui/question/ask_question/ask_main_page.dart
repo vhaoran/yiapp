@@ -78,7 +78,6 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   /// 满足发帖条件
   void _doPost(m) async {
     CusLoading(context);
-    Navigator.pop(context);
     try {
       var data;
       data = ApiState.isFlash
@@ -100,7 +99,9 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
               orderId: data.id,
               amt: num.parse(_scoreCtrl.text.trim()),
             ),
-          ),
+          ).then((val) {
+            if (val != null) Navigator.pop(context);
+          }),
         );
       }
     } catch (e) {

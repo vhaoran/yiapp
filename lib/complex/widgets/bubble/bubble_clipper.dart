@@ -3,27 +3,48 @@ import 'dart:math';
 import 'bubble_edges.dart';
 import 'bubble_nip_pos.dart';
 
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/10/31 10:30
+// usage ：控制聊天气泡中的布局详情，如后缀尾巴位置，偏移等
+// ------------------------------------------------------
+
 class BubbleClipper extends CustomClipper<Path> {
+  final Radius radius;
+  final BubbleEdges padding;
+  final bool stick;
+  final NipPosition nip;
+  final double nipHeight;
+  final double nipWidth;
+  final double nipOffset; // 控制气泡尾巴在气泡上的偏移量
+  final double nipRadius;
+  double _startOffset; // Offsets of the bubble
+  double _endOffset;
+  double _nipCX; // The center of the circle
+  double _nipCY;
+  double _nipPX; // The point of contact of the nip with the circle
+  double _nipPY;
+
   BubbleClipper({
     this.radius,
+    this.padding,
+    this.stick,
     this.nip,
-    this.nipWidth,
     this.nipHeight,
+    this.nipWidth,
     this.nipOffset,
     this.nipRadius,
-    this.stick,
-    this.padding,
-  })  : assert(nipWidth > 0.0),
-        assert(nipHeight > 0.0),
-        assert(nipRadius >= 0.0),
-        assert(nipRadius <= nipWidth / 2.0 && nipRadius <= nipHeight / 2.0),
-        assert(nipOffset >= 0.0),
-//        assert(radius <= nipHeight + nipOffset),
+  })  : assert(nipWidth > 0),
+        assert(nipHeight > 0),
+        assert(nipRadius >= 0),
+        assert(nipRadius <= nipWidth / 2 && nipRadius <= nipHeight / 2),
+        assert(nipOffset >= 0),
         assert(padding != null),
         assert(padding.left != null),
         assert(padding.top != null),
         assert(padding.right != null),
         assert(padding.bottom != null),
+        //  assert(radius <= nipHeight + nipOffset),
         super() {
     _startOffset = _endOffset = nipWidth;
 
@@ -40,24 +61,8 @@ class BubbleClipper extends CustomClipper<Path> {
     _startOffset -= nipStickOffset;
     _endOffset -= nipStickOffset;
 
-    if (stick) _endOffset = 0.0;
+    if (stick) _endOffset = 0;
   }
-
-  final Radius radius;
-  final NipPosition nip;
-  final double nipHeight;
-  final double nipWidth;
-  final double nipOffset; // 控制气泡尾巴在气泡上的偏移量
-  final double nipRadius;
-  final bool stick;
-  final BubbleEdges padding;
-
-  double _startOffset; // Offsets of the bubble
-  double _endOffset;
-  double _nipCX; // The center of the circle
-  double _nipCY;
-  double _nipPX; // The point of contact of the nip with the circle
-  double _nipPY;
 
   get edgeInsets {
     return nip == NipPosition.leftTop ||
@@ -99,11 +104,14 @@ class BubbleClipper extends CustomClipper<Path> {
 
     var path = Path();
 
+    // 控制聊天气泡后缀尾巴上的位置
     switch (nip) {
+      // 左上
       case NipPosition.leftTop:
-        path.addRRect(RRect.fromLTRBR(
-            _startOffset, 0, size.width - _endOffset, size.height, radius));
-
+        path.addRRect(
+          RRect.fromLTRBR(
+              _startOffset, 0, size.width - _endOffset, size.height, radius),
+        );
         path.moveTo(_startOffset + radiusX, nipOffset);
         path.lineTo(_startOffset + radiusX, nipOffset + nipHeight);
         path.lineTo(_startOffset, nipOffset + nipHeight);
@@ -116,11 +124,10 @@ class BubbleClipper extends CustomClipper<Path> {
         }
         path.close();
         break;
-
+      // 左中
       case NipPosition.leftCenter:
         path.addRRect(RRect.fromLTRBR(
             _startOffset, 0, size.width - _endOffset, size.height, radius));
-
         path.moveTo(_startOffset + radiusX, size.height / 2 - nipHeight);
         path.lineTo(_startOffset + radiusX, size.height / 2 + nipHeight);
         path.lineTo(_startOffset, size.height / 2 + nipHeight);
@@ -133,11 +140,10 @@ class BubbleClipper extends CustomClipper<Path> {
         }
         path.close();
         break;
-
+      // 左下
       case NipPosition.leftBottom:
         path.addRRect(RRect.fromLTRBR(
             _startOffset, 0, size.width - _endOffset, size.height, radius));
-
         Path path2 = Path();
         path2.moveTo(_startOffset + radiusX, size.height - nipOffset);
         path2.lineTo(
@@ -151,15 +157,13 @@ class BubbleClipper extends CustomClipper<Path> {
               radius: Radius.circular(nipRadius), clockwise: false);
         }
         path2.close();
-
         path.addPath(path2, Offset(0, 0));
         path.addPath(path2, Offset(0, 0)); // Magic!
         break;
-
+      // 右上
       case NipPosition.rightTop:
         path.addRRect(RRect.fromLTRBR(
             _endOffset, 0, size.width - _startOffset, size.height, radius));
-
         Path path2 = Path();
         path2.moveTo(size.width - _startOffset - radiusX, nipOffset);
         path2.lineTo(
@@ -173,15 +177,13 @@ class BubbleClipper extends CustomClipper<Path> {
               radius: Radius.circular(nipRadius), clockwise: false);
         }
         path2.close();
-
         path.addPath(path2, Offset(0, 0));
         path.addPath(path2, Offset(0, 0)); // Magic!
         break;
-
+      // 右下
       case NipPosition.rightBottom:
         path.addRRect(RRect.fromLTRBR(
             _endOffset, 0, size.width - _startOffset, size.height, radius));
-
         path.moveTo(
             size.width - _startOffset - radiusX, size.height - nipOffset);
         path.lineTo(size.width - _startOffset - radiusX,
@@ -197,13 +199,12 @@ class BubbleClipper extends CustomClipper<Path> {
         }
         path.close();
         break;
-
+      // 无
       case NipPosition.no:
         path.addRRect(RRect.fromLTRBR(
             _endOffset, 0, size.width - _endOffset, size.height, radius));
         break;
     }
-
     return path;
   }
 

@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
-import 'Bubble.dart';
 import 'bubble_edges.dart';
 import 'bubble_nip_pos.dart';
 
-class BubbleStyle {
-  const BubbleStyle({
-    this.radius,
-    this.nip,
-    this.nipWidth,
-    this.nipHeight,
-    this.nipOffset,
-    this.nipRadius,
-    this.stick,
-    this.color,
-    this.elevation,
-    this.shadowColor,
-    this.padding,
-    this.margin,
-    this.alignment,
-  });
+// ------------------------------------------------------
+// author：suxing
+// date  ：2020/10/31 10:09
+// usage ：聊天气泡风格设置
+// ------------------------------------------------------
 
+class BubbleStyle {
+  final Alignment alignment;
+  final BubbleEdges padding;
+  final BubbleEdges margin;
   final Radius radius;
+  final double elevation;
+  final Color color;
+  final Color shadowColor;
+  final bool stick;
   final NipPosition nip;
   final double nipHeight;
   final double nipWidth;
   final double nipOffset;
   final double nipRadius;
-  final bool stick;
-  final Color color;
-  final double elevation;
-  final Color shadowColor;
-  final BubbleEdges padding;
-  final BubbleEdges margin;
-  final Alignment alignment;
+
+  const BubbleStyle({
+    this.alignment,
+    this.padding,
+    this.margin,
+    this.radius,
+    this.elevation,
+    this.color,
+    this.shadowColor,
+    this.stick,
+    this.nip,
+    this.nipHeight,
+    this.nipWidth,
+    this.nipOffset,
+    this.nipRadius,
+  });
 }

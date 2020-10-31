@@ -16,11 +16,6 @@ class BubbleEdges {
 
   const BubbleEdges.fromLTRB(this.left, this.top, this.right, this.bottom);
 
-  /// 冒号后面的称为初始化列表，它是一个分离的表达式列表，可以访问构造函数参数
-  /// ，并决定分配实例字段，甚至是 final 实例字段。
-  /// 初始化列表也用于调用其它构造函数，如 : super(foo)
-  /// 这也意外着程序列表在构造函数体之前执行，且所有超类的初始化列表都在执行任何
-  /// 构造体之前执行
   const BubbleEdges.all(double value)
       : left = value,
         top = value,
@@ -35,6 +30,11 @@ class BubbleEdges {
     this.bottom: 0,
   });
 
+  /// 冒号后面的称为初始化列表，它是一个分离的表达式列表，可以访问构造函数参数
+  /// ，并决定分配实例字段，甚至是 final 实例字段。
+  /// 初始化列表也用于调用其它构造函数，如 : super(foo)
+  /// 这也意外着程序列表在构造函数体之前执行，且所有超类的初始化列表都在执行任何
+  /// 构造体之前执行
   const BubbleEdges.symmetric({
     double vertical = 0,
     double horizontal = 0,

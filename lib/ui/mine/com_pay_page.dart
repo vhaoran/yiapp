@@ -89,6 +89,7 @@ class _ComPayPageState extends State<ComPayPage> {
         return;
       }
     }
+    Debug.log("是佛充值：$_recharge");
     String trade_no = widget.b_type == b_recharge ? null : widget.orderId;
     Debug.log("支付类型：${widget.b_type}、支付方式：$_account_type");
     Debug.log("订单号：$trade_no、金额:$amt");
@@ -114,16 +115,24 @@ class _ComPayPageState extends State<ComPayPage> {
     return Scaffold(
       appBar: CusAppBar(
         text: widget.appBarName,
+        backData: "",
         leadingFn: () {
-          CusDialog.normal(
-            context,
-            title: "订单支付后大师们才可以看到哦",
-            textAgree: "继续支付",
-            fnDataCancel: "取消支付",
-            cancelColor: btn_red,
-            agreeColor: Colors.black,
-            onThen: () => Navigator.pop(context),
-          );
+          if (!_recharge) {
+            print(">>>不是充值");
+            CusDialog.normal(
+              context,
+              title: "订单支付后大师们才可以看到哦",
+              textAgree: "继续支付",
+              fnDataCancel: "取消支付",
+              cancelColor: btn_red,
+              agreeColor: Colors.black,
+              onThen: () => Navigator.pop(context),
+            );
+          }
+          else {
+            print(">>>是充值");
+            Navigator.pop(context);
+          }
         },
       ),
       body: _lv(),

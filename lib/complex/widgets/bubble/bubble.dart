@@ -13,15 +13,20 @@ import 'bubble_nip_pos.dart';
 
 class Bubble extends StatelessWidget {
   final Widget child;
-  final Color color; // 背景色
-  final double elevation; // 阴影值，默认为 1
-  final Color shadowColor; // 阴影颜色，默认为黑色
-  final BubbleEdges margin;
   final Alignment alignment;
+  final BubbleEdges margin;
+  final double elevation; // 阴影值，默认为 1
+  final Color bgColor; // 背景色
+  final Color shadowColor; // 阴影颜色，默认为黑色
   final BubbleClipper bubbleClipper;
 
   Bubble({
     this.child,
+    Alignment alignment,
+    BubbleEdges margin,
+    double elevation,
+    Color color,
+    Color shadowColor,
     Radius radius,
     NipPosition nipPos,
     double nipWidth,
@@ -29,36 +34,31 @@ class Bubble extends StatelessWidget {
     double nipOffset,
     double nipRadius,
     bool stick,
-    Color color,
-    double elevation,
-    Color shadowColor,
     BubbleEdges padding,
-    BubbleEdges margin,
-    Alignment alignment,
     BubbleStyle style,
-  })  : color = color ?? style?.color ?? Colors.white,
-        elevation = elevation ?? style?.elevation ?? 1.0,
+  })  : bgColor = color ?? style?.color ?? Colors.white,
+        elevation = elevation ?? style?.elevation ?? 1,
         shadowColor = shadowColor ?? style?.shadowColor ?? Colors.black,
         margin = BubbleEdges.only(
-          left: margin?.left ?? style?.margin?.left ?? 0.0,
-          top: margin?.top ?? style?.margin?.top ?? 0.0,
-          right: margin?.right ?? style?.margin?.right ?? 0.0,
-          bottom: margin?.bottom ?? style?.margin?.bottom ?? 0.0,
+          left: margin?.left ?? style?.margin?.left ?? 0,
+          top: margin?.top ?? style?.margin?.top ?? 0,
+          right: margin?.right ?? style?.margin?.right ?? 0,
+          bottom: margin?.bottom ?? style?.margin?.bottom ?? 0,
         ),
         alignment = alignment ?? style?.alignment ?? null,
         bubbleClipper = BubbleClipper(
-          radius: radius ?? style?.radius ?? Radius.circular(6.0),
+          radius: radius ?? style?.radius ?? Radius.circular(6),
           nip: nipPos ?? style?.nip ?? NipPosition.no,
-          nipWidth: nipWidth ?? style?.nipWidth ?? 8.0,
-          nipHeight: nipHeight ?? style?.nipHeight ?? 10.0,
-          nipOffset: nipOffset ?? style?.nipOffset ?? 0.0,
-          nipRadius: nipRadius ?? style?.nipRadius ?? 1.0,
+          nipWidth: nipWidth ?? style?.nipWidth ?? 8,
+          nipHeight: nipHeight ?? style?.nipHeight ?? 10,
+          nipOffset: nipOffset ?? style?.nipOffset ?? 0,
+          nipRadius: nipRadius ?? style?.nipRadius ?? 1,
           stick: stick ?? style?.stick ?? false,
           padding: BubbleEdges.only(
-            left: padding?.left ?? style?.padding?.left ?? 8.0,
-            top: padding?.top ?? style?.padding?.top ?? 6.0,
-            right: padding?.right ?? style?.padding?.right ?? 8.0,
-            bottom: padding?.bottom ?? style?.padding?.bottom ?? 6.0,
+            left: padding?.left ?? style?.padding?.left ?? 8,
+            top: padding?.top ?? style?.padding?.top ?? 6,
+            right: padding?.right ?? style?.padding?.right ?? 8,
+            bottom: padding?.bottom ?? style?.padding?.bottom ?? 6,
           ),
         );
 
@@ -70,7 +70,7 @@ class Bubble extends StatelessWidget {
       child: CustomPaint(
         painter: BubblePainter(
           clipper: bubbleClipper,
-          color: color,
+          color: bgColor,
           elevation: elevation,
           shadowColor: shadowColor,
         ),
