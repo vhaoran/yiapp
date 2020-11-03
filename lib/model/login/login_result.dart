@@ -1,5 +1,6 @@
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/model/login/userInfo.dart';
+import 'modules.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -13,13 +14,16 @@ class LoginResult {
   bool is_master;
   String jwt;
   UserInfo user_info;
+  Modules modules;
 
-  LoginResult(
-      {this.is_admin,
-      this.is_broker_admin,
-      this.is_master,
-      this.jwt,
-      this.user_info});
+  LoginResult({
+    this.is_admin,
+    this.is_broker_admin,
+    this.is_master,
+    this.jwt,
+    this.user_info,
+    this.modules,
+  });
 
   factory LoginResult.fromJson(Map<String, dynamic> json) {
     return LoginResult(
@@ -30,6 +34,8 @@ class LoginResult {
       user_info: json['user_info'] != null
           ? UserInfo.fromJson(json['user_info'])
           : defaultUser,
+      modules:
+          json['modules'] != null ? Modules.fromJson(json['modules']) : null,
     );
   }
 
@@ -41,6 +47,9 @@ class LoginResult {
     data['jwt'] = this.jwt;
     if (this.user_info != null) {
       data['user_info'] = this.user_info.toJson();
+    }
+    if (this.modules != null) {
+      data['modules'] = this.modules.toJson();
     }
     return data;
   }

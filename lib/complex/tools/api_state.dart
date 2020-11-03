@@ -25,4 +25,11 @@ class ApiState {
 
   // 是否闪断帖
   static bool isFlash = false;
+
+  static Map<String, int> modules = {
+    "enable_mall": 0,
+    "enable_master": 0,
+    "enable_prize": 0,
+    "enable_vie": 0
+  };
 }
