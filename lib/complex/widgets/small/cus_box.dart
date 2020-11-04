@@ -16,12 +16,14 @@ class NormalBox extends StatefulWidget {
   final String subtitle;
   final bool showBtn; // 默认显示右箭头按钮
   final VoidCallback onTap;
+  final VoidCallback subFn; // 点击 subtitle 后执行的事件
 
   NormalBox({
     @required this.title,
     this.subtitle,
     this.showBtn = true,
     this.onTap,
+    this.subFn,
   });
 
   @override
@@ -40,18 +42,18 @@ class _NormalBoxState extends State<NormalBox> {
           child: InkWell(
             onTap: widget.onTap ?? null,
             child: Container(
-                alignment: Alignment.center,
-                constraints: BoxConstraints(maxHeight: Adapt.px(100)),
-                padding:
-                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(20)),
-                child: _row(widget.title, widget.subtitle)),
+              alignment: Alignment.center,
+              constraints: BoxConstraints(maxHeight: Adapt.px(100)),
+              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(20)),
+              child: _row(widget.title, widget.subtitle, widget.subFn),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _row(String title, String subtitle) {
+  Widget _row(String title, String subtitle, VoidCallback subFn) {
     return Row(
       children: <Widget>[
         Text(title, style: TextStyle(fontSize: Adapt.px(28), color: t_gray)),
@@ -60,13 +62,16 @@ class _NormalBoxState extends State<NormalBox> {
           Container(
             constraints: BoxConstraints(maxWidth: Adapt.px(400)),
             padding: EdgeInsets.only(right: widget.showBtn ? Adapt.px(10) : 0),
-            child: Text(
-              subtitle,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                // color: Color(0xFF888888),
-                color: t_gray,
-                fontSize: Adapt.px(28),
+            child: InkWell(
+              onTap: subFn,
+              child: Text(
+                subtitle,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  // color: Color(0xFF888888),
+                  color: subFn == null ? t_gray : Colors.lightBlue,
+                  fontSize: Adapt.px(28),
+                ),
               ),
             ),
           ),

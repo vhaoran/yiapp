@@ -90,6 +90,7 @@ class _PersonalPageState extends State<PersonalPage> {
       NormalBox(
         title: "手机号码",
         subtitle: ApiState.isGuest ? "绑定手机" : _u.user_code,
+        subFn: ApiState.isGuest ? () {} : () {},
       ),
     ];
   }
