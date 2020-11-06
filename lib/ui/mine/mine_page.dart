@@ -7,6 +7,7 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_double.dart';
 import 'package:yiapp/complex/demo/demo_main.dart';
+import 'package:yiapp/complex/function/def_obj.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
-import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_image.dart';
 
 // ------------------------------------------------------
@@ -83,26 +82,3 @@ class CusTool {
     }
   }
 }
-
-UserInfo defaultUser = UserInfo.fromJson({
-  "area": "",
-  "birth_day": 0,
-  "birth_month": 0,
-  "birth_year": 0,
-  "broker_id": 0,
-  "city": "",
-  "country": "",
-  "created_at": "2020-08-21 17:04:07",
-  "enabled": true,
-  "icon":
-      "http://cli.oss.aliyuncs.com/2015/04/22/21f5deae6515c6c8a8834c5a65506971.jpg?e=1598256911&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:szss9JHvlzM0ac7YYzc13-nABsg=",
-  "id": 7,
-  "id_card": "",
-  "nick": "游客登录",
-  "province": "",
-  "pwd": "",
-  "sex": 0,
-  "update_at": "2020-08-24 14:58:43",
-  "user_code": "",
-  "user_name": "游客登录"
-});

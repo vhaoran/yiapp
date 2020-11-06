@@ -4,6 +4,9 @@
 // usage ：不变的字符串类型
 // ------------------------------------------------------
 
+/// 本地数据库表名称
+const String tb_login = "tb_login"; // 本地登录信息表名
+
 /// 本地存储的键
 const String kv_pwd = "/login/pwd"; // 本地存储密码的键
 const String kv_jwt = "/login/jwt"; // 本地存储jwt的键
