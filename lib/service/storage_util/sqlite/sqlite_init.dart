@@ -22,7 +22,7 @@ Future<bool> initDB() async {
 }
 
 Future<Database> _createDBAndTables() async {
-  String path = "db_table.db";
+  String path = "local_table.db";
   Database db = await openDatabase(path, version: 1,
       onCreate: (Database db, int version) async {
     await _create_tb_login(db);

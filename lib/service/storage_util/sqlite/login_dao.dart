@@ -1,6 +1,8 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/model/login/login_table.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -13,96 +15,86 @@ class LoginDao {
 
   LoginDao(this.db);
 
-  /// 存储登陆信息到本地数据库
-  Future<int> saveLogin(CusLoginRes table) async {
-    int r = await db.insert(tb_login, table.toJson());
-    debug("保存用户数据结果:", r);
-    return r;
+  // ----------------------------- 增 -----------------------------
+  /// 存储登录信息
+  Future<int> write(CusLoginRes login) async {
+    int val = await db.insert(tb_login, login.toJson());
+    if (val > 0) {
+      // 存储本地token
+      await KV.setStr(kv_jwt, login.jwt);
+    }
+    Debug.log("保存用户数据${val > 0 ? '成功' : "失败"}");
+    return val;
   }
 
-  /// 获取全部数据
-  Future<List<CusLoginRes>> findAll() async {
-    List<Map<String, dynamic>> result = await db.query(tb_login);
-    print(">>>数据库长度：${result.length}");
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
-  }
-
-  // 根据条件查询，比如查询某个uid的用户
-  Future<List<CusLoginRes>> find(int uid) async {
-    List<Map<String, dynamic>> result =
-        await db.query(tb_login, where: 'uid=?', whereArgs: [uid], limit: 1);
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
-  }
-
-  // 根据 User id 更新数据
-  Future<int> update(CusLoginRes table) async {
-    return await db.update(tb_login, table.toJson(),
-        where: 'uid = ?', whereArgs: [table.uid]);
-  }
-
-  // 根据 id 删除符合条件的数据
+  // ----------------------------- 删 -----------------------------
+  /// 根据用户uid，删除符合条件的数据
   Future<int> delete(int uid) async {
-    return await db.delete(tb_login, where: 'uid = ?', whereArgs: [uid]);
+    int val = await db.delete(tb_login, where: 'uid = ?', whereArgs: [uid]);
+    return val;
   }
+
+  // ----------------------------- 改 -----------------------------
+  /// 根据 uid，整体更新用户数据
+  Future<int> update(CusLoginRes login) async {
+    int val = await db.update(tb_login, login.toJson(),
+        where: 'uid = ?', whereArgs: [login.uid]);
+    return val;
+  }
+
+  /// 根据 uid 修改昵称
+  Future<List<CusLoginRes>> updateNick(int uid, String nick) async {
+    String sql = "UPDATE $tb_login SET nick='$nick' WHERE uid=$uid";
+    List<Map<String, dynamic>> l = await db.rawQuery(sql);
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+  }
+
+  // ----------------------------- 查 -----------------------------
+  /// 根据 token 选择账号
+  Future<List<CusLoginRes>> verifyJwt(String jwt) async {
+    String sql = "SELECT * FROM $tb_login WHERE jwt='$jwt'";
+    List<Map<String, dynamic>> l = await db.rawQuery(sql);
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+  }
+
+  /// 获取所有登录信息
+  Future<List<CusLoginRes>> findAll() async {
+    List<Map<String, dynamic>> l = await db.query(tb_login);
+    Debug.log("数据库长度：${l.length}");
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+  }
+
+  /// 根据 uid 查找用户
+  Future<List<CusLoginRes>> findUser(int uid) async {
+    List<Map<String, dynamic>> l =
+        await db.query(tb_login, where: 'uid=?', whereArgs: [uid], limit: 1);
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+  }
+
+  // ------------------------ 以下是未用到的 ------------------------
 
   /// 清空全部数据
   Future<int> deleteAll() async {
     return await db.delete(tb_login);
   }
 
-  /// 查找是vip的
+  /// 查找是正式会员的
   Future<List<CusLoginRes>> findVip() async {
-    List<Map<String, dynamic>> result =
-        await db.rawQuery("SELECT * FROM login_res WHERE broker_id>0");
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
+    String sql = "SELECT * FROM $tb_login WHERE broker_id>0";
+    List<Map<String, dynamic>> l = await db.rawQuery(sql);
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }
 
   /// 查找昵称中含有"长江"
   Future<List<CusLoginRes>> containsCJ() async {
-    List<Map<String, dynamic>> result =
-        await db.rawQuery("SELECT * FROM login_res WHERE nick LIKE '%长江%'");
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
-  }
-
-  /// 修改 uid = 11中的nick
-  Future<List<CusLoginRes>> setNick() async {
-    List<Map<String, dynamic>> result =
-        await db.rawQuery("UPDATE login_res SET nick='游客2号' WHERE uid=11");
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
-  }
-
-  /// 根据 token 选择账号
-  Future<List<CusLoginRes>> byJwt(String jwt) async {
-    List<Map<String, dynamic>> result =
-        await db.rawQuery("SELECT * FROM $tb_login WHERE jwt='$jwt'");
-    return result.isNotEmpty
-        ? result.map((e) {
-            return CusLoginRes.fromJson(e);
-          }).toList()
-        : [];
-  }
-
-  void debug(String str, int res) {
-    print(">>>$str：${res > 0 ? '成功' : "失败"}，res:$res");
+    String sql = "SELECT * FROM $tb_login WHERE nick LIKE '%长江%'";
+    List<Map<String, dynamic>> l = await db.rawQuery(sql);
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }
 }

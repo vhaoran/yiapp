@@ -15,6 +15,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -48,6 +49,13 @@ class CusDemoMain extends StatelessWidget {
         NormalBox(
           title: "03 大师订单通知测试",
           onTap: () => _testMasterNotify(context),
+        ),
+        NormalBox(
+          title: "04 清除本地 kv 数据",
+          onTap: () async {
+            bool ok = await KV.clear();
+            Debug.log("清除本地 kv 数据结果：${ok ? '成功' : 'false'}");
+          },
         ),
       ],
     );

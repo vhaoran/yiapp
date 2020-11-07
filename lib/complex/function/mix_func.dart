@@ -8,13 +8,10 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 // usage ：混合公开的函数
 // ------------------------------------------------------
 
-///  用户是否已经登录过
-Future<bool> hadLogin() async {
+/// 根据本地是否存储的有 token ，判断用户是否已经登录过
+Future<bool> jwtLogin() async {
   if (await KV.getStr(kv_jwt) != null) {
     return true;
   }
   return false;
 }
-
-/// 是否本人发帖
-bool isMe(int uid) => uid == ApiBase.uid ? true : false;

@@ -12,12 +12,15 @@ import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/model/login/login_table.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
 import 'package:yiapp/ui/home/chose_ask_type.dart';
 import 'package:yiapp/ui/home/navigation_type.dart';
@@ -59,6 +62,7 @@ class _HomePageState extends State<HomePage> {
       MinePage(),
     ];
 //    _prepareBusEvent(); // 初始化监听
+    _verifyLogin();
     super.initState();
   }
 
@@ -75,7 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ApiBase.login) _autoLogin(context);
+//    if (!ApiBase.login) _autoLogin(context);
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -103,36 +107,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _verifyLogin() async {
+    await initDB(); // 初始化数据库
+    LoginResult login;
+    bool jwt = await jwtLogin();
+    if (jwt) {
+      Debug.log("已登录过");
+    } else {
+      Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
+      try {
+        login = await ApiLogin.guestLogin({});
+        if (login != null) {
+          // 存储到本地用户信息数据库，同时保存jwt确定登录token
+          LoginDao(glbDB).write(CusLoginRes.from(login));
+        }
+      } catch (e) {
+        Debug.logError("第一次请求注册为游客出现异常：$e");
+      }
+    }
+  }
+
   /// 如果已经登录过一次，则自动登录,反之为第一次登录程序
   void _autoLogin(BuildContext context) async {
-    LoginResult result;
-    if (await hadLogin()) {
+    LoginResult login;
+    if (await jwtLogin()) {
       try {
         Debug.log("用户已经登录过，现在自动登录");
         String loginData = await KV.getStr(kv_login);
-        result = LoginResult.fromJson(json.decode(loginData));
+        login = LoginResult.fromJson(json.decode(loginData));
       } catch (e) {
         Debug.logError("用户已经登录过，但登录出现异常$e");
       }
     } else {
       try {
-        Debug.log("用户第一次进入程序，以游客登录模式进入");
-        result = await ApiLogin.guestLogin({});
-        if (result != null) {
-          await KV.setStr(kv_jwt, result.jwt); // 存储本地token
-          await KV.setStr(kv_login, json.encode(result.toJson()));
+        Debug.log("用户第一次进入程序，自动注册为游客身份");
+        login = await ApiLogin.guestLogin({});
+        if (login != null) {
+//          await KV.setStr(kv_jwt, login.jwt); // 存储本地token
+          LoginDao(glbDB).write(CusLoginRes.from(login));
+//          await KV.setStr(kv_login, json.encode(res.toJson()));
         }
       } catch (e) {
         Debug.logError("游客登录异常：$e");
       }
     }
-    Debug.log("用户登录结果：${result.toJson()}");
-    await setLoginInfo(result);
+    Debug.log("用户登录结果：${login.toJson()}");
+    await setLoginInfo(login);
     if (ApiState.isMaster) _fetchMaster();
     if (ApiState.isBroker) _fetchBroker();
-    context.read<UserInfoState>().init(result.user_info);
+    context.read<UserInfoState>().init(login.user_info);
     ShopKV.key = "shop${ApiBase.uid}";
-    ApiState.isGuest = !CusRegExp.phone(result.user_info.user_code);
+    ApiState.isGuest = !CusRegExp.phone(login.user_info.user_code);
   }
 
   /// 如果是大师，获取大师基本资料
