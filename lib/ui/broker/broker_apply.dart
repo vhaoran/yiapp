@@ -84,7 +84,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
 
   /// 代理申请
   void _doApply() async {
-    if (ApiState.isBroker) {
+    if (ApiState.isBrokerAdmin) {
       CusDialog.tip(context,
           title: "您已经是代理了", onApproval: () => Navigator.pop(context));
       return;

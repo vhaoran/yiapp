@@ -1,5 +1,4 @@
 import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -9,7 +8,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 // ------------------------------------------------------
 
 /// 根据本地是否存储的有 token ，判断用户是否已经登录过
-Future<bool> jwtLogin() async {
+Future<bool> jwtToken() async {
   if (await KV.getStr(kv_jwt) != null) {
     return true;
   }

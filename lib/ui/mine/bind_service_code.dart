@@ -64,7 +64,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
 
   /// 绑定推荐码
   void _doBind() async {
-    if (ApiState.isBroker) {
+    if (ApiState.isBrokerAdmin) {
       CusDialog.tip(context,
           title: "您已经绑定过代理了", onApproval: () => Navigator.pop(context));
       return;

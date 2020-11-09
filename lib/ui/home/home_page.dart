@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
@@ -107,54 +106,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// 验证登录信息
   void _verifyLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
-    bool jwt = await jwtLogin();
-    if (jwt) {
-      Debug.log("已登录过");
-    } else {
-      Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
-      try {
+    bool logged = await jwtToken(); // 是否有本地token
+    try {
+      if (logged) {
+        Debug.log("用户已登录过，验证当前 token");
+        String jwt = await KV.getStr(kv_jwt);
+        // TODO 这里应该请求用户个人信息和运营商服务模块，以保证本地数据最新
+        CusLoginRes res = await LoginDao(glbDB).verifyJwt(jwt);
+        login = LoginResult.from(res);
+      } else {
+        Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
         login = await ApiLogin.guestLogin({});
         if (login != null) {
           // 存储到本地用户信息数据库，同时保存jwt确定登录token
-          LoginDao(glbDB).write(CusLoginRes.from(login));
+          LoginDao(glbDB).insert(CusLoginRes.from(login));
         }
-      } catch (e) {
-        Debug.logError("第一次请求注册为游客出现异常：$e");
       }
-    }
-  }
-
-  /// 如果已经登录过一次，则自动登录,反之为第一次登录程序
-  void _autoLogin(BuildContext context) async {
-    LoginResult login;
-    if (await jwtLogin()) {
-      try {
-        Debug.log("用户已经登录过，现在自动登录");
-        String loginData = await KV.getStr(kv_login);
-        login = LoginResult.fromJson(json.decode(loginData));
-      } catch (e) {
-        Debug.logError("用户已经登录过，但登录出现异常$e");
-      }
-    } else {
-      try {
-        Debug.log("用户第一次进入程序，自动注册为游客身份");
-        login = await ApiLogin.guestLogin({});
-        if (login != null) {
-//          await KV.setStr(kv_jwt, login.jwt); // 存储本地token
-          LoginDao(glbDB).write(CusLoginRes.from(login));
-//          await KV.setStr(kv_login, json.encode(res.toJson()));
-        }
-      } catch (e) {
-        Debug.logError("游客登录异常：$e");
-      }
+    } catch (e) {
+      Debug.logError("登录出现异常：$e");
     }
     Debug.log("用户登录结果：${login.toJson()}");
     await setLoginInfo(login);
+    // TODO 这里应该把大师信息也存储到本地数据库
     if (ApiState.isMaster) _fetchMaster();
-    if (ApiState.isBroker) _fetchBroker();
+    if (ApiState.isBrokerAdmin) _fetchBroker();
     context.read<UserInfoState>().init(login.user_info);
     ShopKV.key = "shop${ApiBase.uid}";
     ApiState.isGuest = !CusRegExp.phone(login.user_info.user_code);

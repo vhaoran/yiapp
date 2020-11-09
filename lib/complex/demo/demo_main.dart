@@ -6,7 +6,9 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/demo/date_timed_demo.dart';
+import 'package:yiapp/complex/demo/local_db_print.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
@@ -16,6 +18,8 @@ import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -57,6 +61,16 @@ class CusDemoMain extends StatelessWidget {
             Debug.log("清除本地 kv 数据结果：${ok ? '成功' : 'false'}");
           },
         ),
+        NormalBox(
+          title: "05 获取本地数据库信息",
+          onTap: () => CusRoutes.push(context, LocalDBPrint()),
+        ),
+        NormalBox(
+          title: "05 获取本地数据库信息",
+          onTap: ()async{
+            await LoginDao(glbDB).updateNick(ApiBase.uid, "改后的nick");
+          },
+        ),
       ],
     );
   }
@@ -69,7 +83,7 @@ class CusDemoMain extends StatelessWidget {
     );
   }
 
-  /// 大师订单通知测试
+  /// 大师订单发消息
   void _testMasterNotify(context) async {
     var m = {
       "id_of_order": "5f9bbd19c5ae742722738f6d",

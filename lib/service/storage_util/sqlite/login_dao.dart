@@ -11,13 +11,13 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 // ------------------------------------------------------
 
 class LoginDao {
-  Database db;
+  final Database db;
 
   LoginDao(this.db);
 
   // ----------------------------- 增 -----------------------------
   /// 存储登录信息
-  Future<int> write(CusLoginRes login) async {
+  Future<int> insert(CusLoginRes login) async {
     int val = await db.insert(tb_login, login.toJson());
     if (val > 0) {
       // 存储本地token
@@ -51,14 +51,6 @@ class LoginDao {
   }
 
   // ----------------------------- 查 -----------------------------
-  /// 根据 token 选择账号
-  Future<List<CusLoginRes>> verifyJwt(String jwt) async {
-    String sql = "SELECT * FROM $tb_login WHERE jwt='$jwt'";
-    List<Map<String, dynamic>> l = await db.rawQuery(sql);
-    if (l.isEmpty) return [];
-    return l.map((e) => CusLoginRes.fromJson(e)).toList();
-  }
-
   /// 获取所有登录信息
   Future<List<CusLoginRes>> findAll() async {
     List<Map<String, dynamic>> l = await db.query(tb_login);
@@ -67,12 +59,20 @@ class LoginDao {
     return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }
 
+  /// 根据 token 选择账号
+  Future<CusLoginRes> verifyJwt(String jwt) async {
+    List<Map<String, dynamic>> l =
+        await db.query(tb_login, where: "jwt=?", whereArgs: [jwt], limit: 1);
+    if (l.isEmpty) return CusLoginRes();
+    return CusLoginRes.fromJson(l.first);
+  }
+
   /// 根据 uid 查找用户
-  Future<List<CusLoginRes>> findUser(int uid) async {
+  Future<CusLoginRes> findUser(int uid) async {
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: 'uid=?', whereArgs: [uid], limit: 1);
-    if (l.isEmpty) return [];
-    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+    if (l.isEmpty) return CusLoginRes();
+    return CusLoginRes.fromJson(l.first);
   }
 
   // ------------------------ 以下是未用到的 ------------------------

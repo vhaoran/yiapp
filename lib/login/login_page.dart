@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
           CusRoutes.pushReplacement(context, HomePage());
           context.read<UserInfoState>().init(r.user_info);
           if (ApiState.isMaster) _fetchMaster();
-          if (ApiState.isBroker) _fetchBroker();
+          if (ApiState.isBrokerAdmin) _fetchBroker();
           ShopKV.key = "shop${ApiBase.uid}";
           Debug.log("登录成功");
         }
