@@ -69,7 +69,7 @@ class _NormalBoxState extends State<NormalBox> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   // color: Color(0xFF888888),
-                  color: subFn == null ? t_gray : Colors.lightBlue,
+                  color: t_gray,
                   fontSize: Adapt.px(28),
                 ),
               ),

@@ -58,8 +58,8 @@ class KV {
     try {
       final prefs = await SharedPreferences.getInstance();
       prefs.remove(kv_jwt);
-      prefs.remove(kv_login);
-      prefs.remove(kv_pwd);
+//      prefs.remove(kv_login);
+//      prefs.remove(kv_pwd);
       return true;
     } catch (e) {
       print(">>>share_preference 执行 removeLogin 操作时出现异常");

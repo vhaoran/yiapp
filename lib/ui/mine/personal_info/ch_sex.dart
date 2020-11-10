@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import '../../../service/api/api_user.dart';
 
 // ------------------------------------------------------
@@ -16,7 +19,7 @@ import '../../../service/api/api_user.dart';
 // ------------------------------------------------------
 
 class ChUserSex extends StatefulWidget {
-  final int sex;
+  final num sex;
 
   ChUserSex({this.sex, Key key}) : super(key: key);
 
@@ -25,7 +28,7 @@ class ChUserSex extends StatefulWidget {
 }
 
 class _ChUserSexState extends State<ChUserSex> {
-  bool _isMale; // 是否男性
+  bool _isMale = false; // 是否男性
 
   @override
   void initState() {
@@ -88,18 +91,21 @@ class _ChUserSexState extends State<ChUserSex> {
       Navigator.pop(context);
       return;
     }
-    print(">>>当前性别：$sex");
+    Debug.log("当前性别：$sex");
     var m = {"sex": sex};
     try {
       bool ok = await ApiUser.ChUserInfo(m);
-      print(">>>修改性别结果：$ok");
+      Debug.log("修改性别结果：$ok");
       if (ok) {
         context.read<UserInfoState>().chSex(sex);
-        CusToast.toast(context, text: "修改成功");
+        bool update = await LoginDao(glbDB).updateSex(sex);
+        if (update) {
+          CusToast.toast(context, text: "修改成功");
+        }
         Navigator.pop(context);
       }
     } catch (e) {
-      print("<<<修改性别出现异常：$e");
+      Debug.logError("修改性别出现异常：$e");
     }
   }
 }

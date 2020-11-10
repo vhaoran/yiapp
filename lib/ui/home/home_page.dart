@@ -11,7 +11,7 @@ import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/login/login_result.dart';
-import 'package:yiapp/model/login/login_table.dart';
+import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -78,7 +78,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-//    if (!ApiBase.login) _autoLogin(context);
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -111,12 +110,11 @@ class _HomePageState extends State<HomePage> {
     await initDB(); // 初始化数据库
     LoginResult login;
     bool logged = await jwtToken(); // 是否有本地token
+    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，并更新本地token
     try {
       if (logged) {
         Debug.log("用户已登录过，验证当前 token");
-        String jwt = await KV.getStr(kv_jwt);
-        // TODO 这里应该请求用户个人信息和运营商服务模块，以保证本地数据最新
-        CusLoginRes res = await LoginDao(glbDB).verifyJwt(jwt);
+        CusLoginRes res = await LoginDao(glbDB).readJwt();
         login = LoginResult.from(res);
       } else {
         Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
@@ -127,16 +125,15 @@ class _HomePageState extends State<HomePage> {
         }
       }
     } catch (e) {
-      Debug.logError("登录出现异常：$e");
+      Debug.logError("用户登录出现异常：$e");
     }
     Debug.log("用户登录结果：${login.toJson()}");
+    context.read<UserInfoState>().init(login.user_info);
     await setLoginInfo(login);
     // TODO 这里应该把大师信息也存储到本地数据库
     if (ApiState.isMaster) _fetchMaster();
     if (ApiState.isBrokerAdmin) _fetchBroker();
-    context.read<UserInfoState>().init(login.user_info);
     ShopKV.key = "shop${ApiBase.uid}";
-    ApiState.isGuest = !CusRegExp.phone(login.user_info.user_code);
   }
 
   /// 如果是大师，获取大师基本资料

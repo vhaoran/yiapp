@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,18 +18,13 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
-import 'package:yiapp/login/login_page.dart';
-import 'package:yiapp/login/register_page.dart';
-import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
-import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/ui/back_stage/backstage_manage.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/broker/broker_info_page.dart';
-import 'package:yiapp/ui/back_stage/backstage_manage.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
@@ -62,15 +58,7 @@ class _MinePageState extends State<MinePage>
   void initState() {
     Debug.log("进入了个人主页");
     super.initState();
-    _userinfo();
     _prepareBusEvent();
-  }
-
-  void _userinfo() async {
-    print(">>>uid:${ApiBase.uid}");
-    var res = await LoginDao(glbDB).findUser(ApiBase.uid);
-    _u = LoginResult.from(res).user_info;
-    print(">>>_u.tojson:${_u.nick}");
   }
 
   void _prepareBusEvent() {
@@ -84,9 +72,9 @@ class _MinePageState extends State<MinePage>
 
   @override
   Widget build(BuildContext context) {
-//    _u = ApiBase.login
-//        ? context.watch<UserInfoState>().userInfo ?? defaultUser
-//        : defaultUser;
+    _u = ApiBase.login
+        ? context.watch<UserInfoState>().userInfo ?? defaultUser
+        : defaultUser;
     super.build(context);
     return Scaffold(
       body: _bodyCtr(),
@@ -163,13 +151,13 @@ class _MinePageState extends State<MinePage>
             url: "", // 背景墙
             onTap: () => CusBottomSheet(context, OnFile: _selectFile),
           ),
-//          Align(
-//            alignment: Alignment(0, 0), // 头像
-//            child: InkWell(
-//              child: CusAvatar(url: _u.icon ?? "", circle: true),
-//              onTap: () => CusRoutes.push(context, PersonalPage()),
-//            ),
-//          ),
+          Align(
+            alignment: Alignment(0, 0), // 头像
+            child: InkWell(
+              child: CusAvatar(url: _u.icon ?? "", circle: true),
+              onTap: () => CusRoutes.push(context, PersonalPage()),
+            ),
+          ),
           Align(
             alignment: Alignment(0, ApiState.isGuest ? 0.8 : 0.75),
             child:
@@ -178,49 +166,6 @@ class _MinePageState extends State<MinePage>
         ],
       ),
     );
-  }
-
-  /// 已登录显示用户名，未登录则显示登录丨注册
-  Widget _userCodeCt() {
-    TextStyle ts = TextStyle(color: t_gray, fontSize: Adapt.px(28));
-    return ApiState.isGuest
-        ? Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  _u.nick, // 用户昵称
-                  style: TextStyle(
-                    color: t_gray,
-                    fontSize: Adapt.px(30),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: Adapt.px(30)),
-                InkWell(
-                  onTap: () => CusRoutes.push(
-                    context,
-                    LoginPage(showDefault: true),
-                  ),
-                  child: Text("登录", style: ts),
-                ),
-                Text("丨", style: ts),
-                InkWell(
-                  onTap: () => CusRoutes.push(context, RegisterPage()),
-                  child: Text("注册", style: ts),
-                ),
-              ],
-            ),
-          )
-        : Text(
-            _u.nick, // 用户昵称
-            style: TextStyle(
-              color: t_gray,
-              fontSize: Adapt.px(30),
-              fontWeight: FontWeight.w500,
-            ),
-          );
   }
 
   void _selectFile(File file) {

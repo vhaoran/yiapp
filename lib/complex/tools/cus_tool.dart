@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/service/api/api_image.dart';
 
@@ -16,9 +17,9 @@ class CusTool {
   /// 处理性别
   static String sex(int sex) {
     switch (sex) {
-      case 0:
+      case female:
         return '女';
-      case 1:
+      case male:
         return '男';
       default:
         return "保密";

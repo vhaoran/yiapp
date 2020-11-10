@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
         var r = await ApiLogin.login(m);
         if (r != null) {
           await KV.setStr(kv_jwt, r.jwt);
-          await KV.setStr(kv_login, json.encode(r.toJson()));
+//          await KV.setStr(kv_login, json.encode(r.toJson()));
           await setLoginInfo(r);
           ApiState.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());

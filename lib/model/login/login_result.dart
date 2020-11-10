@@ -1,7 +1,7 @@
 import 'package:yiapp/complex/function/def_obj.dart';
 import 'package:yiapp/complex/function/type_change.dart';
 import 'package:yiapp/model/login/userInfo.dart';
-import 'login_table.dart';
+import 'cus_login_res.dart';
 import 'modules.dart';
 
 // ------------------------------------------------------

@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/service/api/api_user.dart';
+import 'package:provider/provider.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/8 11:23
-// usage ：修改用户手机号(user_code) 暂不做
+// date  ：2020/11/10 17:06
+// usage ：绑定手机号
 // ------------------------------------------------------
 
-class ChUserMobile extends StatefulWidget {
-  final String mobile;
-
-  ChUserMobile({this.mobile, Key key}) : super(key: key);
+class BindUserMobile extends StatefulWidget {
+  BindUserMobile({Key key}) : super(key: key);
 
   @override
-  _ChUserMobileState createState() => _ChUserMobileState();
+  _BindUserMobileState createState() => _BindUserMobileState();
 }
 
-class _ChUserMobileState extends State<ChUserMobile> {
-  String _mobile = "";
-  bool _isMobile = false; // 是否为手机号
-
-  @override
-  void initState() {
-    _mobile = widget.mobile;
-    print(">>>当前手机号长度：：${_mobile}");
-    super.initState();
-  }
+class _BindUserMobileState extends State<BindUserMobile> {
+  var _mobileCtrl = TextEditingController(); // 绑定的手机号
+  String _err; // 错误提示信息
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "修改手机号"),
+      appBar: CusAppBar(text: "绑定手机号"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -50,40 +48,55 @@ class _ChUserMobileState extends State<ChUserMobile> {
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: Adapt.px(20)),
-            child: Text("手机号"),
-          ),
-          // 修改手机号输入框
+          SizedBox(height: Adapt.px(60)),
           CusRectField(
-            hintText: "输入新手机号",
+            controller: _mobileCtrl,
+            hintText: "输入手机号",
+            errorText: _err,
+            prefixText: "+86  ",
             keyboardType: TextInputType.phone,
+            onlyNumber: true,
+            isClear: true,
             maxLength: 11,
           ),
-          if (!CusRegExp.phone(_mobile))
-            Padding(
-              padding: EdgeInsets.only(top: Adapt.px(10), bottom: Adapt.px(50)),
-              child: Text("请输入正确格式的手机号", style: TextStyle(color: Colors.red)),
-            ),
           SizedBox(height: Adapt.px(80)),
           // 修改昵手机号
-          _chMobile(),
+          CusRaisedBtn(text: "修改", onPressed: _chMobile),
         ],
       ),
     );
   }
 
-  /// 修改用户手机号
-  Widget _chMobile() {
-    return CusRaisedBtn(
-      text: "修改",
-      onPressed: () async {
-        if (_mobile == widget.mobile) {
-          Navigator.pop(context);
-          return;
+  /// 绑定用户手机号
+  void _chMobile() async {
+    _err = null;
+    if (_mobileCtrl.text.isEmpty || !CusRegExp.phone(_mobileCtrl.text)) {
+      _err = "请输入正确的手机号";
+      setState(() {});
+      return;
+    }
+    if (_err == null) {
+      var m = {"nick": _mobileCtrl.text.trim()};
+      try {
+        bool ok = await ApiUser.ChUserInfo(m);
+        Debug.log("绑定手机号结果：$ok");
+        if (ok) {
+          context.read<UserInfoState>()?.bindMobile(_mobileCtrl.text);
+          bool update = await LoginDao(glbDB).updateMobile(_mobileCtrl.text);
+          if (update) {
+            CusToast.toast(context, text: "绑定成功");
+            Navigator.pop(context);
+          }
         }
-        var m = {"nick": _mobile};
-      },
-    );
+      } catch (e) {
+        Debug.logError("绑定用户手机号出现异常：$e");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _mobileCtrl.dispose();
+    super.dispose();
   }
 }

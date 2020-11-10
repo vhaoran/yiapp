@@ -69,7 +69,7 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
       print(">>>添加收件地址结果：${res.toJson()}");
       if (res != null) {
         CusToast.toast(context, text: "添加成功");
-        Navigator.pop(context);
+        Navigator.of(context).pop("");
       }
     } catch (e) {
       print("<<<添加收件地址出现异常：$e");
@@ -91,7 +91,7 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
       print(">>>修改 id 为 ${widget.res.id} 的地址结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "修改成功");
-        Navigator.pop(context);
+        Navigator.of(context).pop("");
       }
     } catch (e) {
       print("<<<修改收件地址出现异常：$e");

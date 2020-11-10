@@ -160,7 +160,7 @@ class _CusRectFieldState extends State<CusRectField> {
 
   /// 清空输入信息
   Widget _clearInput() {
-    bool hadData;
+    bool hadData = false;
     if (widget.maxLength == -1) {
       hadData = widget.controller.text.isNotEmpty;
     } else {

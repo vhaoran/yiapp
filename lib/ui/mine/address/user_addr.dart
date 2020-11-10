@@ -59,7 +59,9 @@ class _UserAddressPageState extends State<UserAddressPage> {
               style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
             ),
             onPressed: () => CusRoutes.push(context, AddChAddrPage()).then(
-              (val) => _refresh(),
+              (val) {
+                if (val != null) _refresh();
+              },
             ),
           )
         ],

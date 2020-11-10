@@ -1,19 +1,17 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/model/login/login_result.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import '../../../service/api/api_user.dart';
-import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -32,11 +30,6 @@ class ChUserNick extends StatefulWidget {
 
 class _ChUserNickState extends State<ChUserNick> {
   var _nickCtrl = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,39 +60,32 @@ class _ChUserNickState extends State<ChUserNick> {
           ),
           Padding(
             padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(130)),
-            child: Text("限制2-8个字"),
+            child: Text("最多8个字"),
           ),
           // 修改昵称
-          _chNick(),
+          CusRaisedBtn(text: "修改", onPressed: _chNick),
         ],
       ),
     );
   }
 
   /// 修改用户昵称
-  Widget _chNick() {
-    return CusRaisedBtn(
-      text: "修改",
-      onPressed: () async {
-        var m = {"nick": _nickCtrl.text};
-        try {
-          bool ok = await ApiUser.ChUserInfo(m);
-          print(">>>修改用户昵称结果：$ok");
-          if (ok) {
-            context.read<UserInfoState>().chNick(_nickCtrl.text);
-            String loginData = await KV.getStr(kv_login);
-            var login = LoginResult.fromJson(json.decode(loginData));
-            login.user_info.nick = _nickCtrl.text;
-            String res = json.encode(login.toJson());
-            if (await KV.setStr(kv_login, res)) {
-              CusToast.toast(context, text: "修改成功");
-              Navigator.pop(context);
-            }
-          }
-        } catch (e) {
-          print("<<<修改用户昵称出现异常：$e");
+  void _chNick() async {
+    var m = {"nick": _nickCtrl.text};
+    try {
+      bool ok = await ApiUser.ChUserInfo(m);
+      Debug.log("修改用户昵称结果：$ok");
+      if (ok) {
+        context.read<UserInfoState>().chNick(_nickCtrl.text);
+        bool update = await LoginDao(glbDB).updateNick(_nickCtrl.text);
+        Debug.log("本地更改存储nick结果：$update");
+        if (update) {
+          CusToast.toast(context, text: "修改成功");
+          Navigator.pop(context);
         }
-      },
-    );
+      }
+    } catch (e) {
+      Debug.logError("修改用户昵称出现异常：$e");
+    }
   }
 }

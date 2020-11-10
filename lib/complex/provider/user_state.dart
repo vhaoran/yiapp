@@ -45,6 +45,12 @@ class UserInfoState with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  /// 绑定手机号
+  void bindMobile(String user_code) {
+    _userInfo.user_code = user_code;
+    notifyListeners();
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

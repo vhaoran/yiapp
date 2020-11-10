@@ -5,7 +5,7 @@ import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/model/login/login_table.dart';
+import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -55,15 +55,14 @@ class _LocalDBPrintState extends State<LocalDBPrint> {
   }
 
   void _findAll() async {
-    var l = await LoginDao(glbDB).findAll();
+    var l = await LoginDao(glbDB).readAll();
     for (var i = 0; i < l.length; i++) {
       Debug.log("demo中，第${i + 1}个用户的登录信息详情：${l[i].toJson()}");
     }
   }
 
   void _findJwt() async {
-    String str = await KV.getStr(kv_jwt);
-    CusLoginRes res = await LoginDao(glbDB).verifyJwt(str);
+    CusLoginRes res = await LoginDao(glbDB).readJwt();
     Debug.log("当前 token 登录用户信息：${res.toJson()}");
   }
 }

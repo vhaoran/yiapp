@@ -8,9 +8,7 @@
 const String tb_login = "tb_login"; // 本地登录信息表名
 
 /// 本地存储的键
-const String kv_pwd = "/login/pwd"; // 本地存储密码的键
 const String kv_jwt = "/login/jwt"; // 本地存储jwt的键
-const String kv_login = "/login/login"; // 本地存储个人信息
 const String kv_liuyao = "liu_yao"; // 存储六爻数据
 
 /// 微服务类型前缀

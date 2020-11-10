@@ -65,12 +65,6 @@ class CusDemoMain extends StatelessWidget {
           title: "05 获取本地数据库信息",
           onTap: () => CusRoutes.push(context, LocalDBPrint()),
         ),
-        NormalBox(
-          title: "05 获取本地数据库信息",
-          onTap: ()async{
-            await LoginDao(glbDB).updateNick(ApiBase.uid, "改后的nick");
-          },
-        ),
       ],
     );
   }

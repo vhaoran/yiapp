@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -11,6 +10,8 @@ import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -69,7 +70,8 @@ class _ChPwdPageState extends State<ChPwdPage> {
 
   /// 修改密码
   void _doChPwd() async {
-    String oldPwd = await KV.getStr(kv_pwd);
+//    String oldPwd = await KV.getStr("");
+    String oldPwd = await LoginDao(glbDB).readPwd();
     setState(() {
       _oldErr = _oldCtrl.text.isEmpty ? "当前登录密码不能为空" : null;
       if (_oldErr != null) return;
@@ -91,7 +93,8 @@ class _ChPwdPageState extends State<ChPwdPage> {
         bool ok = await ApiUser.chUserPwd(_oldCtrl.text, _newCtrl.text);
         if (ok) {
           CusToast.toast(context, text: "修改密码成功，请重新登录", milliseconds: 1300);
-          if (await KV.setStr(kv_pwd, _newCtrl.text)) {
+          bool update = await LoginDao(glbDB).updatePwd(_newCtrl.text);
+          if (update) {
             CusRoutes.push(context, LoginPage());
           }
         }
