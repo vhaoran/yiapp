@@ -149,7 +149,6 @@ class CusLoginRes {
 
   /// 将从服务器获取到的数据 LoginResult 转换为本地数据库 LoginTable
   static CusLoginRes from(LoginResult r) {
-    print(">>>传递进来的r:${r.toJson()}");
     Modules m = r.modules ??
         Modules(
           enable_mall: 0,

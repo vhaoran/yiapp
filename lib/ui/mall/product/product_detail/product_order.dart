@@ -16,7 +16,7 @@ import 'package:yiapp/complex/model/cus_order_data.dart';
 import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/p_order_address.dart';
+import 'package:yiapp/ui/mall/product/product_detail/p_order_address.dart';
 
 // ------------------------------------------------------
 // author：suxing

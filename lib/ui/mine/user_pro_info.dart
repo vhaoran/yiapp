@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/mine/mall/goods/admin_send_goods.dart';
-import 'package:yiapp/ui/mine/mall/goods/shop_cart.dart';
-import 'package:yiapp/ui/mine/mall/goods/user_await_goods.dart';
-import 'package:yiapp/ui/mine/mall/goods/user_completed_goods.dart';
-import 'package:yiapp/ui/mine/mall/goods/user_wait_pay.dart';
-import 'package:yiapp/ui/mine/mall/product/product_store.dart';
-import 'package:yiapp/ui/mine/mall/product_type/product_type.dart';
+import 'package:yiapp/ui/mall/goods/shop_cart.dart';
+import 'package:yiapp/ui/mall/goods/user_await_goods.dart';
+import 'package:yiapp/ui/mall/goods/user_completed_goods.dart';
+import 'package:yiapp/ui/mall/goods/user_wait_pay.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/5 10:09
-// usage ：商城管理
+// date  ：2020/11/11 15:56
+// usage ：我的商品   含购物车、待付款、待收货、已完成订单
 // ------------------------------------------------------
 
-class ProductMainPage extends StatelessWidget {
+class UserProductInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "商城"),
+      appBar: CusAppBar(text: "我的商品"),
       body: _lv(context),
       backgroundColor: primary,
     );
@@ -35,17 +31,8 @@ class ProductMainPage extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           NormalBox(
-            title: "商品管理",
-            onTap: () => CusRoutes.push(context, ProductStore()),
-          ),
-          NormalBox(
             title: "购物车",
             onTap: () => CusRoutes.push(context, ShopCartPage()),
-          ),
-//        if (ApiState.isAdmin)
-          NormalBox(
-            title: "商品分类",
-            onTap: () => CusRoutes.push(context, ProductType()),
           ),
           NormalBox(
             title: "待付款",
@@ -58,11 +45,6 @@ class ProductMainPage extends StatelessWidget {
           NormalBox(
             title: "已完成订单",
             onTap: () => CusRoutes.push(context, CompletedGoods()),
-          ),
-//        if (ApiState.isAdmin)
-          NormalBox(
-            title: "后台待发货",
-            onTap: () => CusRoutes.push(context, AdminSendGoodsPage()),
           ),
         ],
       ),

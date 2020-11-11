@@ -104,6 +104,13 @@ class LoginDao {
     return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }
 
+  /// 游客身份即系统分配的账户，非用户自己注册的，即使用户将系统分配的账户身份改为其他，也算游客
+  Future<CusLoginRes> readGuest() async {
+    List<Map<String, dynamic>> l = await db.query(tb_login, limit: 1);
+    if (l.isEmpty) return CusLoginRes();
+    return CusLoginRes.fromJson(l.first);
+  }
+
   /// 根据 token 选择账号
   Future<CusLoginRes> readJwt() async {
     String jwt = await KV.getStr(kv_jwt);
@@ -119,13 +126,5 @@ class LoginDao {
         where: 'uid=?', whereArgs: [ApiBase.uid], limit: 1);
     if (l.isEmpty) return CusLoginRes();
     return CusLoginRes.fromJson(l.first);
-  }
-
-  /// 根据 uid 查找密码
-  Future<String> readPwd() async {
-    List<Map<String, dynamic>> l = await db.query(tb_login,
-        where: 'pwd=?', whereArgs: [ApiBase.uid], limit: 1);
-    if (l.isEmpty) return "";
-    return CusLoginRes.fromJson(l.first).pwd;
   }
 }

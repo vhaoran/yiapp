@@ -13,7 +13,7 @@ import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/complex/model/cus_order_data.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/product_count.dart';
+import 'package:yiapp/ui/mall/product/product_detail/product_count.dart';
 import 'product_order.dart';
 
 // ------------------------------------------------------

@@ -106,6 +106,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
         focusedBorder: cusUnderBorder(),
         errorBorder: cusUnderBorder(),
         focusedErrorBorder: cusUnderBorder(),
+        enabledBorder: cusUnderBorder(),
       ),
       inputFormatters:
           widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,

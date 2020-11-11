@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'daily_fortune/daily_fortune.dart';
@@ -23,9 +24,12 @@ class FortunePage extends StatefulWidget {
 
 class _FortunePageState extends State<FortunePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  List<String> _tabs = [];
+
   @override
   void initState() {
     Debug.log("进了【运势】首页");
+    _tabs = ApiState.isGuest ? ["免费测算"] : ["每日运势", "免费测算"];
     super.initState();
   }
 
@@ -33,13 +37,16 @@ class _FortunePageState extends State<FortunePage>
   Widget build(BuildContext context) {
     super.build(context);
     return DefaultTabController(
-      length: 2,
+      length: _tabs.length,
       child: Scaffold(
         appBar: _appBar(),
         body: ScrollConfiguration(
           behavior: CusBehavior(),
           child: TabBarView(
-            children: <Widget>[DailyFortune(), FreeCalculate()],
+            children: <Widget>[
+              if (!ApiState.isGuest) DailyFortune(),
+              FreeCalculate(),
+            ],
           ),
         ),
         backgroundColor: fif_primary,
@@ -50,19 +57,23 @@ class _FortunePageState extends State<FortunePage>
   Widget _appBar() {
     return CusAppBar(
       showLeading: false,
-      bottom: TabBar(
-        indicatorWeight: Adapt.px(6),
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorColor: t_primary,
-        labelPadding: EdgeInsets.only(bottom: Adapt.px(18)),
-        labelColor: t_primary,
-        unselectedLabelColor: t_gray,
-        tabs: <Widget>[
-          Text('每日运势', style: TextStyle(fontSize: Adapt.px(34))),
-          Text('免费测算', style: TextStyle(fontSize: Adapt.px(34))),
-        ],
-        onTap: (index) {},
-      ),
+      text: ApiState.isGuest ? "免费测算" : "",
+      textColor: t_primary,
+      bottom: ApiState.isGuest
+          ? null
+          : TabBar(
+              indicatorWeight: Adapt.px(6),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: t_primary,
+              labelPadding: EdgeInsets.only(bottom: Adapt.px(18)),
+              labelColor: t_primary,
+              unselectedLabelColor: t_gray,
+              tabs: List.generate(
+                _tabs.length,
+                (i) => Text(_tabs[i], style: TextStyle(fontSize: Adapt.px(34))),
+              ),
+              onTap: (index) {},
+            ),
     );
   }
 

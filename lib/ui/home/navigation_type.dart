@@ -14,11 +14,13 @@ import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 class NavigationType extends StatefulWidget {
   bool isMid;
   int curIndex;
+  List<String> names;
   FnInt onChanged;
 
   NavigationType({
     this.isMid: false,
     this.curIndex: 0,
+    this.names,
     this.onChanged,
     Key key,
   }) : super(key: key);
@@ -28,35 +30,38 @@ class NavigationType extends StatefulWidget {
 }
 
 class _NavigationTypeState extends State<NavigationType> {
-  final List<String> _barNames = ["运势", "供奉", "问命", "大师", "我的"];
-
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _barNames.map(
-          (name) {
-            int i = _barNames.indexOf(name);
-            Color select = widget.curIndex == i ? t_primary : t_gray;
-            return CusSingleBar(
-              title: widget.isMid && i == 2 ? "发布提问" : name,
-              titleColor: select,
-              iconColor: select,
-              length: _barNames.length,
-              icon: _icon(i),
-              onTap: () {
-                if (widget.onChanged != null) {
-                  widget.onChanged(i);
-                }
-              },
-            );
-          },
-        ).toList(),
+        children: _bottomBar(),
       ),
       color: ter_primary,
       shape: CircularNotchedRectangle(),
     );
+  }
+
+  /// 底部导航栏
+  List<Widget> _bottomBar() {
+    return widget.names.map(
+      (name) {
+        int i = widget.names.indexOf(name);
+        Color select = widget.curIndex == i ? t_primary : t_gray;
+        return CusSingleBar(
+          title: widget.isMid && i == 2 ? "发布提问" : name,
+          titleColor: select,
+          iconColor: select,
+          length: widget.names.length,
+          icon: _icon(i),
+          onTap: () {
+            if (widget.onChanged != null) {
+              widget.onChanged(i);
+            }
+          },
+        );
+      },
+    ).toList();
   }
 
   /// 动态获取底部导航栏图标

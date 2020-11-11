@@ -25,14 +25,9 @@ class FreeCalculate extends StatefulWidget {
 
 class _FreeCalculateState extends State<FreeCalculate>
     with AutomaticKeepAliveClientMixin {
-  // 热门推荐
-  final List<Map> _populars = [
-    {
-      "text": "星座配对",
-      "icon": 0xe69e,
-      "color": 0xFFF0D15F,
-      "route": r_con_pair,
-    },
+  // 热门配对
+  final List<Map> _pairs = [
+    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": r_con_pair},
     {
       "text": "生肖配对",
       "icon": 0xe6b1,
@@ -51,26 +46,23 @@ class _FreeCalculateState extends State<FreeCalculate>
       "color": 0xFF74C1FA,
       "route": r_birth_pair
     },
-    {"text": "精选文章", "icon": 0xe6b5, "color": 0xFFB991DB, "route": r_article},
-    {"text": "手机号码", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "人体节律", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "指纹吉凶", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "生日配对", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "QQ号码", "icon": 0xe615, "color": def_color, "route": "temp"},
+  ];
+
+  /// 热门灵签
+  final List<Map> _signs = [
+    {"text": "观音灵签", "icon": 0xe601, "color": 0xFFB991DB, "route": r_com_draw},
+    {"text": "月老灵签", "icon": 0xe606, "color": 0xFFE1567C, "route": r_com_draw},
+    {"text": "关公灵签", "icon": 0xe627, "color": 0xFFEB7949, "route": r_com_draw},
+    {"text": "大仙灵签", "icon": 0xe600, "color": 0xFF67C76C, "route": r_com_draw},
+    {"text": "妈祖灵签", "icon": 0xe668, "color": 0xFFEDBF4F, "route": r_com_draw},
+    {"text": "吕祖灵签", "icon": 0xebcd, "color": 0xFF81D755, "route": r_com_draw},
+    {"text": "车公灵签", "icon": 0xe604, "color": 0xFF75C1E9, "route": r_com_draw},
   ];
 
   // 个性推荐
-  final List<Map> _personality = [
-    {"text": "大仙灵签", "icon": 0xe600, "color": 0xFF67C76C, "route": r_com_draw},
-    {"text": "关公灵签", "icon": 0xe627, "color": 0xFFEB7949, "route": r_com_draw},
-    {"text": "观音灵签", "icon": 0xe601, "color": 0xFFB991DB, "route": r_com_draw},
-    {"text": "妈祖灵签", "icon": 0xe668, "color": 0xFFEDBF4F, "route": r_com_draw},
-    {"text": "月老灵签", "icon": 0xe606, "color": 0xFFE1567C, "route": r_com_draw},
-    {"text": "车公灵签", "icon": 0xe604, "color": 0xFF75C1E9, "route": r_com_draw},
-    {"text": "吕祖灵签", "icon": 0xebcd, "color": 0xFF81D755, "route": r_com_draw},
+  final List<Map> _specific = [
+    {"text": "精选文章", "icon": 0xe6b5, "color": 0xFFB991DB, "route": r_article},
     {"text": "周公解梦", "icon": 0xe6ce, "color": 0xFFDE524B, "route": r_zhou_gong},
-    {"text": "狐仙灵签", "icon": 0xe615, "color": def_color, "route": "temp"},
-    {"text": "好友合盘", "icon": 0xe615, "color": def_color, "route": "temp"},
   ];
 
   @override
@@ -80,19 +72,18 @@ class _FreeCalculateState extends State<FreeCalculate>
       behavior: CusBehavior(),
       child: ListView(
         children: <Widget>[
-          _tip("热门推荐"),
-          _popularArea(),
-          _tip("个性推荐"),
-          _personalityArea(),
-          _tip("趣味测试"),
-          ..._savorArea(), // 模拟数据
+          _title("热门配对"),
+          _comCtr(_pairs),
+          _title("热门灵签"),
+          _comCtr(_signs),
+          _title("个性推荐"),
+          _comCtr(_specific),
         ],
       ),
     );
   }
 
-  /// 热门推荐区域
-  Widget _popularArea() {
+  Widget _comCtr(List<Map> l) {
     return Container(
       color: primary,
       padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 5),
@@ -101,57 +92,30 @@ class _FreeCalculateState extends State<FreeCalculate>
         physics: NeverScrollableScrollPhysics(),
         mainAxisSpacing: 5,
         crossAxisCount: 5,
-        children: List.generate(_populars.length, (i) {
-          Map m = _populars[i];
-          return CusSquareItem(
-            text: m['text'],
-            icon: m['icon'],
-            bgColor: m['color'],
-            onTap: () =>
-                CusRoutes.pushNamed(context, m['route'], arguments: m['text']),
-          );
-        }),
+        children: <Widget>[
+          ...l.map(
+            (e) => CusSquareItem(
+              text: e['text'],
+              icon: e['icon'],
+              bgColor: e['color'],
+              onTap: () => CusRoutes.pushNamed(
+                context,
+                e['route'],
+                arguments: e['text'],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  /// 个性推荐区域
-  Widget _personalityArea() {
-    return Container(
-      color: primary,
-      padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 5),
-      child: GridView.count(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 5,
-        crossAxisCount: 5,
-        children: List.generate(
-          _personality.length,
-          (i) {
-            Map m = _personality[i];
-            return CusSquareItem(
-              text: m['text'],
-              icon: m['icon'],
-              bgColor: m['color'],
-              onTap: () => CusRoutes.pushNamed(context, m['route'],
-                  arguments: m['text']),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  /// 趣味测试区域
-  List<Widget> _savorArea() {
-    return _populars.map((e) => CusArticle(title: e['text'])).toList();
-  }
-
-  Widget _tip(String text) {
+  /// 标题提示
+  Widget _title(String text) {
     return Padding(
       padding: EdgeInsets.all(Adapt.px(20)),
       child: Text(
-        text ?? "提示文字",
+        text,
         style: TextStyle(fontSize: Adapt.px(32), color: t_primary),
       ),
     );

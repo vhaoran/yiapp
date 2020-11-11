@@ -14,10 +14,10 @@ import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mine/mall/product/add_product/add_p_color.dart';
-import 'package:yiapp/ui/mine/mall/product/add_product/add_p_images.dart';
-import 'package:yiapp/ui/mine/mall/product/add_product/add_p_name.dart';
-import 'package:yiapp/ui/mine/mall/product/add_product/chose_p_type.dart';
+import 'package:yiapp/ui/mall/product/add_product/add_p_color.dart';
+import 'package:yiapp/ui/mall/product/add_product/add_p_images.dart';
+import 'package:yiapp/ui/mall/product/add_product/add_p_name.dart';
+import 'package:yiapp/ui/mall/product/add_product/chose_p_type.dart';
 
 // ------------------------------------------------------
 // author：suxing

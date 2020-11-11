@@ -10,8 +10,8 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/product_color_show.dart';
-import 'package:yiapp/ui/mine/mall/product/product_detail/product_loops.dart';
+import 'package:yiapp/ui/mall/product/product_detail/product_color_show.dart';
+import 'package:yiapp/ui/mall/product/product_detail/product_loops.dart';
 
 // ------------------------------------------------------
 // author：suxing

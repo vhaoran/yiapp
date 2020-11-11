@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +10,13 @@ import 'package:yiapp/complex/provider/master_state.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/model/login/cus_login_res.dart';
+import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -25,6 +27,9 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/ui/home/login_verify.dart';
 import '../service/api/api_user.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:provider/provider.dart';
@@ -37,9 +42,7 @@ import 'register_page.dart';
 // ------------------------------------------------------
 
 class LoginPage extends StatefulWidget {
-  final bool showDefault; // 是否在登录页面显示返回上一个页面按钮
-
-  LoginPage({this.showDefault: false, Key key}) : super(key: key);
+  LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -48,7 +51,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var _mobileCtrl = TextEditingController(); // 登录手机号
   var _pwdCtrl = TextEditingController(); // 鸿运密码
-  bool _waiting = false; // 是否在过渡状态
   String _mobileErr; // 非手机号错误提示
   String _pwdErr; // 密码错误提示
   var _future;
@@ -60,13 +62,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_waiting) {
-      return Center(child: CircularProgressIndicator());
-    }
     return Scaffold(
       appBar: CusAppBar(
         showLeading: false,
-        showDefault: widget.showDefault,
         backGroundColor: fif_primary,
         actions: <Widget>[_registerBtn()],
       ),
@@ -84,20 +82,47 @@ class _LoginPageState extends State<LoginPage> {
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         SizedBox(height: Adapt.px(100)),
-        ..._inputs(), // 手机号、密码输入框
-        // 忘记密码
-        Container(
-          padding: EdgeInsets.only(bottom: Adapt.px(80)),
-          alignment: Alignment.centerRight,
-          child: InkWell(
-            child: Text(
-              '忘记密码',
-              style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
-            ),
-            onTap: () =>
-                CusToast.toast(context, text: '忘记密码待做', showChild: false),
-          ),
+        // 手机号输入框
+        CusUnderField(
+          controller: _mobileCtrl,
+          hintText: "请输入手机号",
+          errorText: _mobileErr,
+          keyboardType: TextInputType.phone,
+          maxLength: 11,
+          autofocus: true,
+          formatter: true,
         ),
+        // 密码输入框
+        CusUnderField(
+          controller: _pwdCtrl,
+          hintText: "请输入登录密码",
+          errorText: _pwdErr,
+          maxLength: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            // 游客登录
+            InkWell(
+              child: Text(
+                '游客登录',
+                style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+              ),
+              onTap: _guestLogin,
+            ),
+            SizedBox(width: Adapt.px(30)),
+            // 忘记密码
+            InkWell(
+              child: Text(
+                '忘记密码',
+                style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+              ),
+              onTap: () =>
+                  CusToast.toast(context, text: '忘记密码待做', showChild: false),
+            ),
+          ],
+        ),
+        SizedBox(height: Adapt.px(80)),
         CusRaisedBtn(
           text: '登录',
           fontSize: 28,
@@ -110,26 +135,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  List<Widget> _inputs() {
-    return <Widget>[
-      // 手机号输入框
-      CusUnderField(
-        controller: _mobileCtrl,
-        hintText: "请输入手机号",
-        errorText: _mobileErr,
-        keyboardType: TextInputType.phone,
-        maxLength: 11,
-        autofocus: true,
-        formatter: true,
-      ),
-      // 密码输入框
-      CusUnderField(
-        controller: _pwdCtrl,
-        hintText: "请输入登录密码",
-        errorText: _pwdErr,
-        maxLength: 20,
-      ),
-    ];
+  /// 游客登录
+  void _guestLogin() async {
+    CusDialog.normal(
+      context,
+      title: "登录提示",
+      subTitle: "您以游客登录后看到的非本产品的全部功能，解锁更多功能请绑定您的运营商",
+      textAgree: "登录",
+      fnDataApproval: "",
+      onThen: () async {
+        CusLoginRes res = await LoginDao(glbDB).readGuest();
+        if (ApiBase.jwt == res.jwt) {
+          Debug.log("目前登录的就是游客账号");
+        } else {
+          Debug.log("切换账号");
+          await KV.setStr(kv_jwt, res.jwt);
+          LoginVerify.init(LoginResult.from(res), context);
+        }
+        CusRoutes.pushReplacement(context, HomePage());
+      },
+    );
   }
 
   /// 请求登录
@@ -151,27 +176,22 @@ class _LoginPageState extends State<LoginPage> {
       var m = {
         "user_code": _mobileCtrl.text.trim(),
         "pwd": _pwdCtrl.text.trim(),
-        "is_mobile": false,
-        "chart_key": "aaaaa",
-        "chart_value": "3333",
       };
-
       try {
-        var r = await ApiLogin.login(m);
-        if (r != null) {
-          await KV.setStr(kv_jwt, r.jwt);
-//          await KV.setStr(kv_login, json.encode(r.toJson()));
-          await setLoginInfo(r);
+        var login = await ApiLogin.login(m);
+        if (login != null) {
+          await KV.setStr(kv_jwt, login.jwt);
+          await setLoginInfo(login);
           ApiState.isGuest = false;
           CusRoutes.pushReplacement(context, HomePage());
-          context.read<UserInfoState>().init(r.user_info);
+          context.read<UserInfoState>().init(login.user_info);
           if (ApiState.isMaster) _fetchMaster();
           if (ApiState.isBrokerAdmin) _fetchBroker();
           ShopKV.key = "shop${ApiBase.uid}";
           Debug.log("登录成功");
         }
       } catch (e) {
-        Debug.log("登录出现异常：$e");
+        Debug.logError("登录出现异常：$e");
         _pwdErr = "密码错误";
         setState(() {});
       }
@@ -179,27 +199,6 @@ class _LoginPageState extends State<LoginPage> {
       _mobileErr = "账号不存在";
       setState(() {});
     }
-  }
-
-  /// 忘记密码
-  Widget _forgetPwd() {
-    return Container(
-      padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(80)),
-      alignment: Alignment.centerRight,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          InkWell(
-            child: Text(
-              '忘记密码',
-              style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
-            ),
-            onTap: () =>
-                CusToast.toast(context, text: '忘记密码待做', showChild: false),
-          ),
-        ],
-      ),
-    );
   }
 
   /// 注册按钮

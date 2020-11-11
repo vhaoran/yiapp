@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +11,6 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
@@ -22,16 +19,14 @@ import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/ui/back_stage/backstage_manage.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
-import 'package:yiapp/ui/broker/broker_info_page.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_main.dart';
-import 'package:yiapp/ui/mine/mall/product_main.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
+import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'my_orders/all_my_post.dart';
 
 // ------------------------------------------------------
@@ -49,7 +44,6 @@ class MinePage extends StatefulWidget {
 
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
-  File _file; // 返回的相册或者拍摄的图片
   UserInfo _u = UserInfo();
 
   StreamSubscription<MsgYiOrder> _bubSub;
@@ -58,7 +52,17 @@ class _MinePageState extends State<MinePage>
   void initState() {
     Debug.log("进入了个人主页");
     super.initState();
-    _prepareBusEvent();
+//    _prepareBusEvent();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _u = context.watch<UserInfoState>().userInfo ?? defaultUser;
+    super.build(context);
+    return Scaffold(
+      body: _bodyCtr(),
+      backgroundColor: sec_primary,
+    );
   }
 
   void _prepareBusEvent() {
@@ -70,40 +74,30 @@ class _MinePageState extends State<MinePage>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _u = ApiBase.login
-        ? context.watch<UserInfoState>().userInfo ?? defaultUser
-        : defaultUser;
-    super.build(context);
-    return Scaffold(
-      body: _bodyCtr(),
-      backgroundColor: sec_primary,
-    );
-  }
-
   Widget _bodyCtr() {
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
-        if (ApiState.isVip)
+        // 游客身份看不到的内容
+        if (!ApiState.isGuest) ...[
           NormalBox(
             title: "我的订单",
             onTap: () => CusRoutes.push(context, AllMyPostPage()),
           ),
-        NormalBox(
-          title: "商城",
-          onTap: () => CusRoutes.push(context, ProductMainPage()),
-        ),
-        NormalBox(
-          title: "账户与安全",
-          onTap: () => CusRoutes.push(context, AccountSafePage()),
-        ),
-        NormalBox(
-          title: "个人资金账号",
-          onTap: () => CusRoutes.push(context, FundMain()),
-        ),
+          NormalBox(
+            title: "我的商品",
+            onTap: () => CusRoutes.push(context, UserProductInfo()),
+          ),
+          NormalBox(
+            title: "账户与安全",
+            onTap: () => CusRoutes.push(context, AccountSafePage()),
+          ),
+          NormalBox(
+            title: "个人资金账号",
+            onTap: () => CusRoutes.push(context, FundMain()),
+          ),
+        ],
         if (!ApiState.isMaster)
           NormalBox(
             title: "申请大师",
@@ -114,25 +108,16 @@ class _MinePageState extends State<MinePage>
             title: "大师信息",
             onTap: () => CusRoutes.push(context, MasterInfoPage()),
           ),
-//        if (!ApiState.isAdmin)
-        NormalBox(
-          title: "申请代理",
-          onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
-        ),
-        if (ApiState.isBrokerAdmin)
+        if (!ApiState.isAdmin)
           NormalBox(
-            title: "代理信息",
-            onTap: () => CusRoutes.push(context, BrokerInfoPage()),
+            title: "申请运营商",
+            onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
           ),
-        if (ApiState.isAdmin)
+        if (ApiState.isGuest)
           NormalBox(
-            title: "后台管理",
-            onTap: () => CusRoutes.push(context, BackstageManage()),
+            title: "绑定运营商",
+            onTap: () => CusRoutes.push(context, BindSerCodePage()),
           ),
-        NormalBox(
-          title: "绑定代理",
-          onTap: () => CusRoutes.push(context, BindSerCodePage()),
-        ),
         NormalBox(
           title: "demo 测试",
           onTap: () => CusRoutes.push(context, CusDemoMain()),
@@ -147,10 +132,7 @@ class _MinePageState extends State<MinePage>
       height: Adapt.px(bgWallH),
       child: Stack(
         children: <Widget>[
-          BackgroundWall(
-            url: "", // 背景墙
-            onTap: () => CusBottomSheet(context, OnFile: _selectFile),
-          ),
+          BackgroundWall(url: ""), // 背景墙
           Align(
             alignment: Alignment(0, 0), // 头像
             child: InkWell(
@@ -160,18 +142,11 @@ class _MinePageState extends State<MinePage>
           ),
           Align(
             alignment: Alignment(0, ApiState.isGuest ? 0.8 : 0.75),
-            child:
-                CusText(_u?.nick ?? "暂时为空", t_gray, 30), // 已登录显示用户名，未登录则显示登录丨注册
+            child: CusText(_u.nick ?? "游客", t_gray, 30),
           ),
         ],
       ),
     );
-  }
-
-  void _selectFile(File file) {
-    Debug.log("当前选择的图片：$file");
-    _file = file;
-    setState(() {});
   }
 
   @override

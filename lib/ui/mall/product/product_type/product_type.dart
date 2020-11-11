@@ -12,7 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mine/mall/product_type/product_type_cover.dart';
+import 'package:yiapp/ui/mall/product/product_type/product_type_cover.dart';
 import 'add_product_type.dart';
 
 // ------------------------------------------------------

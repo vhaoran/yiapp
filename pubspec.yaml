@@ -62,6 +62,8 @@ dependencies:
   pull_to_refresh: ^1.6.2
   # 加载指示器
   flutter_spinkit: ^4.1.2
+  # 简单的 loading 加载框
+  flutter_easyloading: ^2.1.1
   ###### suxing #####
 
 dev_dependencies:

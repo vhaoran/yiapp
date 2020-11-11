@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yiapp/complex/const/const_string.dart';
 
 // ------------------------------------------------------
 // author：魏工
@@ -52,21 +51,4 @@ class KV {
       return false;
     }
   }
-
-  /// 退出登录时清空本地登录相关的数据
-  static Future<bool> clearLogin() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.remove(kv_jwt);
-//      prefs.remove(kv_login);
-//      prefs.remove(kv_pwd);
-      return true;
-    } catch (e) {
-      print(">>>share_preference 执行 removeLogin 操作时出现异常");
-      return false;
-    }
-  }
-
-//------------------------------------------------
-
 }

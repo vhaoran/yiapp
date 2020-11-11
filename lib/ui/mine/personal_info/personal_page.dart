@@ -111,11 +111,12 @@ class _PersonalPageState extends State<PersonalPage> {
         SizedBox(height: Adapt.px(50)),
         SingleTextBox(
           title: "退出登录",
-          onTap: () => CusDialog.err(context, title: "您确定退出当前账号吗?",
-              onApproval: () async {
-            await KV.clearLogin(); // 清空登录相关数据
-            CusRoutes.push(context, LoginPage());
-          }),
+          onTap: () => CusDialog.normal(
+            context,
+            title: "您确定退出当前账号吗?",
+            fnDataApproval: "",
+            onThen: () => CusRoutes.push(context, LoginPage()),
+          ),
         ),
       ],
     );

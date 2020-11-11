@@ -13,23 +13,23 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mine/mall/product/product_cover.dart';
+import 'package:yiapp/ui/mall/product/product_cover.dart';
 import 'add_product/add_product.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/5 09:57
-// usage ：商城(展示所有的商品)
+// usage ：商城
 // ------------------------------------------------------
 
-class ProductStore extends StatefulWidget {
-  ProductStore({Key key}) : super(key: key);
+class MallPage extends StatefulWidget {
+  MallPage({Key key}) : super(key: key);
 
   @override
-  _ProductStoreState createState() => _ProductStoreState();
+  _MallPageState createState() => _MallPageState();
 }
 
-class _ProductStoreState extends State<ProductStore> {
+class _MallPageState extends State<MallPage> {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;

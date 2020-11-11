@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
@@ -70,25 +71,15 @@ class _ChPwdPageState extends State<ChPwdPage> {
 
   /// 修改密码
   void _doChPwd() async {
-//    String oldPwd = await KV.getStr("");
-    String oldPwd = await LoginDao(glbDB).readPwd();
     setState(() {
+      _oldErr = _newErr = null;
       _oldErr = _oldCtrl.text.isEmpty ? "当前登录密码不能为空" : null;
       if (_oldErr != null) return;
       _newErr = _newCtrl.text.isEmpty ? "新密码不能为空" : null;
       if (_newErr != null) return;
-      if (_oldCtrl.text != oldPwd) {
-        _oldErr = "当前登录密码输入错误";
-        return;
-      }
-      if (_newCtrl.text == oldPwd) {
-        _newErr = "新的密码与当前登录密码相同";
-        return;
-      }
     });
     // 符合要求，请求修改密码
     if (_oldErr == null && _newErr == null) {
-      print(">>>符合");
       try {
         bool ok = await ApiUser.chUserPwd(_oldCtrl.text, _newCtrl.text);
         if (ok) {
@@ -98,9 +89,11 @@ class _ChPwdPageState extends State<ChPwdPage> {
             CusRoutes.push(context, LoginPage());
           }
         }
-        print(">>>修改用户密码结果：$ok");
+        Debug.log("修改用户密码结果：$ok");
       } catch (e) {
-        print("<<<修改用户密码异常：$e");
+        _oldErr = "当前登录密码输入错误";
+        setState(() {});
+        Debug.logError("修改用户密码异常：$e");
       }
     }
   }
