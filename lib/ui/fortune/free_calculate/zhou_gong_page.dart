@@ -5,6 +5,7 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/zhou_gong_res.dart';
@@ -68,10 +69,13 @@ class _ZhouGongPageState extends State<ZhouGongPage> {
             Text("没有搜索到与【${_searchCtrl.text}】相关的梦境信息",
                 style: TextStyle(color: t_primary, fontSize: Adapt.px(32))),
           Expanded(
-            child: ListView(
-              children: <Widget>[
-                ..._l.map((e) => _searchItem(e)),
-              ],
+            child: ScrollConfiguration(
+              behavior: CusBehavior(),
+              child: ListView(
+                children: <Widget>[
+                  ..._l.map((e) => _searchItem(e)),
+                ],
+              ),
             ),
           ),
         ],

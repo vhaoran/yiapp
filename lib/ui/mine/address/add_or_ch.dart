@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
@@ -8,6 +9,7 @@ import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_user.dart';
 
@@ -64,15 +66,17 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
       "mobile": _mobileCtrl.text,
       "address": _addrCtrl.text,
     };
+    SpinKit.threeBounce(context);
     try {
       var res = await ApiUser.userAddrAdd(m);
-      print(">>>添加收件地址结果：${res.toJson()}");
+      Debug.log("添加收件地址结果：${res.toJson()}");
       if (res != null) {
+        Navigator.pop(context);
         CusToast.toast(context, text: "添加成功");
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      print("<<<添加收件地址出现异常：$e");
+      Debug.logError("添加收件地址出现异常：$e");
     }
   }
 
@@ -88,13 +92,13 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
     };
     try {
       bool ok = await ApiUser.userAddrCh(m);
-      print(">>>修改 id 为 ${widget.res.id} 的地址结果：$ok");
+      Debug.log("修改 id 为 ${widget.res.id} 的地址结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "修改成功");
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      print("<<<修改收件地址出现异常：$e");
+      Debug.logError("修改收件地址出现异常：$e");
     }
   }
 
@@ -142,9 +146,9 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
               if (_addrErr != null) return;
             });
             if (_userErr == null && _mobileErr == null && _addrErr == null) {
-              print(">>>收货人：${_userCtrl.text}");
-              print(">>>手机号：${_mobileCtrl.text}");
-              print(">>>详细地址：${_addrCtrl.text}");
+              Debug.log("收货人：${_userCtrl.text}");
+              Debug.log("手机号：${_mobileCtrl.text}");
+              Debug.log("详细地址：${_addrCtrl.text}");
               _isAdd ? _doAddAddr() : _doChAddr();
             }
           },

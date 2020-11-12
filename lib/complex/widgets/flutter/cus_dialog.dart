@@ -274,6 +274,7 @@ class CusDialog {
     Color agreeColor,
     Widget child,
     VoidCallback onApproval,
+    VoidCallback onThen,
     dynamic fnDataApproval,
   }) {
     _ComDialog(
@@ -282,6 +283,7 @@ class CusDialog {
       fnDataApproval: fnDataApproval,
       textAgree: textAgree ?? "确定",
       agreeColor: agreeColor ?? Colors.black,
+      onThen: onThen,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(15),

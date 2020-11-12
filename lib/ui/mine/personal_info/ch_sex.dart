@@ -8,6 +8,7 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import '../../../service/api/api_user.dart';
@@ -91,6 +92,7 @@ class _ChUserSexState extends State<ChUserSex> {
       Navigator.pop(context);
       return;
     }
+    SpinKit.threeBounce(context);
     Debug.log("当前性别：$sex");
     var m = {"sex": sex};
     try {
@@ -101,6 +103,7 @@ class _ChUserSexState extends State<ChUserSex> {
         bool update = await LoginDao(glbDB).updateSex(sex);
         if (update) {
           CusToast.toast(context, text: "修改成功");
+          Navigator.pop(context);
         }
         Navigator.pop(context);
       }

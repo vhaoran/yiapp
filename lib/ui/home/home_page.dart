@@ -42,6 +42,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
 //    _prepareBusEvent(); // 初始化监听
+    // 默认开启运势中的免费测算和"我的"
+    _bars = [FortunePage(), MinePage()];
+    _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
     _startLogin();
     super.initState();
   }
@@ -109,15 +112,12 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       Debug.logError("用户登录出现异常：$e");
     }
-    await LoginVerify.init(login, context);
-    await _dynamicModules();
+    LoginVerify.init(login, context);
+    _dynamicModules();
   }
 
   /// 动态的运营商模块
   void _dynamicModules() async {
-    // 默认开启运势中的免费测算和"我的"
-    _bars = [FortunePage(), MinePage()];
-    _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
     CusLoginRes res = await LoginDao(glbDB).readUser();
     if (res.enable_mall == 1) {
       _bars.insert(_bars.length - 1, MallPage());

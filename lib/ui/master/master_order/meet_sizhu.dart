@@ -138,7 +138,7 @@ class _MeetSiZhuPageState extends State<MeetSiZhuPage> {
     };
     Debug.log("数据：${m.toString()}");
     try {
-      CusLoading(context);
+      SpinKit.threeBounce(context);
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
         Navigator.pop(context);

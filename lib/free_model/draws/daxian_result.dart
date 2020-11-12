@@ -8,7 +8,7 @@ class DaXianResult {
   String jie_qian; // 解签
   List<String> jie_yun_shi; // 解运势
   String name; // 签名
-  String qian_shi; // 签诗
+  List<String> qian_shi; // 签诗
 
   DaXianResult({
     this.jie_qian,
@@ -24,7 +24,8 @@ class DaXianResult {
           ? List<String>.from(json['jie_yun_shi'])
           : [],
       name: json['name'],
-      qian_shi: json['qian_shi'],
+      qian_shi:
+          json['qian_shi'] != null ? List<String>.from(json['qian_shi']) : [],
     );
   }
 
@@ -32,7 +33,9 @@ class DaXianResult {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['jie_qian'] = this.jie_qian;
     data['name'] = this.name;
-    data['qian_shi'] = this.qian_shi;
+    if (this.qian_shi != null) {
+      data['qian_shi'] = this.qian_shi;
+    }
     if (this.jie_yun_shi != null) {
       data['jie_yun_shi'] = this.jie_yun_shi;
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -20,7 +20,9 @@ import 'package:yiapp/ui/mine/address/addr_item.dart';
 // ------------------------------------------------------
 
 class UserAddressPage extends StatefulWidget {
-  UserAddressPage({Key key}) : super(key: key);
+  final bool event;
+
+  UserAddressPage({this.event: false, Key key}) : super(key: key);
 
   @override
   _UserAddressPageState createState() => _UserAddressPageState();
@@ -43,7 +45,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      print("<<<暂未添加收货地址：$e");
+      Debug.logError("暂未添加收货地址：$e");
     }
   }
 
@@ -90,7 +92,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
                 res: _l[i],
                 onChanged: _refresh,
                 onAddr: (val) {
-                  if (val != null) {
+                  if (val != null && widget.event) {
                     Navigator.of(context).pop(val);
                   }
                 }),

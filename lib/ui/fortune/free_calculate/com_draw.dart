@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shake_animation_widget/shake_animation_widget.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/free_model/draws/daxian_result.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'package:yiapp/ui/fortune/free_calculate/com_draw_res.dart';
 
@@ -72,7 +75,11 @@ class _ComDrawPageState extends State<ComDrawPage> {
                           child: Image.asset(path, scale: 4),
                           title: "您抽到了第$tip签",
                           textAgree: "解签",
-                          onApproval: () => _chooseDraw(_title, num),
+                          fnDataApproval: "",
+                          onThen: () {
+                            SpinKit.threeBounce(context);
+                            _chooseDraw(_title, num);
+                          },
                         );
                       },
                     );
@@ -116,13 +123,13 @@ class _ComDrawPageState extends State<ComDrawPage> {
           break;
       }
     } catch (e) {
-      print("<<<$_title灵签出现异常：$e");
+      Debug.logError("$_title灵签出现异常：$e");
     }
     if (res != null) {
       CusRoutes.push(
         context,
         ComDrawResPage(result: res, title: _title),
-      );
+      ).then((value) => Navigator.pop(context));
     }
   }
 

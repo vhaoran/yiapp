@@ -31,22 +31,22 @@ class ConResPage extends StatelessWidget {
       {
         "title": "爱情情缘",
         "contents": [res.feel],
-        "icon": FontAwesomeIcons.solidHeart,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "最佳表白日",
         "contents": [res.con_day.split(':')[1]],
-        "icon": FontAwesomeIcons.fire
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "爱情誓言",
         "contents": [res.oath],
-        "icon": FontAwesomeIcons.solidComment,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "定情宝石",
         "contents": [res.gem],
-        "icon": FontAwesomeIcons.solidGem,
+        "icon": FontAwesomeIcons.envira,
       },
     ];
   }

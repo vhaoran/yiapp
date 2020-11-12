@@ -10,6 +10,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/fn/fn_dialog.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/complex/widgets/small/cus_select.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -118,6 +119,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
       CusToast.toast(context, text: "未选择所有血型");
       return;
     }
+    SpinKit.threeBounce(context);
     try {
       var m = {"male_blood": _maleStr, "female_blood": _femaleStr};
       var res = await ApiFree.bloodMatch(m);
@@ -126,6 +128,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
         CusRoutes.push(context, BloodResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
           _maleBlood = _femaleBlood = -1;
+          Navigator.pop(context);
           setState(() {});
         });
       }

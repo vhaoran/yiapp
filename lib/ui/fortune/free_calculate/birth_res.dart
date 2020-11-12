@@ -31,12 +31,12 @@ class BirthResPage extends StatelessWidget {
       {
         "title": "爱情誓言",
         "contents": [res.oath],
-        "icon": FontAwesomeIcons.solidComment,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "吉日",
         "contents": res.jiRi,
-        "icon": FontAwesomeIcons.fire,
+        "icon": FontAwesomeIcons.envira,
       },
     ];
   }

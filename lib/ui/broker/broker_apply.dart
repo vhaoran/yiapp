@@ -8,6 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/dicts/broker-apply.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 
@@ -61,9 +62,10 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         SizedBox(height: space),
         CusRectField(
           controller: _serCodeCtrl,
-          hintText: "输入服务代码",
+          hintText: "输入六位数的服务代码",
           errorText: _serCodeErr,
           onlyNumber: true,
+          maxLines: 6,
         ),
         SizedBox(height: space),
         CusRectField(
@@ -100,6 +102,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     });
     // 符合要求
     if (_nameErr == null && _serCodeErr == null && _briefErr == null) {
+      SpinKit.threeBounce(context);
       var m = {
         "name": _nameCtrl.text.trim(),
         "service_code": _serCodeCtrl.text.trim(),
@@ -109,6 +112,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         BrokerApply res = await ApiBroker.brokerApplyHandIn(m);
         Debug.log("申请成为代理结果详情：${res.toJson()}");
         if (res != null) {
+          Navigator.pop(context);
           CusDialog.tip(context, title: "申请已提交，请等待审核结果", onApproval: () {
             Navigator.pop(context);
           });

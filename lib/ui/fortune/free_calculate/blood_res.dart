@@ -18,7 +18,7 @@ class BloodResPage extends StatelessWidget {
 
   BloodResPage({this.res, Key key}) : super(key: key);
 
-  List<Map> _parses= [];
+  List<Map> _parses = [];
 
   /// 设置解析后的数据
   void _resData() {
@@ -31,22 +31,22 @@ class BloodResPage extends StatelessWidget {
       {
         "title": "最佳表白日",
         "contents": [res.confession_day.split(':')[1]],
-        "icon": FontAwesomeIcons.fire,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "可能出现的问题",
         "contents": [res.disadvantage],
-        "icon": FontAwesomeIcons.questionCircle,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "爱情誓言",
         "contents": [res.disadvantage],
-        "icon": FontAwesomeIcons.solidComment,
+        "icon": FontAwesomeIcons.envira,
       },
       {
         "title": "增进感情的方式",
         "contents": [res.plus],
-        "icon": FontAwesomeIcons.solidComment,
+        "icon": FontAwesomeIcons.envira,
       },
     ];
   }

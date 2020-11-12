@@ -45,7 +45,7 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
 
   /// 提交订单
   void _doBuy() async {
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     Navigator.pop(context);
     List<Map> maps = [];
     _l.forEach((e) {

@@ -10,6 +10,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/complex/widgets/small/cus_select.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'package:yiapp/ui/fortune/free_calculate/birth_res.dart';
@@ -96,16 +97,17 @@ class _BirthPairPageState extends State<BirthPairPage> {
             ],
           ),
         ),
-        CusRaisedBtn(text: "开始测算", onPressed: __doPair),
+        CusRaisedBtn(text: "开始测算", onPressed: _doPair),
       ],
     );
   }
 
-  void __doPair() async {
+  void _doPair() async {
     if ((_male_month == 0) || _female_month == 0) {
       CusToast.toast(context, text: "未选择所有生日");
       return;
     }
+    SpinKit.threeBounce(context);
     var m = {
       "male_month": _male_month,
       "male_day": _male_day,
@@ -119,6 +121,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
         CusRoutes.push(context, BirthResPage(res: res)).then((value) {
           _male_month = _male_day = _female_month = _female_day = 0;
           _maleStr = _femaleStr = "";
+          Navigator.pop(context);
           setState(() {});
         });
       }

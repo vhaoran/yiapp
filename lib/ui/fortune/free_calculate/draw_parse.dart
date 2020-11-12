@@ -18,7 +18,7 @@ class DrawParse {
     return [
       {
         "title": "签诗",
-        "contents": [res.qian_shi],
+        "contents": res.qian_shi,
       },
       {
         "title": "解签诗",

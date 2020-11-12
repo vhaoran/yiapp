@@ -105,7 +105,7 @@ class _MeetHeHunPageState extends State<MeetHeHunPage> {
       _err = _contentCtrl.text.isEmpty ? "未填写描述的内容" : null;
     });
     if (_err != null) return;
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     Navigator.pop(context);
     var m = {
       "master_id": widget.master_id,

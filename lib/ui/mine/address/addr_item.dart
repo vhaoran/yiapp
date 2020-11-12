@@ -7,6 +7,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/ui/mine/address/add_or_ch.dart';
@@ -129,10 +130,12 @@ class AddrItem extends StatelessWidget {
   /// 设置为默认地址
   void _doSetDefault(context) async {
     var m = {"id": res.id};
+    SpinKit.threeBounce(context);
     try {
       bool ok = await ApiUser.userAddrSetDefault(m);
       print(">>>设置 id 等于 ${res.id}为默认地址的结果：$ok");
       if (ok) {
+        Navigator.pop(context);
         CusToast.toast(context, text: "设置成功");
         if (onChanged != null) onChanged();
       }

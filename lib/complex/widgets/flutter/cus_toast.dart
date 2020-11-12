@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import '../../tools/adapt.dart';
 
 // ------------------------------------------------------
@@ -111,14 +112,6 @@ class CusToast {
               style: TextStyle(
                   fontSize: Adapt.px(textSize ?? 34), color: textColor),
             ),
-//            if (showChild) ...[
-//              SizedBox(height: Adapt.px(20)),
-//              child ??
-//                  Image.asset('assets/images/icon_selected_20x20.png',
-//                      scale: Adapt.px(2.5)),
-//            ],
-            if (loading)
-              CupertinoActivityIndicator(radius: 30),
           ],
         ),
       ),

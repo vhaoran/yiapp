@@ -10,6 +10,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -76,11 +77,13 @@ class _BindUserMobileState extends State<BindUserMobile> {
       return;
     }
     if (_err == null) {
+      SpinKit.threeBounce(context);
       var m = {"nick": _mobileCtrl.text.trim()};
       try {
         bool ok = await ApiUser.ChUserInfo(m);
         Debug.log("绑定手机号结果：$ok");
         if (ok) {
+          Navigator.pop(context);
           context.read<UserInfoState>()?.bindMobile(_mobileCtrl.text);
           bool update = await LoginDao(glbDB).updateMobile(_mobileCtrl.text);
           if (update) {

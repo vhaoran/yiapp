@@ -77,7 +77,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
 
   /// 满足发帖条件
   void _doPost(m) async {
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     try {
       var data;
       data = ApiState.isFlash

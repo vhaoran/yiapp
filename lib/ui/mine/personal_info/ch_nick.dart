@@ -9,6 +9,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import '../../../service/api/api_user.dart';
@@ -71,6 +72,11 @@ class _ChUserNickState extends State<ChUserNick> {
 
   /// 修改用户昵称
   void _chNick() async {
+    if (_nickCtrl.text.isEmpty) {
+      CusToast.toast(context, text: "昵称不能为空");
+      return;
+    }
+    SpinKit.threeBounce(context);
     var m = {"nick": _nickCtrl.text};
     try {
       bool ok = await ApiUser.ChUserInfo(m);
@@ -81,6 +87,7 @@ class _ChUserNickState extends State<ChUserNick> {
         Debug.log("本地更改存储nick结果：$update");
         if (update) {
           CusToast.toast(context, text: "修改成功");
+          Navigator.pop(context);
           Navigator.pop(context);
         }
       }

@@ -88,7 +88,7 @@ class _AddProductState extends State<AddProduct> {
 
   /// 满足新增商品条件，执行添加商品
   void _doAdd() async {
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     List<Map> s = await CusTool.assetsKeyPath(_images);
     Navigator.pop(context);
     var res = List<ProductImage>();

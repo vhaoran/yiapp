@@ -8,6 +8,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 
@@ -69,6 +70,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
       setState(() {});
       return;
     }
+    SpinKit.threeBounce(context);
     var m = {
       "info": {
         "uid": ApiBase.uid,
@@ -78,6 +80,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
     try {
       String res = await ApiMaster.masterInfoApplyHandIn(m);
       if (res != null && res.isNotEmpty) {
+        Navigator.pop(context);
         CusDialog.tip(context, title: "申请已提交，请等待审核结果", onApproval: () {
           Navigator.pop(context);
         });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yiapp/complex/const/const_calendar.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/const/const_list.dart';
@@ -118,14 +118,14 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
       CusToast.toast(context, text: "未选择所有生肖");
       return;
     }
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     try {
       var m = {
         "male_ShengXiao": _maleZodiac,
         "female_ShengXiao": _femaleZodiac
       };
       var res = await ApiFree.shengXiaoMatch(m);
-      print(">>>查询生肖配对结果:${res.toJson()}");
+      Debug.log("查询生肖配对结果:${res.toJson()}");
       if (res != null) {
         CusRoutes.push(context, ZodiacResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
@@ -135,7 +135,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
         });
       }
     } catch (e) {
-      print("<<<生肖配对配对出现异常：$e");
+      Debug.logError("生肖配对配对出现异常：$e");
     }
   }
 }

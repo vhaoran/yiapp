@@ -64,7 +64,7 @@ class _ProOrderAddressState extends State<ProOrderAddress> {
           child: InkWell(
             onTap: () => CusRoutes.push(
               context,
-              UserAddressPage(),
+              UserAddressPage(event: true),
             ).then((val) => setState(
                   () {
                     _res = val;

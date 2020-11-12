@@ -126,7 +126,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
 
   /// 开始起卦
   void _doQiGua() async {
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     String code = "";
     widget.l.forEach((e) => code += e.toString());
     print(">>>guaTime:${_guaTime.toJson()}");

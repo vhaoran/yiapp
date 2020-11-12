@@ -98,7 +98,7 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoutes.push(context, FundMain()),
           ),
         ],
-        if (!ApiState.isMaster)
+        if (!ApiState.isMaster || !ApiState.isBrokerAdmin)
           NormalBox(
             title: "申请大师",
             onTap: () => CusRoutes.push(context, ApplyMasterPage()),
@@ -118,10 +118,10 @@ class _MinePageState extends State<MinePage>
             title: "绑定运营商",
             onTap: () => CusRoutes.push(context, BindSerCodePage()),
           ),
-        NormalBox(
-          title: "demo 测试",
-          onTap: () => CusRoutes.push(context, CusDemoMain()),
-        ),
+//        NormalBox(
+//          title: "demo 测试",
+//          onTap: () => CusRoutes.push(context, CusDemoMain()),
+//        ),
       ],
     );
   }

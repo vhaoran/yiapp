@@ -124,7 +124,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
       _err = _contentCtrl.text.isEmpty ? "提交的内容不能为空" : null;
     });
     if (_err != null) return;
-    CusLoading(context);
+    SpinKit.threeBounce(context);
     Navigator.pop(context);
     LiuYaoRiqi riqi = _data.res.riqi;
     var m = {

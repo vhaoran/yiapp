@@ -16,6 +16,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_image.dart';
@@ -97,12 +98,12 @@ class _PersonalPageState extends State<PersonalPage> {
               : () => CusRoutes.push(context, BindUserMobile()),
         ),
         // 出生地点
-        NormalBox(
-          title: "出生地点",
-          subtitle:
-              _u.country.isEmpty ? "请选择出生地点" : "${_u.province}省 ${_u.city}市",
-          subFn: _u.country.isEmpty ? null : null,
-        ),
+//        NormalBox(
+//          title: "出生地点",
+//          subtitle:
+//              _u.country.isEmpty ? "请选择出生地点" : "${_u.province}省 ${_u.city}市",
+//          subFn: _u.country.isEmpty ? null : null,
+//        ),
         // 我的收货地址
         NormalBox(
           title: "我的收货地址",
@@ -125,6 +126,7 @@ class _PersonalPageState extends State<PersonalPage> {
   /// 修改头像地址
   void _doChIcon(File file) async {
     if (file == null) return;
+    SpinKit.threeBounce(context);
     try {
       String key = await ApiImage.uploadQiniu(file);
       String url = await ApiImage.GetVisitURL(key);
@@ -136,6 +138,7 @@ class _PersonalPageState extends State<PersonalPage> {
         bool update = await LoginDao(glbDB).updateIcon(url);
         if (update) {
           CusToast.toast(context, text: "修改成功");
+          Navigator.pop(context);
         }
         Debug.log("存储头像到数据库结果：$update");
       }
