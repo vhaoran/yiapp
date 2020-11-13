@@ -16,7 +16,7 @@ import '../cus_complex.dart';
 class CusRectField extends StatefulWidget {
   final TextEditingController controller; // 可为空
   final String fromValue; // 初始值文字
-  final String hintText;
+  final String hintText; // 提示文字
   final String prefixText; // 前置提示信息
   final Widget prefixIcon; // 前置组件
   final Widget suffixIcon; // 后置组件
@@ -104,58 +104,58 @@ class _CusRectFieldState extends State<CusRectField> {
   /// 输入框
   Widget _input() {
     return TextField(
-        autofocus: widget.autofocus,
-        focusNode: widget.focusNode,
-        enabled: widget.enable,
-        keyboardType:
-            widget.onlyNumber ? TextInputType.number : widget.keyboardType,
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
-        maxLength: widget.maxLength,
-        maxLines: widget.maxLines,
-        controller: widget.controller,
-        textAlign: widget.textAlign,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          hintStyle:
-              TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
-          prefixText: widget.prefixText,
-          prefixStyle: TextStyle(
-            color: widget.prefixColor,
-            fontSize: Adapt.px(widget.fontSize + 2),
-          ),
-          prefixIcon: widget.prefixIcon,
-          suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
-          counterText: "",
-          border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
-          focusedBorder: widget.hideBorder
-              ? InputBorder.none
-              : cusOutlineBorder(color: Colors.white24),
-          errorBorder: widget.hideBorder
-              ? InputBorder.none
-              : cusOutlineBorder(color: Colors.white24),
-          focusedErrorBorder: widget.hideBorder
-              ? InputBorder.none
-              : cusOutlineBorder(color: Colors.white24),
+      controller: widget.controller,
+      autofocus: widget.autofocus,
+      focusNode: widget.focusNode,
+      enabled: widget.enable,
+      keyboardType:
+          widget.onlyNumber ? TextInputType.number : widget.keyboardType,
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+      maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      textAlign: widget.textAlign,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        hintStyle:
+            TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+        prefixText: widget.prefixText,
+        prefixStyle: TextStyle(
+          color: widget.prefixColor,
+          fontSize: Adapt.px(widget.fontSize + 2),
         ),
-        onChanged: (val) {
-          if (widget.errorText != null) {
-            widget.errorText = null;
-          }
-          if (widget.onChanged != null) {
-            widget.onChanged();
-          }
-          setState(() {});
-        },
-        inputFormatters: widget.inputFormatters == null
-            ? [
-                if (widget.onlyNumber)
-                  WhitelistingTextInputFormatter.digitsOnly,
-                if (widget.onlyChinese)
-                  WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
-              ]
-            : widget.inputFormatters);
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
+        counterText: "",
+        border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
+        focusedBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
+        errorBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
+        focusedErrorBorder: widget.hideBorder
+            ? InputBorder.none
+            : cusOutlineBorder(color: Colors.white24),
+      ),
+      onChanged: (val) {
+        if (widget.errorText != null) {
+          widget.errorText = null;
+        }
+        if (widget.onChanged != null) {
+          widget.onChanged();
+        }
+        setState(() {});
+      },
+      inputFormatters: widget.inputFormatters == null
+          ? [
+              if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
+              if (widget.onlyChinese)
+                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
+            ]
+          : widget.inputFormatters,
+    );
   }
 
   /// 清空输入信息

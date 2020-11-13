@@ -10,7 +10,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/service/api/api_user.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
@@ -52,7 +51,6 @@ class _ChPwdPageState extends State<ChPwdPage> {
           controller: _oldCtrl,
           hintText: "请输入当前登录密码",
           errorText: _oldErr,
-          spacing: 50,
         ),
         CusUnderField(
           controller: _newCtrl,

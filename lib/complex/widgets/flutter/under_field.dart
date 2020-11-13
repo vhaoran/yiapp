@@ -13,13 +13,16 @@ import 'package:yiapp/complex/widgets/cus_complex.dart';
 // ------------------------------------------------------
 
 class CusUnderField extends StatefulWidget {
-  final TextEditingController controller;
-  final String hintText; // 提示文字
+  final TextEditingController controller; // 可为空
   final String fromValue; // 初始值文字
+  final String hintText; // 提示文字
   final int maxLength;
   final int maxLines;
-  final double spacing; // 输入框间隔
+  final bool onlyNumber; // 限制只能输入数字
+  final bool onlyChinese; // 限制只能输入汉字
+  final List<TextInputFormatter> inputFormatters;
   final bool autofocus;
+  final bool enable;
   final bool isClear; // 为true代表suffixIcon是清空内容组件，false为自定义组件
   final TextInputType keyboardType; // 键盘输入类型
   final TextStyle style; // 输入时的文字风格
@@ -35,8 +38,11 @@ class CusUnderField extends StatefulWidget {
     this.fromValue: "",
     this.maxLength: -1,
     this.maxLines: 1,
-    this.spacing: 40,
+    this.onlyNumber: false,
+    this.onlyChinese: false,
+    this.inputFormatters,
     this.autofocus: false,
+    this.enable,
     this.isClear: true,
     this.keyboardType: TextInputType.text,
     this.style,
@@ -55,8 +61,7 @@ class CusUnderField extends StatefulWidget {
 class _CusUnderFieldState extends State<CusUnderField> {
   @override
   void initState() {
-    // 修改收货地址时，赋初始值
-    widget.controller.text = widget.fromValue;
+    widget.controller?.text = widget.fromValue;
     super.initState();
   }
 
@@ -77,10 +82,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
         );
         tp.layout(maxWidth: size.maxWidth);
         final int lines = (tp.size.height / tp.preferredLineHeight).ceil();
-        return Padding(
-          padding: EdgeInsets.only(bottom: Adapt.px(widget.spacing)),
-          child: _input(lines),
-        );
+        return _input(lines);
       },
     );
   }
@@ -89,18 +91,20 @@ class _CusUnderFieldState extends State<CusUnderField> {
   Widget _input(int lines) {
     return TextField(
       controller: widget.controller,
-      keyboardType: widget.keyboardType,
+      autofocus: widget.autofocus,
+      enabled: widget.enable,
+      keyboardType:
+          widget.onlyNumber ? TextInputType.number : widget.keyboardType,
       maxLength: widget.maxLength,
       maxLines: lines < widget.maxLines ? null : widget.maxLines,
-      style: widget.style ?? TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-      autofocus: widget.autofocus,
+      style: widget.style ?? TextStyle(color: t_gray, fontSize: Adapt.px(30)),
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: widget.hintStyle ??
-            TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+            TextStyle(color: t_gray, fontSize: Adapt.px(30)),
         errorText: widget.errorText,
         errorStyle:
-            widget.errorStyle ?? TextStyle(fontSize: Adapt.px(26), color: t_yi),
+            widget.errorStyle ?? TextStyle(fontSize: Adapt.px(28), color: t_yi),
         counterText: '',
         suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
         focusedBorder: cusUnderBorder(),
@@ -108,8 +112,13 @@ class _CusUnderFieldState extends State<CusUnderField> {
         focusedErrorBorder: cusUnderBorder(),
         enabledBorder: cusUnderBorder(),
       ),
-      inputFormatters:
-          widget.formatter ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+      inputFormatters: widget.inputFormatters == null
+          ? [
+              if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
+              if (widget.onlyChinese)
+                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
+            ]
+          : widget.inputFormatters,
       onChanged: (value) {
         if (widget.errorText != null) {
           widget.errorText = null;

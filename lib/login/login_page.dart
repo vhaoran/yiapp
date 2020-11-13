@@ -92,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
           autofocus: true,
           formatter: true,
         ),
+        SizedBox(height: Adapt.px(50)),
         // 密码输入框
         CusUnderField(
           controller: _pwdCtrl,
@@ -99,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
           errorText: _pwdErr,
           maxLength: 20,
         ),
+        SizedBox(height: Adapt.px(40)),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -112,17 +114,17 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(width: Adapt.px(30)),
             // 忘记密码
-            InkWell(
-              child: Text(
-                '忘记密码',
-                style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
-              ),
-              onTap: () =>
-                  CusToast.toast(context, text: '忘记密码待做', showChild: false),
-            ),
+//            InkWell(
+//              child: Text(
+//                '忘记密码',
+//                style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+//              ),
+//              onTap: () =>
+//                  CusToast.toast(context, text: '忘记密码待做', showChild: false),
+//            ),
           ],
         ),
-        SizedBox(height: Adapt.px(80)),
+        SizedBox(height: Adapt.px(60)),
         CusRaisedBtn(
           text: '登录',
           fontSize: 28,
