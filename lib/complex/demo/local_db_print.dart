@@ -62,7 +62,7 @@ class _LocalDBPrintState extends State<LocalDBPrint> {
   }
 
   void _findJwt() async {
-    CusLoginRes res = await LoginDao(glbDB).readJwt();
+    CusLoginRes res = await LoginDao(glbDB).readUserByJwt();
     Debug.log("当前 token 登录用户信息：${res.toJson()}");
   }
 }

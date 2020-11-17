@@ -42,7 +42,7 @@ class _MasterLoopsState extends State<MasterLoops> {
   Widget _defBgWall() {
     return BackgroundWall(
       height: bgWallH + 45,
-      onTap: ApiState.isMaster
+      onTap: ApiState.is_master
           ? () =>
               CusBottomSheet(context, OnFile: (file) => _doAddImage(file, 1))
           : null,

@@ -55,7 +55,7 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
         ],
         // 已付款状态，是大师，并且该单没有被抢，则显示抢单
         if (widget.data.stat == pay_paid &&
-            (ApiState.isMaster && widget.data.master_id == 0))
+            (ApiState.is_master && widget.data.master_id == 0))
           _comBtnCtr("抢单", onPressed: _doGrab), // 大师抢单
       ],
     );

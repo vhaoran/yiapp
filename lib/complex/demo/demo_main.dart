@@ -13,6 +13,8 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -61,6 +63,25 @@ class CusDemoMain extends StatelessWidget {
         NormalBox(
           title: "06 loading加载框演示",
           onTap: () => CusRoutes.push(context, LoadingDemo()),
+        ),
+        NormalBox(
+          title: "07 删除uid",
+          onTap: () async {
+//            bool ok = await LoginDao(glbDB).delete(312);
+//            print(">>>ok:$ok");
+            bool suc = await LoginDao(glbDB).deleteAll();
+            print(">>>suc:$suc");
+          },
+        ),
+        NormalBox(
+          title: "08 获取所有用户信息",
+          onTap: () async {
+            var l = await LoginDao(glbDB).readAll();
+            l.forEach((element) {
+              print(">>>${element.toJson()}");
+            });
+            print(">>>suc:${l.length}");
+          },
         ),
       ],
     );

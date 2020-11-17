@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -14,6 +16,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/login/agreement_page.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import '../service/api/api_user.dart';
 import 'login_page.dart';
@@ -77,9 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
           controller: _pwdCtrl,
           hintText: "设置登录密码 (6-20位大小写字母)",
           maxLength: 20,
-          inputFormatters: [
-            WhitelistingTextInputFormatter(RegExp(r"^[A-Za-z]+$"))
-          ],
+          onlyLetter: true,
         ),
         SizedBox(height: 40),
         CusRaisedBtn(
@@ -121,21 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _agreement() {
-    CusDialog.tip(context, title: "这是用户协议、这是用户协议");
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        return Container(
-//          child: Dialog(
-//            insetPadding: EdgeInsets.symmetric(horizontal: 35),
-//            backgroundColor: Colors.grey[100],
-//            child: ListView(
-//              children: <Widget>[],
-//            ),
-//          ),
-//        );
-//      },
-//    );
+    CusRoutes.push(context, AgreementPage());
   }
 
   /// 验证是否满足注册条件

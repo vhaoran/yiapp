@@ -53,12 +53,8 @@ class _LoginPageState extends State<LoginPage> {
   var _pwdCtrl = TextEditingController(); // 鸿运密码
   String _mobileErr; // 非手机号错误提示
   String _pwdErr; // 密码错误提示
+  String _err; // 错误提示信息
   var _future;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
           hintText: "请输入登录密码",
           errorText: _pwdErr,
           maxLength: 20,
+          onlyLetter: true,
         ),
         SizedBox(height: Adapt.px(40)),
         Row(
@@ -148,10 +145,10 @@ class _LoginPageState extends State<LoginPage> {
       onThen: () async {
         CusLoginRes res = await LoginDao(glbDB).readGuest();
         if (ApiBase.jwt == res.jwt) {
+          // 直接跳转到首页即可，无须更换账号
           Debug.log("目前登录的就是游客账号");
         } else {
           Debug.log("切换账号");
-          await KV.setStr(kv_jwt, res.jwt);
           LoginVerify.init(LoginResult.from(res), context);
         }
         CusRoutes.pushReplacement(context, HomePage());
@@ -161,45 +158,45 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 请求登录
   void _doLogin() async {
-    if (_pwdCtrl.text.isEmpty || _mobileCtrl.text.isEmpty) {
-      _pwdErr = "手机号或者密码不能为空";
-      setState(() {});
+    setState(() {
+      _err = null;
+      if (!CusRegExp.phone(_mobileCtrl.text)) {
+        _err = "请输入正确的手机号";
+      } else if (_pwdCtrl.text.length < 6) {
+        _err = "密码由6-20位大小写字母组成";
+      }
+    });
+    if (_err != null) {
+      CusToast.toast(context, text: _err);
       return;
     }
-    if (!CusRegExp.phone(_mobileCtrl.text)) {
-      _mobileErr = "请输入正确的手机号";
-      setState(() {});
-      return;
-    }
-    // 鸿运号是否存在，存在再登录
-    bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
-    if (exist) {
-      Debug.log("存在该账号");
-      var m = {
-        "user_code": _mobileCtrl.text.trim(),
-        "pwd": _pwdCtrl.text.trim(),
-      };
-      try {
-        var login = await ApiLogin.login(m);
-        if (login != null) {
-          await KV.setStr(kv_jwt, login.jwt);
-          await setLoginInfo(login);
-          ApiState.isGuest = false;
-          CusRoutes.pushReplacement(context, HomePage());
-          context.read<UserInfoState>().init(login.user_info);
-          if (ApiState.isMaster) _fetchMaster();
-          if (ApiState.isBrokerAdmin) _fetchBroker();
-          ShopKV.key = "shop${ApiBase.uid}";
-          Debug.log("登录成功");
+    LoginResult login; // 最终传递的登录结果
+    // 在登录界面登录鸿运来，直接请求即可，不需要判断本地数据库是否已存在，否则无法保证数据最新
+    try {
+      bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
+      if (exist) {
+        Debug.log("存在该账号");
+        var m = {
+          "user_code": _mobileCtrl.text.trim(),
+          "pwd": _pwdCtrl.text.trim(),
+        };
+        try {
+          login = await ApiLogin.login(m);
+          if (login != null) {
+            await LoginVerify.init(login, context);
+            CusRoutes.pushReplacement(context, HomePage());
+          }
+        } catch (e) {
+          Debug.logError("登录出现异常：$e");
+          _pwdErr = "密码错误";
+          setState(() {});
         }
-      } catch (e) {
-        Debug.logError("登录出现异常：$e");
-        _pwdErr = "密码错误";
+      } else {
+        _mobileErr = "账号不存在";
         setState(() {});
       }
-    } else {
-      _mobileErr = "账号不存在";
-      setState(() {});
+    } catch (e) {
+      Debug.logError("判断用户是否存在出现异常：$e");
     }
   }
 
@@ -216,28 +213,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  /// 如果是大师，获取大师基本资料
-  _fetchMaster() async {
-    Debug.log("是大师");
-    try {
-      MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
-      if (res != null) context.read<MasterInfoState>().init(res);
-    } catch (e) {
-      Debug.logError("获取大师个人信息出现异常：$e");
-    }
-  }
-
-  /// 如果是代理，获取代理基本资料
-  _fetchBroker() async {
-    Debug.log("是代理");
-    try {
-      BrokerInfo res = await ApiBroker.brokerInfoGet(ApiState.broker_id);
-      if (res != null) context.read<BrokerInfoState>().init(res);
-    } catch (e) {
-      Debug.logError("获取大师个人信息出现异常：$e");
-    }
   }
 
   @override

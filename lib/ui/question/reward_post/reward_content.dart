@@ -118,7 +118,7 @@ class _RewardContentState extends State<RewardContent> {
                 ),
               ),
               // 大师和发帖人可以回复
-              if (ApiState.isMaster || _bbsPrize.uid == ApiBase.uid)
+              if (ApiState.is_master || _bbsPrize.uid == ApiBase.uid)
                 RewardInput(
                   data: _bbsPrize,
                   onSend: () async {

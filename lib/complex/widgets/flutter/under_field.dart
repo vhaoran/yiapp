@@ -20,6 +20,7 @@ class CusUnderField extends StatefulWidget {
   final int maxLines;
   final bool onlyNumber; // 限制只能输入数字
   final bool onlyChinese; // 限制只能输入汉字
+  final bool onlyLetter; // 限制只能输入大小写字母
   final List<TextInputFormatter> inputFormatters;
   final bool autofocus;
   final bool enable;
@@ -40,6 +41,7 @@ class CusUnderField extends StatefulWidget {
     this.maxLines: 1,
     this.onlyNumber: false,
     this.onlyChinese: false,
+    this.onlyLetter: false,
     this.inputFormatters,
     this.autofocus: false,
     this.enable,
@@ -116,7 +118,9 @@ class _CusUnderFieldState extends State<CusUnderField> {
           ? [
               if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
               if (widget.onlyChinese)
-                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
+                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]")),
+              if (widget.onlyLetter)
+                WhitelistingTextInputFormatter(RegExp(r"^[A-Za-z]+$")),
             ]
           : widget.inputFormatters,
       onChanged: (value) {

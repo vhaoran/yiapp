@@ -72,13 +72,12 @@ class _MallPageState extends State<MallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(text: "商品", actions: <Widget>[
-        if (ApiState.isAdmin)
-          FlatButton(
-            child: CusText("新增", Colors.orangeAccent, 28),
-            onPressed: () => CusRoutes.push(context, AddProduct()).then((val) {
-              if (val != null) setState(() => _l.add(val));
-            }),
-          ),
+        FlatButton(
+          child: CusText("新增", Colors.orangeAccent, 28),
+          onPressed: () => CusRoutes.push(context, AddProduct()).then((val) {
+            if (val != null) setState(() => _l.add(val));
+          }),
+        ),
       ]),
       body: FutureBuilder(
         future: _future,

@@ -61,7 +61,7 @@ class _ProductCoverState extends State<ProductCover> {
         ),
         Container(
           color: CusColors.systemGrey6(context),
-          padding: EdgeInsets.symmetric(vertical: ApiState.isAdmin ? 0 : 5),
+          padding: EdgeInsets.symmetric(vertical: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -73,36 +73,35 @@ class _ProductCoverState extends State<ProductCover> {
               ),
               // 商品价格
               CusText("￥${p.colors.first.price}", t_yi, 32),
-              if (ApiState.isAdmin)
-                Flexible(
-                  flex: 1,
-                  child: PopupMenuButton<String>(
-                    color: t_gray,
-                    offset: Offset(0, 40),
-                    padding: EdgeInsets.all(0),
-                    onSelected: (val) {
-                      switch (val) {
-                        case "修改":
-                          CusRoutes.push(context, ChProduct(id: p.id_of_es))
-                              .then((val) {
-                            if (val != null && widget.onChange != null)
-                              widget.onChange(val);
-                          });
-                          break;
-                        case "删除":
-                          _doProductRm(p);
-                          break;
-                        default:
-                          break;
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    icon: Icon(Icons.more_horiz, color: Colors.grey),
-                    itemBuilder: (context) => _buildPopup(),
+              Flexible(
+                flex: 1,
+                child: PopupMenuButton<String>(
+                  color: t_gray,
+                  offset: Offset(0, 40),
+                  padding: EdgeInsets.all(0),
+                  onSelected: (val) {
+                    switch (val) {
+                      case "修改":
+                        CusRoutes.push(context, ChProduct(id: p.id_of_es))
+                            .then((val) {
+                          if (val != null && widget.onChange != null)
+                            widget.onChange(val);
+                        });
+                        break;
+                      case "删除":
+                        _doProductRm(p);
+                        break;
+                      default:
+                        break;
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  icon: Icon(Icons.more_horiz, color: Colors.grey),
+                  itemBuilder: (context) => _buildPopup(),
                 ),
+              ),
             ],
           ),
         ),

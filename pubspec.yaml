@@ -64,6 +64,8 @@ dependencies:
   flutter_spinkit: ^4.1.2
   # 简单的 loading 加载框
   flutter_easyloading: ^2.1.1
+  # html 插件(用户协议)
+  flutter_html: ^1.0.0
   ###### suxing #####
 
 dev_dependencies:

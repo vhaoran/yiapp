@@ -40,7 +40,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           alignment: Alignment(0, 0.2), // 头像
           child: InkWell(
             child: CusAvatar(url: widget.m.icon ?? "", circle: true),
-            onTap: ApiState.isMaster
+            onTap: ApiState.is_master
                 ? () => CusBottomSheet(context, OnFile: (file) {
                       if (file != null) _doChIcon(file);
                       setState(() => {});
@@ -52,7 +52,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           alignment: Alignment(0, 0.75),
           child: InkWell(
             child: CusText(widget.m.nick ?? "", t_primary, 30),
-            onTap: ApiState.isMaster
+            onTap: ApiState.is_master
                 ? () => CusRoutes.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))
                 : null,

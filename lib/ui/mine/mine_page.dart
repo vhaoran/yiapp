@@ -80,7 +80,7 @@ class _MinePageState extends State<MinePage>
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
         // 游客身份看不到的内容
-        if (!ApiState.isGuest) ...[
+        if (!ApiState.is_guest) ...[
           NormalBox(
             title: "我的订单",
             onTap: () => CusRoutes.push(context, AllMyPostPage()),
@@ -98,30 +98,29 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoutes.push(context, FundMain()),
           ),
         ],
-        if (!ApiState.isMaster || !ApiState.isBrokerAdmin)
+        if (!ApiState.is_master || !ApiState.is_broker_admin)
           NormalBox(
             title: "申请大师",
             onTap: () => CusRoutes.push(context, ApplyMasterPage()),
           ),
-        if (ApiState.isMaster)
+        if (ApiState.is_master)
           NormalBox(
             title: "大师信息",
             onTap: () => CusRoutes.push(context, MasterInfoPage()),
           ),
-        if (!ApiState.isAdmin)
-          NormalBox(
-            title: "申请运营商",
-            onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
-          ),
-        if (ApiState.isGuest)
+        NormalBox(
+          title: "申请运营商",
+          onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
+        ),
+        if (ApiState.is_guest)
           NormalBox(
             title: "绑定运营商",
             onTap: () => CusRoutes.push(context, BindSerCodePage()),
           ),
-//        NormalBox(
-//          title: "demo 测试",
-//          onTap: () => CusRoutes.push(context, CusDemoMain()),
-//        ),
+        NormalBox(
+          title: "demo 测试",
+          onTap: () => CusRoutes.push(context, CusDemoMain()),
+        ),
       ],
     );
   }
@@ -141,7 +140,7 @@ class _MinePageState extends State<MinePage>
             ),
           ),
           Align(
-            alignment: Alignment(0, ApiState.isGuest ? 0.8 : 0.75),
+            alignment: Alignment(0, ApiState.is_guest ? 0.8 : 0.75),
             child: CusText(_u.nick ?? "游客", t_gray, 30),
           ),
         ],

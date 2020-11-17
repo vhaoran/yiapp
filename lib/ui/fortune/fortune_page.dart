@@ -24,12 +24,14 @@ class FortunePage extends StatefulWidget {
 
 class _FortunePageState extends State<FortunePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  List<String> _tabs = [];
+  List<String> _tabs = ["免费测算"];
 
   @override
   void initState() {
     Debug.log("进了【运势】首页");
-    _tabs = ApiState.isGuest ? ["免费测算"] : ["每日运势", "免费测算"];
+    if (!ApiState.is_guest) {
+      _tabs.insert(0, "每日运势");
+    }
     super.initState();
   }
 
@@ -44,7 +46,7 @@ class _FortunePageState extends State<FortunePage>
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              if (!ApiState.isGuest) DailyFortune(),
+              if (!ApiState.is_guest) DailyFortune(),
               FreeCalculate(),
             ],
           ),
@@ -57,9 +59,9 @@ class _FortunePageState extends State<FortunePage>
   Widget _appBar() {
     return CusAppBar(
       showLeading: false,
-      text: ApiState.isGuest ? "免费测算" : "",
+      text: ApiState.is_guest ? "免费测算" : "",
       textColor: t_primary,
-      bottom: ApiState.isGuest
+      bottom: ApiState.is_guest
           ? null
           : TabBar(
               indicatorWeight: Adapt.px(6),

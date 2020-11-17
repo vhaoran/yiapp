@@ -20,13 +20,8 @@ class LoginDao {
   /// 存储登录信息
   Future<bool> insert(CusLoginRes login) async {
     int val = await db.insert(tb_login, login.toJson());
-    if (val > 0) {
-      // 存储本地token
-      await KV.setStr(kv_jwt, login.jwt);
-      return true;
-    }
     Debug.log("保存用户数据${val > 0 ? '成功' : "失败"}");
-    return false;
+    return val > 0 ? true : false;
   }
 
   // ----------------------------- 删 -----------------------------
@@ -96,15 +91,7 @@ class LoginDao {
   }
 
   // ----------------------------- 查 -----------------------------
-  /// 获取所有登录信息
-  Future<List<CusLoginRes>> readAll() async {
-    List<Map<String, dynamic>> l = await db.query(tb_login);
-    Debug.log("数据库长度：${l.length}");
-    if (l.isEmpty) return [];
-    return l.map((e) => CusLoginRes.fromJson(e)).toList();
-  }
-
-  /// 游客身份即系统分配的账户，非用户自己注册的，即使用户将系统分配的账户身份改为其他，也算游客
+  /// 游客登录(本地数据库的第一条信息)
   Future<CusLoginRes> readGuest() async {
     List<Map<String, dynamic>> l = await db.query(tb_login, limit: 1);
     if (l.isEmpty) return CusLoginRes();
@@ -112,7 +99,7 @@ class LoginDao {
   }
 
   /// 根据 token 选择账号
-  Future<CusLoginRes> readJwt() async {
+  Future<CusLoginRes> readUserByJwt() async {
     String jwt = await KV.getStr(kv_jwt);
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: "jwt=?", whereArgs: [jwt], limit: 1);
@@ -121,10 +108,35 @@ class LoginDao {
   }
 
   /// 根据 uid 查找用户
-  Future<CusLoginRes> readUser() async {
+  Future<CusLoginRes> readUserByUid() async {
     List<Map<String, dynamic>> l = await db.query(tb_login,
         where: 'uid=?', whereArgs: [ApiBase.uid], limit: 1);
     if (l.isEmpty) return CusLoginRes();
     return CusLoginRes.fromJson(l.first);
+  }
+
+  /// 根据 user_code 查找用户
+  Future<CusLoginRes> readUserByCode(String user_code) async {
+    List<Map<String, dynamic>> l = await db.query(tb_login,
+        where: 'user_code=?', whereArgs: [user_code], limit: 1);
+    if (l.isEmpty) return CusLoginRes();
+    return CusLoginRes.fromJson(l.first);
+  }
+
+  /// 用户存在性
+  Future<bool> exists(num uid) async {
+    List<Map<String, dynamic>> l =
+        await db.query(tb_login, where: 'uid=?', whereArgs: [uid]);
+    print(">>>l.length:${l.length}");
+    if (l.isNotEmpty) return true;
+    return false;
+  }
+
+  /// 获取所有登录信息
+  Future<List<CusLoginRes>> readAll() async {
+    List<Map<String, dynamic>> l = await db.query(tb_login);
+    Debug.log("数据库长度：${l.length}");
+    if (l.isEmpty) return [];
+    return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }
 }

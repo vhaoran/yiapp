@@ -43,8 +43,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
 //    _prepareBusEvent(); // 初始化监听
     // 默认开启运势中的免费测算和"我的"
-    _bars = [FortunePage(), MinePage()];
-    _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
     _startLogin();
     super.initState();
   }
@@ -90,35 +88,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// 登录
+  /// 用户第一次登录，以及登录后的登录
   void _startLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
-    bool logged = await jwtToken(); // 是否有本地token
-    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，并更新本地token
+    bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
+    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录
     try {
       if (logged) {
         Debug.log("用户已登录过，验证当前 token");
-        CusLoginRes res = await LoginDao(glbDB).readJwt();
+        CusLoginRes res = await LoginDao(glbDB).readUserByJwt();
         login = LoginResult.from(res);
       } else {
         Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
         login = await ApiLogin.guestLogin({});
-        if (login != null) {
-          // 存储到本地用户信息数据库，同时保存jwt确定登录token
-          LoginDao(glbDB).insert(CusLoginRes.from(login));
-        }
       }
     } catch (e) {
       Debug.logError("用户登录出现异常：$e");
     }
     LoginVerify.init(login, context);
-    _dynamicModules();
+    _dynamicModules(); // 动态的运营商模块
   }
 
   /// 动态的运营商模块
   void _dynamicModules() async {
-    CusLoginRes res = await LoginDao(glbDB).readUser();
+    _bars = [FortunePage(), MinePage()];
+    _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
+    CusLoginRes res = await LoginDao(glbDB).readUserByUid();
     if (res.enable_mall == 1) {
       _bars.insert(_bars.length - 1, MallPage());
       _names.insert(_names.length - 1, "商城");

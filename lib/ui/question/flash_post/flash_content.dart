@@ -111,7 +111,7 @@ class _FlashContentState extends State<FlashContent> {
                 ),
               ),
               // 大师和发帖人可以回复
-              if (ApiState.isMaster || _bbsVie.uid == ApiBase.uid)
+              if (ApiState.is_master || _bbsVie.uid == ApiBase.uid)
                 FlashInput(
                   data: _bbsVie,
                   onSend: () async {
