@@ -84,8 +84,8 @@ class _BindUserMobileState extends State<BindUserMobile> {
         Debug.log("绑定手机号结果：$ok");
         if (ok) {
           Navigator.pop(context);
-          context.read<UserInfoState>()?.bindMobile(_mobileCtrl.text);
-          bool update = await LoginDao(glbDB).updateMobile(_mobileCtrl.text);
+          context.read<UserInfoState>()?.chMobile(_mobileCtrl.text);
+          bool update = await LoginDao(glbDB).updateUserCode(_mobileCtrl.text);
           if (update) {
             CusToast.toast(context, text: "绑定成功");
             Navigator.pop(context);

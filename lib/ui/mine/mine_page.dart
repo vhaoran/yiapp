@@ -114,15 +114,16 @@ class _MinePageState extends State<MinePage>
             title: "申请运营商",
             onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
           ),
+        ],
+        if (ApiState.is_guest)
           NormalBox(
             title: "绑定运营商",
             onTap: () => CusRoutes.push(context, BindSerCodePage()),
           ),
-        ],
-//        NormalBox(
-//          title: "demo 测试",
-//          onTap: () => CusRoutes.push(context, CusDemoMain()),
-//        ),
+        NormalBox(
+          title: "demo 测试",
+          onTap: () => CusRoutes.push(context, CusDemoMain()),
+        ),
       ],
     );
   }

@@ -24,6 +24,7 @@ class CusRectField extends StatefulWidget {
   final int maxLines;
   final bool onlyNumber; // 限制只能输入数字
   final bool onlyChinese; // 限制只能输入汉字
+  final bool onlyLetter; // 限制只能输入大小写字母
   final List<TextInputFormatter> inputFormatters;
   final bool autofocus;
   final bool enable;
@@ -34,7 +35,6 @@ class CusRectField extends StatefulWidget {
   final double borderRadius;
   final Color backgroundColor;
   final Color prefixColor;
-  final FocusNode focusNode;
   final TextAlign textAlign;
   String errorText; // 错误提示
   TextInputType keyboardType;
@@ -51,6 +51,7 @@ class CusRectField extends StatefulWidget {
     this.maxLines: 1,
     this.onlyNumber: false,
     this.onlyChinese: false,
+    this.onlyLetter: false,
     this.inputFormatters,
     this.autofocus: true,
     this.enable: true,
@@ -61,7 +62,6 @@ class CusRectField extends StatefulWidget {
     this.borderRadius: 5,
     this.backgroundColor: fif_primary,
     this.prefixColor: t_yi,
-    this.focusNode,
     this.textAlign: TextAlign.start,
     this.errorText,
     this.keyboardType: TextInputType.text,
@@ -74,6 +74,8 @@ class CusRectField extends StatefulWidget {
 }
 
 class _CusRectFieldState extends State<CusRectField> {
+  var _focusNode = FocusNode();
+
   @override
   void initState() {
     widget.controller?.text = widget.fromValue;
@@ -106,7 +108,7 @@ class _CusRectFieldState extends State<CusRectField> {
     return TextField(
       controller: widget.controller,
       autofocus: widget.autofocus,
-      focusNode: widget.focusNode,
+      focusNode: _focusNode,
       enabled: widget.enable,
       keyboardType:
           widget.onlyNumber ? TextInputType.number : widget.keyboardType,
@@ -146,13 +148,18 @@ class _CusRectFieldState extends State<CusRectField> {
         if (widget.onChanged != null) {
           widget.onChanged();
         }
+        if (widget.controller.text.length >= widget.maxLength) {
+          _focusNode.unfocus();
+        }
         setState(() {});
       },
       inputFormatters: widget.inputFormatters == null
           ? [
               if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
               if (widget.onlyChinese)
-                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]"))
+                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]")),
+              if (widget.onlyLetter)
+                WhitelistingTextInputFormatter(RegExp(r"^[A-Za-z]+$")),
             ]
           : widget.inputFormatters,
     );
@@ -185,5 +192,11 @@ class _CusRectFieldState extends State<CusRectField> {
       );
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 }

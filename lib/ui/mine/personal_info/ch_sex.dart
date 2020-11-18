@@ -92,7 +92,6 @@ class _ChUserSexState extends State<ChUserSex> {
       Navigator.pop(context);
       return;
     }
-    SpinKit.threeBounce(context);
     Debug.log("当前性别：$sex");
     var m = {"sex": sex};
     try {
@@ -105,7 +104,6 @@ class _ChUserSexState extends State<ChUserSex> {
           CusToast.toast(context, text: "修改成功");
           Navigator.pop(context);
         }
-        Navigator.pop(context);
       }
     } catch (e) {
       Debug.logError("修改性别出现异常：$e");

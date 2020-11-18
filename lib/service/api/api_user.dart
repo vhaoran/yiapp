@@ -12,6 +12,13 @@ import 'api_base.dart';
 
 class ApiUser {
   /// 修改登录者本人信息
+  static Future<bool> bindUserCodeAndPwd(Map<String, dynamic> m) async {
+    var url = "/yi/user/BindUserCodeAndPwd";
+    var data = {"data": m};
+    return await ApiBase.postValue<bool>(url, data);
+  }
+
+  /// 修改登录者本人信息
   static Future<bool> ChUserInfo(Map<String, dynamic> m) async {
     var url = "/yi/user/ChUserInfo";
     var data = {"data": m};

@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
@@ -113,16 +110,15 @@ class _RegisterPageState extends State<RegisterPage> {
               style: TextStyle(fontSize: Adapt.px(28), color: Colors.lightBlue),
               // 手势（`gestures`）库的点击手势识别器（`TapGestureRecognizer`）类，识别点击手势。
               // 识别（`recognizer`）属性，一个手势识别器，它将接收触及此文本范围的事件。
-              recognizer: TapGestureRecognizer()..onTap = _agreement,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  CusRoutes.push(context, AgreementPage());
+                },
             ),
           ],
         ),
       ),
     );
-  }
-
-  void _agreement() {
-    CusRoutes.push(context, AgreementPage());
   }
 
   /// 验证是否满足注册条件

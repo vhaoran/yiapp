@@ -83,7 +83,7 @@ class LoginDao {
   }
 
   /// 根据 uid 绑定手机号
-  Future<bool> updateMobile(String user_code) async {
+  Future<bool> updateUserCode(String user_code) async {
     String sql =
         "UPDATE $tb_login SET user_code=$user_code WHERE uid=${ApiBase.uid}";
     int val = await db.rawUpdate(sql);
@@ -127,7 +127,6 @@ class LoginDao {
   Future<bool> exists(num uid) async {
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: 'uid=?', whereArgs: [uid]);
-    print(">>>l.length:${l.length}");
     if (l.isNotEmpty) return true;
     return false;
   }

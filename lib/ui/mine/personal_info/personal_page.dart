@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/function/def_obj.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
@@ -23,9 +24,8 @@ import 'package:yiapp/service/api/api_image.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/mine/address/user_addr.dart';
-import 'package:yiapp/ui/mine/personal_info/ch_mobile.dart';
+import 'package:yiapp/ui/mine/personal_info/bind_user_mobile.dart';
 import '../../../service/api/api_user.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_sex.dart';
@@ -105,10 +105,11 @@ class _PersonalPageState extends State<PersonalPage> {
 //          subFn: _u.country.isEmpty ? null : null,
 //        ),
         // 我的收货地址
-        NormalBox(
-          title: "我的收货地址",
-          onTap: () => CusRoutes.push(context, UserAddressPage()),
-        ),
+        if (ApiState.is_vip)
+          NormalBox(
+            title: "我的收货地址",
+            onTap: () => CusRoutes.push(context, UserAddressPage()),
+          ),
         SizedBox(height: Adapt.px(50)),
         SingleTextBox(
           title: "退出登录",

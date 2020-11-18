@@ -61,6 +61,8 @@ class CusUnderField extends StatefulWidget {
 }
 
 class _CusUnderFieldState extends State<CusUnderField> {
+  var _focusNode = FocusNode();
+
   @override
   void initState() {
     widget.controller?.text = widget.fromValue;
@@ -95,6 +97,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
       controller: widget.controller,
       autofocus: widget.autofocus,
       enabled: widget.enable,
+      focusNode: _focusNode,
       keyboardType:
           widget.onlyNumber ? TextInputType.number : widget.keyboardType,
       maxLength: widget.maxLength,
@@ -127,6 +130,9 @@ class _CusUnderFieldState extends State<CusUnderField> {
         if (widget.errorText != null) {
           widget.errorText = null;
         }
+        if (widget.controller.text.length >= widget.maxLength) {
+          _focusNode.unfocus();
+        }
         setState(() {});
       },
     );
@@ -153,5 +159,11 @@ class _CusUnderFieldState extends State<CusUnderField> {
       );
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 }

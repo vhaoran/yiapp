@@ -76,7 +76,6 @@ class _ChUserNickState extends State<ChUserNick> {
       CusToast.toast(context, text: "昵称不能为空");
       return;
     }
-    SpinKit.threeBounce(context);
     var m = {"nick": _nickCtrl.text};
     try {
       bool ok = await ApiUser.ChUserInfo(m);
@@ -87,7 +86,6 @@ class _ChUserNickState extends State<ChUserNick> {
         Debug.log("本地更改存储nick结果：$update");
         if (update) {
           CusToast.toast(context, text: "修改成功");
-          Navigator.pop(context);
           Navigator.pop(context);
         }
       }

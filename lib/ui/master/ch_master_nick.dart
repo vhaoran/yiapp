@@ -64,7 +64,7 @@ class _ChMasterNickState extends State<ChMasterNick> {
           ),
           Padding(
             padding: EdgeInsets.only(top: Adapt.px(20), bottom: Adapt.px(130)),
-            child: Text("限制2-8个字"),
+            child: Text("限制2-8666个字"),
           ),
           // 修改昵称
           CusRaisedBtn(

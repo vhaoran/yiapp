@@ -11,6 +11,7 @@ import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -65,19 +66,21 @@ class CusDemoMain extends StatelessWidget {
           onTap: () => CusRoutes.push(context, LoadingDemo()),
         ),
         NormalBox(
-          title: "07 删除全部uid",
+          title: "07 删除全部用户信息",
           onTap: () async {
-//            bool ok = await LoginDao(glbDB).delete(312);
-//            print(">>>ok:$ok");
-            bool suc = await LoginDao(glbDB).deleteAll();
-            print(">>>suc:$suc");
+            bool ok = await LoginDao(glbDB).deleteAll();
+            print(">>>删除结果：$ok");
           },
         ),
         NormalBox(
           title: "08 获取所有用户信息",
           onTap: () async {
+            print(">>>当前登录用户：${ApiBase.uid}");
             var l = await LoginDao(glbDB).readAll();
-            print(">>>suc:${l.length}");
+            print(">>>l.length:${l.length}");
+            for (var i = 0; i < l.length; i++) {
+              print(">>>第 ${i + 1} 个用户信息：${l[i].toJson()}");
+            }
           },
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
 //    await _dynamicModules(); // 动态的运营商模块
     LoginResult login;
     bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
-    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录
+    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定位不管是否更改都去请求
     try {
       if (logged) {
         Debug.log("用户已登录过，验证当前 token");
@@ -123,8 +124,13 @@ class _HomePageState extends State<HomePage> {
         _bars.insert(_bars.length - 1, MallPage());
         _names.insert(_names.length - 1, "商城");
       }
-      if (res.enable_prize == 1 && res.enable_vie == 1) {
-        Debug.log("开启了帖子");
+      if (res.enable_prize == 1 || res.enable_vie == 1) {
+        if (res.enable_prize == 1) {
+          Debug.log("开启了悬赏帖");
+        }
+        if (res.enable_vie == 1) {
+          Debug.log("开启了闪断帖");
+        }
         _bars.insert(_bars.length - 1, QuestionPage());
         _names.insert(_names.length - 1, "问命");
       }
@@ -134,6 +140,7 @@ class _HomePageState extends State<HomePage> {
         _names.insert(_names.length - 1, "大师");
       }
     });
+    print(">>>底部导航栏names:${_names.toString()}");
   }
 
   @override

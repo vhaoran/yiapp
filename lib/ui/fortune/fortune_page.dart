@@ -29,9 +29,7 @@ class _FortunePageState extends State<FortunePage>
   @override
   void initState() {
     Debug.log("进了【运势】首页");
-    if (!ApiState.is_guest) {
-      _tabs.insert(0, "每日运势");
-    }
+    _tabs = ApiState.is_guest ? ["免费测算"] : ["每日运势", "免费测算"];
     super.initState();
   }
 
