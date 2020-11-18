@@ -78,7 +78,7 @@ class _BindUserMobileState extends State<BindUserMobile> {
     }
     if (_err == null) {
       SpinKit.threeBounce(context);
-      var m = {"nick": _mobileCtrl.text.trim()};
+      var m = {"user_code": _mobileCtrl.text.trim()};
       try {
         bool ok = await ApiUser.ChUserInfo(m);
         Debug.log("绑定手机号结果：$ok");

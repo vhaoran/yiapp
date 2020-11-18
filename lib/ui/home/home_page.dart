@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
 //    _prepareBusEvent(); // 初始化监听
     // 默认开启运势中的免费测算和"我的"
+
     _startLogin();
     super.initState();
   }
@@ -91,6 +92,7 @@ class _HomePageState extends State<HomePage> {
   /// 用户第一次登录，以及登录后的登录
   void _startLogin() async {
     await initDB(); // 初始化数据库
+//    await _dynamicModules(); // 动态的运营商模块
     LoginResult login;
     bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录
@@ -115,18 +117,23 @@ class _HomePageState extends State<HomePage> {
     _bars = [FortunePage(), MinePage()];
     _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
     CusLoginRes res = await LoginDao(glbDB).readUserByUid();
-    if (res.enable_mall == 1) {
-      _bars.insert(_bars.length - 1, MallPage());
-      _names.insert(_names.length - 1, "商城");
-    }
-    if (res.enable_prize == 1 && res.enable_vie == 1) {
-      _bars.insert(_bars.length - 1, QuestionPage());
-      _names.insert(_names.length - 1, "问命");
-    }
-    if (res.enable_master == 1) {
-      _bars.insert(_bars.length - 1, MasterListPage());
-      _names.insert(_names.length - 1, "大师");
-    }
+    setState(() {
+      if (res.enable_mall == 1) {
+        Debug.log("开启了商城");
+        _bars.insert(_bars.length - 1, MallPage());
+        _names.insert(_names.length - 1, "商城");
+      }
+      if (res.enable_prize == 1 && res.enable_vie == 1) {
+        Debug.log("开启了帖子");
+        _bars.insert(_bars.length - 1, QuestionPage());
+        _names.insert(_names.length - 1, "问命");
+      }
+      if (res.enable_master == 1) {
+        Debug.log("开启了大师");
+        _bars.insert(_bars.length - 1, MasterListPage());
+        _names.insert(_names.length - 1, "大师");
+      }
+    });
   }
 
   @override

@@ -65,7 +65,7 @@ class CusDemoMain extends StatelessWidget {
           onTap: () => CusRoutes.push(context, LoadingDemo()),
         ),
         NormalBox(
-          title: "07 删除uid",
+          title: "07 删除全部uid",
           onTap: () async {
 //            bool ok = await LoginDao(glbDB).delete(312);
 //            print(">>>ok:$ok");
@@ -77,9 +77,6 @@ class CusDemoMain extends StatelessWidget {
           title: "08 获取所有用户信息",
           onTap: () async {
             var l = await LoginDao(glbDB).readAll();
-            l.forEach((element) {
-              print(">>>${element.toJson()}");
-            });
             print(">>>suc:${l.length}");
           },
         ),

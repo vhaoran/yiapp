@@ -79,6 +79,12 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
+        // 如果是大师
+        if (ApiState.is_master)
+          NormalBox(
+            title: "大师信息",
+            onTap: () => CusRoutes.push(context, MasterInfoPage()),
+          ),
         // 游客身份看不到的内容
         if (!ApiState.is_guest) ...[
           NormalBox(
@@ -98,29 +104,25 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoutes.push(context, FundMain()),
           ),
         ],
-        if (!ApiState.is_master || !ApiState.is_broker_admin)
+        // 大师、运营商、运营商管理员不能申请的
+        if (!ApiState.is_master && !ApiState.is_broker_admin) ...[
           NormalBox(
             title: "申请大师",
             onTap: () => CusRoutes.push(context, ApplyMasterPage()),
           ),
-        if (ApiState.is_master)
           NormalBox(
-            title: "大师信息",
-            onTap: () => CusRoutes.push(context, MasterInfoPage()),
+            title: "申请运营商",
+            onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
           ),
-        NormalBox(
-          title: "申请运营商",
-          onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
-        ),
-        if (ApiState.is_guest)
           NormalBox(
             title: "绑定运营商",
             onTap: () => CusRoutes.push(context, BindSerCodePage()),
           ),
-        NormalBox(
-          title: "demo 测试",
-          onTap: () => CusRoutes.push(context, CusDemoMain()),
-        ),
+        ],
+//        NormalBox(
+//          title: "demo 测试",
+//          onTap: () => CusRoutes.push(context, CusDemoMain()),
+//        ),
       ],
     );
   }

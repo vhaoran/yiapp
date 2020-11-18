@@ -13,6 +13,7 @@ import 'userInfo.dart';
 // 因为在 sqlite 中，会自动将 BLOB 类型转换为 INTEGER 类型，所以这里直接用 int 处理
 // id 改成了 uid
 class CusLoginRes {
+  int id;
   num uid;
   int is_admin;
   int is_broker_admin;
@@ -45,6 +46,7 @@ class CusLoginRes {
   num ver;
 
   CusLoginRes({
+    this.id,
     this.uid,
     this.is_admin,
     this.is_broker_admin,

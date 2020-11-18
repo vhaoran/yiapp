@@ -34,7 +34,8 @@ Future<Database> _createDBAndTables() async {
 _create_tb_login(Database db) async {
   String sql = '''
   CREATE TABLE $tb_login (
-  uid INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  uid INTEGER UNIQUE,
   is_admin INTEGER,
   is_broker_admin INTEGER,
   is_master INTEGER,
