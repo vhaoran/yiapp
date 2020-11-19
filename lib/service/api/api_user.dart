@@ -11,10 +11,10 @@ import 'api_base.dart';
 // ------------------------------------------------------
 
 class ApiUser {
-  /// 修改登录者本人信息
+  /// 设置游客的手机号和密码
   static Future<bool> bindUserCodeAndPwd(Map<String, dynamic> m) async {
     var url = "/yi/user/BindUserCodeAndPwd";
-    var data = {"data": m};
+    var data = m;
     return await ApiBase.postValue<bool>(url, data);
   }
 

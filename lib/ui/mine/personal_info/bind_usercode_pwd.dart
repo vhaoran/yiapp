@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/service/api/api_user.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -76,36 +81,60 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
 
   /// 验证设置条件、检测手机号存在性
   void _verify() async {
-    setState(() {
-      _err = null;
-      if (!CusRegExp.phone(_mobileCtrl.text)) {
-        _err = "请输入正确的手机号";
-      } else if (_pwdCtrl.text.length < 6) {
-        _err = "密码最少6位";
+    // 判断是否已绑定过手机号和密码
+    var user = await LoginDao(glbDB).readUserByUid();
+    if (await CusRegExp.phone(user.user_code)) {
+      CusDialog.tip(
+        context,
+        title: "您已绑定过手机号和密码",
+        onApproval: () => Navigator.pop(context),
+      );
+    } else {
+      setState(() {
+        _err = _mobileErr = null;
+        if (!CusRegExp.phone(_mobileCtrl.text)) {
+          _err = "请输入正确的手机号";
+        } else if (_pwdCtrl.text.length < 6) {
+          _err = "密码最少6位";
+        }
+      });
+      if (_err != null) {
+        CusToast.toast(context, text: _err);
+        return;
       }
-    });
-    if (_err != null) {
-      CusToast.toast(context, text: _err);
-      return;
-    }
-    // 如果满足设置条件，则先验证用户名(手机号)存在性
-    try {
-      bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
-      if (exist) {
-        _mobileErr = "当前手机号已存在";
-        setState(() {});
-      } else {
-        _doBind();
+      // 如果满足设置条件，则先验证用户名(手机号)存在性
+      try {
+        bool exist = await ApiUser.userCodeExist(_mobileCtrl.text);
+        if (exist) {
+          _mobileErr = "当前手机号已存在";
+          setState(() {});
+        } else {
+          _doBind();
+        }
+      } catch (e) {
+        Debug.logError("设置用户手机号、密码出现异常：$e");
       }
-    } catch (e) {
-      Debug.logError("设置用户手机号、密码出现异常：$e");
     }
   }
 
   void _doBind() async {
     var m = {"user_code": _mobileCtrl.text, "pwd": _pwdCtrl.text};
-    bool ok = await ApiUser.bindUserCodeAndPwd(m);
-    if (ok) {
+    try {
+      bool success = await ApiUser.bindUserCodeAndPwd(m);
+      if (success) {
+        CusToast.toast(context, text: "设置成功");
+        // 临时将输入的密码保存到本地，方便后面自动重新登录
+        bool ok = await KV.setStr(kv_tmp_pwd, _pwdCtrl.text);
+        Debug.log("存储本地临时pwd结果：$ok");
+        if (ok) {
+          context.read<UserInfoState>()?.chUserCode(_mobileCtrl.text);
+          bool update = await LoginDao(glbDB).updateUserCode(_mobileCtrl.text);
+          Debug.log("更新本地手机号结果：$update");
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      Debug.logError("设置手机号和密码出现异常：$e");
     }
   }
 

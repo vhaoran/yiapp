@@ -86,7 +86,7 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoutes.push(context, MasterInfoPage()),
           ),
         // 游客身份看不到的内容
-        if (!ApiState.is_guest) ...[
+        if (!ApiState.is_guest && !ApiState.is_master) ...[
           NormalBox(
             title: "我的订单",
             onTap: () => CusRoutes.push(context, AllMyPostPage()),
@@ -96,14 +96,15 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoutes.push(context, UserProductInfo()),
           ),
           NormalBox(
-            title: "账户与安全",
-            onTap: () => CusRoutes.push(context, AccountSafePage()),
-          ),
-          NormalBox(
             title: "个人资金账号",
             onTap: () => CusRoutes.push(context, FundMain()),
           ),
         ],
+        if (!ApiState.is_guest)
+          NormalBox(
+            title: "账户与安全",
+            onTap: () => CusRoutes.push(context, AccountSafePage()),
+          ),
         // 大师、运营商、运营商管理员不能申请的
         if (!ApiState.is_master && !ApiState.is_broker_admin) ...[
           NormalBox(

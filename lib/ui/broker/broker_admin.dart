@@ -21,7 +21,7 @@ import 'package:yiapp/ui/broker/broker_item.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/19 14:07
-// usage ：代理管理员页面
+// usage ：运营商管理员页面
 // ------------------------------------------------------
 
 class BrokerAdminPage extends StatefulWidget {
@@ -33,8 +33,8 @@ class BrokerAdminPage extends StatefulWidget {
 
 class _BrokerAdminPageState extends State<BrokerAdminPage> {
   var _future;
-  List<BrokerAdmin> _adminBrokers; // 代理管理员列表
-  List<UserInfo> _brokers = []; // 代理列表
+  List<BrokerAdmin> _adminBrokers; // 运营商管理员列表
+  List<UserInfo> _brokers = []; // 运营商列表
 
   @override
   void initState() {
@@ -42,14 +42,14 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
     super.initState();
   }
 
-  /// 获取代理管理员列表
+  /// 获取运营商管理员列表
   _fetch() async {
     try {
       var res = await ApiBroker.brokerAdminList();
       if (res != null) _adminBrokers = res;
     } catch (e) {
       _adminBrokers = [];
-      Debug.logError("获取代理管理员列表出现异常,是否暂未添加：$e");
+      Debug.logError("获取运营商管理员列表出现异常,是否暂未添加：$e");
     }
   }
 
@@ -57,11 +57,11 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(
-        text: "代理管理员",
+        text: "运营商管理员",
         actions: <Widget>[
           FlatButton(
             onPressed: () async {
-              await _fetchBrokers(); // 查询全部代理
+              await _fetchBrokers(); // 查询全部运营商
               List<SearchAdminData> l = _brokers
                   .map(
                     (e) => SearchAdminData(
@@ -77,7 +77,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
                 GroupBatchPage(
                   l: l,
                   uids: uids,
-                  barTitle: "添加代理管理员",
+                  barTitle: "添加运营商管理员",
                   onClick: (l) => _addAdminCall(context, l),
                 ),
               );
@@ -117,7 +117,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
         print(">>> tmp：$tmp 、l：${l.length} 两者不相等");
       }
     } catch (e) {
-      Debug.logError("添加代理管理员出现异常：$e");
+      Debug.logError("添加运营商管理员出现异常：$e");
     }
   }
 
@@ -143,19 +143,19 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
     );
   }
 
-  /// 移除代理管理员
+  /// 移除运营商管理员
   void _doRmBroker(int uid) {
     if (uid == null) return;
     CusDialog.err(context, title: "确定移除该管理员吗?", onApproval: () async {
       try {
         bool ok = await ApiBroker.brokerAdminRm(uid);
-        Debug.log("移除代理管理员结果：$ok");
+        Debug.log("移除运营商管理员结果：$ok");
         if (ok) {
           CusToast.toast(context, text: "移除成功");
           _refresh();
         }
       } catch (e) {
-        Debug.logError("移除代理管理员出现异常：$e");
+        Debug.logError("移除运营商管理员出现异常：$e");
       }
     });
   }
@@ -168,11 +168,11 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
       if (pb != null) {
         var l = pb.data.map((e) => e as UserInfo).toList();
         _brokers = l;
-        _brokers.removeWhere((e) => e.id == ApiBase.uid); // 移除代理人自己
+        _brokers.removeWhere((e) => e.id == ApiBase.uid); // 移除运营商自己
         setState(() {});
       }
     } catch (e) {
-      Debug.logError("点击添加管理员时，分页查询代理管理员出现异常：$e");
+      Debug.logError("点击添加管理员时，分页查询运营商管理员出现异常：$e");
     }
   }
 

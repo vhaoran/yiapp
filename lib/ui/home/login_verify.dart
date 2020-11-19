@@ -55,7 +55,7 @@ class LoginVerify {
     ApiState.is_master = r.is_master;
     // 运营商管理员
     ApiState.is_broker_admin = r.is_broker_admin;
-    // 服务码
+    // 邀请码
     ApiState.broker_id = r.user_info.broker_id;
     // 会员
     ApiState.is_vip = r.user_info.broker_id > 0 ? true : false;

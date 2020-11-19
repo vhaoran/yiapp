@@ -15,7 +15,7 @@ import 'package:yiapp/ui/broker/broker_approve.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/18 17:08
-// usage ：分页查询代理申请记录(含待审核、已审核、已拒绝)
+// usage ：分页查询运营商申请记录(含待审核、已审核、已拒绝)
 // ------------------------------------------------------
 
 class BrokerApplyHisPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
       PageBean pb = await ApiBroker.brokerApplyPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as BrokerApply).toList();
-      Debug.log("总的代理申请记录个数：$_rowsCount");
+      Debug.log("总的运营商申请记录个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -56,7 +56,7 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
       });
       Debug.log("当前已查询多少条数据：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询代理申请记录出现异常：$e");
+      Debug.logError("分页查询运营商申请记录出现异常：$e");
     }
   }
 
@@ -65,7 +65,7 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "代理申请审批"),
+        appBar: CusAppBar(text: "运营商申请审批"),
         body: FutureBuilder(
           future: _future,
           builder: (context, snap) {
@@ -73,7 +73,7 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
               return Center(child: CircularProgressIndicator());
             }
             if (_l.isEmpty) {
-              return Center(child: CusText("暂时没有代理申请", t_gray, 28));
+              return Center(child: CusText("暂时没有运营商申请", t_gray, 28));
             }
             return _lv();
           },
@@ -129,7 +129,7 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
     bool pass = stat == 1;
     try {
       bool ok = await ApiBroker.brokerApplyAudit(e.id, stat);
-      Debug.log("${pass ? '' : '拒绝'}代理申请结果：$ok");
+      Debug.log("${pass ? '' : '拒绝'}运营商申请结果：$ok");
       if (ok) {
         CusToast.toast(context, text: pass ? "已通过审批" : "已拒绝申请");
         _reset();

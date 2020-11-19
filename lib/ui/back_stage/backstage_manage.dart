@@ -35,7 +35,7 @@ class BackstageManage extends StatelessWidget {
           onTap: () => CusRoutes.push(context, MasterApplyHisPage()),
         ),
         NormalBox(
-          title: "代理申请审批",
+          title: "运营商申请审批",
           onTap: () => CusRoutes.push(context, BrokerApplyHisPage()),
         ),
         NormalBox(

@@ -8,11 +8,17 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 // ------------------------------------------------------
 
 class SpinKit {
-  static threeBounce(BuildContext context,
-      {Color color = Colors.white, double size = 40, bool show = true}) {
+  static threeBounce(
+    BuildContext context, {
+    Color color = Colors.white,
+    double size = 40,
+    bool show = true,
+    String text,
+  }) {
     _comDialog(
       context,
       show: show,
+      text: text,
       child: SpinKitThreeBounce(color: color, size: size),
     );
   }
@@ -70,7 +76,8 @@ class SpinKit {
     );
   }
 
-  static _comDialog(BuildContext context, {Widget child, bool show = true}) {
+  static _comDialog(BuildContext context,
+      {Widget child, bool show = true, String text}) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -80,7 +87,10 @@ class SpinKit {
           child,
           if (show) ...[
             SizedBox(height: 15),
-            Text("请稍等...", style: TextStyle(fontSize: 20, color: Colors.white)),
+            Text(
+              text ?? "请稍等...",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
           ],
         ],
       ),

@@ -1,7 +1,7 @@
 ### yiapp 功能分类
 
 - back_stage 后台管理
-- broker 代理
+- broker 运营商
 - chat 聊天
 - fortune 运势
 - home 首页

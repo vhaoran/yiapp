@@ -1,15 +1,18 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
+import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
-import 'package:yiapp/ui/home/chose_ask_type.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/home/navigation_type.dart';
 import 'package:yiapp/ui/master/master_list_page.dart';
@@ -34,31 +37,25 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _bars = []; // 底部导航组件
   List<String> _names = []; // 底部导航名称
   int _curIndex = 0; // 底部导航栏索引
-  int _midValue = 2; // 中间按钮的索引
-  bool _isMid = false; // 是否为中间提问
   // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
   PageController _pc = PageController();
-//  StreamSubscription<MsgNotifyHis> _busSub;
+  StreamSubscription<MsgNotifyHis> _busSub;
 
   @override
   void initState() {
-//    _prepareBusEvent(); // 初始化监听
-    // 默认开启运势中的免费测算和"我的"
-
     _startLogin();
+    _prepareBusEvent(); // 初始化监听
     super.initState();
   }
 
-  /// 系统通知类型
-//  _prepareBusEvent() {
-//    _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
-//      Debug.log("监听到了吗");
-//      if (event.to == ApiBase.uid) {
-//        Debug.log("有大师给发帖人发布评论了");
-//        Debug.log("回帖的详情：${event.toJson()}");
-//      }
-//    });
-//  }
+  /// 系统通知消息类型
+  _prepareBusEvent() {
+    _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
+      if (event.to == ApiBase.uid) {
+        Debug.log("系统通知消息：${event.toJson()}");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +67,6 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) => _bars[index],
       ),
       bottomNavigationBar: NavigationType(
-        isMid: _isMid,
         curIndex: _curIndex, // 底部导航栏设置
         names: _names,
         onChanged: (val) {
@@ -78,22 +74,18 @@ class _HomePageState extends State<HomePage> {
           if (_curIndex != val) {
             setState(() {
               _curIndex = val;
-              _isMid = _curIndex == _midValue ? true : false;
               _pc.jumpToPage(_curIndex);
             });
           }
         },
       ),
       backgroundColor: Colors.black26,
-      floatingActionButton: _isMid ? ChoseAskType(isMid: _isMid) : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
   /// 用户第一次登录，以及登录后的登录
   void _startLogin() async {
     await initDB(); // 初始化数据库
-//    await _dynamicModules(); // 动态的运营商模块
     LoginResult login;
     bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定位不管是否更改都去请求
@@ -109,16 +101,29 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       Debug.logError("用户登录出现异常：$e");
     }
-    LoginVerify.init(login, context);
+    await LoginVerify.init(login, context);
     _dynamicModules(); // 动态的运营商模块
   }
 
   /// 动态的运营商模块
   void _dynamicModules() async {
-    _bars = [FortunePage(), MinePage()];
-    _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
-    CusLoginRes res = await LoginDao(glbDB).readUserByUid();
-    setState(() {
+    // 大师不受运营商控制，默认显示所有模块
+    if (ApiState.is_master) {
+      _bars = [
+        FortunePage(),
+        MallPage(),
+        QuestionPage(),
+        MasterListPage(),
+        MinePage()
+      ];
+      _names = ["运势", "商城", "问命", "大师", "我的"];
+    }
+    // 非大师身份，则按照运营商开通的服务模块动态显示
+    else {
+      // 默认开启运势中的"免费测算"和"我的"
+      _bars = [FortunePage(), MinePage()];
+      _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
+      CusLoginRes res = await LoginDao(glbDB).readUserByUid();
       if (res.enable_mall == 1) {
         Debug.log("开启了商城");
         _bars.insert(_bars.length - 1, MallPage());
@@ -139,13 +144,14 @@ class _HomePageState extends State<HomePage> {
         _bars.insert(_bars.length - 1, MasterListPage());
         _names.insert(_names.length - 1, "大师");
       }
-    });
-    print(">>>底部导航栏names:${_names.toString()}");
+    }
+    Debug.log("底部导航栏names:${_names.toString()}");
+    setState(() {});
   }
 
   @override
   void dispose() {
-//    _busSub.cancel();
+    _busSub.cancel();
     _pc.dispose();
     super.dispose();
   }

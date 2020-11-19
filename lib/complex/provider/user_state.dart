@@ -46,7 +46,7 @@ class UserInfoState with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   /// 绑定手机号
-  void chMobile(String user_code) {
+  void chUserCode(String user_code) {
     _userInfo.user_code = user_code;
     notifyListeners();
   }

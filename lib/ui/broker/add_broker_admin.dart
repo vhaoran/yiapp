@@ -15,7 +15,7 @@
 //// ------------------------------------------------------
 //// author：suxing
 //// date  ：2020/9/19 15:10
-//// usage ：添加代理管理员页面
+//// usage ：添加运营商管理员页面
 //// ------------------------------------------------------
 //
 //class BrokerAdminAddPage extends StatefulWidget {
@@ -29,7 +29,7 @@
 //  var _future;
 //  int _pageNo = 0;
 //  int _rowsCount = 0;
-//  List<UserInfo> _l = []; // 代理管理员列表
+//  List<UserInfo> _l = []; // 运营商管理员列表
 //
 //  @override
 //  void initState() {
@@ -45,23 +45,23 @@
 //      PageBean pb = await ApiBroker.brokerUserInfoPage(m);
 //      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
 //      var l = pb.data.map((e) => e as UserInfo).toList();
-//      Debug.log("总的代理管理员个数：$_rowsCount");
+//      Debug.log("总的运营商管理员个数：$_rowsCount");
 //      l.forEach((src) {
 //        // 在原来的基础上继续添加新的数据
 //        var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
 //        if (dst == null) _l.add(src);
-//        _l.removeWhere((e) => e.id == ApiBase.uid); // 移除代理人自己
+//        _l.removeWhere((e) => e.id == ApiBase.uid); // 移除运营商自己
 //      });
 //      Debug.log("当前已查询多少条数据：${_l.length}");
 //    } catch (e) {
-//      Debug.logError("分页查询代理管理员出现异常：$e");
+//      Debug.logError("分页查询运营商管理员出现异常：$e");
 //    }
 //  }
 //
 //  @override
 //  Widget build(BuildContext context) {
 //    return Scaffold(
-//      appBar: CusAppBar(text: "添加代理管理员"),
+//      appBar: CusAppBar(text: "添加运营商管理员"),
 //      body: FutureBuilder(
 //        future: _future,
 //        builder: (context, snap) {
@@ -69,7 +69,7 @@
 //            return Center(child: CircularProgressIndicator());
 //          }
 //          if (_l.isEmpty) {
-//            return Center(child: CusText("你现在还没有代理", t_gray, 28));
+//            return Center(child: CusText("你现在还没有运营商管理员", t_gray, 28));
 //          }
 //          return ListView(
 //            physics: BouncingScrollPhysics(),

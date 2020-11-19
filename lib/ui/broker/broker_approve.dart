@@ -11,7 +11,7 @@ import 'package:yiapp/model/dicts/broker-apply.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/18 17:36
-// usage ：代理通用的审批记录组件
+// usage ：运营商通用的审批记录组件
 // ------------------------------------------------------
 
 typedef FnBroker = void Function(BrokerApply master, int stat);
@@ -73,7 +73,7 @@ class _BrokerApproveItemState extends State<BrokerApproveItem> {
       onTap: () => e.stat == 0
           ? CusDialog.normal(
               context,
-              title: e.brief.isEmpty ? "代理简介" : e.brief,
+              title: e.brief.isEmpty ? "运营商简介" : e.brief,
               textAgree: "同意",
               agreeColor: Colors.black,
               onApproval: () {
@@ -92,7 +92,7 @@ class _BrokerApproveItemState extends State<BrokerApproveItem> {
             )
           : CusDialog.tip(
               context,
-              title: e.brief.isEmpty ? "代理简介" : e.brief,
+              title: e.brief.isEmpty ? "运营商简介" : e.brief,
             ),
     );
   }

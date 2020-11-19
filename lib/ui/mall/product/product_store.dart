@@ -29,7 +29,8 @@ class MallPage extends StatefulWidget {
   _MallPageState createState() => _MallPageState();
 }
 
-class _MallPageState extends State<MallPage> {
+class _MallPageState extends State<MallPage>
+    with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
@@ -155,4 +156,7 @@ class _MallPageState extends State<MallPage> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

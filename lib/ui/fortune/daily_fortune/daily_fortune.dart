@@ -46,13 +46,6 @@ class _DailyFortuneState extends State<DailyFortune> {
     {"text": "四柱测算", "icon": 0xeb00, "color": 0xFFEEA988, "route": r_sizhu},
     {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": r_liu_yao},
     {"text": "姻缘测算", "icon": 0xe606, "color": 0xFFE86E66, "route": r_he_hun},
-    {"text": "八字事业", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "数字测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "桃花运势", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "姓名测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "学业测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "婚姻测试", "icon": 0xe615, "color": tmp_color, "route": "temp"},
-    {"text": "2020年运", "icon": 0xe615, "color": tmp_color, "route": "temp"}
   ];
 
   // 好物列表

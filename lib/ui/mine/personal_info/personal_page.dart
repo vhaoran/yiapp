@@ -24,7 +24,7 @@ import 'package:yiapp/service/api/api_image.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/mine/address/user_addr.dart';
-import 'package:yiapp/ui/mine/personal_info/bind_user_mobile.dart';
+import 'package:yiapp/ui/mine/personal_info/bind_usercode_pwd.dart';
 import '../../../service/api/api_user.dart';
 import 'package:yiapp/ui/mine/personal_info/ch_nick.dart';
 import 'package:provider/provider.dart';
@@ -95,7 +95,7 @@ class _PersonalPageState extends State<PersonalPage> {
           subtitle: CusRegExp.phone(_u.user_code) ? _u.user_code : "绑定手机",
           subFn: CusRegExp.phone(_u.user_code)
               ? null
-              : () => CusRoutes.push(context, BindUserMobile()),
+              : () => CusRoutes.push(context, BindUserCodePwd()),
         ),
         // 出生地点
 //        NormalBox(

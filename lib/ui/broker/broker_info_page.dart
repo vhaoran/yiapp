@@ -13,7 +13,7 @@ import 'package:yiapp/ui/broker/broker_admin.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/14 10:11
-// usage ：代理个人信息页面
+// usage ：运营商个人信息页面
 // ------------------------------------------------------
 
 class BrokerInfoPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _BrokerInfoPageState extends State<BrokerInfoPage> {
   Widget build(BuildContext context) {
     _b = context.watch<BrokerInfoState>()?.brokerInfo ?? BrokerInfo();
     return Scaffold(
-      appBar: CusAppBar(text: "代理信息"),
+      appBar: CusAppBar(text: "运营商信息"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -54,9 +54,9 @@ class _BrokerInfoPageState extends State<BrokerInfoPage> {
           subtitle: _b.owner_nick,
           onTap: () {},
         ),
-        NormalBox(title: "推荐码", subtitle: _b.service_code),
+        NormalBox(title: "邀请码", subtitle: _b.service_code),
         NormalBox(
-          title: "代理管理员",
+          title: "运营商管理员",
           onTap: () => CusRoutes.push(context, BrokerAdminPage()),
         ),
       ],

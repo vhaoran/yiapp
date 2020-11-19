@@ -12,13 +12,11 @@ import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 // ------------------------------------------------------
 
 class NavigationType extends StatefulWidget {
-  bool isMid;
   int curIndex;
   List<String> names;
   FnInt onChanged;
 
   NavigationType({
-    this.isMid: false,
     this.curIndex: 0,
     this.names,
     this.onChanged,
@@ -49,7 +47,7 @@ class _NavigationTypeState extends State<NavigationType> {
         int i = widget.names.indexOf(name);
         Color select = widget.curIndex == i ? t_primary : t_gray;
         return CusSingleBar(
-          title: widget.isMid && i == 2 ? "发布提问" : name,
+          title: name,
           titleColor: select,
           iconColor: select,
           length: widget.names.length,

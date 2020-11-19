@@ -24,7 +24,7 @@ class FortunePage extends StatefulWidget {
 
 class _FortunePageState extends State<FortunePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  List<String> _tabs = ["免费测算"];
+  List<String> _tabs = [];
 
   @override
   void initState() {
@@ -55,25 +55,23 @@ class _FortunePageState extends State<FortunePage>
   }
 
   Widget _appBar() {
+    bool guest = ApiState.is_guest;
     return CusAppBar(
       showLeading: false,
-      text: ApiState.is_guest ? "免费测算" : "",
       textColor: t_primary,
-      bottom: ApiState.is_guest
-          ? null
-          : TabBar(
-              indicatorWeight: Adapt.px(6),
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: t_primary,
-              labelPadding: EdgeInsets.only(bottom: Adapt.px(18)),
-              labelColor: t_primary,
-              unselectedLabelColor: t_gray,
-              tabs: List.generate(
-                _tabs.length,
-                (i) => Text(_tabs[i], style: TextStyle(fontSize: Adapt.px(34))),
-              ),
-              onTap: (index) {},
-            ),
+      bottom: TabBar(
+        indicatorWeight: Adapt.px(guest ? 0.01 : 6),
+        indicatorSize: TabBarIndicatorSize.label,
+        indicatorColor: guest ? primary : t_primary,
+        labelPadding: EdgeInsets.only(bottom: Adapt.px(guest ? 12 : 18)),
+        labelColor: t_primary,
+        unselectedLabelColor: t_gray,
+        tabs: List.generate(
+          _tabs.length,
+          (i) => Text(_tabs[i], style: TextStyle(fontSize: Adapt.px(34))),
+        ),
+        onTap: (index) {},
+      ),
     );
   }
 

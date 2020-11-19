@@ -12,11 +12,11 @@ import 'package:yiapp/model/login/userInfo.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/19 14:57
-// usage ：通用单个代理管理员显示组件,类型可用BrokerAdmin或者UserInfo
+// usage ：通用单个运营商管理员显示组件,类型可用BrokerAdmin或者UserInfo
 // ------------------------------------------------------
 
 class BrokerUserItem extends StatefulWidget {
-  final BrokerAdmin b; // 代理管理员用
+  final BrokerAdmin b; // 运营商管理员用
   final FnInt fnRm; // 移除操作
 
   BrokerUserItem({this.b, this.fnRm, Key key}) : super(key: key);

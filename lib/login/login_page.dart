@@ -1,38 +1,26 @@
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/function/shopcart_func.dart';
-import 'package:yiapp/complex/provider/broker_state.dart';
-import 'package:yiapp/complex/provider/master_state.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_reg.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/under_field.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/model/dicts/broker-info.dart';
-import 'package:yiapp/model/dicts/master-info.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/flutter/under_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
-import 'package:yiapp/service/api/api-broker.dart';
-import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/service/login/login_utils.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import '../service/api/api_user.dart';
-import 'package:yiapp/ui/home/home_page.dart';
-import 'package:provider/provider.dart';
 import 'register_page.dart';
 
 // ------------------------------------------------------
@@ -93,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
         CusUnderField(
           controller: _pwdCtrl,
           hintText: "请输入登录密码",
+          fromValue: "suxing", // 测试时的默认密码
           errorText: _pwdErr,
           maxLength: 20,
           onlyLetter: true,
@@ -151,6 +140,9 @@ class _LoginPageState extends State<LoginPage> {
           Debug.log("切换账号");
           LoginVerify.init(LoginResult.from(res), context);
         }
+        SpinKit.threeBounce(context, text: "正在登录，请稍等...");
+        await Future.delayed(Duration(milliseconds: 1000));
+        Navigator.pop(context);
         CusRoutes.pushReplacement(context, HomePage());
       },
     );
@@ -159,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
   /// 请求登录
   void _doLogin() async {
     setState(() {
-      _err = null;
+      _err = _mobileErr = _pwdErr = null;
       if (!CusRegExp.phone(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_pwdCtrl.text.length < 6) {
@@ -184,6 +176,9 @@ class _LoginPageState extends State<LoginPage> {
           login = await ApiLogin.login(m);
           if (login != null) {
             await LoginVerify.init(login, context);
+            SpinKit.threeBounce(context, text: "正在登录，请稍等...");
+            await Future.delayed(Duration(milliseconds: 1000));
+            Navigator.pop(context);
             CusRoutes.pushReplacement(context, HomePage());
           }
         } catch (e) {

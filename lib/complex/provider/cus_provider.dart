@@ -16,7 +16,7 @@ class CusProvider {
     ChangeNotifierProvider(create: (_) => UserInfoState()),
     // 大师个人信息状态管理
     ChangeNotifierProvider(create: (_) => MasterInfoState()),
-    // 代理个人信息状态管理
+    // 运营商个人信息状态管理
     ChangeNotifierProvider(create: (_) => BrokerInfoState()),
   ];
 }
