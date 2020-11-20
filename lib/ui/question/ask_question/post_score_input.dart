@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/model/bo/price_level_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -15,8 +16,9 @@ import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 
 class PostScoreInput extends StatefulWidget {
   final TextEditingController controller;
+  final List<PriceLevelRes> l;
 
-  PostScoreInput({this.controller, Key key}) : super(key: key);
+  PostScoreInput({this.controller, this.l, Key key}) : super(key: key);
 
   @override
   _PostScoreInputState createState() => _PostScoreInputState();
@@ -36,7 +38,7 @@ class _PostScoreInputState extends State<PostScoreInput> {
   Widget _row() {
     return Row(
       children: <Widget>[
-        CusText("悬赏金额", t_yi, 30),
+        CusText("选择悬赏金额", t_yi, 30),
         Expanded(
           child: CusRectField(
             controller: widget.controller,

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -88,7 +87,7 @@ class _QuestionPageState extends State<QuestionPage>
           indicatorWeight: 3,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorColor: t_primary,
-          labelPadding: EdgeInsets.only(bottom: Adapt.px(5)),
+          labelPadding: EdgeInsets.only(bottom: 3),
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
@@ -124,10 +123,10 @@ class _QuestionPageState extends State<QuestionPage>
           children: <Widget>[
             Divider(height: 1),
             Container(
-              width: double.infinity,
+              width: double.infinity, // 点击整行都可跳转
               child: FlatButton(
                 child: CusText(_queTypes[i], Colors.black, 30),
-                onPressed: () => _type(context, i),
+                onPressed: () => _pushWhere(context, i),
               ),
             ),
           ],
@@ -136,7 +135,8 @@ class _QuestionPageState extends State<QuestionPage>
     );
   }
 
-  void _type(context, int i) {
+  /// 根据发帖类型跳转
+  void _pushWhere(context, int i) {
     switch (i) {
       case 0: // 六爻
         CusRoutes.pushReplacement(context, LiuYaoPage());

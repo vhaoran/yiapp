@@ -92,6 +92,7 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         NormalBox(
           title: "手机号码", // 手机号码
+          showBtn: CusRegExp.phone(_u.user_code) ? false : true,
           subtitle: CusRegExp.phone(_u.user_code) ? _u.user_code : "绑定手机",
           subFn: CusRegExp.phone(_u.user_code)
               ? null

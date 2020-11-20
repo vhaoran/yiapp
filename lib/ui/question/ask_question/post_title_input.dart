@@ -24,9 +24,11 @@ class _PostTitleInputState extends State<PostTitleInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: Adapt.px(30)),
+      padding: EdgeInsets.only(left: 15),
       decoration: BoxDecoration(
-          color: fif_primary, borderRadius: BorderRadius.circular(10)),
+        color: fif_primary,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: _row(),
     );
   }
@@ -39,6 +41,7 @@ class _PostTitleInputState extends State<PostTitleInput> {
           child: CusRectField(
             controller: widget.controller,
             hintText: "请输入帖子标题",
+            fromValue: "我想问一下，金银花喝着怎么样？",
             autofocus: false,
             hideBorder: true,
           ),

@@ -148,7 +148,8 @@ class _CusRectFieldState extends State<CusRectField> {
         if (widget.onChanged != null) {
           widget.onChanged();
         }
-        if (widget.controller.text.length >= widget.maxLength) {
+        if (widget.controller.text.length >= widget.maxLength &&
+            widget.maxLength != -1) {
           _focusNode.unfocus();
         }
         setState(() {});

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
@@ -32,17 +31,14 @@ class _PostTimeCtrState extends State<PostTimeCtr> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _selectTime, // 选择时间
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: Adapt.px(30), vertical: Adapt.px(20)),
-        decoration: BoxDecoration(
-          color: fif_primary,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: _row(),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: fif_primary,
+        borderRadius: BorderRadius.circular(10),
       ),
+      child: InkWell(child: _row(), onTap: _selectTime),
     );
   }
 

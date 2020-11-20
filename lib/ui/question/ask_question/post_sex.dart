@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 
@@ -27,13 +26,13 @@ class _PostSexCtrState extends State<PostSexCtr> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: Adapt.px(30)),
-      margin: EdgeInsets.symmetric(vertical: Adapt.px(30)),
+      padding: EdgeInsets.only(left: 15),
+      margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
           color: fif_primary, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: <Widget>[
-          CusText("您的性别", t_yi, 30),
+          CusText("性别", t_yi, 30),
           _selectCtr(male, "男"),
           _selectCtr(female, "女"),
         ],
