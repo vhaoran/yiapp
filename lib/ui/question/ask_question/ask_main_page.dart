@@ -1,30 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/question/ask_question/post_liuyao.dart';
 import 'package:yiapp/ui/question/ask_question/question_detail.dart';
-import 'post_brief_input.dart';
-import 'post_name_input.dart';
 import 'post_sex.dart';
 import 'post_time.dart';
-import 'post_title_input.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -66,6 +56,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
   YiDateTime _birth; // 出生日期
   int _male = 1; // 性别
   String _barName = ""; // 问命标题
+  String _timeStr = "";
 
   @override
   void initState() {
@@ -92,26 +83,36 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: <Widget>[
-                if (_isLiuYao) // 六爻排盘信息
-                  PostLiuYaoCtr(
-                    res: widget.res,
-                    l: widget.l,
-                    guaTime: widget.guaTime,
-                    user_nick: widget.user_nick,
-                  ),
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(top: 5),
                   child: CusText("请填写您的基本信息", t_primary, 32),
                 ),
                 // 姓名
-                PostNameInput(controller: _nameCtrl),
+                _inputContainer(
+                  child: Row(
+                    children: <Widget>[
+                      CusText("姓名", t_yi, 30),
+                      Expanded(
+                        child: CusRectField(
+                          controller: _nameCtrl,
+                          fromValue: "苏醒",
+                          hintText: "输入您的姓名",
+                          autofocus: false,
+                          hideBorder: true,
+                          maxLength: 8,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 // 性别
                 PostSexCtr(onChanged: (int val) => setState(() => _male = val)),
                 // 出生日期
                 PostTimeCtr(
                   yiDate: (YiDateTime val) => setState(() => _birth = val),
                   isLunar: (bool val) => setState(() => _isLunar = val),
+                  timeStr: (val) => setState(() => _timeStr = val),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -119,9 +120,34 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
                   child: CusText("请说明您要咨询的问题", t_primary, 32),
                 ),
                 // 帖子标题
-                PostTitleInput(controller: _titleCtrl),
+                _inputContainer(
+                  child: Row(
+                    children: <Widget>[
+                      CusText("帖子标题", t_yi, 30),
+                      Expanded(
+                        child: CusRectField(
+                          controller: _titleCtrl,
+                          hintText: "请输入帖子标题",
+                          fromValue: "我想问一下，金银花喝着怎么样？",
+                          autofocus: false,
+                          hideBorder: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 // 帖子摘要
-                PostBriefInput(controller: _briefCtrl),
+                _inputContainer(
+                  child: CusRectField(
+                    controller: _briefCtrl,
+                    hintText: "该区域填写您的帖子内容，问题描述的越清晰，详尽，大师们才能更完整、更高质量的为您解答",
+                    fromValue: "大师，帮我测算一下，金银花有什么效果，喝了可以赚很多钱吗？",
+                    autofocus: false,
+                    hideBorder: true,
+                    maxLines: 10,
+                    pdHor: 0,
+                  ),
+                ),
               ],
             ),
           ),
@@ -154,81 +180,66 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
       CusToast.toast(context, text: _err, milliseconds: 1800);
       return;
     }
+    QueLiuyao queLiuyao; // 六爻数据
+    PostLiuYaoCtr liuYaoView; // 六爻结果视图
     String code = ""; // 六爻编码
     if (_isLiuYao) {
       widget.l.forEach((e) => code += e.toString());
+      queLiuyao = QueLiuyao(
+        year: _isLiuYao ? widget.guaTime.year : 0,
+        month: _isLiuYao ? widget.guaTime.month : 0,
+        day: _isLiuYao ? widget.guaTime.day : 0,
+        hour: _isLiuYao ? widget.guaTime.hour : 0,
+        yao_code: code,
+      );
+      liuYaoView = PostLiuYaoCtr(
+        res: widget.res,
+        l: widget.l,
+        guaTime: widget.guaTime,
+        user_nick: widget.user_nick,
+      );
     }
-    var m = {
-      "score": 0,
-      "title": _titleCtrl.text.trim(),
-      "brief": _briefCtrl.text.trim(),
-      "content_type": widget.content_type,
-      "content_liuyao": {
-        "year": _isLiuYao ? widget.guaTime.year : 0,
-        "month": _isLiuYao ? widget.guaTime.month : 0,
-        "day": _isLiuYao ? widget.guaTime.day : 0,
-        "hour": _isLiuYao ? widget.guaTime.hour : 0,
-        "yao_code": code,
-      },
-      "content": {
-        "is_solar": !_isLunar,
-        "name": _nameCtrl.text.trim(),
-        "is_male": _male == male ? true : false,
-        "year": _birth.year,
-        "month": _birth.month,
-        "day": _birth.day,
-        "hour": _birth.hour,
-        "minutes": _birth.minute,
-        "nick": "苏醒",
-      },
-    };
-    var data = QuestionRes.fromJson(m);
-    CusRoutes.push(context, QueDetailPage(data: data, barName: _barName));
-    return;
-    Debug.log("发帖详情：${m.toString()}");
-    _doPost(m); // 满足发帖条件
+    // 发帖内容
+    QueContent queContent = QueContent(
+      is_solar: !_isLunar,
+      name: _nameCtrl.text.trim(),
+      is_male: _male == male ? true : false,
+      year: _birth.year,
+      month: _birth.month,
+      day: _birth.day,
+      hour: _birth.hour,
+      minutes: _birth.minute,
+    );
+    QuestionRes data = QuestionRes(
+      score: 0,
+      title: _titleCtrl.text.trim(),
+      brief: _briefCtrl.text.trim(),
+      content_type: widget.content_type,
+      content_liuyao: queLiuyao,
+      content: queContent,
+    );
+    CusRoutes.push(
+      context,
+      QueDetailPage(
+        data: data,
+        barName: _barName,
+        timeStr: _timeStr,
+        liuYaoView: liuYaoView,
+      ),
+    );
   }
 
-  /// 满足发帖条件
-  void _doPost(m) async {
-    SpinKit.threeBounce(context);
-    try {
-      var data;
-      data = ApiState.isFlash
-          ? await ApiBBSVie.bbsVieAdd(m)
-          : await ApiBBSPrize.bbsPrizeAdd(m);
-      if (data != null) {
-        Debug.log("发帖成功，详情：${data.toJson()}");
-        CusToast.toast(
-          context,
-          text: "发帖成功，即将跳转到支付界面",
-          milliseconds: 1500,
-        );
-        Future.delayed(Duration(milliseconds: 1500)).then(
-          (value) => CusRoutes.pushReplacement(
-            context,
-            ComPayPage(
-              tip: ApiState.isFlash ? "闪断帖付款" : "悬赏帖付款",
-              b_type: ApiState.isFlash ? b_bbs_vie : b_bbs_prize,
-              orderId: data.id,
-              amt: 0,
-            ),
-          ).then((val) {
-            if (val != null) Navigator.pop(context);
-          }),
-        );
-      }
-    } catch (e) {
-      if (e.toString().contains("余额")) {
-        CusDialog.normal(
-          context,
-          title: "余额不足，请充值",
-          textAgree: "充值",
-          onApproval: () => Debug.log("前往充值页面"),
-        );
-      }
-      Debug.logError("我要提问出现异常：$e");
-    }
+  /// 输入框外围盒子
+  Widget _inputContainer({Widget child}) {
+    return Container(
+      padding: EdgeInsets.only(left: 15),
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: fif_primary,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: child,
+    );
   }
 
   @override

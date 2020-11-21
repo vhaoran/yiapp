@@ -28,9 +28,9 @@ class FlashPostPage extends StatefulWidget {
 class _FlashPostPageState extends State<FlashPostPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  int _pageNo = 0;
-  int _rowsCount = 0;
-  final int _count = 10; // 默认每页查询个数
+  int _page_no = 0;
+  int _rows_count = 0;
+  final int _rows_per_page = 10; // 默认每页查询个数
   List<BBSVie> _l = []; // 闪断帖列表
 
   @override
@@ -41,11 +41,11 @@ class _FlashPostPageState extends State<FlashPostPage>
 
   /// 分页查询闪断帖
   _fetch() async {
-    if (_pageNo * _count > _rowsCount) return;
-    _pageNo++;
+    if (_page_no * _rows_per_page > _rows_count) return;
+    _page_no++;
     var m = {
-      "page_no": _pageNo,
-      "rows_per_page": _count,
+      "page_no": _page_no,
+      "rows_per_page": _rows_per_page,
       "where": {
         "stat": {
           "\$in": [1, 2] // 1 已支付 和 2 已打赏
@@ -55,8 +55,8 @@ class _FlashPostPageState extends State<FlashPostPage>
     };
     try {
       PageBean pb = await ApiBBSVie.bbsViePage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
-      Debug.log("总的闪断帖个数：$_rowsCount");
+      if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
+      Debug.log("总的闪断帖个数：$_rows_count");
       var l = pb.data.map((e) => e as BBSVie).toList();
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -83,9 +83,6 @@ class _FlashPostPageState extends State<FlashPostPage>
         if (!snapDone(snap)) {
           return Center(child: CircularProgressIndicator());
         }
-        if (_l.isEmpty) {
-          return Center(child: CusText("暂时还没有人发帖", t_gray, 28));
-        }
         return EasyRefresh(
           header: CusHeader(),
           footer: CusFooter(),
@@ -95,7 +92,7 @@ class _FlashPostPageState extends State<FlashPostPage>
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(top: 200),
-                  child: CusText("暂时还没有人发帖", t_gray, 32),
+                  child: CusText("暂未有人发帖", t_gray, 30),
                 ),
               ..._l.map((e) => FlashCover(data: e)),
             ],
@@ -104,7 +101,7 @@ class _FlashPostPageState extends State<FlashPostPage>
             await _refresh();
           },
           onRefresh: () async {
-            _pageNo = _rowsCount = 0;
+            _page_no = _rows_count = 0;
             _l.clear();
             _refresh();
           },

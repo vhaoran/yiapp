@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/type/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/model/dicts/product.dart';
-import 'package:yiapp/model/pagebean.dart';
-import 'package:yiapp/service/api/api-product.dart';
-import 'package:yiapp/ui/mall/product/product_cover.dart';
-import 'add_product/add_product.dart';
+import 'package:yiapp/model/bo/broker_cate_res.dart';
+import 'package:yiapp/service/api/api_bo.dart';
+import 'package:yiapp/ui/mall/product/product_cate_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -32,10 +25,7 @@ class MallPage extends StatefulWidget {
 class _MallPageState extends State<MallPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  int _pageNo = 0;
-  int _rowsCount = 0;
-  final int _pagesCount = 10; // 默认每页查询个数
-  List<Product> _l = []; // 商品列表
+  List<BrokerCateRes> _tabs = []; // 运营商商品分类数组
 
   @override
   void initState() {
@@ -43,117 +33,72 @@ class _MallPageState extends State<MallPage>
     super.initState();
   }
 
-  /// 分页查询商品
+  // 获取运营商商品分类
   _fetch() async {
-    if (_pageNo * _pagesCount > _rowsCount) return;
-    _pageNo++;
-    var m = {"page_no": _pageNo, "rows_per_page": _pagesCount};
-
     try {
-      PageBean pb = await ApiProduct.productPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
-      Debug.log("总的商品个数：$_rowsCount");
-      var l = pb.data.map((e) => e as Product).toList();
-      l.forEach((src) {
-        // 在原来的基础上继续添加新的数据
-        var dst = _l.firstWhere(
-          (e) => src.id_of_es == e.id_of_es,
-          orElse: () => null,
-        );
-        if (dst == null) _l.add(src);
-      });
-      Debug.log("当前已查询商品个数：${_l.length}");
-      setState(() {});
+      var res = await ApiBo.brokerCateList();
+      if (res != null) {
+        Debug.log("res.length:${res.length}");
+        _tabs = res;
+      }
     } catch (e) {
-      Debug.logError("分页查询商品出现异常：$e");
+      Debug.logError("获取运营商商品分类出现异常：$e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "商品", actions: <Widget>[
-        FlatButton(
-          child: CusText("新增", Colors.orangeAccent, 28),
-          onPressed: () => CusRoutes.push(context, AddProduct()).then((val) {
-            if (val != null) setState(() => _l.add(val));
-          }),
-        ),
-      ]),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snap) {
-          if (!snapDone(snap)) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (_l.isEmpty) {
-            return Center(child: CusText("暂时没有商品", t_gray, 28));
-          }
-          return _lv();
-        },
-      ),
-      backgroundColor: primary,
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (!snapDone(snap)) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return _lv();
+      },
     );
   }
 
   Widget _lv() {
-    return ScrollConfiguration(
-      behavior: CusBehavior(),
-      child: EasyRefresh(
-        key: Key("mall"),
-        header: CusHeader(),
-        footer: CusFooter(),
-        onLoad: () async {
-          await _fetch();
-        },
-        onRefresh: () async {
-          _pageNo = _rowsCount = 0;
-          _l.clear();
-          await _fetch();
-        },
-        child: ListView(
-          children: <Widget>[
-            SizedBox(height: Adapt.px(15)),
-            _buildGrid(),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        appBar: CusAppBar(text: "商城"),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (_tabs.isEmpty)
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 200),
+                child: CusText("运营商暂未添加商品", t_gray, 32),
+              ),
+            if (_tabs.isNotEmpty) ...[
+              TabBar(
+                indicatorWeight: Adapt.px(6),
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorColor: t_primary,
+                labelPadding: EdgeInsets.all(Adapt.px(8)),
+                labelColor: t_primary,
+                unselectedLabelColor: t_gray,
+                tabs: List.generate(
+                  _tabs.length,
+                  (i) => CusText(_tabs[i].cate_name, t_gray, 28),
+                ),
+              ),
+              SizedBox(height: Adapt.px(15)),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    ..._tabs.map((e) => ProductCatePage(cate_id: e.cate_id)),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
+        backgroundColor: primary,
       ),
-    );
-  }
-
-  Widget _buildGrid() {
-    return Wrap(
-      children: <Widget>[
-        ...List.generate(
-          _l.length,
-          (i) => Container(
-            width: Adapt.screenW() / 2,
-            child: Card(
-                child: ProductCover(
-              product: _l[i],
-              // 移除商品回调
-              onRemove: (val) {
-                if (val == null) return;
-                _l.removeWhere((e) => e.id_of_es == val);
-                setState(() {});
-              },
-              onChange: (val) async {
-                try {
-                  Product res = await ApiProduct.productGet(val);
-                  if (res != null) {
-                    Product p =
-                        _l.singleWhere((e) => e.id_of_es == res.id_of_es);
-                    _l[_l.indexOf(p)] = res;
-                    setState(() {});
-                  }
-                } catch (e) {
-                  Debug.logError("回调中修改商品时，根据id获取商品出现异常：$e");
-                }
-              },
-            )),
-          ),
-        ),
-      ],
     );
   }
 

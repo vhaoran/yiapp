@@ -18,8 +18,14 @@ import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 class PostTimeCtr extends StatefulWidget {
   FnYiDate yiDate;
   FnBool isLunar;
+  FnString timeStr;
 
-  PostTimeCtr({this.yiDate, this.isLunar, Key key}) : super(key: key);
+  PostTimeCtr({
+    this.yiDate,
+    this.isLunar,
+    this.timeStr,
+    Key key,
+  }) : super(key: key);
 
   @override
   _PostTimeCtrState createState() => _PostTimeCtrState();
@@ -28,6 +34,7 @@ class PostTimeCtr extends StatefulWidget {
 class _PostTimeCtrState extends State<PostTimeCtr> {
   YiDateTime _birth; // 出生日期
   bool _isLunar = false; // 是否选择了阴历
+  String _timeStr = "选择出生日期";
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,17 @@ class _PostTimeCtrState extends State<PostTimeCtr> {
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: InkWell(child: _row(), onTap: _selectTime),
+      child: InkWell(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            CusText("出生日期", t_yi, 30),
+            CusText(_timeStr, t_gray, 30),
+            Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
+          ],
+        ),
+        onTap: _selectTime,
+      ),
     );
   }
 
@@ -54,25 +71,22 @@ class _PostTimeCtrState extends State<PostTimeCtr> {
         if (widget.isLunar != null) widget.isLunar(val);
       },
       onConfirm: (yiDate) {
-        if (yiDate != null) setState(() => _birth = yiDate);
-        if (widget.yiDate != null) widget.yiDate(_birth);
+        if (yiDate != null) {
+          _birth = yiDate;
+          if (widget.yiDate != null) {
+            widget.yiDate(_birth);
+          }
+          _timeStr = _birth == null
+              ? "选择出生日期"
+              : _isLunar
+                  ? "${YiTool.fullDateNong(_birth)}"
+                  : "${YiTool.fullDateGong(_birth)}";
+          if (widget.timeStr != null) {
+            widget.timeStr(_timeStr);
+          }
+          setState(() {});
+        }
       },
-    );
-  }
-
-  Widget _row() {
-    String str = _birth == null
-        ? "选择出生日期"
-        : _isLunar
-            ? "${YiTool.fullDateNong(_birth)}"
-            : "${YiTool.fullDateGong(_birth)}";
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        CusText("出生日期", t_yi, 30),
-        CusText(str, t_gray, 30),
-        Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
-      ],
     );
   }
 }

@@ -21,7 +21,9 @@ import 'package:yiapp/service/api/api-pay.dart';
 // ------------------------------------------------------
 
 class RechargePage extends StatefulWidget {
-  RechargePage({Key key}) : super(key: key);
+  final num score;
+
+  RechargePage({this.score, Key key}) : super(key: key);
 
   @override
   _RechargePageState createState() => _RechargePageState();
@@ -66,7 +68,7 @@ class _RechargePageState extends State<RechargePage> {
           ),
           CusRectField(
             controller: _amtCtrl,
-            fromValue: "0.01",
+            fromValue: "${widget.score}",
             hintText: "请输入充值金额",
             keyboardType: TextInputType.number,
             inputFormatters: [DotFormatter()],
