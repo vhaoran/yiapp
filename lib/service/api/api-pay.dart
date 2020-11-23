@@ -29,4 +29,9 @@ class ApiPay {
         "amt=$amt";
     return url;
   }
+
+  /// 订单付款
+  static OrderPay() {
+
+  }
 }

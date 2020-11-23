@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 用户第一次登录，以及登录后的登录
   void _startLogin() async {
+    if (ApiBase.login) return; // 如果已经登录过一次，无须再走下面
     await initDB(); // 初始化数据库
     LoginResult login;
     bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过

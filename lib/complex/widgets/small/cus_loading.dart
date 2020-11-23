@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -8,17 +9,22 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 // ------------------------------------------------------
 
 class SpinKit {
+  /// 三个圆点的loading框，目前只用了这个，其它的用来扩展
   static threeBounce(
     BuildContext context, {
     Color color = Colors.white,
     double size = 40,
     bool show = true,
     String text,
+    int seconds,
+    String errText,
   }) {
     _comDialog(
       context,
       show: show,
       text: text,
+      seconds: seconds,
+      errText: errText,
       child: SpinKitThreeBounce(color: color, size: size),
     );
   }
@@ -76,8 +82,14 @@ class SpinKit {
     );
   }
 
-  static _comDialog(BuildContext context,
-      {Widget child, bool show = true, String text}) {
+  static _comDialog(
+    BuildContext context, {
+    Widget child,
+    bool show = true, // 是否显示提示文字
+    String text, // 提示内容
+    String errText, // 超时提示内容
+    int seconds, // 超时时间
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -94,6 +106,10 @@ class SpinKit {
           ],
         ],
       ),
-    );
+    ).timeout(Duration(seconds: seconds ?? 10), onTimeout: () {
+      Navigator.pop(context);
+      // 超时提示
+      CusDialog.tip(context, title: errText ?? "请求数据异常，请重新尝试");
+    });
   }
 }

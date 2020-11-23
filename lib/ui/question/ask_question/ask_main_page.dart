@@ -211,7 +211,9 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
       minutes: _birth.minute,
     );
     QuestionRes data = QuestionRes(
-      score: 0,
+      // 暂时将金额和金额id设置为空,发帖页面赋值
+//      amt: 0,
+      level_id: 0,
       title: _titleCtrl.text.trim(),
       brief: _briefCtrl.text.trim(),
       content_type: widget.content_type,

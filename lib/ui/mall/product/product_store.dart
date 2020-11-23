@@ -63,7 +63,7 @@ class _MallPageState extends State<MallPage>
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "商城"),
+        appBar: CusAppBar(text: "商城", showLeading: false),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

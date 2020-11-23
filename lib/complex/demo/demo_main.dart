@@ -10,7 +10,9 @@ import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -81,6 +83,15 @@ class CusDemoMain extends StatelessWidget {
             for (var i = 0; i < l.length; i++) {
               print(">>>第 ${i + 1} 个用户信息：${l[i].toJson()}");
             }
+          },
+        ),
+        NormalBox(
+          title: "09 付款",
+          onTap: () {
+            BalancePay(
+              context,
+              data: PayData(amt: 12, b_type: b_p_order, id: "id"),
+            );
           },
         ),
       ],

@@ -10,6 +10,7 @@ import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
@@ -17,13 +18,14 @@ import 'package:yiapp/model/bo/price_level_res.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_bo.dart';
+import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 import 'post_liuyao.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/11/20 下午3:39
-// usage ：问命结果详情
+// usage ：问命结果详情（将悬赏金额单独设置到一个页面，方便后期对不同金额增加内容）
 // ------------------------------------------------------
 
 class QueDetailPage extends StatefulWidget {
@@ -103,26 +105,31 @@ class _QueDetailPageState extends State<QueDetailPage> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               children: <Widget>[
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     if (widget.liuYaoView != null) // 六爻排盘信息
                       widget.liuYaoView,
+                    SizedBox(height: 15),
                     _titleCtr("基本信息"),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         _subtitleCtr("${_data.content.name}"), // 姓名
-                        _subtitleCtr("${widget.timeStr}"), // 出生日期
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: _subtitleCtr("${widget.timeStr}"),
+                        ), // 出生日期
                         _subtitleCtr(
                             "${_data.content.is_male ? '男' : '女'}"), // 性别
                       ],
                     ),
+                    CusDivider(),
                     _titleCtr("帖子标题"),
                     _subtitleCtr("${_data.title}"),
                     _titleCtr("帖子内容"),
                     _subtitleCtr("${_data.brief}"),
                   ],
                 ),
+                CusDivider(),
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5),
@@ -146,7 +153,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 5),
             child: CusRaisedBtn(
               text: "完成，发${ApiState.isFlash ? '闪断' : '悬赏'}帖",
               minWidth: double.infinity,
@@ -167,6 +174,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
       onTap: () {
         _score = val;
         if (_select != select) _select = select;
+        // 获取当前选择标准的详情
         _selectPrice = _l.singleWhere(
           (e) => e.price == val,
           orElse: () => null,
@@ -195,10 +203,10 @@ class _QueDetailPageState extends State<QueDetailPage> {
       CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
       return;
     }
-    _data.score = _score;
+    _data.amt = _score;
+    _data.level_id = _selectPrice.price_level_id;
     var m = _data.toJson();
-    CusRoutes.push(context, RechargePage(score: _data.score));
-    return;
+    Debug.log("发帖详情：$m");
     SpinKit.threeBounce(context);
     try {
       var data;
@@ -206,12 +214,9 @@ class _QueDetailPageState extends State<QueDetailPage> {
           ? await ApiBBSVie.bbsVieAdd(m)
           : await ApiBBSPrize.bbsPrizeAdd(m);
       if (data != null) {
-        Debug.log("发帖成功，详情：${data.toJson()}");
-        CusToast.toast(
-          context,
-          text: "发帖成功，即将跳转到支付界面",
-          milliseconds: 1500,
-        );
+        Navigator.pop(context);
+        CusToast.toast(context, text: "发帖成功");
+        CusRoutes.pushReplacement(context, HomePage());
       }
     } catch (e) {
       if (e.toString().contains("余额")) {
@@ -219,7 +224,10 @@ class _QueDetailPageState extends State<QueDetailPage> {
           context,
           title: "余额不足，请充值",
           textAgree: "充值",
-          onApproval: () => CusRoutes.push(context, RechargePage()),
+          onApproval: () => CusRoutes.push(
+            context,
+            RechargePage(score: _data.amt),
+          ),
         );
       }
       Debug.logError("我要提问出现异常：$e");

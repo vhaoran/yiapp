@@ -5,47 +5,51 @@
 // ------------------------------------------------------
 
 class QuestionRes {
-  String brief;
-  QueContent content;
-  QueLiuyao content_liuyao;
-  int content_type;
-  int score;
+  num amt;
+  int level_id;
   String title;
+  String brief;
+  int content_type;
+  QueLiuyao content_liuyao;
+  QueContent content;
 
   QuestionRes({
-    this.brief,
-    this.content,
-    this.content_liuyao,
-    this.content_type,
-    this.score,
+    this.amt,
+    this.level_id,
     this.title,
+    this.brief,
+    this.content_type,
+    this.content_liuyao,
+    this.content,
   });
 
   factory QuestionRes.fromJson(Map<String, dynamic> json) {
     return QuestionRes(
+      amt: json['amt'],
+      level_id: json['level_id'],
+      title: json['title'],
       brief: json['brief'],
-      content:
-          json['content'] != null ? QueContent.fromJson(json['content']) : null,
+      content_type: json['content_type'],
       content_liuyao: json['content_liuyao'] != null
           ? QueLiuyao.fromJson(json['content_liuyao'])
           : null,
-      content_type: json['content_type'],
-      score: json['score'],
-      title: json['title'],
+      content:
+          json['content'] != null ? QueContent.fromJson(json['content']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['amt'] = this.amt;
+    data['level_id'] = this.level_id;
+    data['title'] = this.title;
     data['brief'] = this.brief;
     data['content_type'] = this.content_type;
-    data['score'] = this.score;
-    data['title'] = this.title;
-    if (this.content != null) {
-      data['content'] = this.content.toJson();
-    }
     if (this.content_liuyao != null) {
       data['content_liuyao'] = this.content_liuyao.toJson();
+    }
+    if (this.content != null) {
+      data['content'] = this.content.toJson();
     }
     return data;
   }
