@@ -10,10 +10,8 @@ import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 
 // ------------------------------------------------------
@@ -50,7 +48,7 @@ class _FlashReplyState extends State<FlashReply> {
   void _doReward(BBSReply reply) {
     CusDialog.normal(
       context,
-      title: "您确定为大师 ${reply.nick} 打赏 ${widget.data.score} $yuan_bao吗",
+      title: "您确定为大师 ${reply.nick} 打赏 ${widget.data.amt} $yuan_bao吗",
       onApproval: () async {
         var m = {"id": widget.data.id};
         try {

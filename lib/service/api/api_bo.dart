@@ -20,6 +20,15 @@ class ApiBo {
         enableJwt: true);
   }
 
+  /// 用户获取，运营商闪断帖收费标准
+  static Future<List<PriceLevelRes>> brokerPriceLevelVieUserList() async {
+    var url = w_yi_user + "BrokerPriceLevelVieUserList";
+    var data = Map<String, dynamic>();
+    return await ApiBase.postList(
+        url, data, (l) => l.map((x) => PriceLevelRes.fromJson(x)).toList(),
+        enableJwt: true);
+  }
+
   /// 用户获取，运营商商品分类中的商品
   static brokerProductUserPage(Map<String, dynamic> pb) async {
     var url = w_yi_user + "BrokerProductUserPage";

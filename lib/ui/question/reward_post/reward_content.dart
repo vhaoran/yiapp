@@ -53,10 +53,11 @@ class _RewardContentState extends State<RewardContent> {
     try {
       BBSPrize bbsPrize = await ApiBBSPrize.bbsPrizeGet(widget.id);
       if (bbsPrize != null) {
+        print(">>>bbsPrize:${bbsPrize.toJson()}");
         _bbsPrize = bbsPrize;
         _rowsCount = _bbsPrize.reply.length;
         Debug.log("帖子总长度：$_rowsCount");
-        if (_l.isEmpty) _fetchAll();
+        if (_l.isEmpty) _fetchComment();
       }
     } catch (e) {
       Debug.logError("查询单条悬赏帖出现异常：$e");
@@ -64,8 +65,7 @@ class _RewardContentState extends State<RewardContent> {
   }
 
   /// 模拟分页添加评论列表
-  void _fetchAll() async {
-    Debug.log("_pageNO是多少：${_pageNo}");
+  void _fetchComment() async {
     if (_pageNo * 20 > _rowsCount) {
       setState(() => _loadAll = true);
       return;
@@ -110,7 +110,7 @@ class _RewardContentState extends State<RewardContent> {
                       ? null
                       : () async {
                           await Future.delayed(Duration(milliseconds: 100));
-                          await _fetchAll();
+                          await _fetchComment();
                         },
                   onRefresh: () async {
                     await _refresh();

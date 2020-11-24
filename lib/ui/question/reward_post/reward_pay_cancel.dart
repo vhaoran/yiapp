@@ -6,6 +6,7 @@ import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
+import 'package:yiapp/complex/tools/date_util.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -61,7 +62,7 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
 
   /// 取消订单
   void _doCancel() {
-    CusDialog.err(context, title: "确定取消该订单吗?", onApproval: () async {
+    CusDialog.normal(context, title: "确定取消该订单吗?", onApproval: () async {
       try {
         bool ok = await ApiBBSPrize.bbsPrizeCancel(widget.data.id);
         if (ok) {
@@ -84,7 +85,7 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
       ComPayPage(
         tip: "悬赏帖付款",
         b_type: b_bbs_prize,
-        amt: widget.data.score,
+        amt: widget.data.amt,
         orderId: widget.data.id,
       ),
     );

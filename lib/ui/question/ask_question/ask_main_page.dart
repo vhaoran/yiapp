@@ -116,7 +116,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.only(top: 10),
                   child: CusText("请说明您要咨询的问题", t_primary, 32),
                 ),
                 // 帖子标题

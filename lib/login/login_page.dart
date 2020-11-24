@@ -86,15 +86,17 @@ class _LoginPageState extends State<LoginPage> {
           maxLength: 20,
           onlyLetter: true,
         ),
-        SizedBox(height: Adapt.px(40)),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             // 游客登录
             InkWell(
-              child: Text(
-                '游客登录',
-                style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  '游客登录',
+                  style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+                ),
               ),
               onTap: _guestLogin,
             ),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/function/swicht_case.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -60,7 +58,7 @@ class FlashHeader extends StatelessWidget {
           YuanBaoCtr(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
-            child: CusText("${data.score}", t_primary, 28), // 赏金
+            child: CusText("${data.amt}", t_primary, 28), // 赏金
           ),
         ],
       ),

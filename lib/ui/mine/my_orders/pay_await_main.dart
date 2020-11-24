@@ -5,7 +5,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/ui/mine/my_orders/flash_await_pay.dart';
 import 'package:yiapp/ui/mine/my_orders/reward_await_pay.dart';
-import 'package:yiapp/ui/mine/my_orders/reward_cancel_pay.dart';
 
 // ------------------------------------------------------
 // author：suxing

@@ -12,6 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
@@ -63,9 +64,10 @@ class _QueDetailPageState extends State<QueDetailPage> {
   }
 
   _fetch() async {
-    // TODO 这里需要根据闪断帖还是悬赏帖去获取对应的价格标准，目前获取的是悬赏
     try {
-      var res = await ApiBo.brokerPriceLevelPrizeUserList();
+      var res = ApiState.isFlash
+          ? await ApiBo.brokerPriceLevelVieUserList()
+          : await ApiBo.brokerPriceLevelPrizeUserList();
       if (res != null) {
         _l = res;
         if (res.isNotEmpty) {
@@ -203,6 +205,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
       CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
       return;
     }
+//    BalancePay(context);
     _data.amt = _score;
     _data.level_id = _selectPrice.price_level_id;
     var m = _data.toJson();
@@ -226,7 +229,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           textAgree: "充值",
           onApproval: () => CusRoutes.push(
             context,
-            RechargePage(score: _data.amt),
+            RechargePage(amt: _data.amt),
           ),
         );
       }
@@ -245,7 +248,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
   /// 内容组件
   Widget _subtitleCtr(String text) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Text(
         text,
         style: TextStyle(color: t_gray, fontSize: 16),

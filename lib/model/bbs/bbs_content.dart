@@ -13,7 +13,6 @@ class RewardContent {
   bool is_male;
   bool is_solar;
   String name;
-  String nick;
 
   RewardContent({
     this.year,
@@ -24,7 +23,6 @@ class RewardContent {
     this.is_male,
     this.is_solar,
     this.name,
-    this.nick,
   });
 
   factory RewardContent.fromJson(Map<String, dynamic> json) {
@@ -37,7 +35,6 @@ class RewardContent {
       is_male: json['is_male'],
       is_solar: json['is_solar'],
       name: json['name'],
-      nick: json['nick'],
     );
   }
 
@@ -51,7 +48,6 @@ class RewardContent {
     data['is_male'] = this.is_male;
     data['is_solar'] = this.is_solar;
     data['name'] = this.name;
-    data['nick'] = this.nick;
     return data;
   }
 }

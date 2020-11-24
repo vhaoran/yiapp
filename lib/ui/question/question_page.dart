@@ -5,6 +5,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/type/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
@@ -34,23 +35,28 @@ class _QuestionPageState extends State<QuestionPage>
   final List<String> _queTypes = ["六爻", "四柱", "合婚", "其他", "取消"];
   var _user = CusLoginRes(); // 本地用户信息
   List<String> _tabs = [];
+  var _future;
 
   @override
   void initState() {
     Debug.log("进了提问页面");
-    _init();
+    _future = _loadInit();
     super.initState();
   }
 
   /// 动态显示悬赏帖和闪断帖
-  void _init() async {
+  _loadInit() async {
     _user = await LoginDao(glbDB).readUserByUid();
     setState(() {
-      if (_user.enable_prize == 1) {
-        _tabs.add("悬赏帖");
-      }
-      if (_user.enable_vie == 1) {
-        _tabs.add("闪断帖");
+      if (ApiState.is_master) {
+        _tabs = ["悬赏帖", "闪断帖"];
+      } else {
+        if (_user.enable_prize == 1) {
+          _tabs.add("悬赏帖");
+        }
+        if (_user.enable_vie == 1) {
+          _tabs.add("闪断帖");
+        }
       }
     });
   }
@@ -65,16 +71,25 @@ class _QuestionPageState extends State<QuestionPage>
           text: "提问区",
           showLeading: false,
           actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                // 选择发帖类型
-                showDialog(context: context, child: _typeDialog(context));
-              },
-              child: Text("发帖", style: TextStyle(fontSize: 16, color: t_gray)),
-            ),
+            if (!ApiState.is_master)
+              FlatButton(
+                onPressed: () {
+                  // 选择发帖类型
+                  showDialog(context: context, child: _typeDialog(context));
+                },
+                child:
+                    Text("发帖", style: TextStyle(fontSize: 16, color: t_gray)),
+              ),
           ],
         ),
-        body: _bodyCtr(),
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, snap) {
+              if (!snapDone(snap)) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return _bodyCtr();
+            }),
         backgroundColor: primary,
       ),
     );
@@ -102,8 +117,11 @@ class _QuestionPageState extends State<QuestionPage>
         Expanded(
             child: TabBarView(
           children: <Widget>[
-            if (_user.enable_prize == 1) RewardPostPage(),
-            if (_user.enable_vie == 1) FlashPostPage(),
+            if (ApiState.is_master) ...[RewardPostPage(), FlashPostPage()],
+            if (!ApiState.is_master) ...[
+              if (_user.enable_prize == 1) RewardPostPage(),
+              if (_user.enable_vie == 1) FlashPostPage(),
+            ],
           ],
         )),
       ],

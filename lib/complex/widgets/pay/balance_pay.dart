@@ -3,6 +3,7 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 
@@ -14,8 +15,9 @@ import 'package:yiapp/model/pays/order_pay_data.dart';
 
 class BalancePay {
   final PayData data;
+  final VoidCallback onCancel;
 
-  BalancePay(BuildContext context, {this.data}) {
+  BalancePay(BuildContext context, {this.data, this.onCancel}) {
     _showBottomSheet(context);
   }
 
@@ -49,7 +51,17 @@ class BalancePay {
         SizedBox(height: 5),
         IconButton(
           icon: Icon(Icons.clear),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            CusDialog.normal(context,
+                title: "是否放弃本次付款",
+                textAgree: "继续付款",
+                textCancel: "放弃", onCancel: () {
+              Navigator.pop(context);
+              if (onCancel != null) {
+                onCancel();
+              }
+            });
+          },
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

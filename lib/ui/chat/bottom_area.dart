@@ -18,7 +18,7 @@ class ChatBottomArea extends StatefulWidget {
 class _ChatBottomAreaState extends State<ChatBottomArea> {
   final _msgController = TextEditingController();
   final _msgFocusNode = FocusNode();
-  int _maxLines = 0;
+  int _maxLines = 4;
   FocusScopeNode focusScopeNode;
 
   void _onSend({String msg}) {}
@@ -65,7 +65,7 @@ class _ChatBottomAreaState extends State<ChatBottomArea> {
           controller: _msgController,
           focusNode: _msgFocusNode,
           cursorColor: const Color(0xFF0099FF),
-          maxLines: _maxLines < 4 ? null : 4,
+          maxLines: lines < _maxLines ? lines : _maxLines,
           style: style,
         );
       },

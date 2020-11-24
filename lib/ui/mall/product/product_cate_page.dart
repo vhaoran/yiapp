@@ -122,7 +122,6 @@ class _ProductCatePageState extends State<ProductCatePage>
         ProductDetails(id_of_es: e.id_of_es),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           // 商品主图片
           Padding(
@@ -134,14 +133,10 @@ class _ProductCatePageState extends State<ProductCatePage>
             color: CusColors.systemGrey6(context),
             padding: EdgeInsets.symmetric(vertical: 5),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                SizedBox(width: Adapt.px(5)),
                 // 商品名称
-                Flexible(
-                  flex: 2,
-                  child: CusText("${e.name}", Colors.black, 30),
-                ),
+                CusText("${e.name}", Colors.black, 30),
                 // 商品价格
                 CusText("￥${e.colors.first.price}", t_yi, 32),
               ],

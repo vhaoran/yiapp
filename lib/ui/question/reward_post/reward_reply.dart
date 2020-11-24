@@ -48,11 +48,11 @@ class _RewardReplyState extends State<RewardReply> {
   void _doReward(BBSReply reply) {
     CusDialog.normal(
       context,
-      title: "您确定为大师 ${reply.nick} 打赏 ${widget.data.score} $yuan_bao吗",
+      title: "您确定为大师 ${reply.nick} 打赏 ${widget.data.amt} $yuan_bao吗",
       onApproval: () async {
         var m = {
           "id": widget.data.id,
-          "score": widget.data.score,
+          "score": widget.data.amt,
           "master_id": reply.uid,
         };
         try {

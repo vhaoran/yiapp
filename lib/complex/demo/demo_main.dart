@@ -12,12 +12,15 @@ import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/complex/widgets/small/lack_balance.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/ui/chat/chat_main.dart';
+import 'package:yiapp/ui/chat/chat_page.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -92,6 +95,18 @@ class CusDemoMain extends StatelessWidget {
               context,
               data: PayData(amt: 12, b_type: b_p_order, id: "id"),
             );
+          },
+        ),
+        NormalBox(
+          title: "10 充值",
+          onTap: () {
+            LackBalance(context, amt: 2);
+          },
+        ),
+        NormalBox(
+          title: "11 聊天界面",
+          onTap: () {
+            CusRoutes.push(context, ChatMain());
           },
         ),
       ],

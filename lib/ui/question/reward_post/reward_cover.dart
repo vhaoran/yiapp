@@ -48,8 +48,7 @@ class _RewardCoverState extends State<RewardCover> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: EdgeInsets.only(
-            left: Adapt.px(25), right: Adapt.px(25), top: Adapt.px(10)),
+        padding: EdgeInsets.only(left: 15, right: 15, top: 5),
         child: Column(
           children: <Widget>[
             _iconNameScore(), // 发帖人头像，昵称，悬赏金
@@ -80,7 +79,7 @@ class _RewardCoverState extends State<RewardCover> {
           child: CusText(
               widget.data.nick.isEmpty ? "至尊宝" : widget.data.nick, t_gray, 28),
         ),
-        CusText("悬赏 ${widget.data.score} $yuan_bao", t_yi, 28), // 悬赏金
+        CusText("悬赏 ${widget.data.amt} $yuan_bao", t_yi, 28), // 悬赏金
       ],
     );
   }

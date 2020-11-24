@@ -73,7 +73,7 @@ class _FlashCoverState extends State<FlashCover> {
           child: CusText(
               widget.data.nick.isEmpty ? "至尊宝" : widget.data.nick, t_gray, 28),
         ),
-        CusText("悬赏 ${widget.data.score} $yuan_bao", t_yi, 28), // 悬赏金
+        CusText("悬赏 ${widget.data.amt} $yuan_bao", t_yi, 28), // 悬赏金
       ],
     );
   }

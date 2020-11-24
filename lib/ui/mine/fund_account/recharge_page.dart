@@ -21,9 +21,10 @@ import 'package:yiapp/service/api/api-pay.dart';
 // ------------------------------------------------------
 
 class RechargePage extends StatefulWidget {
-  final num score;
+  final num amt;
+  final bool auto; // true 系统充值金额、 false 手动输入金额
 
-  RechargePage({this.score, Key key}) : super(key: key);
+  RechargePage({this.amt, this.auto: true, Key key}) : super(key: key);
 
   @override
   _RechargePageState createState() => _RechargePageState();
@@ -35,10 +36,15 @@ class _RechargePageState extends State<RechargePage> {
 
   /// 添加资金账号
   void _doAdd() async {
-    num amt = num.parse(_amtCtrl.text);
-    if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
-      CusToast.toast(context, text: "充值金额必须大于0", milliseconds: 1500);
-      return;
+    num amt;
+    if (widget.auto) {
+      amt = widget.amt;
+    } else {
+      amt = num.parse(_amtCtrl.text);
+      if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
+        CusToast.toast(context, text: "充值金额必须大于0", milliseconds: 1500);
+        return;
+      }
     }
     Debug.log("amt:$amt");
     String url = ApiPay.PayReqURL(b_recharge, _account_type, "充值", amt);
@@ -59,33 +65,46 @@ class _RechargePageState extends State<RechargePage> {
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 40, bottom: 15),
-            child: CusText("充值金额(￥)", t_primary, 30),
-          ),
-          CusRectField(
-            controller: _amtCtrl,
-            fromValue: "${widget.score}",
-            hintText: "请输入充值金额",
-            keyboardType: TextInputType.number,
-            inputFormatters: [DotFormatter()],
-          ),
+          SizedBox(height: 10),
+          // 自动充值
+          if (widget.auto)
+            _autoView(),
+          // 手动输入充值
+          if (!widget.auto) ...[
+            Padding(
+              padding: EdgeInsets.only(top: 40, bottom: 15),
+              child: CusText("充值金额(￥)", t_primary, 30),
+            ),
+            CusRectField(
+              controller: _amtCtrl,
+              fromValue: "${widget.amt}",
+              hintText: "请输入充值金额",
+              autofocus: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: [DotFormatter()],
+            ),
+          ],
           Padding(
             padding: EdgeInsets.only(top: 20),
-            child: CusText("支付类型", t_primary, 30),
+            child: Row(
+              children: <Widget>[
+                CusText("支付方式", t_primary, 30),
+                CusText("  (1元=1元宝)", t_yi, 30),
+              ],
+            ),
           ),
           SizedBox(height: Adapt.px(20)),
           _typeAliPay(),
           SizedBox(height: Adapt.px(5)),
           _typeWeChat(),
-          SizedBox(height: Adapt.px(60)),
+          SizedBox(height: Adapt.px(100)),
           CusRaisedBtn(
             text: "确定",
             textColor: t_gray,
-            backgroundColor: fif_primary,
+            backgroundColor: Colors.blueGrey,
             onPressed: _doAdd,
           ),
         ],
@@ -93,51 +112,96 @@ class _RechargePageState extends State<RechargePage> {
     );
   }
 
-  /// 支付宝
-  Widget _typeAliPay() {
+  Widget _autoView() {
     return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 15),
       color: fif_primary,
-      padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
-          Radio(
-            value: pay_alipay,
-            groupValue: _account_type,
-            activeColor: t_primary,
-            onChanged: (val) => setState(() => _account_type = val),
-          ),
-          CusText("支付宝", t_gray, 30),
-          Spacer(),
+          SizedBox(width: 5),
           Icon(
-            IconData(0xe638, fontFamily: ali_font),
-            color: Color(0xFF4C9FE3),
-            size: Adapt.px(100),
+            IconData(0xe6c0, fontFamily: ali_font),
+            color: t_red,
+            size: 44,
           ),
+          SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "${widget.amt}元宝",
+                style: TextStyle(fontSize: 18, color: t_yi),
+              ),
+              SizedBox(height: 5),
+              Text(
+                "鸿运来充值服务",
+                style: TextStyle(fontSize: 14, color: t_gray),
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 
+  /// 支付宝
+  Widget _typeAliPay() {
+    return GestureDetector(
+      onTap: () {
+        _account_type = pay_alipay;
+        setState(() {});
+      },
+      child: Container(
+        color: fif_primary,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Radio(
+              value: pay_alipay,
+              groupValue: _account_type,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _account_type = val),
+            ),
+            CusText("支付宝", t_gray, 30),
+            Spacer(),
+            Icon(
+              IconData(0xe638, fontFamily: ali_font),
+              color: Color(0xFF4C9FE3),
+              size: Adapt.px(100),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _typeWeChat() {
-    return Container(
-      color: fif_primary,
-      padding: EdgeInsets.all(10),
-      child: Row(
-        children: <Widget>[
-          Radio(
-            value: pay_wechat,
-            groupValue: _account_type,
-            activeColor: t_primary,
-            onChanged: (val) => setState(() => _account_type = val),
-          ),
-          CusText("微信", t_gray, 30),
-          Spacer(),
-          Icon(
-            IconData(0xe607, fontFamily: ali_font),
-            color: Color(0xFF5AB535),
-            size: Adapt.px(100),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        _account_type = pay_wechat;
+        setState(() {});
+      },
+      child: Container(
+        color: fif_primary,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Radio(
+              value: pay_wechat,
+              groupValue: _account_type,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _account_type = val),
+            ),
+            CusText("微信", t_gray, 30),
+            Spacer(),
+            Icon(
+              IconData(0xe607, fontFamily: ali_font),
+              color: Color(0xFF5AB535),
+              size: Adapt.px(100),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
@@ -10,6 +11,7 @@ import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
@@ -85,11 +87,10 @@ class _HomePageState extends State<HomePage> {
 
   /// 用户第一次登录，以及登录后的登录
   void _startLogin() async {
-    if (ApiBase.login) return; // 如果已经登录过一次，无须再走下面
     await initDB(); // 初始化数据库
     LoginResult login;
     bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
-    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定位不管是否更改都去请求
+    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
     try {
       if (logged) {
         Debug.log("用户已登录过，验证当前 token");
@@ -112,12 +113,12 @@ class _HomePageState extends State<HomePage> {
     if (ApiState.is_master) {
       _bars = [
         FortunePage(),
-        MallPage(),
+//        MallPage(), // 大师获取的是平台所有的商品信息吗
         QuestionPage(),
         MasterListPage(),
         MinePage()
       ];
-      _names = ["运势", "商城", "问命", "大师", "我的"];
+      _names = ["运势", "问命", "大师", "我的"];
     }
     // 非大师身份，则按照运营商开通的服务模块动态显示
     else {
