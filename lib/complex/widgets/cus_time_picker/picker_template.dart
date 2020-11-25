@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_main.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import '../cus_complex.dart';
 import 'picker_fn.dart';
 

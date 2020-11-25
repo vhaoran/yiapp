@@ -13,7 +13,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/master/hehun_res_show.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
-import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-liuyao.dart';

@@ -45,7 +45,7 @@ class _ChatBottomAreaState extends State<ChatBottomArea> {
         painter.layout(maxWidth: constraints.maxWidth);
 
         // 向上舍入最近的整数，如 3.4 ceil 后的结果是 4
-        final lines =
+        final int lines =
             (painter.size.height / painter.preferredLineHeight).ceil();
 
         return TextField(
@@ -65,7 +65,7 @@ class _ChatBottomAreaState extends State<ChatBottomArea> {
           controller: _msgController,
           focusNode: _msgFocusNode,
           cursorColor: const Color(0xFF0099FF),
-          maxLines: lines < _maxLines ? lines : _maxLines,
+          maxLines: lines < _maxLines ? null : _maxLines,
           style: style,
         );
       },

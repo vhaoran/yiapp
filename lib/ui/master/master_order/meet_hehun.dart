@@ -106,7 +106,6 @@ class _MeetHeHunPageState extends State<MeetHeHunPage> {
     });
     if (_err != null) return;
     SpinKit.threeBounce(context);
-    Navigator.pop(context);
     var m = {
       "master_id": widget.master_id,
       "master_cate_id": ApiBase.uid,
@@ -117,6 +116,7 @@ class _MeetHeHunPageState extends State<MeetHeHunPage> {
     try {
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
+        Navigator.pop(context);
         CusToast.toast(context, text: "下单成功");
         CusRoutes.pushReplacement(context, HomePage());
       }

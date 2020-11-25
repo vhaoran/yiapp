@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import '../../tools/adapt.dart';
 
 // ------------------------------------------------------

@@ -60,7 +60,9 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
       Debug.log("当前已查询大师已完成订单个数：${_l.length}");
     } catch (e) {
       Debug.logError("分页查询大师大师已完成订单出现异常：$e");

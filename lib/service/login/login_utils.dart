@@ -1,4 +1,3 @@
-import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/service/wsutil/ws_worker.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_base.dart';

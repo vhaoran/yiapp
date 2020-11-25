@@ -7,7 +7,6 @@ import 'package:yiapp/complex/tools/cus_callback.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/broker-admin.dart';
-import 'package:yiapp/model/login/userInfo.dart';
 
 // ------------------------------------------------------
 // author：suxing

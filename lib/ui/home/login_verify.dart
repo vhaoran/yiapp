@@ -65,7 +65,7 @@ class LoginVerify {
   }
 
   /// 如果是大师，获取大师基本资料
-  static void _fetchMaster(context) async {
+  static void _fetchMaster(BuildContext context) async {
     Debug.log("是大师");
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);

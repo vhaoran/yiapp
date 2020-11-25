@@ -89,7 +89,7 @@ class _ComPayPageState extends State<ComPayPage> {
         return;
       }
     }
-    Debug.log("是佛充值：$_recharge");
+    Debug.log("是充值：$_recharge");
     String trade_no = widget.b_type == b_recharge ? null : widget.orderId;
     Debug.log("支付类型：${widget.b_type}、支付方式：$_account_type");
     Debug.log("订单号：$trade_no、金额:$amt");

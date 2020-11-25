@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
-import 'package:yiapp/model/login/userInfo.dart';
 
 // ------------------------------------------------------
 // author：suxing
