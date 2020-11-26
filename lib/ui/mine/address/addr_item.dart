@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_callback.dart';
@@ -115,13 +116,13 @@ class AddrItem extends StatelessWidget {
         var m = {"id": res.id};
         try {
           bool ok = await ApiUser.userAddrRm(m);
-          print(">>>删除 id 为 ${res.id}的收件地址结果：$ok");
+          Debug.log("删除 id 为 ${res.id}的收件地址结果：$ok");
           if (ok) {
             CusToast.toast(context, text: "删除成功");
             if (onChanged != null) onChanged();
           }
         } catch (e) {
-          print("<<<移除 id 为 ${res.id}的收件地址出现异常：$e");
+          Debug.logError("移除 id 为 ${res.id}的收件地址出现异常：$e");
         }
       },
     );
@@ -133,14 +134,14 @@ class AddrItem extends StatelessWidget {
     SpinKit.threeBounce(context);
     try {
       bool ok = await ApiUser.userAddrSetDefault(m);
-      print(">>>设置 id 等于 ${res.id}为默认地址的结果：$ok");
+      Debug.log("设置 id 等于 ${res.id}为默认地址的结果：$ok");
       if (ok) {
         Navigator.pop(context);
         CusToast.toast(context, text: "设置成功");
         if (onChanged != null) onChanged();
       }
     } catch (e) {
-      print("<<<设置 id 等于 ${res.id}为默认地址出现异常：$e");
+      Debug.logError("设置 id 等于 ${res.id}为默认地址出现异常：$e");
     }
   }
 }

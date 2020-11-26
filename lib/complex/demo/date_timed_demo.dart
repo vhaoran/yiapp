@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/solar.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/model/yi_date_time.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
@@ -64,8 +65,8 @@ class _DateState extends State<CusTimePickerDemo> {
           child: CusText("阳历 转 阴历", Colors.white, 28),
           onPressed: () {
             var solar = Solar.fromDate(DateTime.now());
-            print(
-                ">>>solar：${solar.year}年${solar.getLunar().toString().substring(5)}");
+            Debug.log(
+                "solar：${solar.year}年${solar.getLunar().toString().substring(5)}");
           },
         ),
       ],
@@ -82,7 +83,7 @@ class _DateState extends State<CusTimePickerDemo> {
           pickMode: pickMode,
           showLunar: showLunar,
           onConfirm: (yiDate) {
-            print(">>>$text 日历结果：${yiDate.toJson()}");
+            Debug.log("$text 日历结果：${yiDate.toJson()}");
             _yiDate = yiDate;
             setState(() {});
           },

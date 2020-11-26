@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 
@@ -18,7 +19,7 @@ class WorshipPage extends StatefulWidget {
 class _WorshipPageState extends State<WorshipPage>
     with AutomaticKeepAliveClientMixin {
   void initState() {
-    print(">>>进了供奉页面");
+    Debug.log("进了供奉页面");
     super.initState();
   }
 

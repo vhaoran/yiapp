@@ -39,7 +39,7 @@ class CusTool {
   static List<String> retainNum(String str) {
     List<String> l = str.trim().split('');
     l.retainWhere((e) => CusRegExp.retainNum(e));
-    print(">>>当前的l：$l");
+    Debug.log("当前的l：$l");
     return l;
   }
 
@@ -60,7 +60,7 @@ class CusTool {
       String key = await ApiImage.uploadQiniu(file);
       url = await ApiImage.GetVisitURL(key);
     } catch (e) {
-      print("<<<出现异常：$e");
+      Debug.logError("上传文件出现异常：$e");
     }
     return url;
   }

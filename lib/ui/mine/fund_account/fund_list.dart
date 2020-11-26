@@ -15,7 +15,6 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/account.dart';
 import 'package:yiapp/service/api/api-account.dart';
 import 'package:yiapp/ui/mine/fund_account/add_fund_account.dart';

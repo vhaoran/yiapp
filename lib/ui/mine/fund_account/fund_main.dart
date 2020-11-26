@@ -7,7 +7,6 @@ import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
 import 'package:yiapp/ui/mine/fund_account/bill_history.dart';
-import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 
 // ------------------------------------------------------
 // author：suxing

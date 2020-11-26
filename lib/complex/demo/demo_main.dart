@@ -20,7 +20,6 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/chat/chat_main.dart';
-import 'package:yiapp/ui/chat/chat_page.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 
 // ------------------------------------------------------
@@ -74,17 +73,17 @@ class CusDemoMain extends StatelessWidget {
           title: "07 删除全部用户信息",
           onTap: () async {
             bool ok = await LoginDao(glbDB).deleteAll();
-            print(">>>删除结果：$ok");
+            Debug.log("删除结果：$ok");
           },
         ),
         NormalBox(
           title: "08 获取所有用户信息",
           onTap: () async {
-            print(">>>当前登录用户：${ApiBase.uid}");
+            Debug.log("当前登录用户：${ApiBase.uid}");
             var l = await LoginDao(glbDB).readAll();
-            print(">>>l.length:${l.length}");
+            Debug.log("l.length:${l.length}");
             for (var i = 0; i < l.length; i++) {
-              print(">>>第 ${i + 1} 个用户信息：${l[i].toJson()}");
+              Debug.log("第 ${i + 1} 个用户信息：${l[i].toJson()}");
             }
           },
         ),
