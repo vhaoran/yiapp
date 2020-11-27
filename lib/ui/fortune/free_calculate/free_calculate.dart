@@ -4,7 +4,6 @@ import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/widgets/small/cus_article.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
 
@@ -13,8 +12,6 @@ import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
 // date  ：2020/8/10 10:31
 // usage ：免费测算
 // ------------------------------------------------------
-
-const int def_color = 0xFFF0B36E; // 当前页选项卡默认背景色
 
 class FreeCalculate extends StatefulWidget {
   FreeCalculate({Key key}) : super(key: key);
@@ -27,7 +24,12 @@ class _FreeCalculateState extends State<FreeCalculate>
     with AutomaticKeepAliveClientMixin {
   // 热门配对
   final List<Map> _pairs = [
-    {"text": "星座配对", "icon": 0xe69e, "color": 0xFFF0D15F, "route": r_con_pair},
+    {
+      "text": "星座配对",
+      "icon": 0xe69e,
+      "color": 0xFFF0D15F,
+      "route": r_con_pair,
+    },
     {
       "text": "生肖配对",
       "icon": 0xe6b1,
