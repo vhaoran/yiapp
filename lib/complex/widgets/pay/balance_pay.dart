@@ -17,7 +17,11 @@ class BalancePay {
   final PayData data;
   final VoidCallback onCancel;
 
-  BalancePay(BuildContext context, {this.data, this.onCancel}) {
+  BalancePay(
+    BuildContext context, {
+    @required this.data,
+    this.onCancel,
+  }) {
     _showBottomSheet(context);
   }
 

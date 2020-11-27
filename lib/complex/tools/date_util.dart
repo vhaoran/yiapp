@@ -36,10 +36,10 @@ class DateUtil {
     return res;
   }
 
-  /// 解析时间为年月日，如 2020-11-24 16:28:02 → 2020年11月24日
-  static String ymd(String createdAt) {
-    DateTime date = DateTime.parse(createdAt);
-    String time = "${date.year}年${date.month}月${date.day}日";
-    return time;
+  /// 解析字符串时间格式为年月日，如 2020-11-24 16:28:02 → 2020年11月24日
+  static String parseYMD(String created_at) {
+    DateTime date = DateTime.parse(created_at);
+    String res = "${date.year}年${date.month}月${date.day}日";
+    return res;
   }
 }

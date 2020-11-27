@@ -2,23 +2,19 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/function/mix_func.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
-import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/fortune/fortune_page.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/home/navigation_type.dart';
-import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mall/product/product_store.dart';
+import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
 
@@ -46,17 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _startLogin();
-    _prepareBusEvent(); // 初始化监听
     super.initState();
-  }
-
-  /// 系统通知消息类型
-  _prepareBusEvent() {
-    _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
-      if (event.to == ApiBase.uid) {
-        Debug.log("系统通知消息：${event.toJson()}");
-      }
-    });
   }
 
   @override
@@ -153,7 +139,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _busSub.cancel();
     _pc.dispose();
     super.dispose();
   }

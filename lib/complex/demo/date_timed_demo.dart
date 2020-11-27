@@ -62,11 +62,12 @@ class _DateState extends State<CusTimePickerDemo> {
         CusText("阴阳历转换", t_primary, 32),
         RaisedButton(
           color: Colors.blueGrey,
-          child: CusText("阳历 转 阴历", Colors.white, 28),
+          child: CusText("01 阳历 转 阴历", Colors.white, 28),
           onPressed: () {
             var solar = Solar.fromDate(DateTime.now());
+            Debug.log("阳历：$solar");
             Debug.log(
-                "solar：${solar.year}年${solar.getLunar().toString().substring(5)}");
+                "阴历：${solar.year}年${solar.getLunar().toString().substring(5)}");
           },
         ),
       ],

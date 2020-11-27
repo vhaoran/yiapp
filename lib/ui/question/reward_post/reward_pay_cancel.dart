@@ -11,7 +11,9 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
@@ -80,15 +82,12 @@ class _RewardPayCancelState extends State<RewardPayCancel> {
 
   /// 支付订单
   void _doPay() async {
-    CusRoutes.push(
-      context,
-      ComPayPage(
-        tip: "悬赏帖付款",
-        b_type: b_bbs_prize,
-        amt: widget.data.amt,
-        orderId: widget.data.id,
-      ),
+    var data = PayData(
+      amt: widget.data.amt,
+      b_type: b_bbs_prize,
+      id: widget.data.id,
     );
+    BalancePay(context, data: data);
   }
 
   /// 该页面通用按钮

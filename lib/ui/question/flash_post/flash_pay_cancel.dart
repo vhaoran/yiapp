@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_int.dart';
+import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
@@ -9,7 +10,9 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_base.dart';
 
@@ -81,7 +84,13 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
 
   /// 支付订单
   void _doPay() async {
-    Debug.log("支付订单");
+    Debug.log("闪断帖支付订单");
+    var data = PayData(
+      amt: widget.data.amt,
+      b_type: b_bbs_vie,
+      id: widget.data.id,
+    );
+    BalancePay(context, data: data);
   }
 
   /// 大师抢单

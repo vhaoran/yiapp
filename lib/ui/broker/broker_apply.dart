@@ -79,7 +79,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         ),
         Text(
           "2、邀请码为自定义的 6 位数字，用户通过邀请码绑定对应运营商",
-          style: TextStyle(fontSize: 14, color: t_gray),
+          style: TextStyle(fontSize: 16, color: t_gray),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),

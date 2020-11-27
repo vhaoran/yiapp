@@ -12,6 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 
 // ------------------------------------------------------
@@ -35,18 +36,26 @@ class _RechargePageState extends State<RechargePage> {
   int _account_type = pay_alipay; // 0:支付宝 1:微信
 
   /// 添加资金账号
-  void _doAdd() async {
+  void _doRecharge() async {
     num amt;
     if (widget.auto) {
       amt = widget.amt;
     } else {
-      amt = num.parse(_amtCtrl.text);
-      if (_amtCtrl.text.isEmpty || amt == 0 || amt.isNaN) {
+      if (_amtCtrl.text.isEmpty) {
         CusToast.toast(context, text: "充值金额必须大于0", milliseconds: 1500);
         return;
       }
+      if (_amtCtrl.text.isNotEmpty) {
+        amt = num.parse(_amtCtrl.text);
+        if (amt == 0 || amt.isNaN) {
+          CusToast.toast(context, text: "充值金额必须大于0", milliseconds: 1500);
+          return;
+        }
+      }
     }
     Debug.log("amt:$amt");
+    SpinKit.threeBounce(context);
+    await Future.delayed(Duration(milliseconds: 1000));
     String url = ApiPay.PayReqURL(b_recharge, _account_type, "充值", amt);
     if (url != null) ApiBrowser.launchIn(url);
     Navigator.pop(context);
@@ -75,12 +84,12 @@ class _RechargePageState extends State<RechargePage> {
           // 手动输入充值
           if (!widget.auto) ...[
             Padding(
-              padding: EdgeInsets.only(top: 40, bottom: 15),
+              padding: EdgeInsets.only(top: 10, bottom: 15),
               child: CusText("充值金额(￥)", t_primary, 30),
             ),
             CusRectField(
               controller: _amtCtrl,
-              fromValue: "${widget.amt}",
+              fromValue: "${widget.amt ?? ''}",
               hintText: "请输入充值金额",
               autofocus: false,
               keyboardType: TextInputType.number,
@@ -105,7 +114,7 @@ class _RechargePageState extends State<RechargePage> {
             text: "确定",
             textColor: t_gray,
             backgroundColor: Colors.blueGrey,
-            onPressed: _doAdd,
+            onPressed: _doRecharge,
           ),
         ],
       ),

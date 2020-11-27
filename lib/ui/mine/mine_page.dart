@@ -11,11 +11,14 @@ import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
@@ -45,14 +48,17 @@ class MinePage extends StatefulWidget {
 class _MinePageState extends State<MinePage>
     with AutomaticKeepAliveClientMixin {
   UserInfo _u = UserInfo();
-
-  StreamSubscription<MsgYiOrder> _bubSub;
+  StreamSubscription<MsgYiOrder> _bubYiOrder;
+  StreamSubscription<MsgNotifyHis> _busNotifyHis;
+  bool _isMasterApply = false; // 是否大师申请通过
+  bool _isBrokerApply = false; // 是否运营商申请通过
+  String _notifyStr = ""; // 审核通过提示信息
 
   @override
   void initState() {
     Debug.log("进入了个人主页");
+    _prepareBusEvent(); // 初始化监听
     super.initState();
-//    _prepareBusEvent();
   }
 
   @override
@@ -65,13 +71,48 @@ class _MinePageState extends State<MinePage>
     );
   }
 
-  void _prepareBusEvent() {
-    _bubSub = glbEventBus.on<MsgYiOrder>().listen((event) {
-      Debug.log("有订单消息了,消息详情：${event.toJson()}");
+  /// 系统通知消息类型
+  _prepareBusEvent() {
+    _busNotifyHis = glbEventBus.on<MsgNotifyHis>().listen((event) {
+      Debug.log("监听到了MsgNotifyHis");
       if (event.to == ApiBase.uid) {
-        Debug.log("是发给自己的");
+        Debug.log("系统通知消息，详情：${event.toJson()}");
+        _tipDialog(event);
       }
     });
+    _bubYiOrder = glbEventBus.on<MsgYiOrder>().listen((event) {
+      if (event.to == ApiBase.uid) {
+        Debug.log("有消息发送过来了，详情：${event.toJson()}");
+      }
+    });
+  }
+
+  /// 弹窗提示重新登录
+  void _tipDialog(MsgNotifyHis event) {
+    if (mounted) {
+      setState(() {
+        if (event.content.comment.contains("大师申请已通过")) {
+          _isMasterApply = true;
+          _notifyStr = "大师";
+        }
+        if (event.content.comment.contains("代理申请已通过")) {
+          _isBrokerApply = true;
+          _notifyStr = "运营商";
+        }
+        if (_isMasterApply || _isBrokerApply) {
+          CusDialog.normal(
+            context,
+            title: "您的$_notifyStr申请已通过审核，需要重新登录",
+            fnDataApproval: "",
+            onCancel: () {
+              _isMasterApply = _isBrokerApply = false;
+              _notifyStr = "";
+            },
+            onThen: () => CusRoutes.push(context, LoginPage()),
+          );
+        }
+      });
+    }
   }
 
   Widget _bodyCtr() {
@@ -157,7 +198,8 @@ class _MinePageState extends State<MinePage>
 
   @override
   void dispose() {
-    _bubSub.cancel();
+    _busNotifyHis.cancel();
+    _bubYiOrder.cancel();
     super.dispose();
   }
 }
