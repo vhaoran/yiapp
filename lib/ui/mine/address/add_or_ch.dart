@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/widgets/flutter/under_field.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -139,7 +139,7 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
               _userErr = _userCtrl.text.isEmpty ? "收货人不能为空" : null;
               if (_userErr != null) return;
               _mobileErr =
-                  !CusRegExp.phone(_mobileCtrl.text) ? "请输入正确的手机号" : null;
+                  !SuRegExp.isMobile(_mobileCtrl.text) ? "请输入正确的手机号" : null;
               if (_mobileErr != null) return;
               _addrErr = _addrCtrl.text.isEmpty ? "地址不能为空" : null;
               if (_addrErr != null) return;

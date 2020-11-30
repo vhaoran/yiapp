@@ -4,13 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:yiapp/complex/provider/cus_provider.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'complex/function/permissions.dart';
+import 'complex/refactor_widgets/su_toast.dart';
 import 'routes/main_routes.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: CusProvider.providers,
-      child: HongYunApp(),
+      child: SuToastProvider(
+        defaults: SuToastDefaults(),
+        child: HongYunApp(),
+      ),
     ),
   );
 }

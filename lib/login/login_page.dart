@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
   void _doLogin() async {
     setState(() {
       _err = _mobileErr = _pwdErr = null;
-      if (!CusRegExp.phone(_mobileCtrl.text)) {
+      if (!SuRegExp.isMobile(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_pwdCtrl.text.length < 6) {
         _err = "密码由6-20位大小写字母组成";

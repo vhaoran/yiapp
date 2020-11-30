@@ -5,7 +5,7 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
@@ -71,7 +71,7 @@ class _BindUserMobileState extends State<BindUserMobile> {
   /// 绑定用户手机号
   void _chMobile() async {
     _err = null;
-    if (_mobileCtrl.text.isEmpty || !CusRegExp.phone(_mobileCtrl.text)) {
+    if (_mobileCtrl.text.isEmpty || !SuRegExp.isMobile(_mobileCtrl.text)) {
       _err = "请输入正确的手机号";
       setState(() {});
       return;

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/demo/demo_plugin/flui_demo.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
-import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
-import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'flustars_demo.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -32,6 +30,10 @@ class DemoPlugin extends StatelessWidget {
         NormalBox(
           title: "01 Flutter小部件UI库flui",
           onTap: () => CusRoutes.push(context, DemoFlui()),
+        ),
+        NormalBox(
+          title: "02 Flustars 工具库",
+          onTap: () => CusRoutes.push(context, DemoFlustars()),
         )
       ],
     );

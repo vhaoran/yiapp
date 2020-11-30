@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _verify() async {
     setState(() {
       _err = null;
-      if (!CusRegExp.phone(_mobileCtrl.text)) {
+      if (!SuRegExp.isMobile(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_nickCtrl.text.isEmpty) {
         _err = "昵称不能为空";

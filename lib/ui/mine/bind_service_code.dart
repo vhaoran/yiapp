@@ -5,7 +5,7 @@ import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/const/const_string.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -107,7 +107,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
   void _verify() async {
     // 绑定前先查看手机号是否已绑定，密码是否已修改，方便绑定成功后的自动重新登录
     var user = await LoginDao(glbDB).readUserByUid();
-    bool isMobile = CusRegExp.phone(user.user_code);
+    bool isMobile = SuRegExp.isMobile(user.user_code);
     // 没有设置手机号和密码，不满足绑定运营商条件
     if (!isMobile) {
       Debug.log("未绑定手机号和密码");

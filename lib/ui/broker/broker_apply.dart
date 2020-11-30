@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/debug_log.dart';
 import 'package:yiapp/complex/const/const_color.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -131,7 +131,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     }
     // 申请前先查看手机号是否已绑定，密码是否已修改
     var user = await LoginDao(glbDB).readUserByUid();
-    bool isMobile = CusRegExp.phone(user.user_code);
+    bool isMobile = SuRegExp.isMobile(user.user_code);
     // 没有设置手机号和密码
     if (!isMobile) {
       Debug.log("未绑定手机号和密码");

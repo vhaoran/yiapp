@@ -1,8 +1,11 @@
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/complex/refactor_widgets/su_button.dart';
+import 'package:yiapp/complex/refactor_widgets/su_fetch.dart';
+import 'package:yiapp/complex/refactor_widgets/su_toast.dart';
+import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'dart:math';
 
 // ------------------------------------------------------
 // author：suxing
@@ -30,29 +33,78 @@ class _DemoFluiState extends State<DemoFlui> {
   Widget _lv() {
     return ListView(
       children: <Widget>[
-        FLGradientButton.linear(
-          textColor: Colors.white,
-          child: Text('按钮'),
-          colors: [Colors.lightBlueAccent, Color(0xFF0F4C81)],
-          onPressed: () => print('on click'),
+        Text("按钮", style: TextStyle(color: Colors.white, fontSize: 20)),
+        SuButton(
+          child: Text("自定义按钮"),
+          onPressed: () {},
         ),
-        FLGradientButton.sweep(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          center: FractionalOffset.center,
-          startAngle: 0.0,
-//          endAngle:  math.pi* 2,
-          colors: const <Color>[
-            Color(0xFF4285F4), // blue
-            Color(0xFF34A853), // green
-            Color(0xFFFBBC05), // yellow
-            Color(0xFFEA4335), // red
-            Color(0xFF4285F4), // blue again to seamlessly transition to the start
+        SizedBox(height: 10),
+        Text("Toast", style: TextStyle(color: Colors.white, fontSize: 20)),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: <Widget>[
+            SuButton(
+              child: Text("text"),
+              onPressed: () {
+                SuToast.text(text: "修改成功");
+              },
+            ),
+            SuButton(
+              child: Text("showText"),
+              onPressed: () {
+                SuToast.text(text: "修改成功", position: SuToastPosition.bottom);
+              },
+            ),
+            SuButton(
+              child: Text("上传成功"),
+              onPressed: () {
+                var dismiss = SuToast.loading(text: "上传中，请稍后...");
+                Future.delayed(Duration(seconds: 2), () {
+                  dismiss();
+                  SuToast.success(text: "上传成功");
+                });
+              },
+            ),
+            SuButton(
+              child: Text("信息"),
+              onPressed: () {
+                SuToast.info(text: "some info");
+              },
+            ),
+            SuButton(
+              child: Text("成功"),
+              onPressed: () {
+                SuToast.success(text: "成功信息");
+              },
+            ),
+            SuButton(
+              child: Text("错误"),
+              onPressed: () {
+                SuToast.error(text: "some error");
+              },
+            ),
           ],
-          stops: const <double>[0.0, 0.25, 0.5, 0.75, 1.0],
-          textColor: Colors.white,
-          child: Text('Sweep Gradient Button'),
-          onPressed: () => print('on click'),
         ),
+        Text("加载数据场景", style: TextStyle(color: Colors.white, fontSize: 20)),
+        SuButton(
+          onPressed: () {
+            CusRoutes.push(
+                context,
+                SuFetching(
+                  showLoading: true,
+                  title: '正在加载中...',
+                ));
+          },
+          child: Text("加载数据场景"),
+        ),
+        Text("自定义ListTile",
+            style: TextStyle(color: Colors.white, fontSize: 20)),
+        FLListTile(
+          title: Text('账号管理'),
+          trailing: Icon(Icons.navigate_next),
+          onTap: () {},
+        )
       ],
     );
   }

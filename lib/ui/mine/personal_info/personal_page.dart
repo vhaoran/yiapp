@@ -7,7 +7,7 @@ import 'package:yiapp/complex/function/def_obj.dart';
 import 'package:yiapp/complex/provider/user_state.dart';
 import 'package:yiapp/complex/tools/adapt.dart';
 import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_reg.dart';
+import 'package:yiapp/complex/tools/su_regexp.dart';
 import 'package:yiapp/complex/tools/cus_routes.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -92,9 +92,9 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         NormalBox(
           title: "手机号码", // 手机号码
-          showBtn: CusRegExp.phone(_u.user_code) ? false : true,
-          subtitle: CusRegExp.phone(_u.user_code) ? _u.user_code : "绑定手机",
-          subFn: CusRegExp.phone(_u.user_code)
+          showBtn: SuRegExp.isMobile(_u.user_code) ? false : true,
+          subtitle: SuRegExp.isMobile(_u.user_code) ? _u.user_code : "绑定手机",
+          subFn: SuRegExp.isMobile(_u.user_code)
               ? null
               : () => CusRoutes.push(context, BindUserCodePwd()),
         ),
