@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -56,15 +56,15 @@ class _FlashPostPageState extends State<FlashPostPage>
     try {
       PageBean pb = await ApiBBSVie.bbsViePage(m);
       if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
-      Debug.log("总的闪断帖个数：$_rows_count");
+      Log.info("总的闪断帖个数：$_rows_count");
       var l = pb.data.map((e) => e as BBSVie).toList();
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      Debug.log("当前已查询多少条闪断帖：${_l.length}");
+      Log.info("当前已查询多少条闪断帖：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询闪断帖出现异常：$e");
+      Log.error("分页查询闪断帖出现异常：$e");
     }
   }
 

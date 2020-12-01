@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/ui/chat/bottom_area.dart';
 
 // ------------------------------------------------------

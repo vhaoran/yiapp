@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import '../../../service/api/api_user.dart';
@@ -79,18 +79,18 @@ class _ChUserNickState extends State<ChUserNick> {
     var m = {"nick": _nickCtrl.text};
     try {
       bool ok = await ApiUser.ChUserInfo(m);
-      Debug.log("修改用户昵称结果：$ok");
+      Log.info("修改用户昵称结果：$ok");
       if (ok) {
         context.read<UserInfoState>().chNick(_nickCtrl.text);
         bool update = await LoginDao(glbDB).updateNick(_nickCtrl.text);
-        Debug.log("本地更改存储nick结果：$update");
+        Log.info("本地更改存储nick结果：$update");
         if (update) {
           CusToast.toast(context, text: "修改成功");
           Navigator.pop(context);
         }
       }
     } catch (e) {
-      Debug.logError("修改用户昵称出现异常：$e");
+      Log.error("修改用户昵称出现异常：$e");
     }
   }
 }

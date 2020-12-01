@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/swicht_util.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 
 // ------------------------------------------------------

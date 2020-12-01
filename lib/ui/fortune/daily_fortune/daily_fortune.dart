@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/cus_time.dart';
-import 'package:yiapp/complex/widgets/small/cus_article.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/small/cus_circle_item.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/cus_time.dart';
+import 'package:yiapp/widget/small/cus_article.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/small/cus_circle_item.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 
 // ------------------------------------------------------
@@ -108,7 +108,7 @@ class _DailyFortuneState extends State<DailyFortune> {
           );
         },
         onTap: (index) {
-          Debug.log("当前点的第${index + 1}张轮播图片");
+          Log.info("当前点的第${index + 1}张轮播图片");
         },
         autoplay: false, // 自动翻页
         pagination: SwiperPagination(

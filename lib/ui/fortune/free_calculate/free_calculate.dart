@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/small/cus_square_item.dart';
 
 // ------------------------------------------------------
 // author：suxing

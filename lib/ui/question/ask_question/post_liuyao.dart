@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';

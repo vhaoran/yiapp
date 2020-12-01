@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -136,18 +136,18 @@ class _MeetSiZhuPageState extends State<MeetSiZhuPage> {
       "comment": _contentCtrl.text.trim(),
       "si_zhu": widget.siZhu.toJson(),
     };
-    Debug.log("数据：${m.toString()}");
+    Log.info("数据：${m.toString()}");
     try {
       SpinKit.threeBounce(context);
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
         Navigator.pop(context);
-        Debug.log("四柱下单后返回的订单id：${res.id}");
+        Log.info("四柱下单后返回的订单id：${res.id}");
         CusToast.toast(context, text: "下单成功");
         CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {
-      Debug.logError("四柱下大师单出现异常：$e");
+      Log.error("四柱下大师单出现异常：$e");
     }
   }
 }

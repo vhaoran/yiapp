@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
 import 'package:yiapp/ui/mine/fund_account/bill_history.dart';

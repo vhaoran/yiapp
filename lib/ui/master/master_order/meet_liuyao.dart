@@ -1,20 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -57,7 +57,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         _data = CusLiuYaoData.fromJson(json.decode(res));
       }
     } catch (e) {
-      Debug.logError("获取本地存储的六爻数据出现异常：$e");
+      Log.error("获取本地存储的六爻数据出现异常：$e");
     }
   }
 
@@ -141,7 +141,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         "yao_code": _data.strCode
       },
     };
-    Debug.log("数据：${m.toString()}");
+    Log.info("数据：${m.toString()}");
     try {
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
@@ -149,7 +149,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {
-      Debug.logError("六爻下大师单出现异常：$e");
+      Log.error("六爻下大师单出现异常：$e");
     }
   }
 

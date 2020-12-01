@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
 import 'package:yiapp/ui/mall/product/product_type/product_type_cover.dart';
@@ -43,7 +43,7 @@ class _ProductTypeState extends State<ProductType> {
       List<Category> res = await ApiProduct.categoryList();
       if (res != null) _l = res;
     } catch (e) {
-      Debug.logError("获取商品分类出现异常：$e");
+      Log.error("获取商品分类出现异常：$e");
     }
   }
 
@@ -68,7 +68,7 @@ class _ProductTypeState extends State<ProductType> {
   }
 
   Widget _bodyCtr() {
-    Debug.log("_l的长度：${_l.length}");
+    Log.info("_l的长度：${_l.length}");
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {

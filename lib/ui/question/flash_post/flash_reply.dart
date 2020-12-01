@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -54,7 +54,7 @@ class _FlashReplyState extends State<FlashReply> {
         try {
           bool ok = await ApiBBSVie.bbsVieDue(m);
           if (ok) {
-            Debug.log("打赏id为${reply.uid}大师结果:$ok");
+            Log.info("打赏id为${reply.uid}大师结果:$ok");
             LeftScrollGlobalListener.instance
                 .targetStatus(
                   LeftScrollCloseTag("flash_reply"),
@@ -64,7 +64,7 @@ class _FlashReplyState extends State<FlashReply> {
             CusToast.toast(context, text: "打赏成功");
           }
         } catch (e) {
-          Debug.logError("打赏id为${reply.uid}大师出现异常：$e");
+          Log.error("打赏id为${reply.uid}大师出现异常：$e");
         }
       },
     );

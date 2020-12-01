@@ -1,18 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -105,7 +105,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
     bool isMobile = RegexUtil.isMobile(user.user_code);
     // 没有设置手机号和密码
     if (!isMobile) {
-      Debug.log("未绑定手机号和密码");
+      Log.info("未绑定手机号和密码");
       CusDialog.normal(
         context,
         title: "您暂未设置手机号和密码",
@@ -145,7 +145,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
             Navigator.pop(context);
           });
         }
-        Debug.logError("uid为 ${ApiBase.uid} 申请大师出现异常：$e");
+        Log.error("uid为 ${ApiBase.uid} 申请大师出现异常：$e");
       }
     }
   }

@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_double.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import '../../complex/widgets/master/master_list.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import '../../widget/master/master_list.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -77,7 +76,7 @@ class _MasterListPageState extends State<MasterListPage>
   Widget _searchBar() {
     double border = 10;
     return Container(
-      height: appBarH - border,
+      height: 46 - border,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(border),
         color: fou_primary,

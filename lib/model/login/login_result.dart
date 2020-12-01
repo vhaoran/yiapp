@@ -1,4 +1,4 @@
-import 'package:yiapp/func/def_obj.dart';
+import 'package:yiapp/global/def_data.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/util/us_util.dart';
 import 'cus_login_res.dart';

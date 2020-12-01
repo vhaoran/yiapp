@@ -2,21 +2,20 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_double.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/demo/demo_main.dart';
-import 'package:yiapp/func/def_obj.dart';
+import 'package:yiapp/global/def_data.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
-import 'package:yiapp/login/login_page.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/small/cus_bg_wall.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
+import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
@@ -56,7 +55,7 @@ class _MinePageState extends State<MinePage>
 
   @override
   void initState() {
-    Debug.log("进入了个人主页");
+    Log.info("进入了个人主页");
     _prepareBusEvent(); // 初始化监听
     super.initState();
   }
@@ -74,15 +73,15 @@ class _MinePageState extends State<MinePage>
   /// 系统通知消息类型
   _prepareBusEvent() {
     _busNotifyHis = glbEventBus.on<MsgNotifyHis>().listen((event) {
-      Debug.log("监听到了MsgNotifyHis");
+      Log.info("监听到了MsgNotifyHis");
       if (event.to == ApiBase.uid) {
-        Debug.log("系统通知消息，详情：${event.toJson()}");
+        Log.info("系统通知消息，详情：${event.toJson()}");
         _tipDialog(event);
       }
     });
     _bubYiOrder = glbEventBus.on<MsgYiOrder>().listen((event) {
       if (event.to == ApiBase.uid) {
-        Debug.log("有消息发送过来了，详情：${event.toJson()}");
+        Log.info("有消息发送过来了，详情：${event.toJson()}");
       }
     });
   }
@@ -121,13 +120,13 @@ class _MinePageState extends State<MinePage>
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
         // 如果是大师
-        if (ApiState.is_master)
+        if (CusRole.is_master)
           NormalBox(
             title: "大师信息",
             onTap: () => CusRoute.push(context, MasterInfoPage()),
           ),
         // 游客身份看不到的内容
-        if (!ApiState.is_guest && !ApiState.is_master) ...[
+        if (!CusRole.is_guest && !CusRole.is_master) ...[
           NormalBox(
             title: "我的订单",
             onTap: () => CusRoute.push(context, AllMyPostPage()),
@@ -141,13 +140,13 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoute.push(context, FundMain()),
           ),
         ],
-        if (!ApiState.is_guest)
+        if (!CusRole.is_guest)
           NormalBox(
             title: "账户与安全",
             onTap: () => CusRoute.push(context, AccountSafePage()),
           ),
         // 大师、运营商、运营商管理员不能申请的
-        if (!ApiState.is_master && !ApiState.is_broker_admin) ...[
+        if (!CusRole.is_master && !CusRole.is_broker_admin) ...[
           NormalBox(
             title: "申请大师",
             onTap: () => CusRoute.push(context, ApplyMasterPage()),
@@ -157,7 +156,7 @@ class _MinePageState extends State<MinePage>
             onTap: () => CusRoute.push(context, ApplyBrokerPage()),
           ),
         ],
-        if (ApiState.is_guest)
+        if (CusRole.is_guest)
           NormalBox(
             title: "绑定运营商",
             onTap: () => CusRoute.push(context, BindSerCodePage()),
@@ -173,7 +172,7 @@ class _MinePageState extends State<MinePage>
   /// 用户头像、昵称、背景墙
   Widget _avatarAndMore() {
     return Container(
-      height: Adapt.px(bgWallH),
+      height: Adapt.px(360),
       child: Stack(
         children: <Widget>[
           BackgroundWall(url: ""), // 背景墙
@@ -185,7 +184,7 @@ class _MinePageState extends State<MinePage>
             ),
           ),
           Align(
-            alignment: Alignment(0, ApiState.is_guest ? 0.8 : 0.75),
+            alignment: Alignment(0, CusRole.is_guest ? 0.8 : 0.75),
             child: CusText(_u.nick ?? "游客", t_gray, 30),
           ),
         ],

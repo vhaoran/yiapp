@@ -1,24 +1,24 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/def_obj.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/global/def_data.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
-import 'package:yiapp/login/login_page.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/cus_tool.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
+import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
+import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/service/api/api_image.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -106,7 +106,7 @@ class _PersonalPageState extends State<PersonalPage> {
 //          subFn: _u.country.isEmpty ? null : null,
 //        ),
         // 我的收货地址
-        if (ApiState.is_vip)
+        if (CusRole.is_vip)
           NormalBox(
             title: "我的收货地址",
             onTap: () => CusRoute.push(context, UserAddressPage()),
@@ -132,7 +132,7 @@ class _PersonalPageState extends State<PersonalPage> {
     try {
       String key = await ApiImage.uploadQiniu(file);
       String url = await ApiImage.GetVisitURL(key);
-      Debug.log("这里的key是：$key,url是：$url");
+      Log.info("这里的key是：$key,url是：$url");
       var m = {"icon": url};
       bool ok = await ApiUser.ChUserInfo(m);
       if (ok) {
@@ -142,10 +142,10 @@ class _PersonalPageState extends State<PersonalPage> {
           CusToast.toast(context, text: "修改成功");
           Navigator.pop(context);
         }
-        Debug.log("存储头像到数据库结果：$update");
+        Log.info("存储头像到数据库结果：$update");
       }
     } catch (e) {
-      Debug.logError("修改用户头像出现异常：$e");
+      Log.error("修改用户头像出现异常：$e");
     }
   }
 
@@ -162,7 +162,7 @@ class _PersonalPageState extends State<PersonalPage> {
         };
         try {
           bool ok = await ApiUser.ChUserInfo(m);
-          Debug.log("修改出生日期结果：$ok");
+          Log.info("修改出生日期结果：$ok");
           if (ok) {
             context
                 .read<UserInfoState>()
@@ -174,7 +174,7 @@ class _PersonalPageState extends State<PersonalPage> {
             }
           }
         } catch (e) {
-          Debug.logError("修改出生日期出现异常：$e");
+          Log.error("修改出生日期出现异常：$e");
         }
       },
     );

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/bo/broker_product_res.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api_bo.dart';
@@ -57,16 +57,16 @@ class _ProductCatePageState extends State<ProductCatePage>
       PageBean pb = await ApiBo.brokerProductUserPage(m);
       if (_rows_count == 0) _rows_count = pb.rowsCount;
       var l = pb.data.map((e) => e as BrokerProductRes).toList();
-      Debug.log("$str：$_rows_count");
+      Log.info("$str：$_rows_count");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
-      Debug.log("当前已查询$str个数：${_l.length}");
+      Log.info("当前已查询$str个数：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询$str出现异常：$e");
+      Log.error("分页查询$str出现异常：$e");
     }
   }
 

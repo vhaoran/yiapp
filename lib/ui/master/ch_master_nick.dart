@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/service/api/api-master.dart';
 
@@ -88,14 +88,14 @@ class _ChMasterNickState extends State<ChMasterNick> {
     };
     try {
       bool ok = await ApiMaster.masterInfoCh(m);
-      Debug.log("修改大师昵称结果：$ok");
+      Log.info("修改大师昵称结果：$ok");
       if (ok) {
         context.read<MasterInfoState>().chNick(_nickCtrl.text);
         CusToast.toast(context, text: "修改成功");
         Navigator.pop(context);
       }
     } catch (e) {
-      Debug.logError("修改大师昵称出现异常：$e");
+      Log.error("修改大师昵称出现异常：$e");
     }
   }
 }

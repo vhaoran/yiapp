@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/complex/tools/cus_time.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/util/temp/cus_time.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -58,7 +58,7 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
         ],
         // 已付款状态，是大师，并且该单没有被抢，则显示抢单
         if (widget.data.stat == pay_paid &&
-            (ApiState.is_master && widget.data.master_id == 0))
+            (CusRole.is_master && widget.data.master_id == 0))
           _comBtnCtr("抢单", onPressed: _doGrab), // 大师抢单
       ],
     );
@@ -70,21 +70,21 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
       try {
         bool ok = await ApiBBSVie.bbsVieCancel(widget.data.id);
         if (ok) {
-          Debug.log("取消订单结果：$ok");
+          Log.info("取消订单结果：$ok");
           CusToast.toast(context, text: "取消成功");
           if (widget.onChanged != null) {
             widget.onChanged();
           }
         }
       } catch (e) {
-        Debug.logError("取消订单出现异常：$e");
+        Log.error("取消订单出现异常：$e");
       }
     });
   }
 
   /// 支付订单
   void _doPay() async {
-    Debug.log("闪断帖支付订单");
+    Log.info("闪断帖支付订单");
     var data = PayData(
       amt: widget.data.amt,
       b_type: b_bbs_vie,
@@ -101,7 +101,7 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
         CusToast.toast(context, text: "抢单成功");
       }
     } catch (e) {
-      Debug.logError("大师抢单出现异常：$e");
+      Log.error("大师抢单出现异常：$e");
     }
   }
 

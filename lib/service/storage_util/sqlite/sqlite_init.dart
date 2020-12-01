@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_string.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -16,7 +16,7 @@ Future<bool> initDB() async {
     glbDB = db;
     return true;
   } catch (e) {
-    Debug.log("返回数据库对象出现异常：$e");
+    Log.info("返回数据库对象出现异常：$e");
     return false;
   }
 }

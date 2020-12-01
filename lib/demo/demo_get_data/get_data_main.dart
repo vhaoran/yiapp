@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
@@ -32,7 +32,7 @@ class DemoGetData extends StatelessWidget {
           onTap: () async {
             var l = await LoginDao(glbDB).readAll();
             for (var i = 0; i < l.length; i++) {
-              Debug.log("第 ${i + 1} 个用户：${l[i].toJson()}");
+              Log.info("第 ${i + 1} 个用户：${l[i].toJson()}");
             }
           },
         )

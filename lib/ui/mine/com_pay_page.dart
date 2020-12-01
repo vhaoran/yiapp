@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/api_business_type.dart';
-import 'package:yiapp/complex/class/cus_dot_format.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/func/cus_browser.dart';
+import 'package:yiapp/widget/cus_dot_format.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -67,11 +67,11 @@ class _ComPayPageState extends State<ComPayPage> {
   /// 系统通知类型
   _prepareBusEvent() {
     _busSub = glbEventBus.on<MsgNotifyHis>().listen((event) {
-      Debug.log("监听到了吗");
-      Debug.log("返回的详情：${event.toJson()}");
+      Log.info("监听到了吗");
+      Log.info("返回的详情：${event.toJson()}");
       if (event.to == ApiBase.uid) {
         _success = true;
-        Debug.log("是发给本人的");
+        Log.info("是发给本人的");
       }
     });
   }
@@ -89,12 +89,12 @@ class _ComPayPageState extends State<ComPayPage> {
         return;
       }
     }
-    Debug.log("是充值：$_recharge");
+    Log.info("是充值：$_recharge");
     String trade_no = widget.b_type == b_recharge ? null : widget.orderId;
-    Debug.log("支付类型：${widget.b_type}、支付方式：$_account_type");
-    Debug.log("订单号：$trade_no、金额:$amt");
+    Log.info("支付类型：${widget.b_type}、支付方式：$_account_type");
+    Log.info("订单号：$trade_no、金额:$amt");
     String url = ApiPay.PayReqURL(widget.b_type, _account_type, trade_no, amt);
-    if (url != null) ApiBrowser.launchIn(url);
+    if (url != null) CusBrowser.launchIn(url);
 
     // TODO 这里根据服务器返回的结果来显示ui和跳转
     // 这里让 _success 将等于服务器返回的交易结果

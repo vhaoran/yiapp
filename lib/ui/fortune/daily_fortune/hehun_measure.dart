@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
+import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_snackbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/ui/master/master_order/master_recommend.dart';
 
@@ -103,7 +103,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
       );
       return;
     }
-    Debug.log("测算通过");
+    Log.info("测算通过");
     YiOrderHeHun heHun = YiOrderHeHun(
       name_male: _maleNameCtrl.text.trim(),
       is_solar_male: !_isLunarMale,
@@ -201,7 +201,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
         showLunar: true,
         isLunar: (val) {
           isMale ? _isLunarMale = val : _isLunarFemale = val;
-          Debug.log("男生阴历：$_isLunarMale、女生阴历：$_isLunarFemale");
+          Log.info("男生阴历：$_isLunarMale、女生阴历：$_isLunarFemale");
           setState(() {});
         },
         onConfirm: (yiDate) {

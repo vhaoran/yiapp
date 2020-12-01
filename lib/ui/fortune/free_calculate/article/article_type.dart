@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/model/article/article_type_res.dart';
@@ -57,7 +57,7 @@ class _ArticleTypePageState extends State<ArticleTypePage> {
         if (_l.isEmpty) _fetchRemain();
       }
     } catch (e) {
-      Debug.logError("文章分类查询出现异常：$e");
+      Log.error("文章分类查询出现异常：$e");
     }
   }
 

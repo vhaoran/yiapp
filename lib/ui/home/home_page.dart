@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -72,19 +72,19 @@ class _HomePageState extends State<HomePage> {
   void _initLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
-    bool logged = await UsUtil.isToken(); // 根据是否有本地token，判断用户是否登录过
+    bool logged = await UsUtil.hasToken(); // 根据是否有本地token，判断用户是否登录过
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
     try {
       if (logged) {
-        Debug.log("用户已登录过，验证当前 token");
+        Log.info("用户已登录过，验证当前 token");
         CusLoginRes res = await LoginDao(glbDB).readUserByJwt();
         login = LoginResult.from(res);
       } else {
-        Debug.log("用户第一次进入鸿运来，请求注册为游客身份");
+        Log.info("用户第一次进入鸿运来，请求注册为游客身份");
         login = await ApiLogin.guestLogin({});
       }
     } catch (e) {
-      Debug.logError("用户登录出现异常：$e");
+      Log.error("用户登录出现异常：$e");
     }
     LoginVerify.init(login, context);
     _dynamicModules(); // 动态的运营商模块
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   /// 动态的运营商模块
   void _dynamicModules() async {
     // 大师不受运营商控制，默认显示所有模块
-    if (ApiState.is_master) {
+    if (CusRole.is_master) {
       _bars = [
         FortunePage(),
         MallPage(), // 大师获取的是平台所有的商品信息吗
@@ -110,27 +110,27 @@ class _HomePageState extends State<HomePage> {
       _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
       CusLoginRes res = await LoginDao(glbDB).readUserByUid();
       if (res.enable_mall == 1) {
-        Debug.log("开启了商城");
+        Log.info("开启了商城");
         _bars.insert(_bars.length - 1, MallPage());
         _names.insert(_names.length - 1, "商城");
       }
       if (res.enable_prize == 1 || res.enable_vie == 1) {
         if (res.enable_prize == 1) {
-          Debug.log("开启了悬赏帖");
+          Log.info("开启了悬赏帖");
         }
         if (res.enable_vie == 1) {
-          Debug.log("开启了闪断帖");
+          Log.info("开启了闪断帖");
         }
         _bars.insert(_bars.length - 1, QuestionPage());
         _names.insert(_names.length - 1, "问命");
       }
       if (res.enable_master == 1) {
-        Debug.log("开启了大师");
+        Log.info("开启了大师");
         _bars.insert(_bars.length - 1, MasterListPage());
         _names.insert(_names.length - 1, "大师");
       }
     }
-    Debug.log("底部导航栏names:${_names.toString()}");
+    Log.info("底部导航栏names:${_names.toString()}");
     setState(() {});
   }
 

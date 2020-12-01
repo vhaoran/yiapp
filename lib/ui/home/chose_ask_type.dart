@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
 

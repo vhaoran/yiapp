@@ -1,4 +1,4 @@
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/model/article/article_type_res.dart';

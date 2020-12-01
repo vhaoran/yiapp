@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/temp/cus_tool.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_snackbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
@@ -59,14 +59,14 @@ class _ChProductState extends State<ChProduct> {
       List<Category> res = await ApiProduct.categoryList();
       if (res != null) _pTypes = res;
     } catch (e) {
-      Debug.logError("修改商品时，获取商品分类出现异常：$e");
+      Log.error("修改商品时，获取商品分类出现异常：$e");
     }
     // 根据id获取单个商品详情
     try {
       Product res = await ApiProduct.productGet(widget.id);
       if (res != null) _product = res;
     } catch (e) {
-      Debug.logError("修改商品时，根据id获取商品出现异常：$e");
+      Log.error("修改商品时，根据id获取商品出现异常：$e");
     }
     _category = Category(id: _product.cate_id, name: _product.cate_name);
     _cpList = _product.colors;
@@ -125,7 +125,7 @@ class _ChProductState extends State<ChProduct> {
         Navigator.of(context).pop(_product.id_of_es);
       }
     } catch (e) {
-      Debug.logError("修改商品出现异常：$e");
+      Log.error("修改商品出现异常：$e");
     }
   }
 

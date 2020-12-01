@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/master/cus_service.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/master/cus_service.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -44,7 +44,7 @@ class _MasterServicePageState extends State<MasterServicePage>
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      Debug.logError("获取大师项目列表出现异常，是否暂未添加：$e");
+      Log.error("获取大师项目列表出现异常，是否暂未添加：$e");
     }
   }
 
@@ -112,13 +112,13 @@ class _MasterServicePageState extends State<MasterServicePage>
       onApproval: () async {
         try {
           bool ok = await ApiMaster.masterItemRm(m.id);
-          Debug.log("移除大师项目结果：$ok");
+          Log.info("移除大师项目结果：$ok");
           if (ok) {
             CusToast.toast(context, text: "移除成功");
             _refresh();
           }
         } catch (e) {
-          Debug.logError("移除大师服务项目出现异常：$e");
+          Log.error("移除大师服务项目出现异常：$e");
         }
       },
     );

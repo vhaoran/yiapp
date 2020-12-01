@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secret/tools/solar.dart';
-import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
+import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -64,8 +64,8 @@ class _DateState extends State<CusTimePickerDemo> {
           child: CusText("01 阳历 转 阴历", Colors.white, 28),
           onPressed: () {
             var solar = Solar.fromDate(DateTime.now());
-            Debug.log("阳历：$solar");
-            Debug.log(
+            Log.info("阳历：$solar");
+            Log.info(
                 "阴历：${solar.year}年${solar.getLunar().toString().substring(5)}");
           },
         ),
@@ -83,7 +83,7 @@ class _DateState extends State<CusTimePickerDemo> {
           pickMode: pickMode,
           showLunar: showLunar,
           onConfirm: (yiDate) {
-            Debug.log("$text 日历结果：${yiDate.toJson()}");
+            Log.info("$text 日历结果：${yiDate.toJson()}");
             _yiDate = yiDate;
             setState(() {});
           },

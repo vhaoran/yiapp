@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_callback.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/global/cus_fn.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/product.dart';
 import 'package:yiapp/service/api/api-product.dart';
 import 'ch_product/ch_product.dart';
@@ -118,7 +118,7 @@ class _ProductCoverState extends State<ProductCover> {
           if (widget.onRemove != null) widget.onRemove(e.id_of_es);
         }
       } catch (e) {
-        Debug.logError("移除商品出现异常：$e");
+        Log.error("移除商品出现异常：$e");
       }
     });
   }

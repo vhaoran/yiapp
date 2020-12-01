@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:secret/tools/lunar.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'calendar_view.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import 'controller.dart';
 import 'custom_style_day_widget.dart';
 import 'custom_style_week_barItem.dart';
@@ -65,7 +65,7 @@ class _AlmanacPageState extends State<AlmanacPage> {
     DateTime now = DateTime.now();
     _controller = CalendarController(
       selectDateModel: DateModel.fromDateTime(now),
-      mode: YiData.month_week,
+      mode: CusYiData.month_week,
     );
 
     // 监听切换月份

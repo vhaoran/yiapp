@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -19,7 +19,7 @@ class WorshipPage extends StatefulWidget {
 class _WorshipPageState extends State<WorshipPage>
     with AutomaticKeepAliveClientMixin {
   void initState() {
-    Debug.log("进了供奉页面");
+    Log.info("进了供奉页面");
     super.initState();
   }
 

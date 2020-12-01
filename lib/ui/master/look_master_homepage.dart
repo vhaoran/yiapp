@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/ui/master/look_master_base_data.dart';
@@ -36,7 +36,7 @@ class _LookMasterHomePageState extends State<LookMasterHomePage> {
   @override
   void initState() {
     _future = _fetch();
-    Debug.log("进了大师主页");
+    Log.info("进了大师主页");
     super.initState();
   }
 
@@ -45,7 +45,7 @@ class _LookMasterHomePageState extends State<LookMasterHomePage> {
       var res = await ApiMaster.masterInfoGet(widget.master_id);
       if (res != null) _m = res;
     } catch (e) {
-      Debug.logError("获取大师信息出现异常：$e");
+      Log.error("获取大师信息出现异常：$e");
     }
   }
 

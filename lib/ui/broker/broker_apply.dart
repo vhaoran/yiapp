@@ -1,17 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/dicts/broker-apply.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -124,7 +124,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
   /// 申请运营商前的验证
   void _verify() async {
     // 如果已经是运营商，不能再次申请
-    if (ApiState.is_broker_admin) {
+    if (CusRole.is_broker_admin) {
       CusDialog.tip(context,
           title: "您已经是运营商", onApproval: () => Navigator.pop(context));
       return;
@@ -134,7 +134,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     bool isMobile = RegexUtil.isMobile(user.user_code);
     // 没有设置手机号和密码
     if (!isMobile) {
-      Debug.log("未绑定手机号和密码");
+      Log.info("未绑定手机号和密码");
       CusDialog.normal(
         context,
         title: "您暂未设置手机号和密码",
@@ -173,7 +173,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     };
     try {
       BrokerApply res = await ApiBroker.brokerApplyHandIn(m);
-      Debug.log("申请成为运营商结果详情：${res.toJson()}");
+      Log.info("申请成为运营商结果详情：${res.toJson()}");
       if (res != null) {
         SpinKit.threeBounce(context);
         await Future.delayed(Duration(milliseconds: 1000));
@@ -183,7 +183,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         });
       }
     } catch (e) {
-      Debug.logError("申请运营商出现异常：$e");
+      Log.error("申请运营商出现异常：$e");
       setState(() {
         if (e.toString().contains("已存在对代理名称的申请")) {
           _err = "运营商名称已被占用";

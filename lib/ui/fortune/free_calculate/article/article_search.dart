@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_callback.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/global/cus_fn.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/service/api/api_article.dart';
 
@@ -67,7 +67,7 @@ class _ArticleSearchState extends State<ArticleSearch> {
           }
         }
       } catch (e) {
-        Debug.logError("根据关键词搜索文章出现异常：$e");
+        Log.error("根据关键词搜索文章出现异常：$e");
       }
     }
   }

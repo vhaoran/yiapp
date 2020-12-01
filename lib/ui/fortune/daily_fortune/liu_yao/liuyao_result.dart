@@ -2,19 +2,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -146,7 +146,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
 
   /// 求测悬赏帖还是闪断帖
   void _doPost(bool isFlash) async {
-    ApiState.isFlash = isFlash;
+    CusRole.isFlash = isFlash;
     CusRoute.push(
       context,
       AskQuestionPage(

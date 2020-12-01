@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -35,7 +35,7 @@ class _RewardPostPageState extends State<RewardPostPage>
 
   @override
   void initState() {
-    Debug.log("进入了悬赏帖");
+    Log.info("进入了悬赏帖");
     _future = _fetch();
     super.initState();
   }
@@ -61,17 +61,17 @@ class _RewardPostPageState extends State<RewardPostPage>
         if (_rows_count == 0) {
           _rows_count = pb.rowsCount ?? 0;
         }
-        Debug.log("总的悬赏帖个数：$_rows_count");
+        Log.info("总的悬赏帖个数：$_rows_count");
         var l = pb.data.map((e) => e as BBSPrize).toList();
         // 在原来的基础上继续添加新的数据
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
-        Debug.log("当前已查询多少条悬赏帖：${_l.length}");
+        Log.info("当前已查询多少条悬赏帖：${_l.length}");
       }
     } catch (e) {
-      Debug.logError("分页查询悬赏帖出现异常：$e");
+      Log.error("分页查询悬赏帖出现异常：$e");
     }
   }
 

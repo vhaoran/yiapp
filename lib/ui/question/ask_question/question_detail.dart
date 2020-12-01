@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/math_util.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_divider.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -64,7 +64,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
 
   _fetch() async {
     try {
-      var res = ApiState.isFlash
+      var res = CusRole.isFlash
           ? await ApiBo.brokerPriceLevelVieUserList()
           : await ApiBo.brokerPriceLevelPrizeUserList();
       if (res != null) {
@@ -75,7 +75,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
         }
       }
     } catch (e) {
-      Debug.logError("获取运营商悬赏帖标准出现异常：$e");
+      Log.error("获取运营商悬赏帖标准出现异常：$e");
     }
   }
 
@@ -156,7 +156,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: CusRaisedBtn(
-              text: "完成，发${ApiState.isFlash ? '闪断' : '悬赏'}帖",
+              text: "完成，发${CusRole.isFlash ? '闪断' : '悬赏'}帖",
               minWidth: double.infinity,
               backgroundColor: Colors.blueGrey,
               onPressed: _doPost,
@@ -180,7 +180,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           (e) => e.price == val,
           orElse: () => null,
         );
-        Debug.log("选择的标准详情:${_selectPrice.toJson()}");
+        Log.info("选择的标准详情:${_selectPrice.toJson()}");
         setState(() {});
       },
       child: Container(
@@ -208,11 +208,11 @@ class _QueDetailPageState extends State<QueDetailPage> {
     _data.amt = _score;
     _data.level_id = _selectPrice.price_level_id;
     var m = _data.toJson();
-    Debug.log("发帖详情：$m");
+    Log.info("发帖详情：$m");
     SpinKit.threeBounce(context);
     try {
       var data;
-      data = ApiState.isFlash
+      data = CusRole.isFlash
           ? await ApiBBSVie.bbsVieAdd(m)
           : await ApiBBSPrize.bbsPrizeAdd(m);
       if (data != null) {
@@ -232,7 +232,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           ),
         );
       }
-      Debug.logError("我要提问出现异常：$e");
+      Log.error("我要提问出现异常：$e");
     }
   }
 

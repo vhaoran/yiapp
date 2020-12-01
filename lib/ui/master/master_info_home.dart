@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/master/cus_fivestar.dart';
-import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
-import 'package:yiapp/complex/widgets/master/user_comment.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/master/cus_fivestar.dart';
+import 'package:yiapp/widget/master/cus_number_data.dart';
+import 'package:yiapp/widget/master/user_comment.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 
 // ------------------------------------------------------

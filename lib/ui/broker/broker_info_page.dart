@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/broker_state.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/model/dicts/broker-info.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/ui/broker/broker_admin.dart';

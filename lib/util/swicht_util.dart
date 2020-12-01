@@ -1,4 +1,4 @@
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/const/con_int.dart';
 
 // ------------------------------------------------------
 // author：suxing

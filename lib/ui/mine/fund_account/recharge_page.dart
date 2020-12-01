@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/api_business_type.dart';
-import 'package:yiapp/complex/class/cus_dot_format.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/func/cus_browser.dart';
+import 'package:yiapp/widget/cus_dot_format.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/service/api/api-pay.dart';
 
 // ------------------------------------------------------
@@ -53,11 +53,11 @@ class _RechargePageState extends State<RechargePage> {
         }
       }
     }
-    Debug.log("amt:$amt");
+    Log.info("amt:$amt");
     SpinKit.threeBounce(context);
     await Future.delayed(Duration(milliseconds: 1000));
     String url = ApiPay.PayReqURL(b_recharge, _account_type, "充值", amt);
-    if (url != null) ApiBrowser.launchIn(url);
+    if (url != null) CusBrowser.launchIn(url);
     Navigator.pop(context);
   }
 

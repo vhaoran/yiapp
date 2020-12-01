@@ -1,4 +1,5 @@
 import 'package:permission_handler/permission_handler.dart';
+import 'package:yiapp/cus/cus_log.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -19,11 +20,11 @@ class Permissions {
         Permission.notification,
         Permission.activityRecognition,
       ].request();
-      status.forEach((key, value) {
-//        print(">>>权限 key:$key、权限 value:${value == PermissionStatus.granted}");
-      });
+//      status.forEach((key, value) {
+//        Log.info("权限 key:$key、权限 value:${value == PermissionStatus.granted}");
+//      });
     } catch (e) {
-      print("<<<获取系统权限出现异常");
+      Log.error("获取系统权限出现异常");
     }
   }
 }

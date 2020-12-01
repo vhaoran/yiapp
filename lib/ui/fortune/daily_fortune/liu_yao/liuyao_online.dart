@@ -2,17 +2,17 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_callback.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/global/cus_fn.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_result.dart';
@@ -141,7 +141,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
     };
     try {
       var res = await ApiYi.liuYaoQiGua(m);
-      Debug.log("六爻起卦的数据是：${res.toJson()}");
+      Log.info("六爻起卦的数据是：${res.toJson()}");
       if (res != null) {
         CusRoute.pushReplacement(
           context,
@@ -151,7 +151,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
         });
       }
     } catch (e) {
-      Debug.logError("六爻起卦出现异常：$e");
+      Log.error("六爻起卦出现异常：$e");
     }
   }
 

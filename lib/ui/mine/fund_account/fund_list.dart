@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/global/actionListener.dart';
 import 'package:left_scroll_actions/leftScroll.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/account.dart';
 import 'package:yiapp/service/api/api-account.dart';
 import 'package:yiapp/ui/mine/fund_account/add_fund_account.dart';
@@ -47,7 +47,7 @@ class _FundListPageState extends State<FundListPage> {
       var res = await ApiAccount.accountList();
       if (res != null) _l = res;
     } catch (e) {
-      Debug.logError("获取个人支付账号列表出现异常：$e");
+      Log.error("获取个人支付账号列表出现异常：$e");
     }
   }
 
@@ -60,7 +60,7 @@ class _FundListPageState extends State<FundListPage> {
         _refresh();
       }
     } catch (e) {
-      Debug.logError("设置默认账号出现异常：$e");
+      Log.error("设置默认账号出现异常：$e");
     }
   }
 
@@ -74,7 +74,7 @@ class _FundListPageState extends State<FundListPage> {
           _refresh();
         }
       } catch (e) {
-        Debug.logError("删除账号出现异常：$e");
+        Log.error("删除账号出现异常：$e");
       }
     });
   }

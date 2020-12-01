@@ -2,14 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
@@ -55,15 +55,15 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
       PageBean pb = await ApiProductOrder.bOProductOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as ProductOrder).toList();
-      Debug.log("总的待发货订单个数：$_rowsCount");
+      Log.info("总的待发货订单个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      Debug.log("当前已查询待发货订单多少条：${_l.length}");
+      Log.info("当前已查询待发货订单多少条：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询待发货订单出现异常：$e");
+      Log.error("分页查询待发货订单出现异常：$e");
     }
   }
 

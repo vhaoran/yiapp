@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -110,7 +110,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
     bool isMobile = RegexUtil.isMobile(user.user_code);
     // 没有设置手机号和密码，不满足绑定运营商条件
     if (!isMobile) {
-      Debug.log("未绑定手机号和密码");
+      Log.info("未绑定手机号和密码");
       CusDialog.normal(
         context,
         title: "您暂未设置手机号和密码",
@@ -130,7 +130,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
         CusToast.toast(context, text: _err);
         return;
       }
-      Debug.log("已绑定手机号和密码，当前手机号：${user.user_code}");
+      Log.info("已绑定手机号和密码，当前手机号：${user.user_code}");
       _doBind(user.user_code);
     }
   }
@@ -139,7 +139,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
   void _doBind(String user_code) async {
     try {
       bool ok = await ApiBroker.serviceCodeBind(_codeCtrl.text.trim());
-      Debug.log("绑定运营商结果：$ok");
+      Log.info("绑定运营商结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "绑定成功，即将为您重新登录", milliseconds: 2000);
         SpinKit.threeBounce(context);
@@ -158,7 +158,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       if (e.toString().contains("没有找到对应的邀请码")) {
         setState(() => _err = "不存在该邀请码");
       }
-      Debug.logError("绑定运营商出现异常：$e");
+      Log.error("绑定运营商出现异常：$e");
     }
   }
 

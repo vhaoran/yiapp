@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +112,7 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
           _doBind();
         }
       } catch (e) {
-        Debug.logError("设置用户手机号、密码出现异常：$e");
+        Log.error("设置用户手机号、密码出现异常：$e");
       }
     }
   }
@@ -125,16 +125,16 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
         CusToast.toast(context, text: "设置成功");
         // 临时将输入的密码保存到本地，方便后面自动重新登录
         bool ok = await KV.setStr(kv_tmp_pwd, _pwdCtrl.text);
-        Debug.log("存储本地临时pwd结果：$ok");
+        Log.info("存储本地临时pwd结果：$ok");
         if (ok) {
           context.read<UserInfoState>()?.chUserCode(_mobileCtrl.text);
           bool update = await LoginDao(glbDB).updateUserCode(_mobileCtrl.text);
-          Debug.log("更新本地手机号结果：$update");
+          Log.info("更新本地手机号结果：$update");
           Navigator.pop(context);
         }
       }
     } catch (e) {
-      Debug.logError("设置手机号和密码出现异常：$e");
+      Log.error("设置手机号和密码出现异常：$e");
     }
   }
 

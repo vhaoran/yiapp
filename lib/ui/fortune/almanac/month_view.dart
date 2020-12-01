@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'cache_data.dart';
 import 'calendar_provider.dart';
 import 'configuration.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import '../../../model/calendar/date_model.dart';
 import 'utils/log_util.dart';
 import 'utils/date_util.dart';
@@ -111,7 +111,7 @@ class _MonthViewState extends State<MonthView>
         itemBuilder: (context, index) {
           DateModel dateModel = items[index];
           //判断是否被选择
-          if (configuration.selectMode == YiData.multiple_mode) {
+          if (configuration.selectMode == CusYiData.multiple_mode) {
             if (calendarProvider.selectedDateList.contains(dateModel)) {
               dateModel.isSelected = true;
             } else {
@@ -208,7 +208,7 @@ class ItemContainerState extends State<ItemContainer> {
         //范围外不可点击
         if (!dateModel.isInRange) {
           //多选回调
-          if (configuration.selectMode == YiData.multiple_mode) {
+          if (configuration.selectMode == CusYiData.multiple_mode) {
             configuration.multiSelectOutOfRange();
           }
           return;
@@ -216,7 +216,7 @@ class ItemContainerState extends State<ItemContainer> {
 
         calendarProvider.lastClickDateModel = dateModel;
 
-        if (configuration.selectMode == YiData.multiple_mode) {
+        if (configuration.selectMode == CusYiData.multiple_mode) {
           if (calendarProvider.selectedDateList.contains(dateModel)) {
             calendarProvider.selectedDateList.remove(dateModel);
           } else {

@@ -2,15 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_double.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/widget/small/cus_bg_wall.dart';
+import 'package:yiapp/widget/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/util/file_util.dart';
@@ -42,8 +40,8 @@ class _MasterLoopsState extends State<MasterLoops> {
   /// 默认背景墙
   Widget _defBgWall() {
     return BackgroundWall(
-      height: bgWallH + 45,
-      onTap: ApiState.is_master
+      height: 405,
+      onTap: CusRole.is_master
           ? () =>
               CusBottomSheet(context, OnFile: (file) => _doAddImage(file, 1))
           : null,
@@ -124,7 +122,7 @@ class _MasterLoopsState extends State<MasterLoops> {
         }
       }
     } catch (e) {
-      Debug.logError("添加大师图片出现异常：$e");
+      Log.error("添加大师图片出现异常：$e");
     }
   }
 
@@ -144,7 +142,7 @@ class _MasterLoopsState extends State<MasterLoops> {
         }
       }
     } catch (e) {
-      Debug.logError("替换大师图片出现异常：$e");
+      Log.error("替换大师图片出现异常：$e");
     }
   }
 
@@ -152,14 +150,14 @@ class _MasterLoopsState extends State<MasterLoops> {
   void _doRmImage(num id) async {
     try {
       bool ok = await ApiMaster.masterImageRm(id);
-      Debug.log("删除大师图片结果：$ok");
+      Log.info("删除大师图片结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "删除成功");
         if (widget.onChanged != null) widget.onChanged();
         setState(() {});
       }
     } catch (e) {
-      Debug.logError("删除图片出现异常：$e");
+      Log.error("删除图片出现异常：$e");
     }
   }
 }

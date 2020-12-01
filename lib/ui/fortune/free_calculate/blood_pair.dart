@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_list.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/complex/widgets/fn/fn_dialog.dart';
-import 'package:yiapp/complex/widgets/small/cus_description.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
-import 'package:yiapp/complex/widgets/small/cus_select.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_list.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/cus_tool.dart';
+import 'package:yiapp/widget/fn/fn_dialog.dart';
+import 'package:yiapp/widget/small/cus_description.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
+import 'package:yiapp/widget/small/cus_select.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'blood_res.dart';
 
@@ -123,7 +123,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
     try {
       var m = {"male_blood": _maleStr, "female_blood": _femaleStr};
       var res = await ApiFree.bloodMatch(m);
-      Debug.log("查询血型配对结果:${res.toJson()}");
+      Log.info("查询血型配对结果:${res.toJson()}");
       if (res != null) {
         CusRoute.push(context, BloodResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
@@ -133,7 +133,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
         });
       }
     } catch (e) {
-      Debug.logError("血型配对出现异常：$e");
+      Log.error("血型配对出现异常：$e");
     }
   }
 }

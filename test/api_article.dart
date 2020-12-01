@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/model/article/article_type_res.dart';
@@ -14,10 +14,10 @@ void main() {
     try {
       List<ArticleType> res = await ApiArticle.articleCateList();
       if (res != null) {
-        res.forEach((e) => Debug.log("类别:${e.toJson()}"));
+        res.forEach((e) => Log.info("类别:${e.toJson()}"));
       }
     } catch (e) {
-      Debug.logError("测试---获取文章类别出现异常：$e");
+      Log.error("测试---获取文章类别出现异常：$e");
     }
   });
 
@@ -32,10 +32,10 @@ void main() {
     try {
       List<ArticleResult> res = await ApiArticle.articleSearch(m);
       if (res != null) {
-        res.forEach((e) => Debug.log("文章数据:${e.toJson()}"));
+        res.forEach((e) => Log.info("文章数据:${e.toJson()}"));
       }
     } catch (e) {
-      Debug.logError("测试---查询某一类文章出现异常：$e");
+      Log.error("测试---查询某一类文章出现异常：$e");
     }
   });
 
@@ -45,10 +45,10 @@ void main() {
     try {
       List<ArticleTypeRes> res = await ApiArticle.articleGetByCate(1);
       if (res != null) {
-        res.forEach((e) => Debug.log("分类文章数据:${e.toJson()}"));
+        res.forEach((e) => Log.info("分类文章数据:${e.toJson()}"));
       }
     } catch (e) {
-      Debug.logError("测试---文章分类查询出现异常：$e");
+      Log.error("测试---文章分类查询出现异常：$e");
     }
   });
 
@@ -59,10 +59,10 @@ void main() {
     try {
       ArticleResult res = await ApiArticle.articleGet(article_id);
       if (res != null) {
-        Debug.log("当前文章详情:${res.toJson()}");
+        Log.info("当前文章详情:${res.toJson()}");
       }
     } catch (e) {
-      Debug.logError("测试---根据id获取文章详情出现异常：$e");
+      Log.error("测试---根据id获取文章详情出现异常：$e");
     }
   });
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/sticky_delegate.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_double.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/sticky_delegate.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
@@ -46,7 +45,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      Debug.logError("获取大师图片列表出现异常，是否暂未添加：$e");
+      Log.error("获取大师图片列表出现异常，是否暂未添加：$e");
     }
   }
 
@@ -98,7 +97,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
       SliverAppBar(
         pinned: true, // SliverAppBar 控件可以实现页面头部区域展开、折叠的效果
         elevation: 0,
-        expandedHeight: Adapt.px(bgWallH),
+        expandedHeight: Adapt.px(360),
         backgroundColor: primary,
         title: Text("大师"),
         centerTitle: true,

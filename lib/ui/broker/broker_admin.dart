@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/admin/group_batch_member.dart';
-import 'package:yiapp/complex/widgets/admin/search_admin.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/admin/group_batch_member.dart';
+import 'package:yiapp/widget/admin/search_admin.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/broker-admin.dart';
 import 'package:yiapp/model/login/userInfo.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -49,7 +49,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
       if (res != null) _adminBrokers = res;
     } catch (e) {
       _adminBrokers = [];
-      Debug.logError("获取运营商管理员列表出现异常,是否暂未添加：$e");
+      Log.error("获取运营商管理员列表出现异常,是否暂未添加：$e");
     }
   }
 
@@ -93,7 +93,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
 
   /// 添加管理员
   void _addAdminCall(context, List<SearchAdminData> l) async {
-    Debug.log("添加的第一个人的昵称:${l.first.nick}，id:${l.first.uid}");
+    Log.info("添加的第一个人的昵称:${l.first.nick}，id:${l.first.uid}");
     if (l == null || l.isEmpty) return;
     try {
       int tmp = 0;
@@ -106,7 +106,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
           "enabled": 1,
         };
         var res = await ApiBroker.brokerAdminAdd(m);
-        Debug.log("添加第 $i 个提现审核员结果：${res.uid}");
+        Log.info("添加第 $i 个提现审核员结果：${res.uid}");
         if (res != null) tmp++;
       }
       if (tmp == l.length) {
@@ -117,7 +117,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
         print(">>> tmp：$tmp 、l：${l.length} 两者不相等");
       }
     } catch (e) {
-      Debug.logError("添加运营商管理员出现异常：$e");
+      Log.error("添加运营商管理员出现异常：$e");
     }
   }
 
@@ -149,13 +149,13 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
     CusDialog.err(context, title: "确定移除该管理员吗?", onApproval: () async {
       try {
         bool ok = await ApiBroker.brokerAdminRm(uid);
-        Debug.log("移除运营商管理员结果：$ok");
+        Log.info("移除运营商管理员结果：$ok");
         if (ok) {
           CusToast.toast(context, text: "移除成功");
           _refresh();
         }
       } catch (e) {
-        Debug.logError("移除运营商管理员出现异常：$e");
+        Log.error("移除运营商管理员出现异常：$e");
       }
     });
   }
@@ -172,7 +172,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
         setState(() {});
       }
     } catch (e) {
-      Debug.logError("点击添加管理员时，分页查询运营商管理员出现异常：$e");
+      Log.error("点击添加管理员时，分页查询运营商管理员出现异常：$e");
     }
   }
 

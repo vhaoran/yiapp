@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/demo/demo_clear_data/clear_data_main.dart';
 import 'package:yiapp/demo/demo_effect/effect_main.dart';
 import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
 import 'package:yiapp/demo/demo_simulate/simulate_main.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/small/cus_box.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/small/cus_box.dart';
 import 'demo_get_data/get_data_main.dart';
 
 // ------------------------------------------------------

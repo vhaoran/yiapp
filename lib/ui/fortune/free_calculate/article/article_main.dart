@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/service/api/api_article.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_type.dart';
@@ -39,7 +39,7 @@ class _ArticleMainState extends State<ArticleMain> {
       var res = await ApiArticle.articleCateList();
       if (res != null) _l = res;
     } catch (e) {
-      Debug.logError("获取文章类别列表出现异常：$e");
+      Log.error("获取文章类别列表出现异常：$e");
     }
   }
 

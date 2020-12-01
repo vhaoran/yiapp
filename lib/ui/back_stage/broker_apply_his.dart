@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/broker-apply.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-broker.dart';
@@ -48,15 +48,15 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
       PageBean pb = await ApiBroker.brokerApplyPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as BrokerApply).toList();
-      Debug.log("总的运营商申请记录个数：$_rowsCount");
+      Log.info("总的运营商申请记录个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      Debug.log("当前已查询多少条数据：${_l.length}");
+      Log.info("当前已查询多少条数据：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询运营商申请记录出现异常：$e");
+      Log.error("分页查询运营商申请记录出现异常：$e");
     }
   }
 
@@ -129,13 +129,13 @@ class _BrokerApplyHisPageState extends State<BrokerApplyHisPage> {
     bool pass = stat == 1;
     try {
       bool ok = await ApiBroker.brokerApplyAudit(e.id, stat);
-      Debug.log("${pass ? '' : '拒绝'}运营商申请结果：$ok");
+      Log.info("${pass ? '' : '拒绝'}运营商申请结果：$ok");
       if (ok) {
         CusToast.toast(context, text: pass ? "已通过审批" : "已拒绝申请");
         _reset();
       }
     } catch (e) {
-      Debug.logError("同意大师申请出现异常：$e");
+      Log.error("同意大师申请出现异常：$e");
     }
   }
 

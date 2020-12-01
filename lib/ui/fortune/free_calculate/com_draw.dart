@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shake_animation_widget/shake_animation_widget.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/free/daxian_result.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'package:yiapp/ui/fortune/free_calculate/com_draw_res.dart';
@@ -123,7 +123,7 @@ class _ComDrawPageState extends State<ComDrawPage> {
           break;
       }
     } catch (e) {
-      Debug.logError("$_title灵签出现异常：$e");
+      Log.error("$_title灵签出现异常：$e");
     }
     if (res != null) {
       CusRoute.push(

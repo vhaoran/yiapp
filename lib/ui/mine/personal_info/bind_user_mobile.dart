@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -81,7 +81,7 @@ class _BindUserMobileState extends State<BindUserMobile> {
       var m = {"user_code": _mobileCtrl.text.trim()};
       try {
         bool ok = await ApiUser.ChUserInfo(m);
-        Debug.log("绑定手机号结果：$ok");
+        Log.info("绑定手机号结果：$ok");
         if (ok) {
           Navigator.pop(context);
           context.read<UserInfoState>()?.chUserCode(_mobileCtrl.text);
@@ -92,7 +92,7 @@ class _BindUserMobileState extends State<BindUserMobile> {
           }
         }
       } catch (e) {
-        Debug.logError("绑定用户手机号出现异常：$e");
+        Log.error("绑定用户手机号出现异常：$e");
       }
     }
   }

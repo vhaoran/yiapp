@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/gather/cus_swiper_pagination.dart';
-import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
-import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/gather/cus_swiper_pagination.dart';
+import 'package:yiapp/widget/gather/net_photoview.dart';
+import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/model/dicts/product.dart';
 
 // ------------------------------------------------------

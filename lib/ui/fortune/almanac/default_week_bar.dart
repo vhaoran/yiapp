@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'base_week_bar.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import 'style.dart';
 
 ///**
@@ -48,7 +48,7 @@ class DefaultWeekBar extends BaseWeekBar {
       height: 40,
       alignment: Alignment.center,
       child: new Text(
-        YiData.weeks[index],
+        CusYiData.weeks[index],
         style: topWeekTextStyle,
       ),
     );

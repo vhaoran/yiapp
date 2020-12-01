@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_string.dart';
-import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/util/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing

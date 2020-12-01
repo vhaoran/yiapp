@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -71,7 +71,7 @@ class _FlashInputState extends State<FlashInput> {
         if (widget.onSend != null) widget.onSend();
       }
     } catch (e) {
-      Debug.logError("回帖出现异常：$e");
+      Log.error("回帖出现异常：$e");
       if (e.toString().contains("没有抢单")) {
         _replyCtrl.clear();
         CusToast.toast(context, text: "您还没有抢单，无法评论");

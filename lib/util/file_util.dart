@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/service/api/api_image.dart';
 
 // ------------------------------------------------------
@@ -19,7 +19,7 @@ class FileUtil {
       String key = await ApiImage.uploadQiniu(file);
       url = await ApiImage.GetVisitURL(key);
     } catch (e) {
-      Debug.logError("上传单个文件到七牛云出现异常：$e");
+      Log.error("上传单个文件到七牛云出现异常：$e");
     }
     return url;
   }
@@ -36,7 +36,7 @@ class FileUtil {
         res.add({"key": key, "path": url});
       }
     } catch (e) {
-      Debug.log("上传多个文件到七牛云出现异常：$e");
+      Log.info("上传多个文件到七牛云出现异常：$e");
     }
     return res;
   }

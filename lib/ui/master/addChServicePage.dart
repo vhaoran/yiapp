@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_list.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/fn/fn_dialog.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_list.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/fn/fn_dialog.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
 
@@ -74,7 +74,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      Debug.logError("添加大师服务出现异常：$e");
+      Log.error("添加大师服务出现异常：$e");
     }
   }
 
@@ -96,7 +96,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      Debug.logError("修改大师服务出现异常：$e");
+      Log.error("修改大师服务出现异常：$e");
     }
   }
 

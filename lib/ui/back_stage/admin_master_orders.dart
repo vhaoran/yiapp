@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/master/master_order_cover.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/master/master_order_cover.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -51,16 +51,16 @@ class _AdminMasterOrdersState extends State<AdminMasterOrders> {
       PageBean pb = await ApiYiOrder.boYiOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as YiOrder).toList();
-      Debug.log("总的大师未完成列表(后台)个数：$_rowsCount");
+      Log.info("总的大师未完成列表(后台)个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
-      Debug.log("当前已查询大师未完成列表(后台)个数：${_l.length}");
+      Log.info("当前已查询大师未完成列表(后台)个数：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询大师未完成列表(后台)出现异常：$e");
+      Log.error("分页查询大师未完成列表(后台)出现异常：$e");
     }
   }
 

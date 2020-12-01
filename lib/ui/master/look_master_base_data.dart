@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_double.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 
 // ------------------------------------------------------
@@ -56,7 +55,7 @@ class _LookMasterBaseDataState extends State<LookMasterBaseData> {
 
   Widget _masterImage() {
     return Container(
-      height: Adapt.px(bgWallH),
+      height: Adapt.px(360),
       child: Stack(
         children: <Widget>[
           // 背景墙
@@ -131,7 +130,7 @@ class _LookMasterBaseDataState extends State<LookMasterBaseData> {
                 fontSize: 26,
                 borderRadius: 20,
                 onPressed: () {
-                  Debug.log("点了哪位大师：${_m.nick}");
+                  Log.info("点了哪位大师：${_m.nick}");
                 },
               ),
             )

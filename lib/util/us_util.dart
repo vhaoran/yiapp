@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -10,7 +11,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 class UsUtil {
   /// token
-  static Future<bool> isToken() async {
+  static Future<bool> hasToken() async {
     if (await KV.getStr(kv_jwt) != null) {
       return true;
     }

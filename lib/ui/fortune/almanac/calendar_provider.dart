@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'cache_data.dart';
 import 'configuration.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import 'controller.dart';
 import '../../../model/calendar/date_model.dart';
 import 'month_view.dart';
@@ -141,9 +141,9 @@ class CalendarProvider extends ChangeNotifier {
       ..day = 15;
     //初始化展示状态
     if (calendarConfiguration.showMode ==
-            YiData.only_week ||
+            CusYiData.only_week ||
         calendarConfiguration.showMode ==
-            YiData.week_month) {
+            CusYiData.week_month) {
       expandStatus = ValueNotifier(false);
     } else {
       expandStatus = ValueNotifier(true);
@@ -169,9 +169,9 @@ class CalendarProvider extends ChangeNotifier {
 
     //如果第一个页面展示的是月视图，需要计算下初始化的高度
     if (calendarConfiguration.showMode ==
-            YiData.only_month ||
+            CusYiData.only_month ||
         calendarConfiguration.showMode ==
-            YiData.month_week) {
+            CusYiData.month_week) {
       int lineCount = DateUtil.getMonthViewLineCount(
           calendarConfiguration.nowYear,
           calendarConfiguration.nowMonth,

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/zhou_gong_res.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'package:yiapp/ui/fortune/free_calculate/zhou_gong_detail.dart';
@@ -43,7 +43,7 @@ class _ZhouGongPageState extends State<ZhouGongPage> {
     } catch (e) {
       _l = [];
       setState(() {});
-      Debug.logError("搜索周公解梦时出现异常：$e");
+      Log.error("搜索周公解梦时出现异常：$e");
     }
   }
 

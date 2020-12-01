@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/under_field.dart';
-import 'package:yiapp/login/login_page.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/under_field.dart';
+import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/service/api/api_user.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -87,11 +87,11 @@ class _ChPwdPageState extends State<ChPwdPage> {
             CusRoute.push(context, LoginPage());
           }
         }
-        Debug.log("修改用户密码结果：$ok");
+        Log.info("修改用户密码结果：$ok");
       } catch (e) {
         _oldErr = "当前登录密码输入错误";
         setState(() {});
-        Debug.logError("修改用户密码异常：$e");
+        Log.error("修改用户密码异常：$e");
       }
     }
   }

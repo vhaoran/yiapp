@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:yiapp/ui/provider/cus_provider.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'func/permissions.dart';
-import 'complex/refactor_widgets/su_toast.dart';
-import 'routes/main_routes.dart';
+import 'widget/su_toast.dart';
+import 'global/main_routes.dart';
 
 void main() {
   runApp(

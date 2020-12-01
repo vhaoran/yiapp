@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/service/api/api-master.dart';
 
 // ------------------------------------------------------
@@ -80,13 +80,13 @@ class _MasterEnableState extends State<MasterEnable> {
     try {
       bool ok = await ApiMaster.masterSetEnable(id, _stat);
       String tip = _stat == 0 ? "禁用" : "启用";
-      Debug.log("$tip大师结果：$ok");
+      Log.info("$tip大师结果：$ok");
       if (ok) {
         CusToast.toast(context, text: "$tip成功");
         Navigator.pop(context);
       }
     } catch (e) {
-      Debug.logError("出现异常：$e");
+      Log.error("出现异常：$e");
     }
   }
 

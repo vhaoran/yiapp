@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_callback.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
-import 'package:yiapp/complex/widgets/fn/fn_multi_files.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/global/cus_fn.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/fn/fn_multi_files.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/dicts/product.dart';
 
 // ------------------------------------------------------
@@ -38,7 +38,7 @@ class _ChProductImagesState extends State<ChProductImages> {
   @override
   Widget build(BuildContext context) {
     if (_images != null) {
-      Debug.log("已选多少张图片：${_images.length}");
+      Log.info("已选多少张图片：${_images.length}");
     }
     return Column(
       children: <Widget>[
@@ -60,7 +60,7 @@ class _ChProductImagesState extends State<ChProductImages> {
                 widget.images.length,
                 (i) => GestureDetector(
                   onTap: () {
-                    Debug.log("当前选择的图片路径:${widget.images[i].path}");
+                    Log.info("当前选择的图片路径:${widget.images[i].path}");
                   },
                   child: CusAvatar(
                     url: widget.images[i].path,

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/const/const_list.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/fn/fn_dialog.dart';
-import 'package:yiapp/complex/widgets/small/cus_description.dart';
-import 'package:yiapp/complex/widgets/small/cus_loading.dart';
-import 'package:yiapp/complex/widgets/small/cus_select.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_list.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/fn/fn_dialog.dart';
+import 'package:yiapp/widget/small/cus_description.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
+import 'package:yiapp/widget/small/cus_select.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api_free.dart';
 import 'package:yiapp/ui/fortune/free_calculate/zodiac_res.dart';
 
@@ -125,7 +125,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
         "female_ShengXiao": _femaleZodiac
       };
       var res = await ApiFree.shengXiaoMatch(m);
-      Debug.log("查询生肖配对结果:${res.toJson()}");
+      Log.info("查询生肖配对结果:${res.toJson()}");
       if (res != null) {
         CusRoute.push(context, ZodiacResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
@@ -135,7 +135,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
         });
       }
     } catch (e) {
-      Debug.logError("生肖配对配对出现异常：$e");
+      Log.error("生肖配对配对出现异常：$e");
     }
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 
@@ -32,7 +32,7 @@ class _SendGoodsPageState extends State<SendGoodsPage> {
 
   /// 发货
   void _doSend() async {
-    Debug.log("id：${widget.order.id}");
+    Log.info("id：${widget.order.id}");
     setState(() => _err = _billCtrl.text.isEmpty ? "未输入订单号" : null);
     if (_err != null) return;
     try {
@@ -43,7 +43,7 @@ class _SendGoodsPageState extends State<SendGoodsPage> {
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      Debug.logError("发货出现异常：$e");
+      Log.error("发货出现异常：$e");
     }
   }
 

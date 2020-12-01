@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -20,7 +20,7 @@ class LoginDao {
   /// 存储登录信息
   Future<bool> insert(CusLoginRes login) async {
     int val = await db.insert(tb_login, login.toJson());
-    Debug.log("保存用户数据${val > 0 ? '成功' : "失败"}");
+    Log.info("保存用户数据${val > 0 ? '成功' : "失败"}");
     return val > 0 ? true : false;
   }
 
@@ -134,7 +134,7 @@ class LoginDao {
   /// 获取所有登录信息
   Future<List<CusLoginRes>> readAll() async {
     List<Map<String, dynamic>> l = await db.query(tb_login);
-    Debug.log("数据库长度：${l.length}");
+    Log.info("数据库长度：${l.length}");
     if (l.isEmpty) return [];
     return l.map((e) => CusLoginRes.fromJson(e)).toList();
   }

@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_calendar.dart';
+import 'package:yiapp/const/cus_calendar.dart';
 import 'calendar_provider.dart';
 import 'configuration.dart';
 import '../../../model/calendar/date_model.dart';
@@ -34,8 +34,8 @@ class CalendarController {
   PageController weekController; //星期的controller
 
   CalendarController(
-      {int selectMode = YiData.single_mode,
-      int mode = YiData.only_month,
+      {int selectMode = CusYiData.single_mode,
+      int mode = CusYiData.only_month,
       int minYear = 1971,
       int maxYear = 2055,
       int minYearMonth = 1,
@@ -111,7 +111,7 @@ class CalendarController {
           maxYearMonth,
         ))}");
 
-    if (mode != YiData.only_week) {
+    if (mode != CusYiData.only_week) {
       //初始化pageController,initialPage默认是当前时间对于的页面
       int initialPage = 0;
       int nowMonthIndex = 0;
@@ -144,7 +144,7 @@ class CalendarController {
               "初始化月份视图的信息:一共有${monthList.length}个月，initialPage为$nowMonthIndex");
     }
 
-    if (mode != YiData.only_month) {
+    if (mode != CusYiData.only_month) {
       //计算一共多少周
       //计算方法：第一天是周几，最后一天是周几，中间的天数/7后加上2就是结果了
       int initialWeekPage = 0;

@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
+import 'package:yiapp/widget/flutter/cus_bottom_sheet.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/util/file_util.dart';
@@ -40,7 +40,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           alignment: Alignment(0, 0.2), // 头像
           child: InkWell(
             child: CusAvatar(url: widget.m.icon ?? "", circle: true),
-            onTap: ApiState.is_master
+            onTap: CusRole.is_master
                 ? () => CusBottomSheet(context, OnFile: (file) {
                       if (file != null) _doChIcon(file);
                       setState(() => {});
@@ -52,7 +52,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           alignment: Alignment(0, 0.75),
           child: InkWell(
             child: CusText(widget.m.nick ?? "", t_primary, 30),
-            onTap: ApiState.is_master
+            onTap: CusRole.is_master
                 ? () => CusRoute.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))
                 : null,
@@ -67,19 +67,19 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
     if (file == null) return;
     try {
       String url = await FileUtil.singleFile(file);
-      Debug.log("这里的url是：$url");
+      Log.info("这里的url是：$url");
       var m = {
         "id": widget.m.id,
         "M": {"icon": url}
       };
       bool ok = await ApiMaster.masterInfoCh(m);
       if (ok) {
-        Debug.log("修改大师头像成功");
+        Log.info("修改大师头像成功");
         context.read<MasterInfoState>().chIcon(url);
         CusToast.toast(context, text: "修改成功");
       }
     } catch (e) {
-      Debug.logError("修改大师头像出现异常：$e");
+      Log.error("修改大师头像出现异常：$e");
     }
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'calendar_provider.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import 'controller.dart';
 import 'month_view_pager.dart';
 import 'utils/log_util.dart';
@@ -118,15 +118,15 @@ class CalendarContainerState extends State<CalendarContainer>
     expand = calendarProvider.expandStatus.value;
 
     if (calendarProvider.calendarConfiguration.showMode ==
-        YiData.only_week) {
+        CusYiData.only_week) {
       widgets.add(const WeekViewPager());
     } else if (calendarProvider.calendarConfiguration.showMode ==
-        YiData.week_month) {
+        CusYiData.week_month) {
       widgets.add(const MonthViewPager());
       widgets.add(const WeekViewPager());
       index = 1;
     } else if (calendarProvider.calendarConfiguration.showMode ==
-        YiData.month_week) {
+        CusYiData.month_week) {
       widgets.add(const MonthViewPager());
       widgets.add(const WeekViewPager());
       index = 0;
@@ -138,9 +138,9 @@ class CalendarContainerState extends State<CalendarContainer>
 
     //如果需要视图切换的话，才需要添加监听，不然不需要监听变化
     if (calendarProvider.calendarConfiguration.showMode ==
-            YiData.week_month ||
+            CusYiData.week_month ||
         calendarProvider.calendarConfiguration.showMode ==
-            YiData.month_week) {
+            CusYiData.month_week) {
       calendarProvider.expandStatus.addListener(() {
         setState(() {
           print(
@@ -166,7 +166,7 @@ class CalendarContainerState extends State<CalendarContainer>
     widget.calendarController.addMonthChangeListener((year, month) {
       if (widget.calendarController.calendarProvider.calendarConfiguration
               .showMode !=
-          YiData.only_week) {
+          CusYiData.only_week) {
         //月份切换的时候，如果高度发生变化的话，需要setState使高度整体自适应
         int lineCount = DateUtil.getMonthViewLineCount(year, month,
             widget.calendarController.calendarConfiguration.offset);

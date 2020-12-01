@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/complex/widgets/bubble/bubble.dart';
-import 'package:yiapp/complex/widgets/bubble/bubble_nip_pos.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/widget/bubble/bubble.dart';
+import 'package:yiapp/widget/bubble/bubble_nip_pos.dart';
 
 // ------------------------------------------------------
 // author：suxing

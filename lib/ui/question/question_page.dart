@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -39,7 +39,7 @@ class _QuestionPageState extends State<QuestionPage>
 
   @override
   void initState() {
-    Debug.log("进了提问页面");
+    Log.info("进了提问页面");
     _future = _loadInit();
     super.initState();
   }
@@ -48,7 +48,7 @@ class _QuestionPageState extends State<QuestionPage>
   _loadInit() async {
     _user = await LoginDao(glbDB).readUserByUid();
     setState(() {
-      if (ApiState.is_master) {
+      if (CusRole.is_master) {
         _tabs = ["悬赏帖", "闪断帖"];
       } else {
         if (_user.enable_prize == 1) {
@@ -71,7 +71,7 @@ class _QuestionPageState extends State<QuestionPage>
           text: "提问区",
           showLeading: false,
           actions: <Widget>[
-            if (!ApiState.is_master)
+            if (!CusRole.is_master)
               FlatButton(
                 onPressed: () {
                   // 选择发帖类型
@@ -111,14 +111,14 @@ class _QuestionPageState extends State<QuestionPage>
           ),
           onTap: (index) {
             // 在这里设置悬赏帖还是闪断帖
-            ApiState.isFlash = index == 1 ? true : false;
+            CusRole.isFlash = index == 1 ? true : false;
           },
         ),
         Expanded(
             child: TabBarView(
           children: <Widget>[
-            if (ApiState.is_master) ...[RewardPostPage(), FlashPostPage()],
-            if (!ApiState.is_master) ...[
+            if (CusRole.is_master) ...[RewardPostPage(), FlashPostPage()],
+            if (!CusRole.is_master) ...[
               if (_user.enable_prize == 1) RewardPostPage(),
               if (_user.enable_vie == 1) FlashPostPage(),
             ],

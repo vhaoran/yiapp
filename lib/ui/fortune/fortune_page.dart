@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'daily_fortune/daily_fortune.dart';
 import 'free_calculate/free_calculate.dart';
 
@@ -28,8 +28,8 @@ class _FortunePageState extends State<FortunePage>
 
   @override
   void initState() {
-    Debug.log("进了【运势】首页");
-    _tabs = ApiState.is_guest ? ["免费测算"] : ["每日运势", "免费测算"];
+    Log.info("进了【运势】首页");
+    _tabs = CusRole.is_guest ? ["免费测算"] : ["每日运势", "免费测算"];
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _FortunePageState extends State<FortunePage>
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              if (!ApiState.is_guest) DailyFortune(),
+              if (!CusRole.is_guest) DailyFortune(),
               FreeCalculate(),
             ],
           ),
@@ -55,7 +55,7 @@ class _FortunePageState extends State<FortunePage>
   }
 
   Widget _appBar() {
-    bool guest = ApiState.is_guest;
+    bool guest = CusRole.is_guest;
     return CusAppBar(
       showLeading: false,
       textColor: t_primary,

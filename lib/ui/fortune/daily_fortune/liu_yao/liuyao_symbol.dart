@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/util/swicht_util.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/complex/tools/yi_tool.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/temp/yi_tool.dart';
 
 // ------------------------------------------------------
 // author：suxing

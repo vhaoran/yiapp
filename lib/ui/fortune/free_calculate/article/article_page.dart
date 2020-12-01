@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
-import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/gather/net_photoview.dart';
+import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/model/article/article_content.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/service/api/api_article.dart';
@@ -42,10 +42,10 @@ class _ArticlePageState extends State<ArticlePage> {
   _fetch() async {
     try {
       var res = await ApiArticle.articleGet(widget.article_id);
-      Debug.log("当篇文章详情:${res.toJson()}");
+      Log.info("当篇文章详情:${res.toJson()}");
       if (res != null) _article = res;
     } catch (e) {
-      Debug.logError("根据id获取文章出现异常：$e");
+      Log.error("根据id获取文章出现异常：$e");
     }
   }
 
@@ -104,7 +104,7 @@ class _ArticlePageState extends State<ArticlePage> {
                 return _buildImage(e);
                 break;
               default:
-                Debug.logError("出现了未知的文章内容类别:${e.type}");
+                Log.error("出现了未知的文章内容类别:${e.type}");
                 return SizedBox.shrink();
                 break;
             }
@@ -128,7 +128,7 @@ class _ArticlePageState extends State<ArticlePage> {
               .map((e) => e['content'])
               .toList()
               .indexOf(article.content);
-          Debug.log("共${_images.length}张图片,当前选中的第${index + 1}张");
+          Log.info("共${_images.length}张图片,当前选中的第${index + 1}张");
           CusRoute.push(
             context,
             NetPhotoView(imageList: _images, index: index, path: "content"),

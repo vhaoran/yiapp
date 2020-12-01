@@ -1,5 +1,5 @@
 import 'package:yiapp/model/complex/old_time.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
+import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 
 // ------------------------------------------------------
 // author：suxing

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_user.dart';
@@ -45,7 +45,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
       if (res != null) _l = res;
     } catch (e) {
       _l = [];
-      Debug.logError("暂未添加收货地址：$e");
+      Log.error("暂未添加收货地址：$e");
     }
   }
 

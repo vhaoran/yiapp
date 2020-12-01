@@ -1,5 +1,5 @@
 
-import 'package:yiapp/func/const/const_calendar.dart';
+import 'package:yiapp/const/cus_calendar.dart';
 
 import '../../../../model/calendar/date_model.dart';
 import 'solar_term_util.dart';
@@ -909,7 +909,7 @@ class LunarUtil {
     if (day == 1) {
       return numToChineseMonth(month, leap);
     }
-    return YiData.lunar_day[day - 1];
+    return CusYiData.lunar_day[day - 1];
   }
 
   /**
@@ -921,9 +921,9 @@ class LunarUtil {
    */
   static String numToChineseMonth(int month, int leap) {
     if (leap == 1) {
-      return "闰" + YiData.lunar_month[month - 1];
+      return "闰" + CusYiData.lunar_month[month - 1];
     }
-    return YiData.lunar_month[month - 1];
+    return CusYiData.lunar_month[month - 1];
   }
 
   static String getString(int month, int day) {

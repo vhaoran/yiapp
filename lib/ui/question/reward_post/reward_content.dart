@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/api_state.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -56,11 +56,11 @@ class _RewardContentState extends State<RewardContent> {
         print(">>>bbsPrize:${bbsPrize.toJson()}");
         _bbsPrize = bbsPrize;
         _rowsCount = _bbsPrize.reply.length;
-        Debug.log("帖子总长度：$_rowsCount");
+        Log.info("帖子总长度：$_rowsCount");
         if (_l.isEmpty) _fetchComment();
       }
     } catch (e) {
-      Debug.logError("查询单条悬赏帖出现异常：$e");
+      Log.error("查询单条悬赏帖出现异常：$e");
     }
   }
 
@@ -72,7 +72,7 @@ class _RewardContentState extends State<RewardContent> {
     }
     _pageNo++;
     _l = _bbsPrize.reply.take(_pageNo * 20).toList();
-    Debug.log("_l的长度：${_l.length}");
+    Log.info("_l的长度：${_l.length}");
     setState(() {});
   }
 
@@ -118,7 +118,7 @@ class _RewardContentState extends State<RewardContent> {
                 ),
               ),
               // 大师和发帖人可以回复
-              if (ApiState.is_master || _bbsPrize.uid == ApiBase.uid)
+              if (CusRole.is_master || _bbsPrize.uid == ApiBase.uid)
                 RewardInput(
                   data: _bbsPrize,
                   onSend: () async {

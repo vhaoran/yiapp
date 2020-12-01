@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'calendar_provider.dart';
 import 'configuration.dart';
-import '../../../func/const/const_calendar.dart';
+import '../../../const/cus_calendar.dart';
 import '../../../model/calendar/date_model.dart';
 import 'month_view.dart';
 import 'utils/date_util.dart';
@@ -77,7 +77,7 @@ class _WeekViewState extends State<WeekView> {
         itemBuilder: (context, index) {
           DateModel dateModel = items[index];
           //判断是否被选择
-          if (configuration.selectMode == YiData.multiple_mode) {
+          if (configuration.selectMode == CusYiData.multiple_mode) {
             if (calendarProvider.selectedDateList.contains(dateModel)) {
               dateModel.isSelected = true;
             } else {

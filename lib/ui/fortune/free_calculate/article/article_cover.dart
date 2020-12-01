@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/article/article_type_res.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_page.dart';
 

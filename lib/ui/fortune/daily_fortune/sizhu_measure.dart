@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/func/adapt.dart';
-import 'package:yiapp/func/cus_route.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
-import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
-import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
+import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
+import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_snackbar.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/ui/master/master_order/master_recommend.dart';
 
@@ -113,7 +113,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
       hour: _yi.oldTime.hour,
       minute: _yi.oldTime.minute,
     );
-    Debug.log(
+    Log.info(
         "信息：_err:$_err,sex:$_sex,name:${_nameCtrl.text},时间：${_yi.toJson()}");
     CusRoute.push(
       context,

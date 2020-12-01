@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/func/debug_log.dart';
-import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/func/const/const_color.dart';
-import 'package:yiapp/func/const/const_int.dart';
-import 'package:yiapp/func/bool_utils.dart';
-import 'package:yiapp/complex/widgets/cus_complex.dart';
-import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -53,15 +53,15 @@ class _FlashPaidPayState extends State<FlashPaidPay>
       PageBean pb = await ApiBBSVie.bbsVieHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as BBSVie).toList();
-      Debug.log("总的闪断帖已付款个数：$_rowsCount");
+      Log.info("总的闪断帖已付款个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Debug.log("当前已查询闪断帖已付款个数：${_l.length}");
+      Log.info("当前已查询闪断帖已付款个数：${_l.length}");
     } catch (e) {
-      Debug.logError("分页查询闪断帖已付款出现异常：$e");
+      Log.error("分页查询闪断帖已付款出现异常：$e");
     }
   }
 
