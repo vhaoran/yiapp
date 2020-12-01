@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -32,19 +32,19 @@ class UserProductInfo extends StatelessWidget {
         children: <Widget>[
           NormalBox(
             title: "购物车",
-            onTap: () => CusRoutes.push(context, ShopCartPage()),
+            onTap: () => CusRoute.push(context, ShopCartPage()),
           ),
           NormalBox(
             title: "待付款",
-            onTap: () => CusRoutes.push(context, AwaitPayment()),
+            onTap: () => CusRoute.push(context, AwaitPayment()),
           ),
           NormalBox(
             title: "待收货",
-            onTap: () => CusRoutes.push(context, AwaitGetGoods()),
+            onTap: () => CusRoute.push(context, AwaitGetGoods()),
           ),
           NormalBox(
             title: "已完成订单",
-            onTap: () => CusRoutes.push(context, CompletedGoods()),
+            onTap: () => CusRoute.push(context, CompletedGoods()),
           ),
         ],
       ),

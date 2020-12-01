@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -220,7 +220,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
       content_liuyao: queLiuyao,
       content: queContent,
     );
-    CusRoutes.push(
+    CusRoute.push(
       context,
       QueDetailPage(
         data: data,

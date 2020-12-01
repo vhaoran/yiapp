@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/address_result.dart';
@@ -60,7 +60,7 @@ class _UserAddressPageState extends State<UserAddressPage> {
               "添加新地址",
               style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
             ),
-            onPressed: () => CusRoutes.push(context, AddChAddrPage()).then(
+            onPressed: () => CusRoute.push(context, AddChAddrPage()).then(
               (val) {
                 if (val != null) _refresh();
               },

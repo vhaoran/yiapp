@@ -1,4 +1,4 @@
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/const/const_string.dart';
 import 'package:yiapp/model/bo/broker_cate_res.dart';
 import 'package:yiapp/model/bo/broker_product_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';

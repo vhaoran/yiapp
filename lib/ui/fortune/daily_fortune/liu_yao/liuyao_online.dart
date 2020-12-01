@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_callback.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
@@ -143,7 +143,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       var res = await ApiYi.liuYaoQiGua(m);
       Debug.log("六爻起卦的数据是：${res.toJson()}");
       if (res != null) {
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
           context,
           LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),
         ).then((val) {

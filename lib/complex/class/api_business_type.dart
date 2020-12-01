@@ -1,5 +1,5 @@
 import 'package:url_launcher/url_launcher.dart';
-import 'debug_log.dart';
+import '../../func/debug_log.dart';
 
 // ------------------------------------------------------
 // author：suxing

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_square_item.dart';
 
@@ -100,7 +100,7 @@ class _FreeCalculateState extends State<FreeCalculate>
               text: e['text'],
               icon: e['icon'],
               bgColor: e['color'],
-              onTap: () => CusRoutes.pushNamed(
+              onTap: () => CusRoute.pushNamed(
                 context,
                 e['route'],
                 arguments: e['text'],

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/func/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
@@ -146,13 +146,13 @@ class _MasterRecommendState extends State<MasterRecommend> {
   void _pushPage(MasterInfo e) {
     switch (widget.type) {
       case post_liuyao:
-        CusRoutes.push(
+        CusRoute.push(
           context,
           MeetLiuyaoPage(master_id: e.uid),
         );
         break;
       case post_sizhu:
-        CusRoutes.push(
+        CusRoute.push(
           context,
           MeetSiZhuPage(
             master_id: e.uid,
@@ -162,7 +162,7 @@ class _MasterRecommendState extends State<MasterRecommend> {
         );
         break;
       case post_hehun:
-        CusRoutes.push(
+        CusRoute.push(
           context,
           MeetHeHunPage(
             master_id: e.uid,

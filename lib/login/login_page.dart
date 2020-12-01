@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/su_regexp.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
         SpinKit.threeBounce(context, text: "正在登录，请稍等...");
         await Future.delayed(Duration(milliseconds: 1000));
         Navigator.pop(context);
-        CusRoutes.pushReplacement(context, HomePage());
+        CusRoute.pushReplacement(context, HomePage());
       },
     );
   }
@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
   void _doLogin() async {
     setState(() {
       _err = _mobileErr = _pwdErr = null;
-      if (!SuRegExp.isMobile(_mobileCtrl.text)) {
+      if (!RegexUtil.isMobile(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_pwdCtrl.text.length < 6) {
         _err = "密码由6-20位大小写字母组成";
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
             SpinKit.threeBounce(context, text: "正在登录，请稍等...");
             await Future.delayed(Duration(milliseconds: 1000));
             Navigator.pop(context);
-            CusRoutes.pushReplacement(context, HomePage());
+            CusRoute.pushReplacement(context, HomePage());
           }
         } catch (e) {
           Debug.logError("登录出现异常：$e");
@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: Adapt.px(30)),
       child: InkWell(
-        onTap: () => CusRoutes.push(context, RegisterPage()),
+        onTap: () => CusRoute.push(context, RegisterPage()),
         child: Text(
           "新用户注册",
           style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),

@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/model/cus_liuyao_data.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/model/complex/cus_liuyao_data.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -135,7 +135,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
               String str = json.encode(data.toJson());
               bool ok = await KV.setStr(kv_liuyao, str);
               if (ok) {
-                CusRoutes.push(context, MasterRecommend(type: post_liuyao));
+                CusRoute.push(context, MasterRecommend(type: post_liuyao));
               }
             },
           ),
@@ -147,7 +147,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
   /// 求测悬赏帖还是闪断帖
   void _doPost(bool isFlash) async {
     ApiState.isFlash = isFlash;
-    CusRoutes.push(
+    CusRoute.push(
       context,
       AskQuestionPage(
         content_type: post_liuyao,

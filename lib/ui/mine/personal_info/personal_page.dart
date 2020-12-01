@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/function/def_obj.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/su_regexp.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/def_obj.dart';
+import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
@@ -75,12 +75,12 @@ class _PersonalPageState extends State<PersonalPage> {
         NormalBox(
           title: "昵称", // 昵称
           subtitle: _u.nick,
-          onTap: () => CusRoutes.push(context, ChUserNick(nick: _u.nick)),
+          onTap: () => CusRoute.push(context, ChUserNick(nick: _u.nick)),
         ),
         NormalBox(
           title: "性别", // 性别
           subtitle: CusTool.sex(_u.sex),
-          onTap: () => CusRoutes.push(context, ChUserSex(sex: _u.sex)),
+          onTap: () => CusRoute.push(context, ChUserSex(sex: _u.sex)),
         ),
         NormalBox(
           title: "出生日期", // 出生日期
@@ -92,11 +92,11 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         NormalBox(
           title: "手机号码", // 手机号码
-          showBtn: SuRegExp.isMobile(_u.user_code) ? false : true,
-          subtitle: SuRegExp.isMobile(_u.user_code) ? _u.user_code : "绑定手机",
-          subFn: SuRegExp.isMobile(_u.user_code)
+          showBtn: RegexUtil.isMobile(_u.user_code) ? false : true,
+          subtitle: RegexUtil.isMobile(_u.user_code) ? _u.user_code : "绑定手机",
+          subFn: RegexUtil.isMobile(_u.user_code)
               ? null
-              : () => CusRoutes.push(context, BindUserCodePwd()),
+              : () => CusRoute.push(context, BindUserCodePwd()),
         ),
         // 出生地点
 //        NormalBox(
@@ -109,7 +109,7 @@ class _PersonalPageState extends State<PersonalPage> {
         if (ApiState.is_vip)
           NormalBox(
             title: "我的收货地址",
-            onTap: () => CusRoutes.push(context, UserAddressPage()),
+            onTap: () => CusRoute.push(context, UserAddressPage()),
           ),
         SizedBox(height: Adapt.px(50)),
         SingleTextBox(
@@ -118,7 +118,7 @@ class _PersonalPageState extends State<PersonalPage> {
             context,
             title: "您确定退出当前账号吗?",
             fnDataApproval: "",
-            onThen: () => CusRoutes.push(context, LoginPage()),
+            onThen: () => CusRoute.push(context, LoginPage()),
           ),
         ),
       ],

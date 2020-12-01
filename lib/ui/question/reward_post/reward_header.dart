@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/function/swicht_case.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/date_util.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/util/swicht_util.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/util/date_util.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
@@ -50,7 +50,7 @@ class RewardHeader extends StatelessWidget {
             "出生日期",
             DateUtil.dateYMD(isSolar: _content.is_solar, date: _yiDate),
           ),
-          _show("所问类型", YiSwitch.contentType(data.content_type)),
+          _show("所问类型", SwitchUtil.contentType(data.content_type)),
           _show("标题", "${data.title}"),
 
           Padding(

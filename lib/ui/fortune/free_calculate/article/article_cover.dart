@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/model/article/article_type_res.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_page.dart';
 
@@ -26,7 +26,7 @@ class _ArticleCoverState extends State<ArticleCover> {
     return Card(
       color: t_gray,
       child: ListTile(
-        onTap: () => CusRoutes.push(
+        onTap: () => CusRoute.push(
           context, // 根据文章id跳转到详情页
           ArticlePage(article_id: widget.article.article_id),
         ),

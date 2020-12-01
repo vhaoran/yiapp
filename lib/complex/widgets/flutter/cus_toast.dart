@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../tools/adapt.dart';
+import '../../../func/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing

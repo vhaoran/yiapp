@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
+import 'package:yiapp/func/const/const_color.dart';
 
 // ------------------------------------------------------
 // author：suxing

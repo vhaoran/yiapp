@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../const/const_color.dart';
-import '../../tools/adapt.dart';
+import '../../../func/const/const_color.dart';
+import '../../../func/adapt.dart';
 import '../../../service/api/api_image.dart';
 
 // ------------------------------------------------------

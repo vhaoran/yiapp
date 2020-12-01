@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -51,7 +51,7 @@ class _ProductTypeCoverState extends State<ProductTypeCover> {
               onSelected: (val) {
                 switch (val) {
                   case "修改":
-                    CusRoutes.push(
+                    CusRoute.push(
                             context, ChProductType(category: widget.category))
                         .then((val) {
                       if (val != null && widget.onChanged != null)

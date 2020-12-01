@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 

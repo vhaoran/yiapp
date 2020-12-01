@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/master/master_order_detail.dart';
@@ -40,7 +40,7 @@ class _MasterOrderCoverState extends State<MasterOrderCover> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoutes.push(
+      onTap: () => CusRoute.push(
         context,
         MasterOrderDetail(
           id: _order.id,

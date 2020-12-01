@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -12,6 +11,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
+import 'package:yiapp/util/file_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -58,7 +58,7 @@ class _AddProductTypeState extends State<AddProductType> {
     });
     if (_err == null) {
       try {
-        String url = await CusTool.fileUrl(_file);
+        String url = await FileUtil.singleFile(_file);
         if (url != null && url.isNotEmpty) {
           var m = {"name": _nameCtrl.text.trim(), "icon": url, "sort_no": 0};
           Category res = await ApiProduct.categoryAdd(m);

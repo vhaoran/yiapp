@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/complex/class/cus_dot_format.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';

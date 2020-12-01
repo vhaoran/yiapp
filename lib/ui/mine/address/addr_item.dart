@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_callback.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
@@ -80,7 +80,7 @@ class AddrItem extends StatelessWidget {
       trailing: InkWell(
         child: CusText("编辑", CusColors.systemGrey2(context), 28),
         onTap: () =>
-            CusRoutes.push(context, AddChAddrPage(res: res)).then((val) {
+            CusRoute.push(context, AddChAddrPage(res: res)).then((val) {
           if (onChanged != null) onChanged();
         }),
       ),

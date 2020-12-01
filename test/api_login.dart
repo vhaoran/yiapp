@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/const/const_string.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 

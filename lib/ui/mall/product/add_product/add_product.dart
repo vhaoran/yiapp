@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_snackbar.dart';
@@ -18,6 +18,7 @@ import 'package:yiapp/ui/mall/product/add_product/add_p_color.dart';
 import 'package:yiapp/ui/mall/product/add_product/add_p_images.dart';
 import 'package:yiapp/ui/mall/product/add_product/add_p_name.dart';
 import 'package:yiapp/ui/mall/product/add_product/chose_p_type.dart';
+import 'package:yiapp/util/file_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -89,7 +90,7 @@ class _AddProductState extends State<AddProduct> {
   /// 满足新增商品条件，执行添加商品
   void _doAdd() async {
     SpinKit.threeBounce(context);
-    List<Map> s = await CusTool.assetsKeyPath(_images);
+    List<Map> s = await FileUtil.multipleFiles(_images);
     Navigator.pop(context);
     var res = List<ProductImage>();
     s.forEach((e) {

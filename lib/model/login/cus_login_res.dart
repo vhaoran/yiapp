@@ -1,4 +1,4 @@
-import 'package:yiapp/complex/function/type_change.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'login_result.dart';
 import 'modules.dart';
 import 'userInfo.dart';
@@ -160,9 +160,9 @@ class CusLoginRes {
         );
     UserInfo u = r.user_info;
     return CusLoginRes(
-      is_admin: toInt(r.is_admin),
-      is_broker_admin: toInt(r.is_broker_admin),
-      is_master: toInt(r.is_master),
+      is_admin: UsUtil.toInt(r.is_admin),
+      is_broker_admin: UsUtil.toInt(r.is_broker_admin),
+      is_master: UsUtil.toInt(r.is_master),
       jwt: r.jwt,
       enable_mall: m.enable_mall,
       enable_master: m.enable_master,
@@ -176,7 +176,7 @@ class CusLoginRes {
       city: u.city,
       country: u.country,
       created_at: u.created_at,
-      enabled: toInt(u.enabled),
+      enabled: UsUtil.toInt(u.enabled),
       icon: u.icon,
       uid: u.id,
       id_card: u.id_card,

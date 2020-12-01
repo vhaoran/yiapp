@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -24,7 +24,7 @@ class MasterCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoutes.push(
+      onTap: () => CusRoute.push(
         context,
         LookMasterHomePage(master_id: info.uid),
       ),
@@ -63,7 +63,7 @@ class MasterCover extends StatelessWidget {
                       pdHor: 20,
                       borderRadius: 100,
                       onPressed: onPressed ??
-                          () => CusRoutes.push(context, ChatMain()),
+                          () => CusRoute.push(context, ChatMain()),
                     ),
                   ],
                 ),

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'calendar_provider.dart';
 import 'configuration.dart';
-import '../../../complex/const/const_calendar.dart';
+import '../../../func/const/const_calendar.dart';
 import '../../../model/calendar/date_model.dart';
 import 'month_view.dart';
 import 'utils/date_util.dart';

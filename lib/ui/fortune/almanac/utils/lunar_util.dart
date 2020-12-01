@@ -1,5 +1,5 @@
 
-import 'package:yiapp/complex/const/const_calendar.dart';
+import 'package:yiapp/func/const/const_calendar.dart';
 
 import '../../../../model/calendar/date_model.dart';
 import 'solar_term_util.dart';

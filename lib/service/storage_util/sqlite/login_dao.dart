@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_string.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';

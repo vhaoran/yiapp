@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/function/shopcart_func.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/shopcart_func.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -12,7 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
-import 'package:yiapp/complex/model/cus_order_data.dart';
+import 'package:yiapp/model/complex/cus_order_data.dart';
 import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
@@ -74,7 +74,7 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
             milliseconds: 1500,
           );
           Future.delayed(Duration(milliseconds: 1500)).then(
-            (value) => CusRoutes.pushReplacement(
+            (value) => CusRoute.pushReplacement(
               context,
               ComPayPage(
                 tip: "商城订单付款",

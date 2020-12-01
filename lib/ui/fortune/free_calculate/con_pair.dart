@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/const/const_list.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/const/const_list.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/fn/fn_dialog.dart';
 import 'package:yiapp/complex/widgets/small/cus_description.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
@@ -124,7 +124,7 @@ class _ConPairPageState extends State<ConPairPage> {
       var res = await ApiFree.conMatch(m);
       Debug.log("查询星座配对结果:${res.toJson()}");
       if (res != null) {
-        CusRoutes.push(context, ConResPage(res: res)).then((value) {
+        CusRoute.push(context, ConResPage(res: res)).then((value) {
           _maleStr = _femaleStr = "";
           _maleCon = _femaleCon = -1;
           if (value != null) Navigator.pop(context);

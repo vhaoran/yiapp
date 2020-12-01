@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_qiniu/flutter_qiniu.dart';
-import '../../complex/function/create_uuid.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'api_base.dart';
 
 class ApiImage {
@@ -15,7 +15,7 @@ class ApiImage {
     //获取token
     String token = await ApiImage.UploadToken(100);
     //设置key
-    String key = newUUID();
+    String key = UsUtil.newUUID();
     //这是返回的结果，上伟成功后会返回一个结果
     String r = await _doUpload_qiniu(file, key, token);
     if (r == null || r.length == 0) {
@@ -29,7 +29,7 @@ class ApiImage {
     //获取token
     String token = await ApiImage.UploadToken(100);
     //设置key
-    String key = newUUID();
+    String key = UsUtil.newUUID();
     //这是返回的结果，上伟成功后会返回一个结果
     String r = await _doUpload_qiniu_data(data, key, token);
     if (r == null || r.length == 0) {
@@ -45,7 +45,7 @@ class ApiImage {
     //获取token
     String token = await ApiImage.UploadToken(20);
     //设置key
-    String key = newUUID();
+    String key = UsUtil.newUUID();
     //这是返回的结果，上伟成功后会返回一个结果
     String r = await _doUpload_qiniu(file, key, token);
     if (r == null || r.length == 0) {

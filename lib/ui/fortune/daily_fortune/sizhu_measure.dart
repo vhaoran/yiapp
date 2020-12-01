@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/model/yi_date_time.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -115,7 +115,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
     );
     Debug.log(
         "信息：_err:$_err,sex:$_sex,name:${_nameCtrl.text},时间：${_yi.toJson()}");
-    CusRoutes.push(
+    CusRoute.push(
       context,
       MasterRecommend(type: post_sizhu, siZhu: siZhu, timeSiZhu: _timeStr),
     );

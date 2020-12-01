@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/time_picker.dart';
 import 'package:yiapp/complex/widgets/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -118,7 +118,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
       var res = await ApiFree.shengRiMatch(m);
       Debug.log("生日配对结果：${res.toJson()}");
       if (res != null) {
-        CusRoutes.push(context, BirthResPage(res: res)).then((value) {
+        CusRoute.push(context, BirthResPage(res: res)).then((value) {
           _male_month = _male_day = _female_month = _female_day = 0;
           _maleStr = _femaleStr = "";
           Navigator.pop(context);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
@@ -35,7 +35,7 @@ class _FlashCoverState extends State<FlashCover> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CusRoutes.push(context, FlashContent(id: widget.data.id)),
+      onTap: () => CusRoute.push(context, FlashContent(id: widget.data.id)),
       child: Card(
         color: fif_primary,
         margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),

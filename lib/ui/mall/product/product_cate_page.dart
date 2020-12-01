@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/func/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -117,7 +117,7 @@ class _ProductCatePageState extends State<ProductCatePage>
 
   Widget _jump(BrokerProductRes e) {
     return InkWell(
-      onTap: () => CusRoutes.push(
+      onTap: () => CusRoute.push(
         context,
         ProductDetails(id_of_es: e.id_of_es),
       ),

@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
@@ -13,6 +12,7 @@ import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/complex/widgets/flutter/rect_field.dart';
 import 'package:yiapp/model/dicts/ProductCate.dart';
 import 'package:yiapp/service/api/api-product.dart';
+import 'package:yiapp/util/file_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -60,7 +60,7 @@ class _ChProductTypeState extends State<ChProductType> {
       String url;
       try {
         if (_file != null) {
-          url = await CusTool.fileUrl(_file);
+          url = await FileUtil.singleFile(_file);
         }
         var m = {
           "id": widget.category.id,

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/function/mix_func.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/api_state.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -15,6 +14,7 @@ import 'package:yiapp/ui/mall/product/product_store.dart';
 import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
+import 'package:yiapp/util/us_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   void _initLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
-    bool logged = await jwtToken(); // 根据是否有本地token，判断用户是否登录过
+    bool logged = await UsUtil.isToken(); // 根据是否有本地token，判断用户是否登录过
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
     try {
       if (logged) {

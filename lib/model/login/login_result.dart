@@ -1,6 +1,6 @@
-import 'package:yiapp/complex/function/def_obj.dart';
-import 'package:yiapp/complex/function/type_change.dart';
+import 'package:yiapp/func/def_obj.dart';
 import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'cus_login_res.dart';
 import 'modules.dart';
 
@@ -74,7 +74,7 @@ class LoginResult {
       city: t.city,
       country: t.country,
       created_at: t.created_at,
-      enabled: toBool(t.enabled),
+      enabled: UsUtil.toBool(t.enabled),
       icon: t.icon,
       id: t.uid,
       id_card: t.id_card,
@@ -88,9 +88,9 @@ class LoginResult {
       ver: t.ver,
     );
     return LoginResult(
-      is_admin: toBool(t.is_admin),
-      is_broker_admin: toBool(t.is_broker_admin),
-      is_master: toBool(t.is_master),
+      is_admin: UsUtil.toBool(t.is_admin),
+      is_broker_admin: UsUtil.toBool(t.is_broker_admin),
+      is_master: UsUtil.toBool(t.is_master),
       jwt: t.jwt,
       modules: m,
       user_info: u,

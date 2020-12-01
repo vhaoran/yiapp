@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/article/article_result.dart';
@@ -43,7 +43,7 @@ class _ArticleSearchResState extends State<ArticleSearchRes> {
   /// 单个搜索结果
   Widget _resItem(ArticleResult e) {
     return InkWell(
-      onTap: () => CusRoutes.push(context, ArticlePage(article_id: e.code)),
+      onTap: () => CusRoute.push(context, ArticlePage(article_id: e.code)),
       child: Card(
         color: t_gray,
         child: Padding(

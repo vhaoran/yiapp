@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/gather/cus_swiper_pagination.dart';
 import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
@@ -52,7 +52,7 @@ class _ProductLoopsState extends State<ProductLoops> {
           boxFit: BoxFit.cover,
           onTap: () {
             var l = _images.map((e) => e.toJson()).toList();
-            CusRoutes.push(
+            CusRoute.push(
               context,
               NetPhotoView(imageList: l, index: i),
             );

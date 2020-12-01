@@ -2,18 +2,18 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/provider/master_state.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/tools/cus_tool.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/ui/provider/master_state.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
+import 'package:yiapp/util/file_util.dart';
 import 'ch_master_nick.dart';
 
 // ------------------------------------------------------
@@ -53,7 +53,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           child: InkWell(
             child: CusText(widget.m.nick ?? "", t_primary, 30),
             onTap: ApiState.is_master
-                ? () => CusRoutes.push(
+                ? () => CusRoute.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))
                 : null,
           ),
@@ -66,7 +66,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
   void _doChIcon(File file) async {
     if (file == null) return;
     try {
-      String url = await CusTool.fileUrl(file);
+      String url = await FileUtil.singleFile(file);
       Debug.log("这里的url是：$url");
       var m = {
         "id": widget.m.id,

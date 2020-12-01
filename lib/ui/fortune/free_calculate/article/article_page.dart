@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/gather/net_photoview.dart';
@@ -129,7 +129,7 @@ class _ArticlePageState extends State<ArticlePage> {
               .toList()
               .indexOf(article.content);
           Debug.log("共${_images.length}张图片,当前选中的第${index + 1}张");
-          CusRoutes.push(
+          CusRoute.push(
             context,
             NetPhotoView(imageList: _images, index: index, path: "content"),
           );

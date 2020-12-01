@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/tools/cus_time.dart';
 import 'package:yiapp/complex/widgets/small/cus_article.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
@@ -144,7 +144,7 @@ class _DailyFortuneState extends State<DailyFortune> {
               text: m['text'],
               icon: m['icon'],
               bgColor: m['color'],
-              onTap: () => CusRoutes.pushNamed(context, m['route'],
+              onTap: () => CusRoute.pushNamed(context, m['route'],
                   arguments: m['text']),
             );
           },
@@ -156,7 +156,7 @@ class _DailyFortuneState extends State<DailyFortune> {
   /// 显示时间区域
   Widget _timeArea() {
     return InkWell(
-      onTap: () => CusRoutes.push(context, AlmanacPage()),
+      onTap: () => CusRoute.push(context, AlmanacPage()),
       child: Container(
         height: Adapt.px(72),
         child: Row(
@@ -177,7 +177,7 @@ class _DailyFortuneState extends State<DailyFortune> {
                 textColor: Colors.black,
                 fontSize: 24,
                 pdHor: 14,
-                onPressed: () => CusRoutes.push(context, AlmanacPage()),
+                onPressed: () => CusRoute.push(context, AlmanacPage()),
               ),
             ),
           ],
@@ -196,7 +196,7 @@ class _DailyFortuneState extends State<DailyFortune> {
           (index) {
             var e = _goods[index];
             return InkWell(
-              onTap: () => CusRoutes.pushNamed(context, e['route'],
+              onTap: () => CusRoute.pushNamed(context, e['route'],
                   arguments: e['text']),
               child: Container(
                 alignment: Alignment.center,

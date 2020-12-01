@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -126,7 +126,7 @@ class _MasterServicePageState extends State<MasterServicePage>
 
   /// 跳转回本页面的回调
   void _doFn({MasterCate m}) {
-    CusRoutes.push(context, AddChServicePage(res: m)).then((val) {
+    CusRoute.push(context, AddChServicePage(res: m)).then((val) {
       if (val != null) _refresh();
     });
   }

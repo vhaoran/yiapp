@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_string.dart';
 
 // ------------------------------------------------------
 // author：suxing

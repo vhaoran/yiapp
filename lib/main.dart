@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/complex/provider/cus_provider.dart';
+import 'package:yiapp/ui/provider/cus_provider.dart';
 import 'package:yiapp/ui/home/home_page.dart';
-import 'complex/function/permissions.dart';
+import 'func/permissions.dart';
 import 'complex/refactor_widgets/su_toast.dart';
 import 'routes/main_routes.dart';
 

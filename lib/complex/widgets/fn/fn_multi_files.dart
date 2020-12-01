@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/func/debug_log.dart';
 
 // ------------------------------------------------------
 // author：suxing

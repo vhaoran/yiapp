@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/func/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -55,7 +55,7 @@ class _ProductTypeState extends State<ProductType> {
         actions: <Widget>[
           FlatButton(
             onPressed: () =>
-                CusRoutes.push(context, AddProductType()).then((val) {
+                CusRoute.push(context, AddProductType()).then((val) {
               if (val != null) _refresh();
             }),
             child: CusText("新增", Colors.orangeAccent, 28),

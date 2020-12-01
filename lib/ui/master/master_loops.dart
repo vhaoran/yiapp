@@ -2,17 +2,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_double.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_double.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/api_state.dart';
 import 'package:yiapp/complex/tools/cus_tool.dart';
 import 'package:yiapp/complex/widgets/small/cus_bg_wall.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_bottom_sheet.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/service/api/api-master.dart';
+import 'package:yiapp/util/file_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -113,7 +114,7 @@ class _MasterLoopsState extends State<MasterLoops> {
   void _doAddImage(File file, num sort_no) async {
     if (file == null) return;
     try {
-      String url = await CusTool.fileUrl(file);
+      String url = await FileUtil.singleFile(file);
       if (url != null && url.isNotEmpty) {
         var m = {"image_path": url, "sort_no": 1};
         MasterImages res = await ApiMaster.masterImageAdd(m);
@@ -130,7 +131,7 @@ class _MasterLoopsState extends State<MasterLoops> {
   /// 替换图片
   void _doReplaceImage(File file, MasterImages image) async {
     try {
-      String url = await CusTool.fileUrl(file);
+      String url = await FileUtil.singleFile(file);
       if (url != null && url.isNotEmpty) {
         var m = {
           "id": image.id,

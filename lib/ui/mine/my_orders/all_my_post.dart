@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -32,19 +32,19 @@ class AllMyPostPage extends StatelessWidget {
         children: <Widget>[
           NormalBox(
             title: "待付款",
-            onTap: () => CusRoutes.push(context, RewardAwaitMain()),
+            onTap: () => CusRoute.push(context, RewardAwaitMain()),
           ),
           NormalBox(
             title: "悬赏帖历史",
-            onTap: () => CusRoutes.push(context, RewardHisMain()),
+            onTap: () => CusRoute.push(context, RewardHisMain()),
           ),
           NormalBox(
             title: "闪断帖历史",
-            onTap: () => CusRoutes.push(context, FlashHisMain()),
+            onTap: () => CusRoute.push(context, FlashHisMain()),
           ),
           NormalBox(
             title: "大师待处理订单",
-            onTap: () => CusRoutes.push(context, MyMasterOrders()),
+            onTap: () => CusRoute.push(context, MyMasterOrders()),
           ),
         ],
       ),

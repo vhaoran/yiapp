@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_math.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/util/math_util.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
-import 'package:yiapp/complex/widgets/pay/balance_pay.dart';
 import 'package:yiapp/complex/widgets/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
@@ -72,7 +71,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
         _l = res;
         if (res.isNotEmpty) {
           List<num> l = res.map((e) => e.price).toList();
-          _prices = CusMath.listSort(l, up: false);
+          _prices = MathUtil.listSort(l, up: false);
         }
       }
     } catch (e) {
@@ -219,7 +218,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
       if (data != null) {
         Navigator.pop(context);
         CusToast.toast(context, text: "发帖成功");
-        CusRoutes.pushReplacement(context, HomePage());
+        CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {
       if (e.toString().contains("余额")) {
@@ -227,7 +226,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           context,
           title: "余额不足，请充值",
           textAgree: "充值",
-          onApproval: () => CusRoutes.push(
+          onApproval: () => CusRoute.push(
             context,
             RechargePage(amt: _data.amt),
           ),

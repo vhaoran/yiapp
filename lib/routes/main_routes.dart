@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/const/const_string.dart';
 import 'package:yiapp/complex/temp_page.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/hehun_measure.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';

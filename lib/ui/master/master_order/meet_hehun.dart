@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -118,7 +118,7 @@ class _MeetHeHunPageState extends State<MeetHeHunPage> {
       if (res != null) {
         Navigator.pop(context);
         CusToast.toast(context, text: "下单成功");
-        CusRoutes.pushReplacement(context, HomePage());
+        CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {
       Debug.logError("合婚下大师单出现异常：$e");

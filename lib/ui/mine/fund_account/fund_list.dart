@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/global/actionListener.dart';
 import 'package:left_scroll_actions/leftScroll.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -191,7 +191,7 @@ class _FundListPageState extends State<FundListPage> {
 
   /// 跳转路由后的回调
   void _pushPage() {
-    CusRoutes.push(context, AddFundAccount()).then((val) {
+    CusRoute.push(context, AddFundAccount()).then((val) {
       if (val != null) _refresh();
     });
   }

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/su_regexp.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
@@ -112,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
               // 识别（`recognizer`）属性，一个手势识别器，它将接收触及此文本范围的事件。
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  CusRoutes.push(context, AgreementPage());
+                  CusRoute.push(context, AgreementPage());
                 },
             ),
           ],
@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _verify() async {
     setState(() {
       _err = null;
-      if (!SuRegExp.isMobile(_mobileCtrl.text)) {
+      if (!RegexUtil.isMobile(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_nickCtrl.text.isEmpty) {
         _err = "昵称不能为空";
@@ -169,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
         Navigator.pop(context);
         CusToast.toast(context, text: "注册成功");
         await Future.delayed(Duration(milliseconds: 300));
-        CusRoutes.pushReplacement(context, LoginPage());
+        CusRoute.pushReplacement(context, LoginPage());
       }
       // 注册失败
       else {

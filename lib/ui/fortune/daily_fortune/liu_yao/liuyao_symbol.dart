@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/function/swicht_case.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/util/swicht_util.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/tools/yi_tool.dart';
 
 // ------------------------------------------------------
@@ -60,7 +60,7 @@ class LiuYaoSymbol extends StatelessWidget {
           height: Adapt.px(30),
           margin: EdgeInsets.only(right: Adapt.px(10)),
           child: Text(
-            YiSwitch.xoSymbol(code),
+            SwitchUtil.xoSymbol(code),
             style: TextStyle(
               color: t_gray,
               fontSize: Adapt.px(30),

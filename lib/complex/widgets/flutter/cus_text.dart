@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/adapt.dart';
 
 // ------------------------------------------------------
 // author：suxing

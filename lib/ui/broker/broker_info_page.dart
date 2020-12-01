@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/provider/broker_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/ui/provider/broker_state.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
@@ -57,7 +57,7 @@ class _BrokerInfoPageState extends State<BrokerInfoPage> {
         NormalBox(title: "邀请码", subtitle: _b.service_code),
         NormalBox(
           title: "运营商管理员",
-          onTap: () => CusRoutes.push(context, BrokerAdminPage()),
+          onTap: () => CusRoute.push(context, BrokerAdminPage()),
         ),
       ],
     );

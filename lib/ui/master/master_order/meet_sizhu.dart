@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -144,7 +144,7 @@ class _MeetSiZhuPageState extends State<MeetSiZhuPage> {
         Navigator.pop(context);
         Debug.log("四柱下单后返回的订单id：${res.id}");
         CusToast.toast(context, text: "下单成功");
-        CusRoutes.pushReplacement(context, HomePage());
+        CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {
       Debug.logError("四柱下大师单出现异常：$e");

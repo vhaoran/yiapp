@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
+import 'package:yiapp/func/debug_log.dart';
 import 'package:yiapp/complex/class/refresh_hf.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -118,7 +118,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
               (e) => Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: InkWell(
-                  onTap: () => CusRoutes.push(
+                  onTap: () => CusRoute.push(
                     context,
                     ProductDetails(id_of_es: e.product_id),
                   ),

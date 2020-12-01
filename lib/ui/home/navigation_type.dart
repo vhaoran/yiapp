@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/cus_callback.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/cus_callback.dart';
 import 'package:yiapp/complex/widgets/small/cus_singlebar.dart';
 
 // ------------------------------------------------------

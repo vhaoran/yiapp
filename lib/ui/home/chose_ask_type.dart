@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
@@ -58,22 +58,22 @@ class ChoseAskType extends StatelessWidget {
   void _type(context, int i) {
     switch (i) {
       case 0: // 六爻
-        CusRoutes.pushReplacement(context, LiuYaoPage());
+        CusRoute.pushReplacement(context, LiuYaoPage());
         break;
       case 1: // 四柱
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
           context,
           AskQuestionPage(content_type: post_sizhu, barName: "四柱"),
         );
         break;
       case 2: // 合婚
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
           context,
           AskQuestionPage(content_type: post_hehun, barName: "合婚"),
         );
         break;
       case 3: // 其他
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
             context, AskQuestionPage(content_type: 0, barName: "其他"));
         break;
       default:

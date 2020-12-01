@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_string.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_string.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/model/article/article_type_res.dart';

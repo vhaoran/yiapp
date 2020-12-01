@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:yiapp/complex/class/api_business_type.dart';
 import 'package:yiapp/complex/class/cus_dot_format.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -100,7 +100,7 @@ class _ComPayPageState extends State<ComPayPage> {
     // 这里让 _success 将等于服务器返回的交易结果
     if (_success) {
       CusToast.toast(context, text: "支付成功", milliseconds: 1500);
-      CusRoutes.push(context, HomePage());
+      CusRoute.push(context, HomePage());
     } else {
 //      CusDialog.tip(
 //        context,

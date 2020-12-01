@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/function/swicht_case.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/util/swicht_util.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_divider.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -29,7 +29,7 @@ class FlashHeader extends StatelessWidget {
           _postTop(), // 头像、昵称、赏金、发帖时间
           CusDivider(),
           _show("姓名", data.nick ?? "至尊宝"),
-          _show("所问类型", YiSwitch.contentType(data.content_type)),
+          _show("所问类型", SwitchUtil.contentType(data.content_type)),
           _show("标题", "${data.title}"),
           _show("内容", "${data.brief}"),
           CusDivider(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_toast.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 
@@ -16,6 +16,6 @@ class LackBalance {
 
   void _push(context, num amt) async {
     CusToast.toast(context, text: "元宝不足，请充值", milliseconds: 1200);
-    CusRoutes.push(context, RechargePage(amt: amt));
+    CusRoute.push(context, RechargePage(amt: amt));
   }
 }

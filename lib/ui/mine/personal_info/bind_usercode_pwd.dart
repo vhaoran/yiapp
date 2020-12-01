@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/su_regexp.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
@@ -83,7 +83,7 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
   void _verify() async {
     // 判断是否已绑定过手机号和密码
     var user = await LoginDao(glbDB).readUserByUid();
-    if (await SuRegExp.isMobile(user.user_code)) {
+    if (await RegexUtil.isMobile(user.user_code)) {
       CusDialog.tip(
         context,
         title: "您已绑定过手机号和密码",
@@ -92,7 +92,7 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
     } else {
       setState(() {
         _err = _mobileErr = null;
-        if (!SuRegExp.isMobile(_mobileCtrl.text)) {
+        if (!RegexUtil.isMobile(_mobileCtrl.text)) {
           _err = "请输入正确的手机号";
         } else if (_pwdCtrl.text.length < 6) {
           _err = "密码最少6位";

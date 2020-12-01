@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_int.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
-import 'package:yiapp/complex/type/bool_utils.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_int.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/func/cus_route.dart';
+import 'package:yiapp/func/bool_utils.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
@@ -157,22 +157,22 @@ class _QuestionPageState extends State<QuestionPage>
   void _pushWhere(context, int i) {
     switch (i) {
       case 0: // 六爻
-        CusRoutes.pushReplacement(context, LiuYaoPage());
+        CusRoute.pushReplacement(context, LiuYaoPage());
         break;
       case 1: // 四柱
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
           context,
           AskQuestionPage(content_type: post_sizhu, barName: "四柱"),
         );
         break;
       case 2: // 合婚
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
           context,
           AskQuestionPage(content_type: post_hehun, barName: "合婚"),
         );
         break;
       case 3: // 其他
-        CusRoutes.pushReplacement(
+        CusRoute.pushReplacement(
             context, AskQuestionPage(content_type: 0, barName: "其他"));
         break;
       default:

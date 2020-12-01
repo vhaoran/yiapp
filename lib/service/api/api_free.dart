@@ -1,15 +1,15 @@
-import 'package:yiapp/complex/const/const_string.dart';
-import 'package:yiapp/free_model/draws/chegong_result.dart';
-import 'package:yiapp/free_model/draws/daxian_result.dart';
-import 'package:yiapp/free_model/draws/guandi_result.dart';
-import 'package:yiapp/free_model/draws/guanyin_result.dart';
-import 'package:yiapp/free_model/draws/lvzu_result.dart';
-import 'package:yiapp/free_model/draws/mazu_result.dart';
-import 'package:yiapp/free_model/draws/yuelao_result.dart';
-import 'package:yiapp/free_model/pairs/birth_result.dart';
-import 'package:yiapp/free_model/pairs/blood_result.dart';
-import 'package:yiapp/free_model/pairs/con_result.dart';
-import 'package:yiapp/free_model/pairs/zodiac_result.dart';
+import 'package:yiapp/func/const/const_string.dart';
+import 'package:yiapp/model/free/chegong_result.dart';
+import 'package:yiapp/model/free/daxian_result.dart';
+import 'package:yiapp/model/free/guandi_result.dart';
+import 'package:yiapp/model/free/guanyin_result.dart';
+import 'package:yiapp/model/free/lvzu_result.dart';
+import 'package:yiapp/model/free/mazu_result.dart';
+import 'package:yiapp/model/free/yuelao_result.dart';
+import 'package:yiapp/model/free/birth_result.dart';
+import 'package:yiapp/model/free/blood_result.dart';
+import 'package:yiapp/model/free/con_result.dart';
+import 'package:yiapp/model/free/zodiac_result.dart';
 import 'package:yiapp/model/complex/zhou_gong_res.dart';
 import 'api_base.dart';
 

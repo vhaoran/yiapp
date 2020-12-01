@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/cus_complex.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
@@ -143,7 +143,7 @@ class _ZhouGongPageState extends State<ZhouGongPage> {
   /// 显示单个搜索结果封面
   Widget _searchItem(ZhouGongRes e) {
     return InkWell(
-      onTap: () => CusRoutes.push(context, ZhouGongDetail(res: e)),
+      onTap: () => CusRoute.push(context, ZhouGongDetail(res: e)),
       child: Card(
         color: t_gray,
         child: Padding(

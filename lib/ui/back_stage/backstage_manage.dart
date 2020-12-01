@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/small/cus_box.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/back_stage/admin_master_orders.dart';
@@ -32,19 +32,19 @@ class BackstageManage extends StatelessWidget {
         SizedBox(height: Adapt.px(10)),
         NormalBox(
           title: "大师申请审批",
-          onTap: () => CusRoutes.push(context, MasterApplyHisPage()),
+          onTap: () => CusRoute.push(context, MasterApplyHisPage()),
         ),
         NormalBox(
           title: "运营商申请审批",
-          onTap: () => CusRoutes.push(context, BrokerApplyHisPage()),
+          onTap: () => CusRoute.push(context, BrokerApplyHisPage()),
         ),
         NormalBox(
           title: "启用停用大师",
-          onTap: () => CusRoutes.push(context, MasterEnable()),
+          onTap: () => CusRoute.push(context, MasterEnable()),
         ),
         NormalBox(
           title: "大师未完成订单",
-          onTap: () => CusRoutes.push(context, AdminMasterOrders()),
+          onTap: () => CusRoute.push(context, AdminMasterOrders()),
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/adapt.dart';
 import 'package:yiapp/complex/widgets/master/cus_fivestar.dart';
 import 'package:yiapp/complex/widgets/master/cus_number_data.dart';
 import 'package:yiapp/complex/widgets/master/user_comment.dart';

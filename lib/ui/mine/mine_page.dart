@@ -2,15 +2,15 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/const/const_double.dart';
-import 'package:yiapp/complex/demo/demo_main.dart';
-import 'package:yiapp/complex/function/def_obj.dart';
-import 'package:yiapp/complex/provider/user_state.dart';
-import 'package:yiapp/complex/tools/adapt.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/const/const_double.dart';
+import 'package:yiapp/demo/demo_main.dart';
+import 'package:yiapp/func/def_obj.dart';
+import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/func/adapt.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_text.dart';
 import 'package:yiapp/complex/widgets/small/cus_avatar.dart';
@@ -108,7 +108,7 @@ class _MinePageState extends State<MinePage>
               _isMasterApply = _isBrokerApply = false;
               _notifyStr = "";
             },
-            onThen: () => CusRoutes.push(context, LoginPage()),
+            onThen: () => CusRoute.push(context, LoginPage()),
           );
         }
       });
@@ -124,47 +124,47 @@ class _MinePageState extends State<MinePage>
         if (ApiState.is_master)
           NormalBox(
             title: "大师信息",
-            onTap: () => CusRoutes.push(context, MasterInfoPage()),
+            onTap: () => CusRoute.push(context, MasterInfoPage()),
           ),
         // 游客身份看不到的内容
         if (!ApiState.is_guest && !ApiState.is_master) ...[
           NormalBox(
             title: "我的订单",
-            onTap: () => CusRoutes.push(context, AllMyPostPage()),
+            onTap: () => CusRoute.push(context, AllMyPostPage()),
           ),
           NormalBox(
             title: "我的商品",
-            onTap: () => CusRoutes.push(context, UserProductInfo()),
+            onTap: () => CusRoute.push(context, UserProductInfo()),
           ),
           NormalBox(
             title: "个人资金账号",
-            onTap: () => CusRoutes.push(context, FundMain()),
+            onTap: () => CusRoute.push(context, FundMain()),
           ),
         ],
         if (!ApiState.is_guest)
           NormalBox(
             title: "账户与安全",
-            onTap: () => CusRoutes.push(context, AccountSafePage()),
+            onTap: () => CusRoute.push(context, AccountSafePage()),
           ),
         // 大师、运营商、运营商管理员不能申请的
         if (!ApiState.is_master && !ApiState.is_broker_admin) ...[
           NormalBox(
             title: "申请大师",
-            onTap: () => CusRoutes.push(context, ApplyMasterPage()),
+            onTap: () => CusRoute.push(context, ApplyMasterPage()),
           ),
           NormalBox(
             title: "申请运营商",
-            onTap: () => CusRoutes.push(context, ApplyBrokerPage()),
+            onTap: () => CusRoute.push(context, ApplyBrokerPage()),
           ),
         ],
         if (ApiState.is_guest)
           NormalBox(
             title: "绑定运营商",
-            onTap: () => CusRoutes.push(context, BindSerCodePage()),
+            onTap: () => CusRoute.push(context, BindSerCodePage()),
           ),
         NormalBox(
           title: "demo 测试",
-          onTap: () => CusRoutes.push(context, CusDemoMain()),
+          onTap: () => CusRoute.push(context, CusDemoMain()),
         ),
       ],
     );
@@ -181,7 +181,7 @@ class _MinePageState extends State<MinePage>
             alignment: Alignment(0, 0), // 头像
             child: InkWell(
               child: CusAvatar(url: _u.icon ?? "", circle: true),
-              onTap: () => CusRoutes.push(context, PersonalPage()),
+              onTap: () => CusRoute.push(context, PersonalPage()),
             ),
           ),
           Align(

@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/complex/class/debug_log.dart';
-import 'package:yiapp/complex/const/const_color.dart';
-import 'package:yiapp/complex/tools/api_state.dart';
-import 'package:yiapp/complex/tools/su_regexp.dart';
-import 'package:yiapp/complex/tools/cus_routes.dart';
+import 'package:yiapp/func/debug_log.dart';
+import 'package:yiapp/func/const/const_color.dart';
+import 'package:yiapp/func/api_state.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/func/cus_route.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_appbar.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_button.dart';
 import 'package:yiapp/complex/widgets/flutter/cus_dialog.dart';
@@ -70,7 +70,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
                   style: TextStyle(fontSize: 16, color: Colors.lightBlue),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      CusRoutes.push(context, BindUserCodePwd());
+                      CusRoute.push(context, BindUserCodePwd());
                     },
                 ),
               ],
@@ -131,7 +131,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     }
     // 申请前先查看手机号是否已绑定，密码是否已修改
     var user = await LoginDao(glbDB).readUserByUid();
-    bool isMobile = SuRegExp.isMobile(user.user_code);
+    bool isMobile = RegexUtil.isMobile(user.user_code);
     // 没有设置手机号和密码
     if (!isMobile) {
       Debug.log("未绑定手机号和密码");
@@ -140,7 +140,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         title: "您暂未设置手机号和密码",
         textAgree: "现在绑定",
         fnDataApproval: "",
-        onThen: () => CusRoutes.push(context, BindUserCodePwd()),
+        onThen: () => CusRoute.push(context, BindUserCodePwd()),
       );
     }
     // 已设置手机号和密码
