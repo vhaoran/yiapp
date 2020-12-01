@@ -5,11 +5,11 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/ui/luck/luck_list.dart';
+import 'package:yiapp/ui/luck/luck_loop.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/temp/cus_time.dart';
-import 'package:yiapp/widget/small/cus_article.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/small/cus_circle_item.dart';
@@ -21,10 +21,9 @@ import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 // usage ：每日运势
 // ------------------------------------------------------
 
-const int tmp_color = 0xFFF0B36E; // 当前页选项卡默认背景色
-
 class DailyFortune extends StatefulWidget {
   DailyFortune({Key key}) : super(key: key);
+
   @override
   _DailyFortuneState createState() => _DailyFortuneState();
 }
@@ -32,33 +31,6 @@ class DailyFortune extends StatefulWidget {
 class _DailyFortuneState extends State<DailyFortune> {
   DateTime _now; // 当前时间
   Lunar _lunar;
-  final int _maxCount = 8; // 最多显示宜、忌项的个数
-  // 本地资源轮播
-  final List<String> _loops = [
-    "loop_1.jpg",
-    "loop_2.png",
-    "loop_3.jpg",
-    "loop_4.jpg"
-  ];
-
-  // 算命功能区分类
-  final List<Map> _assorts = [
-    {"text": "四柱测算", "icon": 0xeb00, "color": 0xFFEEA988, "route": r_sizhu},
-    {"text": "六爻排盘", "icon": 0xe633, "color": 0xFFA18CF7, "route": r_liu_yao},
-    {"text": "姻缘测算", "icon": 0xe606, "color": 0xFFE86E66, "route": r_he_hun},
-  ];
-
-  // 好物列表
-  final List<Map> _goods = [
-    {"text": "恋爱桃花", "route": "temp"},
-    {"text": "健康平安", "route": "temp"},
-    {"text": "财富事业", "route": "temp"},
-    {"text": "学业职场", "route": "temp"},
-    {"text": "破灾符", "route": "temp"},
-    {"text": "聚财符", "route": "temp"},
-    {"text": "平安符", "route": "temp"},
-    {"text": "感情符", "route": "temp"},
-  ];
 
   @override
   void initState() {
@@ -73,8 +45,8 @@ class _DailyFortuneState extends State<DailyFortune> {
       behavior: CusBehavior(),
       child: ListView(
         children: <Widget>[
-          _loopArea(), // 轮播图
-          _assortArea(), // 算命功能区分类
+          LuckLoops(),
+//          _loop(), // 轮播图
           _timeArea(), // 显示黄历时间
           Container(
             color: primary,
@@ -85,25 +57,25 @@ class _DailyFortuneState extends State<DailyFortune> {
               ],
             ),
           ),
-          _tip("好物列表"),
-          _goodsArea(), // 好物列表
-          _tip("精选评测"),
-          ..._evaluationArea(), // 精选评测
+          _title(text: "付费测算"),
+          _itemView(LuckList.pay),
+          _title(text: "免费测算"),
+          _itemView(LuckList.free),
         ],
       ),
     );
   }
 
   /// 轮播图
-  Widget _loopArea() {
+  Widget _loop() {
     return Container(
-      height: Adapt.px(300),
+      height: 180,
       color: primary,
       child: Swiper(
-        itemCount: _loops.length,
+        itemCount: LuckList.loops.length,
         itemBuilder: (context, index) {
           return Image.asset(
-            "assets/images/loop/${_loops[index]}",
+            "assets/images/loop/${LuckList.loops[index]}",
             fit: BoxFit.fill,
           );
         },
@@ -115,8 +87,8 @@ class _DailyFortuneState extends State<DailyFortune> {
           builder: DotSwiperPaginationBuilder(
             color: Colors.white,
             activeColor: Colors.blue,
-            size: Adapt.px(18),
-            activeSize: Adapt.px(18),
+            size: 10,
+            activeSize: 10,
           ),
         ), // 分页指示
       ),
@@ -124,31 +96,29 @@ class _DailyFortuneState extends State<DailyFortune> {
   }
 
   /// 算命功能区分类
-  Widget _assortArea() {
+  Widget _itemView(List<Map> l) {
     return Container(
       color: primary,
-      padding: EdgeInsets.only(
-        left: Adapt.px(10),
-        right: Adapt.px(10),
-        top: Adapt.px(20),
-        bottom: Adapt.px(10),
-      ),
+      padding: EdgeInsets.all(5),
       child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        crossAxisCount: 5, // 横轴元素个数
-        children: List.generate(
-          _assorts.length,
-          (i) {
-            Map m = _assorts[i];
-            return CusCircleItem(
-              text: m['text'],
-              icon: m['icon'],
-              bgColor: m['color'],
-              onTap: () => CusRoute.pushNamed(context, m['route'],
-                  arguments: m['text']),
-            );
-          },
-        ),
+        mainAxisSpacing: 5,
+        crossAxisCount: 5,
+        children: <Widget>[
+          ...l.map(
+            (e) => CusCircleItem(
+              text: e['text'],
+              icon: e['icon'],
+              bgColor: e['color'],
+              onTap: () => CusRoute.pushNamed(
+                context,
+                e['route'],
+                arguments: e['text'],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -158,7 +128,7 @@ class _DailyFortuneState extends State<DailyFortune> {
     return InkWell(
       onTap: () => CusRoute.push(context, AlmanacPage()),
       child: Container(
-        height: Adapt.px(72),
+        height: 40,
         child: Row(
           children: <Widget>[
             Spacer(),
@@ -186,52 +156,17 @@ class _DailyFortuneState extends State<DailyFortune> {
     );
   }
 
-  /// 好物列表区域
-  Widget _goodsArea() {
-    return Container(
-      color: primary,
-      child: Wrap(
-        children: List.generate(
-          _goods.length,
-          (index) {
-            var e = _goods[index];
-            return InkWell(
-              onTap: () => CusRoute.pushNamed(context, e['route'],
-                  arguments: e['text']),
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(6),
-                width: Adapt.screenW() / 4,
-                child: Text(
-                  "${e['text']}",
-                  style: TextStyle(color: t_primary, fontSize: Adapt.px(28)),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  /// 精选评测
-  List<Widget> _evaluationArea() {
-    // 再大的愿景都是从小处着手，越大的图越要从小处搞，越小的东西越要从大处着眼
-    return _assorts.map((e) => CusArticle(title: e['text'])).toList();
-  }
-
   /// 封装的宜忌组件
   Widget _yiOrJiCts(List<String> l, {Color color = t_yi, bool isYi = true}) {
     l.insert(0, isYi ? "宜" : "忌");
+    final int max = 8;
     return Row(
       children: List.generate(
-        l.length >= _maxCount ? _maxCount : l.length,
+        l.length >= max ? max : l.length,
         (index) {
-          // bool fourWords = l[index].length >= 4 ? true : false;
-          // int width = fourWords ? _maxCount - 3 : _maxCount;
           return Container(
             padding: EdgeInsets.all(Adapt.px(6)),
-            width: Adapt.screenW() / _maxCount,
+            width: Adapt.screenW() / max,
             child: Text(
               l[index],
               style: TextStyle(color: color, fontSize: Adapt.px(28)),
@@ -247,13 +182,14 @@ class _DailyFortuneState extends State<DailyFortune> {
     );
   }
 
-  /// 如"精选评测"等提示内容
-  Widget _tip(String text, {double fontSize = 32, double padding = 20}) {
-    return Padding(
-      padding: EdgeInsets.all(Adapt.px(padding)),
+  /// 付费、免费测算标题
+  Widget _title({String text}) {
+    return Container(
+      padding: EdgeInsets.all(Adapt.px(20)),
+      color: fif_primary,
       child: Text(
-        text ?? "提示文字",
-        style: TextStyle(fontSize: Adapt.px(fontSize), color: t_primary),
+        text,
+        style: TextStyle(fontSize: Adapt.px(32), color: t_primary),
       ),
     );
   }

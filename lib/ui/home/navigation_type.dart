@@ -3,22 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/global/cus_fn.dart';
+import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/small/cus_singlebar.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/22 17:03
-// usage ：底部导航类型
+// usage ：底部导航栏
 // ------------------------------------------------------
 
 class NavigationType extends StatefulWidget {
   int curIndex;
-  List<String> names;
+  List<String> barNames;
   FnInt onChanged;
 
   NavigationType({
     this.curIndex: 0,
-    this.names,
+    this.barNames,
     this.onChanged,
     Key key,
   }) : super(key: key);
@@ -33,7 +34,24 @@ class _NavigationTypeState extends State<NavigationType> {
     return BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _bottomBar(),
+        children: <Widget>[
+          ...widget.barNames.map((name) {
+            int i = widget.barNames.indexOf(name);
+            Color select = widget.curIndex == i ? t_primary : t_gray;
+            return _barItem(
+              length: widget.barNames.length,
+              title: name,
+              titleColor: select,
+              iconColor: select,
+              icon: _icon(i),
+              onTap: () {
+                if (widget.onChanged != null) {
+                  widget.onChanged(i);
+                }
+              },
+            );
+          }),
+        ],
       ),
       color: ter_primary,
       shape: CircularNotchedRectangle(),
@@ -41,25 +59,32 @@ class _NavigationTypeState extends State<NavigationType> {
   }
 
   /// 底部导航栏
-  List<Widget> _bottomBar() {
-    return widget.names.map(
-      (name) {
-        int i = widget.names.indexOf(name);
-        Color select = widget.curIndex == i ? t_primary : t_gray;
-        return CusSingleBar(
-          title: name,
-          titleColor: select,
-          iconColor: select,
-          length: widget.names.length,
-          icon: _icon(i),
-          onTap: () {
-            if (widget.onChanged != null) {
-              widget.onChanged(i);
-            }
-          },
-        );
-      },
-    ).toList();
+  Widget _barItem({
+    int length,
+    String title,
+    Color iconColor,
+    Color titleColor,
+    IconData icon,
+    VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        width: Adapt.screenW() / length,
+        padding: EdgeInsets.only(top: 5, bottom: Adapt.px(2)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(icon, size: 28, color: iconColor),
+            SizedBox(height: 5),
+            Text(
+              title ?? "选项",
+              style: TextStyle(fontSize: Adapt.px(26), color: titleColor),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   /// 动态获取底部导航栏图标

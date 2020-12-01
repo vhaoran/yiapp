@@ -141,7 +141,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       bool ok = await ApiBroker.serviceCodeBind(_codeCtrl.text.trim());
       Log.info("绑定运营商结果：$ok");
       if (ok) {
-        CusToast.toast(context, text: "绑定成功，即将为您重新登录", milliseconds: 2000);
+        CusToast.toast(context, text: "绑定成功，即将为你重新登录", milliseconds: 2000);
         SpinKit.threeBounce(context);
         await Future.delayed(Duration(milliseconds: 2000));
         String pwd = await KV.getStr(kv_tmp_pwd);

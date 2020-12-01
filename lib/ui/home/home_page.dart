@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -7,7 +8,7 @@ import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
-import 'package:yiapp/ui/fortune/fortune_page.dart';
+import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/home/navigation_type.dart';
 import 'package:yiapp/ui/mall/product/product_store.dart';
@@ -15,6 +16,8 @@ import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
 import 'package:yiapp/util/us_util.dart';
+import 'package:yiapp/widget/badge/badge_data.dart';
+import 'package:yiapp/widget/badge/su_badge.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -30,10 +33,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> _bars = []; // 底部导航组件
-  List<String> _names = []; // 底部导航名称
+  List<Widget> _barWidgets = []; // 底部导航组件
+  List<String> _barNames = []; // 底部导航名称
   int _curIndex = 0; // 底部导航栏索引
-  // 需要用该控制器，否则即使继承 AutomaticKeepAliveClientMixin，也会重新刷新
   var _pc = PageController();
 
   @override
@@ -48,21 +50,50 @@ class _HomePageState extends State<HomePage> {
       body: PageView.builder(
         controller: _pc,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: _bars.length,
-        itemBuilder: (context, index) => _bars[index],
+        itemCount: _barWidgets.length,
+        itemBuilder: (context, index) => _barWidgets[index],
       ),
-      bottomNavigationBar: NavigationType(
-        curIndex: _curIndex, // 底部导航栏设置
-        names: _names,
-        onChanged: (val) {
-          if (val == null) return;
-          if (_curIndex != val) {
-            setState(() {
-              _curIndex = val;
-              _pc.jumpToPage(_curIndex);
-            });
-          }
-        },
+//      bottomNavigationBar: NavigationType(
+//        curIndex: _curIndex, // 底部导航栏设置
+//        barNames: _barNames,
+//        onChanged: (val) {
+//          if (val == null) return;
+//          if (_curIndex != val) {
+//            setState(() {
+//              _curIndex = val;
+//              _pc.jumpToPage(_curIndex);
+//            });
+//          }
+//        },
+//      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: SuBadge(
+                child: Icon(Icons.settings),
+                hidden: false,
+                shape: SuBadgeShape.circle,
+              ),
+              title: Text('运势')),
+          BottomNavigationBarItem(
+              icon: SuBadge(
+                color: Colors.blue,
+                child: Icon(Icons.chat),
+                hidden: false,
+                shape: SuBadgeShape.square,
+                text: '99+',
+              ),
+              title: Text('chat')),
+          BottomNavigationBarItem(
+            icon: FLBadge(
+              child: Icon(Icons.shopping_cart),
+              hidden: false,
+              position: FLBadgePosition.topLeft, // default is topRight
+              shape: FLBadgeShape.spot,
+            ),
+            title: Text('cart'),
+          )
+        ],
       ),
       backgroundColor: Colors.black26,
     );
@@ -94,25 +125,25 @@ class _HomePageState extends State<HomePage> {
   void _dynamicModules() async {
     // 大师不受运营商控制，默认显示所有模块
     if (CusRole.is_master) {
-      _bars = [
-        FortunePage(),
+      _barWidgets = [
+        LuckMainPage(),
         MallPage(), // 大师获取的是平台所有的商品信息吗
         QuestionPage(),
         MasterListPage(),
         MinePage()
       ];
-      _names = ["运势", "商城", "问命", "大师", "我的"];
+      _barNames = ["运势", "商城", "问命", "大师", "我的"];
     }
     // 非大师身份，则按照运营商开通的服务模块动态显示
     else {
       // 默认开启运势中的"免费测算"和"我的"
-      _bars = [FortunePage(), MinePage()];
-      _names = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
+      _barWidgets = [LuckMainPage(), MinePage()];
+      _barNames = ["运势", "我的"]; // 用两个列表不用再拆开，方便运算传值
       CusLoginRes res = await LoginDao(glbDB).readUserByUid();
       if (res.enable_mall == 1) {
         Log.info("开启了商城");
-        _bars.insert(_bars.length - 1, MallPage());
-        _names.insert(_names.length - 1, "商城");
+        _barWidgets.insert(_barWidgets.length - 1, MallPage());
+        _barNames.insert(_barNames.length - 1, "商城");
       }
       if (res.enable_prize == 1 || res.enable_vie == 1) {
         if (res.enable_prize == 1) {
@@ -121,16 +152,16 @@ class _HomePageState extends State<HomePage> {
         if (res.enable_vie == 1) {
           Log.info("开启了闪断帖");
         }
-        _bars.insert(_bars.length - 1, QuestionPage());
-        _names.insert(_names.length - 1, "问命");
+        _barWidgets.insert(_barWidgets.length - 1, QuestionPage());
+        _barNames.insert(_barNames.length - 1, "问命");
       }
       if (res.enable_master == 1) {
         Log.info("开启了大师");
-        _bars.insert(_bars.length - 1, MasterListPage());
-        _names.insert(_names.length - 1, "大师");
+        _barWidgets.insert(_barWidgets.length - 1, MasterListPage());
+        _barNames.insert(_barNames.length - 1, "大师");
       }
     }
-    Log.info("底部导航栏names:${_names.toString()}");
+    Log.info("底部导航栏names:${_barNames.toString()}");
     setState(() {});
   }
 
