@@ -6,7 +6,7 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/temp/cus_time.dart';
-import 'package:yiapp/util/date_util.dart';
+import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';

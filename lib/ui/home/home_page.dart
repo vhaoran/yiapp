@@ -1,4 +1,3 @@
-import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -8,16 +7,14 @@ import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
-import 'package:yiapp/ui/luck/luck_main.dart';
+import 'package:yiapp/ui/home/cus_navigation.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
-import 'package:yiapp/ui/home/navigation_type.dart';
+import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/product/product_store.dart';
 import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';
 import 'package:yiapp/util/us_util.dart';
-import 'package:yiapp/widget/badge/badge_data.dart';
-import 'package:yiapp/widget/badge/su_badge.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -35,12 +32,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> _barWidgets = []; // 底部导航组件
   List<String> _barNames = []; // 底部导航名称
-  int _curIndex = 0; // 底部导航栏索引
+  int _curIndex = 0; // 当前导航栏索引
   var _pc = PageController();
+  var _future;
 
   @override
   void initState() {
-    _initLogin();
+    _future = _initLogin();
     super.initState();
   }
 
@@ -53,54 +51,37 @@ class _HomePageState extends State<HomePage> {
         itemCount: _barWidgets.length,
         itemBuilder: (context, index) => _barWidgets[index],
       ),
-//      bottomNavigationBar: NavigationType(
-//        curIndex: _curIndex, // 底部导航栏设置
-//        barNames: _barNames,
-//        onChanged: (val) {
-//          if (val == null) return;
-//          if (_curIndex != val) {
-//            setState(() {
-//              _curIndex = val;
-//              _pc.jumpToPage(_curIndex);
-//            });
-//          }
-//        },
-//      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: SuBadge(
-                child: Icon(Icons.settings),
-                hidden: false,
-                shape: SuBadgeShape.circle,
-              ),
-              title: Text('运势')),
-          BottomNavigationBarItem(
-              icon: SuBadge(
-                color: Colors.blue,
-                child: Icon(Icons.chat),
-                hidden: false,
-                shape: SuBadgeShape.square,
-                text: '99+',
-              ),
-              title: Text('chat')),
-          BottomNavigationBarItem(
-            icon: FLBadge(
-              child: Icon(Icons.shopping_cart),
-              hidden: false,
-              position: FLBadgePosition.topLeft, // default is topRight
-              shape: FLBadgeShape.spot,
-            ),
-            title: Text('cart'),
-          )
-        ],
-      ),
+      bottomNavigationBar: _cusNavigationBar(),
       backgroundColor: Colors.black26,
     );
   }
 
-  /// 用户第一次登录，以及登录后的重新登录
-  void _initLogin() async {
+  /// 底部导航栏
+  Widget _cusNavigationBar() {
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (!(snap.connectionState == ConnectionState.done)) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return CusBottomNavigationBar(
+          curIndex: _curIndex,
+          barNames: _barNames,
+          onChanged: (val) {
+            if (val == null) return;
+            if (_curIndex != val) {
+              _curIndex = val;
+              _pc.jumpToPage(_curIndex);
+              setState(() {});
+            }
+          },
+        );
+      },
+    );
+  }
+
+  /// 初始化登录信息
+  _initLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
     bool logged = await UsUtil.hasToken(); // 根据是否有本地token，判断用户是否登录过

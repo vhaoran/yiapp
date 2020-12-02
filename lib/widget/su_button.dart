@@ -105,11 +105,7 @@ class _CusRaisedButton extends MaterialButton {
             data: IconThemeData(color: textStyle?.color),
             child: Container(
               padding: buttonTheme.getPadding(this),
-              child: Center(
-                widthFactor: 1,
-                heightFactor: 1,
-                child: child,
-              ),
+              child: Center(widthFactor: 1, heightFactor: 1, child: child),
             ),
           ),
         ),

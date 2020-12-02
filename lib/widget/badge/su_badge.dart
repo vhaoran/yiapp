@@ -7,6 +7,7 @@ import 'badge_data.dart';
 // usage ：自定义底部导航栏文字描述上方组件（含Icon和通知红点）
 // ------------------------------------------------------
 
+// 文中提到的小红点指的通知消息，并非一定为红色
 class SuBadge extends StatefulWidget {
   final String text;
   final Color color;
@@ -35,66 +36,80 @@ class SuBadge extends StatefulWidget {
 }
 
 class SuBadgeState extends State<SuBadge> {
+  double _left, _right, _top, _bottom, _size; // 控制小红点的位置和大小
+  Alignment alignment;
+
   @override
   Widget build(BuildContext context) {
-    SuBadgeShape shape = widget.text != null ? widget.shape : SuBadgeShape.spot;
-    double size = shape == SuBadgeShape.spot
-        ? 2 * BadgeRadius.spot_radius
-        : BadgeRadius.badge_size;
-    Widget textChild = widget.text == null
-        ? null
-        : Center(
-            child: Text(
-              widget.text,
-              style: widget.textStyle,
-              textAlign: TextAlign.center,
-            ),
-          );
-
-    var left, right, top, bottom;
-    double offset = size / 3;
-    Alignment alignment;
-    if (widget.position == SuBadgePosition.topRight) {
-      right = -offset;
-      top = -offset;
-      alignment = Alignment.topRight;
-    } else if (widget.position == SuBadgePosition.topLeft) {
-      left = -offset;
-      top = -offset;
-      alignment = Alignment.topLeft;
-    } else if (widget.position == SuBadgePosition.bottomRight) {
-      bottom = -offset;
-      right = -offset;
-      alignment = Alignment.bottomRight;
-    } else {
-      // bottom left
-      left = -offset;
-      bottom = -offset;
-      alignment = Alignment.bottomLeft;
-    }
-
-    Widget badge = Positioned(
-        left: left,
-        top: top,
-        bottom: bottom,
-        right: right,
-        width: size,
-        height: size,
-        child: Container(
-            decoration: BoxDecoration(
-              color: widget.color,
-              borderRadius: _borderRadius(shape),
-            ),
-            child: textChild));
-
+    _noticePosition();
     List<Widget> children =
-        widget.hidden ? [widget.child] : [widget.child, badge];
-
+        widget.hidden ? [widget.child] : [widget.child, _badge()];
     return Stack(
-        alignment: alignment, overflow: Overflow.visible, children: children);
+      alignment: alignment,
+      overflow: Overflow.visible,
+      children: children,
+    );
   }
 
-  BorderRadius _borderRadius(SuBadgeShape shape) {
+  Widget _badge() {
+    return Positioned(
+      left: _left,
+      right: _right,
+      top: _top,
+      bottom: _bottom,
+      width: _size,
+      height: _size,
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: _borderRadius(),
+        ),
+        child: widget.text == null
+            ? null
+            : Center(
+                child: Text(
+                  widget.text,
+                  style: widget.textStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+      ),
+    );
+  }
+
+  /// 通知信息小红点位置
+  void _noticePosition() {
+    SuBadgeShape shape = widget.text != null ? widget.shape : SuBadgeShape.spot;
+    _size = shape == SuBadgeShape.spot
+        ? 2 * BadgeRadius.spot_radius
+        : BadgeRadius.badge_size;
+    double offset = _size / 3;
+    switch (widget.position) {
+      case SuBadgePosition.topRight:
+        _right = -offset;
+        _top = -offset;
+        alignment = Alignment.topRight;
+        break;
+      case SuBadgePosition.topLeft:
+        _left = -offset;
+        _top = -offset;
+        alignment = Alignment.topLeft;
+        break;
+      case SuBadgePosition.bottomRight:
+        _bottom = -offset;
+        _right = -offset;
+        alignment = Alignment.bottomRight;
+        break;
+      default:
+        _left = -offset;
+        _bottom = -offset;
+        alignment = Alignment.bottomLeft;
+        break;
+    }
+  }
+
+  /// 动态设置小红点的半径
+  BorderRadius _borderRadius() {
     double radius = 0;
     if (widget.radius != BadgeRadius.def_radius)
       radius = widget.radius;
@@ -104,7 +119,6 @@ class SuBadgeState extends State<SuBadge> {
       radius = BadgeRadius.square_radius;
     else if (widget.shape == SuBadgeShape.spot)
       radius = BadgeRadius.spot_radius;
-    print(">>>radius:$radius");
     return BorderRadius.circular(radius);
   }
 }

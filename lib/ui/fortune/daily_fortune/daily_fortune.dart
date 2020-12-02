@@ -66,35 +66,6 @@ class _DailyFortuneState extends State<DailyFortune> {
     );
   }
 
-  /// 轮播图
-  Widget _loop() {
-    return Container(
-      height: 180,
-      color: primary,
-      child: Swiper(
-        itemCount: LuckList.loops.length,
-        itemBuilder: (context, index) {
-          return Image.asset(
-            "assets/images/loop/${LuckList.loops[index]}",
-            fit: BoxFit.fill,
-          );
-        },
-        onTap: (index) {
-          Log.info("当前点的第${index + 1}张轮播图片");
-        },
-        autoplay: false, // 自动翻页
-        pagination: SwiperPagination(
-          builder: DotSwiperPaginationBuilder(
-            color: Colors.white,
-            activeColor: Colors.blue,
-            size: 10,
-            activeSize: 10,
-          ),
-        ), // 分页指示
-      ),
-    );
-  }
-
   /// 算命功能区分类
   Widget _itemView(List<Map> l) {
     return Container(

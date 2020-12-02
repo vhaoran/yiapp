@@ -7,7 +7,7 @@ import 'luck_list.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/1 下午6:14
-// usage ：运势中的轮播图
+// usage ：【每日运势】- 轮播图
 // ------------------------------------------------------
 
 class LuckLoops extends StatelessWidget {

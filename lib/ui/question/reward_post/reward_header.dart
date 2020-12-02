@@ -3,7 +3,7 @@ import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/util/date_util.dart';
+import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_divider.dart';
@@ -48,7 +48,7 @@ class RewardHeader extends StatelessWidget {
           _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
           _show(
             "出生日期",
-            DateUtil.dateYMD(isSolar: _content.is_solar, date: _yiDate),
+            TimeUtil.dateYMD(isSolar: _content.is_solar, date: _yiDate),
           ),
           _show("所问类型", SwitchUtil.contentType(data.content_type)),
           _show("标题", "${data.title}"),

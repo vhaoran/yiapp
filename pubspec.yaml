@@ -68,6 +68,9 @@ dependencies:
   flutter_html: ^1.0.0
   # flutter 小部件UI库
   flui: ^0.9.2
+  # flutter 屏幕适配
+  # flutter_screenutil: ^3.2.0
+  flutter_screenutil: ^4.0.0-beta
   ###### suxing #####
 
 dev_dependencies:

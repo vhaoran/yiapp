@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/fortune/daily_fortune/daily_fortune.dart';
 import 'package:yiapp/ui/luck/luck_loop.dart';
+import 'package:yiapp/widget/flutter/button_plugins.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import '../fortune/daily_fortune/daily_fortune.dart';
+import 'package:yiapp/widget/su_button.dart';
+import 'luck_calendar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -38,9 +42,19 @@ class _LuckMainPageState extends State<LuckMainPage>
   }
 
   Widget _lv() {
+    print(">>>设备宽度Width：${ScreenUtil().screenWidth}");
+    print(">>>设备宽度WidthPx：${ScreenUtil().screenWidthPx}");
+    print(">>>设备高度Width：${ScreenUtil().screenHeight}");
+    print(">>>设备宽度HeightPx：${ScreenUtil().screenHeightPx}");
+    print(">>>pixelRatio:${ScreenUtil().pixelRatio}");
     return ListView(
       children: <Widget>[
-        LuckLoops(),
+        LuckLoops(), // 每日运势中的轮播图
+        LuckCalendar(),
+//        SuButton(
+//          child: Text("按钮"),
+//          onPressed: () {},
+//        ),
       ],
     );
   }
