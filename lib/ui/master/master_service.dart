@@ -91,7 +91,7 @@ class _MasterServicePageState extends State<MasterServicePage>
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 0),
-          child: CusRaisedBtn(
+          child: CusBtn(
             text: "添加服务",
             minWidth: double.infinity,
             backgroundColor: fif_primary,

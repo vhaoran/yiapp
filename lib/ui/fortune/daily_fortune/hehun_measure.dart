@@ -69,7 +69,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
           _inputChild(_femaleNameCtrl, "女方姓名"),
           _dateChild(_femaleYiDate, female),
           SizedBox(height: Adapt.px(50)),
-          CusRaisedBtn(
+          CusBtn(
             text: "立即测算",
             onPressed: _pushPage,
             backgroundColor: btn_red,

@@ -149,7 +149,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
                 CusText("合计:￥${order.total_amt}", t_primary, 28),
               ],
             ),
-            CusRaisedBtn(
+            CusBtn(
               text: "付款",
               pdHor: 40,
               fontSize: 26,

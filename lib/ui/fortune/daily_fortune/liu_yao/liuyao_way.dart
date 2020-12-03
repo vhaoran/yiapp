@@ -50,7 +50,7 @@ class _LiuYaoWayState extends State<LiuYaoWay> {
           childAspectRatio: 4,
           children: List.generate(_ways.length, (i) {
             bool select = _select == i;
-            return CusRaisedBtn(
+            return CusBtn(
               text: _ways[i],
               borderRadius: 50,
               pdVer: 0,

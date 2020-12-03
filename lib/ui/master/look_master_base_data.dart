@@ -111,7 +111,7 @@ class _LookMasterBaseDataState extends State<LookMasterBaseData> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            CusRaisedBtn(
+            CusBtn(
               minWidth: 150,
               text: "关注",
               backgroundColor: Color(0xFF6C6B6D),
@@ -122,7 +122,7 @@ class _LookMasterBaseDataState extends State<LookMasterBaseData> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
-              child: CusRaisedBtn(
+              child: CusBtn(
                 minWidth: 150,
                 text: "立即约聊",
                 backgroundColor: t_primary,

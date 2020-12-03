@@ -86,7 +86,7 @@ class _AddProductTypeState extends State<AddProductType> {
             errorText: _err,
           ),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "${_file == null ? '选择' : '更换'}商品图片",
           onPressed: () => CusBottomSheet(
             context,

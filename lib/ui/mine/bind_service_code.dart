@@ -94,7 +94,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
           autofocus: false,
         ),
         SizedBox(height: Adapt.px(50)),
-        CusRaisedBtn(
+        CusBtn(
           text: "确定",
           backgroundColor: Colors.blueGrey,
           onPressed: _verify,

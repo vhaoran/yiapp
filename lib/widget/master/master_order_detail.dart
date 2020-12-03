@@ -146,7 +146,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
           SizedBox(height: 50),
           // 是大师本人订单,且可以让任何人看到(说明该订单已完成),则显示完成订单按钮
           if (_order.master_id == ApiBase.uid && !widget.showUser)
-            CusRaisedBtn(
+            CusBtn(
               text: "完成订单",
               onPressed: _doOrder,
               backgroundColor: Colors.blueGrey,

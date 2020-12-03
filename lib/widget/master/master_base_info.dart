@@ -55,7 +55,7 @@ class MasterCover extends StatelessWidget {
                     CusText(info.nick, t_gray, 32),
                     Spacer(),
                     // 按钮
-                    CusRaisedBtn(
+                    CusBtn(
                       text: "约聊大师",
                       backgroundColor: Color(0xFFDF5A54),
                       fontSize: 26,

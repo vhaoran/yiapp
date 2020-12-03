@@ -74,7 +74,7 @@ class _DateState extends State<CusTimePickerDemo> {
   }
 
   Widget _yiBtn(String text, PickerMode pickMode, bool showLunar) {
-    return CusRaisedBtn(
+    return CusBtn(
       backgroundColor: Colors.blueGrey,
       text: text,
       onPressed: () {

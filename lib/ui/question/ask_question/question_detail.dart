@@ -155,7 +155,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
-            child: CusRaisedBtn(
+            child: CusBtn(
               text: "完成，发${CusRole.isFlash ? '闪断' : '悬赏'}帖",
               minWidth: double.infinity,
               backgroundColor: Colors.blueGrey,

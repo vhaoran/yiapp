@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'luck_list.dart';
 
 // ------------------------------------------------------
@@ -16,7 +17,7 @@ class LuckLoops extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
+      height: S.h(180),
       color: primary,
       child: Swiper(
         itemCount: LuckList.loops.length,
@@ -34,8 +35,8 @@ class LuckLoops extends StatelessWidget {
           builder: DotSwiperPaginationBuilder(
             color: Colors.white,
             activeColor: Colors.blue,
-            size: 10,
-            activeSize: 10,
+            size: S.w(10),
+            activeSize: S.w(10),
           ),
         ), // 分页指示
       ),

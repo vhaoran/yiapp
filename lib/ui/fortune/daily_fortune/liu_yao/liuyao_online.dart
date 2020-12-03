@@ -115,7 +115,7 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       if (_hadShaken)
         Padding(
           padding: EdgeInsets.only(top: Adapt.px(30)),
-          child: CusRaisedBtn(
+          child: CusBtn(
             text: "开始起卦",
             minWidth: double.infinity,
             onPressed: _doQiGua,

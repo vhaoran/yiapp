@@ -44,7 +44,7 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
           child: Row(
             children: <Widget>[
               Expanded(child: Column(children: _inputs())),
-              CusRaisedBtn(
+              CusBtn(
                 text: "添加",
                 pdVer: 0,
                 pdHor: 10,

@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
           onlyLetter: true,
         ),
         SizedBox(height: 40),
-        CusRaisedBtn(
+        CusBtn(
           text: '注册',
           textColor: Colors.black,
           fontSize: 28,

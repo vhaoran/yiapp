@@ -39,7 +39,7 @@ class SuToast {
 
   /// 带感叹号的提示
   static void info({
-    String text,
+    @required String text,
     Duration showDuration,
     SuToastPosition position,
     SuToastStyle style,

@@ -169,7 +169,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
   Widget _bottomBtn(String text, {VoidCallback onPressed}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: CusRaisedBtn(
+      child: CusBtn(
         text: text,
         pdVer: 15,
         borderRadius: 100,

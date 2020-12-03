@@ -79,7 +79,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
         _choseDate(),
         SizedBox(height: Adapt.px(70)),
         // 大师亲测
-        CusRaisedBtn(
+        CusBtn(
           text: "大师亲测",
           backgroundColor: Colors.blueGrey,
           onPressed: _doMasterTest,
@@ -131,7 +131,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
           child:
               CusRectField(hintText: _timeStr, hideBorder: true, enable: false),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "选择",
           pdVer: 0,
           pdHor: 15,

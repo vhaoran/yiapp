@@ -51,7 +51,7 @@ class _ChoseProductTypeState extends State<ChoseProductType> {
             enable: false,
           ),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "选择",
           pdVer: 0,
           pdHor: 10,

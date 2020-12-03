@@ -90,7 +90,7 @@ class _MeetHeHunPageState extends State<MeetHeHunPage> {
             errorText: _err,
           ),
           SizedBox(height: Adapt.px(20)),
-          CusRaisedBtn(
+          CusBtn(
             text: "下单",
             backgroundColor: Colors.blueGrey,
             onPressed: _doOrder,

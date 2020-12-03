@@ -67,7 +67,7 @@ class _ChMasterNickState extends State<ChMasterNick> {
             child: Text("限制2-8666个字"),
           ),
           // 修改昵称
-          CusRaisedBtn(
+          CusBtn(
             text: "修改",
             onPressed: _doChNick,
           ),

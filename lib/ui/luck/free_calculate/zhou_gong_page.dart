@@ -10,7 +10,7 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/zhou_gong_res.dart';
 import 'package:yiapp/service/api/api_free.dart';
-import 'package:yiapp/ui/fortune/free_calculate/zhou_gong_detail.dart';
+import 'package:yiapp/ui/luck/free_calculate/zhou_gong_detail.dart';
 
 // ------------------------------------------------------
 // author：suxing

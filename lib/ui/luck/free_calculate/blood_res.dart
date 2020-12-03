@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/small/cus_parse.dart';
+import 'package:yiapp/ui/luck/widget/free_content.dart';
 import 'package:yiapp/model/free/blood_result.dart';
 
 // ------------------------------------------------------
@@ -13,11 +12,16 @@ import 'package:yiapp/model/free/blood_result.dart';
 // usage ：显示血型配对结果页面
 // ------------------------------------------------------
 
-class BloodResPage extends StatelessWidget {
+class BloodResPage extends StatefulWidget {
   final BloodResult res;
 
   BloodResPage({this.res, Key key}) : super(key: key);
 
+  @override
+  _BloodResPageState createState() => _BloodResPageState();
+}
+
+class _BloodResPageState extends State<BloodResPage> {
   List<Map> _parses = [];
 
   /// 设置解析后的数据
@@ -25,28 +29,23 @@ class BloodResPage extends StatelessWidget {
     _parses = [
       {
         "title": "彼此吸引点",
-        "contents": [res.advantage],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.advantage],
       },
       {
         "title": "最佳表白日",
-        "contents": [res.confession_day.split(':')[1]],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.confession_day.split(':')[1]],
       },
       {
         "title": "可能出现的问题",
-        "contents": [res.disadvantage],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.disadvantage],
       },
       {
         "title": "爱情誓言",
-        "contents": [res.disadvantage],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.disadvantage],
       },
       {
         "title": "增进感情的方式",
-        "contents": [res.plus],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.plus],
       },
     ];
   }
@@ -64,26 +63,26 @@ class BloodResPage extends StatelessWidget {
   Widget _lv(context) {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(20)),
       children: <Widget>[
         // 什么血型
         Padding(
-          padding: EdgeInsets.only(top: Adapt.px(30), bottom: Adapt.px(10)),
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
-            res.name,
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+            widget.res.name,
+            style: TextStyle(color: t_gray, fontSize: S.sp(17)),
           ),
         ),
         // 主体内容
         ..._parses.map(
-          (e) => ParseContent(
-            title: e['title'],
-            contents: e['contents'],
-            icon: e['icon'],
-          ),
+          (e) => FreeResContent(title: e['title'], contents: e['contents']),
         ),
         // 重测按钮
-        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context))
+        CusRaisedButton(
+          child: Text("重测一次", style: TextStyle(fontSize: S.sp(16))),
+          onPressed: () => Navigator.pop(context),
+        ),
+        SizedBox(height: S.h(10)),
       ],
     );
   }

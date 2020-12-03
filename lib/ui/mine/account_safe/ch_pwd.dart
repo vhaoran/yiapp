@@ -58,7 +58,7 @@ class _ChPwdPageState extends State<ChPwdPage> {
           errorText: _newErr,
         ),
         SizedBox(height: Adapt.px(50)),
-        CusRaisedBtn(
+        CusBtn(
           text: "确定修改",
           backgroundColor: Colors.blueGrey,
           onPressed: _doChPwd,

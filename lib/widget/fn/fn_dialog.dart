@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -59,16 +59,14 @@ class FnDialog {
   Widget _conItem({int select, String name, VoidCallback onTap}) {
     return InkWell(
       onTap: () {
-        if (fnPair != null) {
-          fnPair(sex, select, name);
-        }
+        if (fnPair != null) fnPair(sex, select, name);
       },
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              SizedBox(width: Adapt.px(20)),
-              Text(name, style: TextStyle(fontSize: Adapt.px(30))),
+              SizedBox(width: S.w(10)),
+              Text(name, style: TextStyle(fontSize: S.sp(15))),
               Spacer(),
               Radio(
                 value: select,

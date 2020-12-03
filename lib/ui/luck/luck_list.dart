@@ -16,7 +16,7 @@ class LuckList {
   ];
 
   /// 付费测算
-  static final List<Map> pay = [
+  static final List<Map<String, dynamic>> pay = [
     {
       "text": "四柱测算",
       "icon": 0xeb00,
@@ -38,7 +38,7 @@ class LuckList {
   ];
 
   /// 免费测算
-  static final List<Map> free = [
+  static final List<Map<String, dynamic>> free = [
     // 热门配对
     {
       "text": "星座配对",
@@ -121,4 +121,30 @@ class LuckList {
       "route": r_zhou_gong,
     },
   ];
+}
+
+/// 运势中免费、付费的配置项
+class LuckIcon {
+  String text; // 底部名称
+  int icon; // 图标
+  int color; // 背景色
+  String route; // 路由名称
+
+  LuckIcon({this.text, this.icon, this.color, this.route});
+
+  LuckIcon.fromJson(Map<String, dynamic> json) {
+    text = json['text'];
+    icon = json['icon'];
+    color = json['color'];
+    route = json['route'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['text'] = this.text;
+    data['icon'] = this.icon;
+    data['color'] = this.color;
+    data['route'] = this.route;
+    return data;
+  }
 }

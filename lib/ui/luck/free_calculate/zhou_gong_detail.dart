@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/complex/zhou_gong_res.dart';
 
 // ------------------------------------------------------
@@ -54,12 +54,16 @@ class _ZhouGongDetailState extends State<ZhouGongDetail> {
               child: RichText(
                 text: TextSpan(children: <InlineSpan>[
                   TextSpan(
-                    text: "${i + 1}.  ",
-                    style: TextStyle(color: t_primary, fontSize: Adapt.px(30)),
+                    text: "${i + 1}.  ", // 序号
+                    style: TextStyle(color: t_primary, fontSize: 16),
                   ),
                   TextSpan(
-                    text: "${_l[i]}",
-                    style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+                    text: "${_l[i]}", // 内容
+                    style: TextStyle(
+                      color: t_gray,
+                      fontSize: 16,
+                      height: 1.4,
+                    ),
                   ),
                 ]),
               ),

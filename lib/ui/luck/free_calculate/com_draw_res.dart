@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/small/cus_parse.dart';
+import 'package:yiapp/ui/luck/widget/free_content.dart';
 import 'package:yiapp/model/free/chegong_result.dart';
 import 'package:yiapp/model/free/daxian_result.dart';
 import 'package:yiapp/model/free/guandi_result.dart';
@@ -11,7 +11,7 @@ import 'package:yiapp/model/free/guanyin_result.dart';
 import 'package:yiapp/model/free/lvzu_result.dart';
 import 'package:yiapp/model/free/mazu_result.dart';
 import 'package:yiapp/model/free/yuelao_result.dart';
-import 'package:yiapp/ui/fortune/free_calculate/draw_parse.dart';
+import 'package:yiapp/ui/luck/free_calculate/draw_parse.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -19,7 +19,7 @@ import 'package:yiapp/ui/fortune/free_calculate/draw_parse.dart';
 // usage ：通用的灵签结果页面
 // ------------------------------------------------------
 
-class ComDrawResPage extends StatelessWidget {
+class ComDrawResPage extends StatefulWidget {
   final String title;
   final dynamic result; // 动态传递的灵签类型
 
@@ -29,36 +29,44 @@ class ComDrawResPage extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  List<Map> _parses = []; // 显示数据
-  String _name = ""; // 标题显示，如哪个灵签的第几签
+  @override
+  _ComDrawResPageState createState() => _ComDrawResPageState();
+}
 
+class _ComDrawResPageState extends State<ComDrawResPage> {
+  List<Map> _parses = [];
+  String _name = "";
   @override
   Widget build(BuildContext context) {
     _drawType();
     return Scaffold(
-      appBar: CusAppBar(text: title),
+      appBar: CusAppBar(text: widget.title),
       body: ListView(
         physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+        padding: EdgeInsets.symmetric(horizontal: S.w(20)),
         children: <Widget>[
           // 标题
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(top: Adapt.px(30), bottom: Adapt.px(10)),
+            padding: EdgeInsets.symmetric(vertical: S.h(5)),
             child: Text(
               _name,
-              style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+              style: TextStyle(color: t_gray, fontSize: S.sp(17)),
             ),
           ),
           // 内容
           ..._parses.map(
-            (e) => ParseContent(
+            (e) => FreeResContent(
               title: e['title'],
               contents: e['contents'],
             ),
           ),
           // 重测按钮
-          CusRaisedBtn(text: "再抽一签", onPressed: () => Navigator.pop(context))
+          CusRaisedButton(
+            child: Text("重测一次", style: TextStyle(fontSize: S.sp(16))),
+            onPressed: () => Navigator.pop(context),
+          ),
+          SizedBox(height: S.h(10)),
         ],
       ),
       backgroundColor: primary,
@@ -67,34 +75,34 @@ class ComDrawResPage extends StatelessWidget {
 
   /// 选择灵签类型
   void _drawType() {
-    _name = result.name.substring(5);
+    _name = widget.result.name.substring(5);
     // 大仙
-    if (result is DaXianResult) {
-      _parses = DrawParse.daXian(result);
+    if (widget.result is DaXianResult) {
+      _parses = DrawParse.daXian(widget.result);
     }
     // 关公
-    else if (result is GuanDiResult) {
-      _parses = DrawParse.guanDi(result);
+    else if (widget.result is GuanDiResult) {
+      _parses = DrawParse.guanDi(widget.result);
     }
     // 观音
-    else if (result is GuanYinResult) {
-      _parses = DrawParse.guanYin(result);
+    else if (widget.result is GuanYinResult) {
+      _parses = DrawParse.guanYin(widget.result);
     }
     // 妈祖
-    else if (result is MaZuResult) {
-      _parses = DrawParse.maZu(result);
+    else if (widget.result is MaZuResult) {
+      _parses = DrawParse.maZu(widget.result);
     }
     // 月老
-    else if (result is YueLaoResult) {
-      _parses = DrawParse.yueLao(result);
+    else if (widget.result is YueLaoResult) {
+      _parses = DrawParse.yueLao(widget.result);
     }
     // 车公
-    else if (result is CheGongResult) {
-      _parses = DrawParse.cheGong(result);
+    else if (widget.result is CheGongResult) {
+      _parses = DrawParse.cheGong(widget.result);
     }
     // 吕祖
-    else if (result is LvZuResult) {
-      _parses = DrawParse.lvZu(result);
+    else if (widget.result is LvZuResult) {
+      _parses = DrawParse.lvZu(widget.result);
     }
   }
 }

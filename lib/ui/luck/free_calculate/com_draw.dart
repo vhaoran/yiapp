@@ -9,9 +9,8 @@ import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
-import 'package:yiapp/model/free/daxian_result.dart';
 import 'package:yiapp/service/api/api_free.dart';
-import 'package:yiapp/ui/fortune/free_calculate/com_draw_res.dart';
+import 'package:yiapp/ui/luck/free_calculate/com_draw_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -126,10 +125,11 @@ class _ComDrawPageState extends State<ComDrawPage> {
       Log.error("$_title灵签出现异常：$e");
     }
     if (res != null) {
+      Navigator.pop(context);
       CusRoute.push(
         context,
         ComDrawResPage(result: res, title: _title),
-      ).then((value) => Navigator.pop(context));
+      );
     }
   }
 

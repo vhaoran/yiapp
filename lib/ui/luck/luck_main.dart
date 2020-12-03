@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/daily_fortune.dart';
+import 'package:yiapp/ui/luck/luck_calculate.dart';
 import 'package:yiapp/ui/luck/luck_loop.dart';
-import 'package:yiapp/widget/flutter/button_plugins.dart';
+import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/su_button.dart';
 import 'luck_calendar.dart';
 
 // ------------------------------------------------------
@@ -27,7 +25,7 @@ class _LuckMainPageState extends State<LuckMainPage>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    Log.info("进入了运势页面");
+    Log.info("进入运势页面");
     super.initState();
   }
 
@@ -42,20 +40,18 @@ class _LuckMainPageState extends State<LuckMainPage>
   }
 
   Widget _lv() {
-    print(">>>设备宽度Width：${ScreenUtil().screenWidth}");
-    print(">>>设备宽度WidthPx：${ScreenUtil().screenWidthPx}");
-    print(">>>设备高度Width：${ScreenUtil().screenHeight}");
-    print(">>>设备宽度HeightPx：${ScreenUtil().screenHeightPx}");
-    print(">>>pixelRatio:${ScreenUtil().pixelRatio}");
-    return ListView(
-      children: <Widget>[
-        LuckLoops(), // 每日运势中的轮播图
-        LuckCalendar(),
-//        SuButton(
-//          child: Text("按钮"),
-//          onPressed: () {},
-//        ),
-      ],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        children: <Widget>[
+          // 每日运势中的轮播图
+          LuckLoops(),
+          // 当前日期，宜忌注意事项
+          LuckCalendar(),
+          // 免费、付费测算
+          LuckCalculate(),
+        ],
+      ),
     );
   }
 

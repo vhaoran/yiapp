@@ -84,7 +84,7 @@ class BalancePay {
         CusDivider(color: Colors.black54),
         _rowInfo("付款方式", "账户余额"),
         Spacer(),
-        CusRaisedBtn(
+        CusBtn(
           text: "立即付款",
           backgroundColor: Color(0xFF3D77F1),
           minWidth: double.infinity,

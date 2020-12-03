@@ -151,7 +151,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
               ],
             ),
           ),
-          CusRaisedBtn(
+          CusBtn(
             text: "下一步",
             onPressed: _verify,
             minWidth: double.infinity,

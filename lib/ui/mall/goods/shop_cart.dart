@@ -142,7 +142,7 @@ class _ShopCartPageState extends State<ShopCartPage> {
           CusText("合计:", t_gray, 28),
           CusText("￥${_allShop == null ? 0 : _allShop.amt}", t_yi, 28),
           SizedBox(width: Adapt.px(30)),
-          CusRaisedBtn(
+          CusBtn(
             text: "结算${_allShop == null ? '' : '(${_allShop.counts})'}",
             pdHor: 40,
             borderRadius: 100,

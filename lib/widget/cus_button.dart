@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/const/con_color.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 // usage ：自定义 RaisedButton 按钮
 // ------------------------------------------------------
 
-class SuButton extends StatelessWidget {
+class CusRaisedButton extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   final ShapeBorder shape;
@@ -18,7 +19,7 @@ class SuButton extends StatelessWidget {
   final List<Color> colors; // 线性颜色
   final VoidCallback onPressed;
 
-  SuButton({
+  CusRaisedButton({
     @required this.child,
     this.padding,
     this.shape,
@@ -27,7 +28,7 @@ class SuButton extends StatelessWidget {
     this.disabledTextColor,
     this.splashColor,
     this.radius: 0,
-    this.colors,
+    this.colors: const [t_yi, t_red],
     @required this.onPressed,
     Key key,
   }) : super(key: key);
@@ -113,9 +114,9 @@ class _CusRaisedButton extends MaterialButton {
     );
   }
 
-  static Widget buildButton(SuButton button) {
+  static Widget buildButton(CusRaisedButton button) {
     List<Color> colors = button.backgroundColor == null
-        ? [Colors.lightBlueAccent, Color(0xFF0F4C81)]
+        ? button.colors
         : [button.backgroundColor, button.backgroundColor];
     final LinearGradient gradient = LinearGradient(
       colors: colors,

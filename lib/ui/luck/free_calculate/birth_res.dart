@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/small/cus_parse.dart';
+import 'package:yiapp/ui/luck/widget/free_content.dart';
 import 'package:yiapp/model/free/birth_result.dart';
 
 // ------------------------------------------------------
@@ -13,11 +14,16 @@ import 'package:yiapp/model/free/birth_result.dart';
 // usage ：显示生日配对结果页面
 // ------------------------------------------------------
 
-class BirthResPage extends StatelessWidget {
+class BirthResPage extends StatefulWidget {
   final BirthResult res;
 
   BirthResPage({this.res, Key key}) : super(key: key);
 
+  @override
+  _BirthResPageState createState() => _BirthResPageState();
+}
+
+class _BirthResPageState extends State<BirthResPage> {
   List<Map> _parses = [];
 
   /// 设置解析后的数据
@@ -25,18 +31,15 @@ class BirthResPage extends StatelessWidget {
     _parses = [
       {
         "title": "配对结果",
-        "contents": res.result,
-        "icon": FontAwesomeIcons.envira,
+        "contents": widget.res.result,
       },
       {
         "title": "爱情誓言",
-        "contents": [res.oath],
-        "icon": FontAwesomeIcons.envira,
+        "contents": [widget.res.oath],
       },
       {
         "title": "吉日",
-        "contents": res.jiRi,
-        "icon": FontAwesomeIcons.envira,
+        "contents": widget.res.jiRi,
       },
     ];
   }
@@ -54,26 +57,26 @@ class BirthResPage extends StatelessWidget {
   Widget _lv(context) {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(20)),
       children: <Widget>[
         // 生日配吗
         Padding(
-          padding: EdgeInsets.only(top: Adapt.px(30), bottom: Adapt.px(10)),
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
-            res.name,
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
+            widget.res.name,
+            style: TextStyle(color: t_gray, fontSize: S.sp(17)),
           ),
         ),
         // 主体内容
         ..._parses.map(
-          (e) => ParseContent(
-            title: e['title'],
-            contents: e['contents'],
-            icon: e['icon'],
-          ),
+          (e) => FreeResContent(title: e['title'], contents: e['contents']),
         ),
         // 重测按钮
-        CusRaisedBtn(text: "重测一次", onPressed: () => Navigator.pop(context))
+        CusRaisedButton(
+          child: Text("重测一次", style: TextStyle(fontSize: S.sp(16))),
+          onPressed: () => Navigator.pop(context),
+        ),
+        SizedBox(height: S.h(10)),
       ],
     );
   }

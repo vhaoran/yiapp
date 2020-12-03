@@ -95,7 +95,7 @@ class _ChProductTypeState extends State<ChProductType> {
             fromValue: widget.category.name,
           ),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "${_file == null ? '选择' : '更换'}商品图片",
           onPressed: () => CusBottomSheet(
             context,

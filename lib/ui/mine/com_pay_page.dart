@@ -167,7 +167,7 @@ class _ComPayPageState extends State<ComPayPage> {
           SizedBox(height: Adapt.px(5)),
           _typeWeChat(),
           SizedBox(height: Adapt.px(60)),
-          CusRaisedBtn(
+          CusBtn(
             text: "确定",
             textColor: t_gray,
             backgroundColor: fif_primary,

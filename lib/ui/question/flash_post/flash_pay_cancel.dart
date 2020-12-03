@@ -107,7 +107,7 @@ class _FlashPayCancelState extends State<FlashPayCancel> {
 
   /// 该页面通用按钮
   Widget _comBtnCtr(String text, {VoidCallback onPressed}) {
-    return CusRaisedBtn(
+    return CusBtn(
       text: text,
       fontSize: 26,
       pdHor: 24,

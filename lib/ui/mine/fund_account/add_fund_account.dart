@@ -89,7 +89,7 @@ class _AddFundAccountState extends State<AddFundAccount> {
               ],
             ),
           ),
-          CusRaisedBtn(
+          CusBtn(
             text: "确定",
             backgroundColor: Colors.blueGrey,
             onPressed: _doAdd,

@@ -80,7 +80,7 @@ class _ArticleMainState extends State<ArticleMain> {
             spacing: 40,
             children: <Widget>[
               ..._l.map(
-                (e) => CusRaisedBtn(
+                (e) => CusBtn(
                   text: e.name,
                   textColor: Colors.black,
                   pdHor: 25,

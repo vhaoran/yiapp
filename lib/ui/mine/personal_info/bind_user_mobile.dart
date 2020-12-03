@@ -62,7 +62,7 @@ class _BindUserMobileState extends State<BindUserMobile> {
           ),
           SizedBox(height: Adapt.px(80)),
           // 修改昵手机号
-          CusRaisedBtn(text: "修改", onPressed: _chMobile),
+          CusBtn(text: "修改", onPressed: _chMobile),
         ],
       ),
     );

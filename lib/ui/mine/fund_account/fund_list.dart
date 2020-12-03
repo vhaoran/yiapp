@@ -111,7 +111,7 @@ class _FundListPageState extends State<FundListPage> {
             ),
           ),
           if (_l.isNotEmpty)
-            CusRaisedBtn(
+            CusBtn(
               text: "添加账号",
               minWidth: double.infinity,
               backgroundColor: Colors.blueGrey,

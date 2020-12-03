@@ -67,7 +67,7 @@ class _ChLineProductTypeState extends State<ChLineProductType> {
             enable: false,
           ),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "选择",
           pdVer: 0,
           pdHor: 10,

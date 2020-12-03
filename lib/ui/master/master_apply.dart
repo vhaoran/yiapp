@@ -89,7 +89,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
           autofocus: false,
         ),
         SizedBox(height: Adapt.px(60)),
-        CusRaisedBtn(
+        CusBtn(
           text: "我要申请",
           backgroundColor: Colors.blueGrey,
           onPressed: _doApply,

@@ -69,7 +69,7 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
               maxLength: 20,
             ),
           ),
-          CusRaisedBtn(
+          CusBtn(
             text: "确定",
             onPressed: _verify,
             backgroundColor: Colors.blueGrey,

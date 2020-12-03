@@ -112,7 +112,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           autofocus: false,
         ),
         SizedBox(height: 20),
-        CusRaisedBtn(
+        CusBtn(
           text: "我要申请",
           backgroundColor: Colors.blueGrey,
           onPressed: _verify,

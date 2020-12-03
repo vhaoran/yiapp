@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -39,43 +40,46 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingColor: t_gray,
     this.actions,
     this.bottom,
-    this.barHeight: 46,
-    this.leadingSize: 20,
+    this.barHeight: 40,
+    this.leadingSize: 18,
     this.leadingIcon: Icons.arrow_back_ios,
     this.leadingFn,
-  })  : preferredSize = Size.fromHeight(barHeight),
+  })  : preferredSize = Size.fromHeight(S.h(barHeight)),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var t = title ??
-        Text(
-          text,
-          style: TextStyle(color: textColor, fontSize: 18),
-        );
-    var lead = showLeading
-        ? leading ??
-            IconButton(
-              icon: Icon(leadingIcon, color: leadingColor, size: leadingSize),
-              onPressed: () {
-                leadingFn != null
-                    ? leadingFn()
-                    : Navigator.of(context).pop(backData);
-              },
-            )
-        : null;
     return PreferredSize(
       preferredSize: preferredSize,
       child: AppBar(
-        title: t,
+        title: _title(),
         elevation: 0,
         bottom: bottom,
         actions: actions,
         centerTitle: true,
         backgroundColor: backGroundColor,
         automaticallyImplyLeading: showDefault, // 去掉默认的返回按钮
-        leading: lead,
+        leading: _leading(context),
       ),
+    );
+  }
+
+  Widget _title() {
+    if (title != null) return title;
+    return Text(
+      text,
+      style: TextStyle(color: textColor, fontSize: S.sp(18)),
+    );
+  }
+
+  Widget _leading(context) {
+    if (!showLeading) return null;
+    if (leading != null) return leading;
+    return IconButton(
+      icon: Icon(leadingIcon, color: leadingColor, size: S.w(leadingSize)),
+      onPressed: () {
+        leadingFn != null ? leadingFn() : Navigator.of(context).pop(backData);
+      },
     );
   }
 }

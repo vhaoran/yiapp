@@ -64,7 +64,7 @@ class _ChUserNickState extends State<ChUserNick> {
             child: Text("最多8个字"),
           ),
           // 修改昵称
-          CusRaisedBtn(text: "修改", onPressed: _chNick),
+          CusBtn(text: "修改", onPressed: _chNick),
         ],
       ),
     );

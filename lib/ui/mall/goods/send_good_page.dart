@@ -80,7 +80,7 @@ class _SendGoodsPageState extends State<SendGoodsPage> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-            child: CusRaisedBtn(
+            child: CusBtn(
               text: "发货",
               backgroundColor: Colors.blueGrey,
               borderRadius: 30,

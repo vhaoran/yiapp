@@ -168,7 +168,7 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
               children: <Widget>[
                 CusText("合计:￥${order.total_amt}", t_primary, 28),
                 SizedBox(width: 15),
-                CusRaisedBtn(
+                CusBtn(
                   text: "确认收货",
                   pdHor: 20,
                   fontSize: 26,

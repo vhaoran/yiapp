@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/widget/small/cus_description.dart';
+import 'package:yiapp/ui/luck/widget/pair_description.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
-import 'package:yiapp/widget/small/cus_select.dart';
+import 'package:yiapp/ui/luck/widget/pair_select.dart';
 import 'package:yiapp/service/api/api_free.dart';
-import 'package:yiapp/ui/fortune/free_calculate/birth_res.dart';
+import 'package:yiapp/ui/luck/free_calculate/birth_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -48,56 +48,49 @@ class _BirthPairPageState extends State<BirthPairPage> {
   Widget _lv() {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.only(
-          left: Adapt.px(50), right: Adapt.px(50), top: Adapt.px(30)),
+      padding: EdgeInsets.only(left: S.w(25), right: S.w(25), top: S.h(15)),
       children: <Widget>[
         // 顶部描述信息
-        CusDescription(
+        PairDescription(
           iconValue: 0xe728,
-          title: "生日配对",
-          subtitle: "是用你和他(她)的生日测测情愫，看看你们之间的情缘究竟如何，"
+          name: "生日配对",
+          desc: "是用你和他(她)的生日测测情愫，看看你们之间的情缘究竟如何，"
               "是完美情人、最佳拍档、还是普通关系，或者一对欢喜冤家？",
         ),
-        SizedBox(height: Adapt.px(110)),
+        SizedBox(height: S.h(40)),
         // 选择生日
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-          child: Column(
-            children: <Widget>[
-              CusSelect(
-                title: "男生生日：",
-                subtitle: _maleStr.isEmpty ? "请选择生日" : "$_maleStr",
-                onTap: () => TimePicker(
-                  context,
-                  pickMode: PickerMode.month_day,
-                  onConfirm: (date) => setState(() {
-                    _male_month = date.month;
-                    _male_day = date.day;
-                    _maleStr = "$_male_month月$_male_day日";
-                  }),
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(top: Adapt.px(50), bottom: Adapt.px(120)),
-                child: CusSelect(
-                  title: "女生生日：",
-                  subtitle: _femaleStr.isEmpty ? "请选择生日" : "$_femaleStr",
-                  onTap: () => TimePicker(
-                    context,
-                    pickMode: PickerMode.month_day,
-                    onConfirm: (date) => setState(() {
-                      _female_month = date.month;
-                      _female_day = date.day;
-                      _femaleStr = "$_female_month月$_female_day日";
-                    }),
-                  ),
-                ),
-              )
-            ],
+        PairSelect(
+          name: "男生生日：",
+          value: _maleStr.isEmpty ? "请选择生日" : "$_maleStr",
+          onTap: () => TimePicker(
+            context,
+            pickMode: PickerMode.month_day,
+            onConfirm: (date) => setState(() {
+              _male_month = date.month;
+              _male_day = date.day;
+              _maleStr = "$_male_month月$_male_day日";
+            }),
           ),
         ),
-        CusRaisedBtn(text: "开始测算", onPressed: _doPair),
+        SizedBox(height: S.h(20)),
+        PairSelect(
+          name: "女生生日：",
+          value: _femaleStr.isEmpty ? "请选择生日" : "$_femaleStr",
+          onTap: () => TimePicker(
+            context,
+            pickMode: PickerMode.month_day,
+            onConfirm: (date) => setState(() {
+              _female_month = date.month;
+              _female_day = date.day;
+              _femaleStr = "$_female_month月$_female_day日";
+            }),
+          ),
+        ),
+        SizedBox(height: S.h(60)),
+        CusRaisedButton(
+          child: Text("开始测算", style: TextStyle(fontSize: S.sp(15))),
+          onPressed: _doPair,
+        ),
       ],
     );
   }
@@ -118,10 +111,10 @@ class _BirthPairPageState extends State<BirthPairPage> {
       var res = await ApiFree.shengRiMatch(m);
       Log.info("生日配对结果：${res.toJson()}");
       if (res != null) {
+        Navigator.pop(context);
         CusRoute.push(context, BirthResPage(res: res)).then((value) {
           _male_month = _male_day = _female_month = _female_day = 0;
           _maleStr = _femaleStr = "";
-          Navigator.pop(context);
           setState(() {});
         });
       }

@@ -110,7 +110,7 @@ class _RechargePageState extends State<RechargePage> {
           SizedBox(height: Adapt.px(5)),
           _typeWeChat(),
           SizedBox(height: Adapt.px(100)),
-          CusRaisedBtn(
+          CusBtn(
             text: "确定",
             textColor: t_gray,
             backgroundColor: Colors.blueGrey,

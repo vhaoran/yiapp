@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
-import 'package:yiapp/widget/flutter/button_plugins.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/su_button.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -29,9 +25,8 @@ class LuckCalendar extends StatelessWidget {
         ),
         Column(
           children: <Widget>[
-            _yiOrJiCts(Lunar(DateTime.now()).dayYi), // 宜
-            _yiOrJiCts(Lunar(DateTime.now()).dayJi,
-                color: t_ji, isYi: false), // 忌
+            _yiOrJiData(isYi: true), // 宜
+            _yiOrJiData(isYi: false), // 忌
           ],
         ),
       ],
@@ -40,31 +35,31 @@ class LuckCalendar extends StatelessWidget {
 
   Widget _dateTimeShow(context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: S.h(8)),
       child: Text(
         "${TimeUtil.dateYMD()}  ${TimeUtil.ganZhi()}年${TimeUtil.lunarMD()}",
-        style: TextStyle(
-          color: t_primary,
-          fontSize: 24,
-        ),
+        style: TextStyle(color: t_primary, fontSize: S.sp(18)),
       ),
     );
   }
 
-  /// 封装的宜忌组件
-  Widget _yiOrJiCts(List<String> l, {Color color = t_yi, bool isYi = true}) {
+  /// 宜忌数据
+  Widget _yiOrJiData({bool isYi}) {
+    List<String> l =
+        isYi ? Lunar(DateTime.now()).dayYi : Lunar(DateTime.now()).dayJi;
     l.insert(0, isYi ? "宜" : "忌");
+    Color color = isYi ? t_yi : t_ji;
     final int max = 8;
     return Row(
       children: List.generate(
         l.length >= max ? max : l.length,
-        (index) {
+        (i) {
           return Container(
-            padding: EdgeInsets.all(Adapt.px(6)),
-            width: Adapt.screenW() / max,
+            padding: EdgeInsets.all(S.w(5)),
+            width: S.screenW() / max,
             child: Text(
-              l[index],
-              style: TextStyle(color: color, fontSize: Adapt.px(28)),
+              l[i],
+              style: TextStyle(color: color, fontSize: S.sp(15)),
               overflow: TextOverflow.ellipsis,
             ),
             alignment: Alignment.center,

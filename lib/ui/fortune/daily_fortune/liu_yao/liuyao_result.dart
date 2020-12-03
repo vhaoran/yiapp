@@ -107,7 +107,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     return Row(
       children: <Widget>[
         Expanded(
-          child: CusRaisedBtn(
+          child: CusBtn(
             text: "闪断帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFED9951),
@@ -116,7 +116,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
           ),
         ),
         Expanded(
-          child: CusRaisedBtn(
+          child: CusBtn(
             text: "悬赏帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE96C62),
@@ -125,7 +125,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
           ),
         ),
         Expanded(
-          child: CusRaisedBtn(
+          child: CusBtn(
             text: "大师亲测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE8493E),

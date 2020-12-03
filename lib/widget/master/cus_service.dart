@@ -102,7 +102,7 @@ class _CusServiceState extends State<CusService> {
         children: <Widget>[
           CusText(widget.m.yi_cate_name, t_gray, 32), // 主标题
           Spacer(),
-          CusRaisedBtn(
+          CusBtn(
             backgroundColor: t_primary,
             textColor: Colors.black,
             fontSize: 22,

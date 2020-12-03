@@ -54,7 +54,7 @@ class _ChProductColorState extends State<ChProductColor> {
           child: Row(
             children: <Widget>[
               Expanded(child: Column(children: _inputs())),
-              CusRaisedBtn(
+              CusBtn(
                 text: _isChange ? "修改" : "添加",
                 pdVer: 0,
                 pdHor: 10,

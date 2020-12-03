@@ -5,14 +5,12 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/luck/luck_list.dart';
 import 'package:yiapp/ui/luck/luck_loop.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/temp/cus_time.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/small/cus_circle_item.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 
 // ------------------------------------------------------
@@ -58,41 +56,41 @@ class _DailyFortuneState extends State<DailyFortune> {
             ),
           ),
           _title(text: "付费测算"),
-          _itemView(LuckList.pay),
+//          _itemView(LuckList.pay),
           _title(text: "免费测算"),
-          _itemView(LuckList.free),
+//          _itemView(LuckList.free),
         ],
       ),
     );
   }
 
   /// 算命功能区分类
-  Widget _itemView(List<Map> l) {
-    return Container(
-      color: primary,
-      padding: EdgeInsets.all(5),
-      child: GridView.count(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        mainAxisSpacing: 5,
-        crossAxisCount: 5,
-        children: <Widget>[
-          ...l.map(
-            (e) => CusCircleItem(
-              text: e['text'],
-              icon: e['icon'],
-              bgColor: e['color'],
-              onTap: () => CusRoute.pushNamed(
-                context,
-                e['route'],
-                arguments: e['text'],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+//  Widget _itemView(List<Map> l) {
+//    return Container(
+//      color: primary,
+//      padding: EdgeInsets.all(5),
+//      child: GridView.count(
+//        physics: NeverScrollableScrollPhysics(),
+//        shrinkWrap: true,
+//        mainAxisSpacing: 5,
+//        crossAxisCount: 5,
+//        children: <Widget>[
+//          ...l.map(
+//            (e) => CusCircleItem(
+//              text: e['text'],
+//              icon: e['icon'],
+//              bgColor: e['color'],
+//              onTap: () => CusRoute.pushNamed(
+//                context,
+//                e['route'],
+//                arguments: e['text'],
+//              ),
+//            ),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
 
   /// 显示时间区域
   Widget _timeArea() {
@@ -112,7 +110,7 @@ class _DailyFortuneState extends State<DailyFortune> {
             ),
             Padding(
               padding: EdgeInsets.only(right: Adapt.px(16), left: Adapt.px(36)),
-              child: CusRaisedBtn(
+              child: CusBtn(
                 text: "详情",
                 backgroundColor: t_primary,
                 textColor: Colors.black,

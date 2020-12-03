@@ -5,12 +5,12 @@ import 'package:yiapp/ui/fortune/daily_fortune/hehun_measure.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/sizhu_measure.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_main.dart';
-import 'package:yiapp/ui/fortune/free_calculate/birth_pair.dart';
-import 'package:yiapp/ui/fortune/free_calculate/blood_pair.dart';
-import 'package:yiapp/ui/fortune/free_calculate/com_draw.dart';
-import 'package:yiapp/ui/fortune/free_calculate/con_pair.dart';
-import 'package:yiapp/ui/fortune/free_calculate/zhou_gong_page.dart';
-import 'package:yiapp/ui/fortune/free_calculate/zodiac_pair.dart';
+import 'package:yiapp/ui/luck/free_calculate/birth_pair.dart';
+import 'package:yiapp/ui/luck/free_calculate/blood_pair.dart';
+import 'package:yiapp/ui/luck/free_calculate/com_draw.dart';
+import 'package:yiapp/ui/luck/free_calculate/con_pair.dart';
+import 'package:yiapp/ui/luck/free_calculate/zhou_gong_page.dart';
+import 'package:yiapp/ui/luck/free_calculate/zodiac_pair.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 
 // ------------------------------------------------------

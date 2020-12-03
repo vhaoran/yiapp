@@ -92,7 +92,7 @@ class _ChProductImagesState extends State<ChProductImages> {
             enable: false,
           ),
         ),
-        CusRaisedBtn(
+        CusBtn(
           text: "选择",
           pdVer: 0,
           pdHor: 10,

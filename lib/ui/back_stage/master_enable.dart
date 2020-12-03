@@ -61,7 +61,7 @@ class _MasterEnableState extends State<MasterEnable> {
           ],
         ),
         SizedBox(height: Adapt.px(80)),
-        CusRaisedBtn(
+        CusBtn(
           backgroundColor: Colors.blueGrey,
           borderRadius: 100,
           onPressed: _doSet, // 确定按钮

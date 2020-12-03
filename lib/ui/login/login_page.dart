@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         SizedBox(height: Adapt.px(60)),
-        CusRaisedBtn(
+        CusBtn(
           text: '登录',
           fontSize: 28,
           textColor: Colors.black,
