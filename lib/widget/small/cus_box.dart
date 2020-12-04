@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/util/screen_util.dart';
 import '../../const/con_color.dart';
 import '../../util/adapt.dart';
 import '../../global/cus_fn.dart';
@@ -34,7 +35,7 @@ class _NormalBoxState extends State<NormalBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Adapt.px(2)),
+      padding: EdgeInsets.only(bottom: S.h(1)),
       child: Material(
         color: Colors.transparent,
         child: Ink(
@@ -43,8 +44,8 @@ class _NormalBoxState extends State<NormalBox> {
             onTap: widget.onTap ?? null,
             child: Container(
               alignment: Alignment.center,
-              constraints: BoxConstraints(maxHeight: Adapt.px(100)),
-              padding: EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(20)),
+              constraints: BoxConstraints(maxHeight: S.h(50)),
+              padding: EdgeInsets.only(left: S.h(15), right: S.h(10)),
               child: _row(widget.title, widget.subtitle, widget.subFn),
             ),
           ),
@@ -56,27 +57,22 @@ class _NormalBoxState extends State<NormalBox> {
   Widget _row(String title, String subtitle, VoidCallback subFn) {
     return Row(
       children: <Widget>[
-        Text(title, style: TextStyle(fontSize: Adapt.px(28), color: t_gray)),
+        Text(title, style: TextStyle(fontSize: S.sp(15), color: t_gray)),
         Spacer(flex: 1),
         if (subtitle != null)
           Container(
-            constraints: BoxConstraints(maxWidth: Adapt.px(400)),
-            padding: EdgeInsets.only(right: widget.showBtn ? Adapt.px(10) : 0),
+            padding: EdgeInsets.only(right: widget.showBtn ? S.w(5) : 0),
             child: InkWell(
               onTap: subFn,
               child: Text(
                 subtitle,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  // color: Color(0xFF888888),
-                  color: t_gray,
-                  fontSize: Adapt.px(28),
-                ),
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ),
           ),
         if (widget.showBtn)
-          Icon(Icons.keyboard_arrow_right, size: Adapt.px(44), color: t_gray),
+          Icon(Icons.keyboard_arrow_right, size: S.w(22), color: t_gray),
       ],
     );
   }

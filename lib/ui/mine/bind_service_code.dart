@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -52,39 +51,14 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
   Widget _lv() {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(15)),
       children: <Widget>[
-        SizedBox(height: 5),
+        SizedBox(height: S.h(10)),
         Text(
-          "绑前须知",
-          style: TextStyle(color: t_primary, fontSize: 17),
+          "每个运营商都有自己的邀请码，邀请码为六位数字。",
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: RichText(
-            text: TextSpan(
-              children: <InlineSpan>[
-                TextSpan(
-                  text: "1、绑定运营商前需要您已绑定手机号，已设置登录密码，若您暂未设置，请",
-                  style: TextStyle(fontSize: 16, color: t_gray),
-                ),
-                TextSpan(
-                  text: " 点此设置。",
-                  style: TextStyle(fontSize: 16, color: Colors.lightBlue),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      CusRoute.push(context, BindUserCodePwd());
-                    },
-                ),
-              ],
-            ),
-          ),
-        ),
-        Text(
-          "2、每个运营商都有自己的邀请码，邀请码为六位数字。",
-          style: TextStyle(color: t_gray, fontSize: 17),
-        ),
-        SizedBox(height: 30),
+        SizedBox(height: S.h(15)),
         CusRectField(
           controller: _codeCtrl,
           hintText: "请输入运营商的邀请码",
@@ -93,11 +67,11 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
           isClear: true,
           autofocus: false,
         ),
-        SizedBox(height: Adapt.px(50)),
-        CusBtn(
-          text: "确定",
-          backgroundColor: Colors.blueGrey,
+        SizedBox(height: S.h(25)),
+        CusRaisedButton(
+          child: Text("确定"),
           onPressed: _verify,
+          colors: [Colors.grey, Colors.blueGrey],
         ),
       ],
     );
@@ -113,7 +87,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       Log.info("未绑定手机号和密码");
       CusDialog.normal(
         context,
-        title: "您暂未设置手机号和密码",
+        title: "绑定运营商前需要你已绑定手机号，已设置登录密码",
         textAgree: "现在绑定",
         fnDataApproval: "",
         onThen: () => CusRoute.push(context, BindUserCodePwd()),

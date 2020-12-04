@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/util/screen_util.dart';
 import '../../const/con_color.dart';
-import '../../util/adapt.dart';
 import '../../service/api/api_image.dart';
 
 // ------------------------------------------------------
@@ -37,8 +36,8 @@ class CusAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
+      width: S.w(size),
+      height: S.h(size),
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
@@ -72,7 +71,7 @@ class CusAvatar extends StatelessWidget {
                   child: Text(
                     '${sign > 99 ? '99+' : sign}',
                     style: TextStyle(
-                      fontSize: Adapt.px(16),
+                      fontSize: S.sp(16),
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -86,5 +85,6 @@ class CusAvatar extends StatelessWidget {
   }
 
   /// 错误图片
-  Widget _errImage() => Image.asset(defaultImage, width: size, height: size);
+  Widget _errImage() =>
+      Image.asset(defaultImage, width: S.w(size), height: S.w(size));
 }

@@ -6,6 +6,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -54,32 +55,25 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         SizedBox(height: 5),
         Text(
           "申请须知",
-          style: TextStyle(color: t_primary, fontSize: 17),
+          style: TextStyle(color: t_primary, fontSize: S.sp(17)),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: RichText(
-            text: TextSpan(
-              children: <InlineSpan>[
-                TextSpan(
-                  text: "1、申请成为运营商前需要您已绑定手机号，已设置登录密码，若您暂未设置，请",
-                  style: TextStyle(fontSize: 16, color: t_gray),
-                ),
-                TextSpan(
-                  text: " 点此设置",
-                  style: TextStyle(fontSize: 16, color: Colors.lightBlue),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      CusRoute.push(context, BindUserCodePwd());
-                    },
-                ),
-              ],
-            ),
+        SizedBox(height: S.h(8)),
+        Text(
+          "1、申请成为运营商前需要您已绑定手机号，已设置登录密码，若您暂未设置",
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+        ),
+        SizedBox(height: S.h(8)),
+        InkWell(
+          onTap: () => CusRoute.push(context, BindUserCodePwd()),
+          child: Text(
+            "请点此设置",
+            style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(16)),
           ),
         ),
+        SizedBox(height: S.h(8)),
         Text(
           "2、邀请码为自定义的 6 位数字，用户通过邀请码绑定对应运营商",
-          style: TextStyle(fontSize: 16, color: t_gray),
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),

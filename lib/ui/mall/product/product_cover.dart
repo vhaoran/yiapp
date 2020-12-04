@@ -39,10 +39,7 @@ class _ProductCoverState extends State<ProductCover> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoute.push(
-        context,
-        ProductDetails(id_of_es: widget.product.id_of_es),
-      ),
+      onTap: () => CusRoute.push(context, ProductDetails()),
       child: _items(),
     );
   }

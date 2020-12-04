@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import '../cus_complex.dart';
 
@@ -57,8 +58,8 @@ class CusRectField extends StatefulWidget {
     this.enable: true,
     this.hideBorder: false,
     this.isClear: false,
-    this.pdHor: 30,
-    this.fontSize: 30,
+    this.pdHor: 10,
+    this.fontSize: 16,
     this.borderRadius: 5,
     this.backgroundColor: fif_primary,
     this.prefixColor: t_yi,
@@ -96,8 +97,12 @@ class _CusRectFieldState extends State<CusRectField> {
         ),
         if (widget.errorText != null) // 错误提示信息
           Padding(
-            padding: EdgeInsets.only(top: Adapt.px(15)),
-            child: CusText(widget.errorText, t_yi, widget.fontSize - 2),
+            padding: EdgeInsets.only(top: S.h(8)),
+            child: Text(
+              widget.errorText,
+              style:
+                  TextStyle(color: t_yi, fontSize: S.sp(widget.fontSize - 2)),
+            ),
           ),
       ],
     );
@@ -112,23 +117,22 @@ class _CusRectFieldState extends State<CusRectField> {
       enabled: widget.enable,
       keyboardType:
           widget.onlyNumber ? TextInputType.number : widget.keyboardType,
-      style: TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+      style: TextStyle(color: t_gray, fontSize: S.sp(widget.fontSize)),
       maxLength: widget.maxLength,
       maxLines: widget.maxLines,
       textAlign: widget.textAlign,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle:
-            TextStyle(color: t_gray, fontSize: Adapt.px(widget.fontSize)),
+        hintStyle: TextStyle(color: t_gray, fontSize: S.sp(widget.fontSize)),
         prefixText: widget.prefixText,
         prefixStyle: TextStyle(
           color: widget.prefixColor,
-          fontSize: Adapt.px(widget.fontSize + 2),
+          fontSize: S.sp(widget.fontSize + 2),
         ),
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.isClear ? _clearInput() : widget.suffixIcon,
         contentPadding: EdgeInsets.symmetric(
-            horizontal: Adapt.px(widget.pdHor), vertical: Adapt.px(20)),
+            horizontal: S.w(widget.pdHor), vertical: S.h(10)),
         counterText: "",
         border: widget.hideBorder ? InputBorder.none : cusOutlineBorder(),
         focusedBorder: widget.hideBorder
@@ -180,7 +184,7 @@ class _CusRectFieldState extends State<CusRectField> {
       return IconButton(
         icon: Icon(
           FontAwesomeIcons.timesCircle,
-          size: Adapt.px(32),
+          size: S.sp(16),
           color: Colors.white54,
         ),
         onPressed: () {

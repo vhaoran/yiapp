@@ -56,6 +56,9 @@ class LuckCalendar extends StatelessWidget {
         (i) {
           return Container(
             padding: EdgeInsets.all(S.w(5)),
+            constraints: BoxConstraints(
+              maxHeight: S.h(30),
+            ),
             width: S.screenW() / max,
             child: Text(
               l[i],

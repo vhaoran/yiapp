@@ -1,15 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
@@ -48,47 +46,40 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
   Widget _lv() {
     return ListView(
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(20)),
       children: <Widget>[
-        SizedBox(height: 5),
+        SizedBox(height: S.h(5)),
         Text(
           "申请须知",
-          style: TextStyle(color: t_primary, fontSize: 17),
+          style: TextStyle(color: t_primary, fontSize: S.sp(18)),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: RichText(
-            text: TextSpan(
-              children: <InlineSpan>[
-                TextSpan(
-                  text: "申请成为大师前需要您已绑定手机号，已设置登录密码，若您暂未设置，请",
-                  style: TextStyle(fontSize: 16, color: t_gray),
-                ),
-                TextSpan(
-                  text: " 点此设置。",
-                  style: TextStyle(fontSize: 16, color: Colors.lightBlue),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      CusRoute.push(context, BindUserCodePwd());
-                    },
-                ),
-              ],
-            ),
+        Text(
+          "申请成为大师前需要您已绑定手机号，已设置登录密码，若您暂未设置",
+          style: TextStyle(color: t_gray, fontSize: S.sp(16), height: S.h(1.4)),
+        ),
+        SizedBox(height: S.h(5)),
+        InkWell(
+          onTap: () => CusRoute.push(context, BindUserCodePwd()),
+          child: Text(
+            "请点此设置",
+            style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(16)),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: CusText("个人简介", t_primary, 30),
+          padding: EdgeInsets.symmetric(vertical: S.h(10)),
+          child: Text(
+            "个人简介",
+            style: TextStyle(color: t_primary, fontSize: S.sp(18)),
+          ),
         ),
         CusRectField(
           controller: _briefCtrl,
           hintText: "请如实填写您的个人简介，以便我们尽快审核你的资料，限制300字以内",
-          pdHor: 20,
           maxLines: 7,
           maxLength: 300,
           autofocus: false,
         ),
-        SizedBox(height: Adapt.px(60)),
+        SizedBox(height: S.h(30)),
         CusBtn(
           text: "我要申请",
           backgroundColor: Colors.blueGrey,

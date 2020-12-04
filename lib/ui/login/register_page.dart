@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -167,8 +169,9 @@ class _RegisterPageState extends State<RegisterPage> {
       bool ok = await ApiLogin.regUser(m);
       if (ok) {
         Navigator.pop(context);
-        CusToast.toast(context, text: "注册成功");
-        await Future.delayed(Duration(milliseconds: 300));
+        CusToast.toast(context, text: "注册成功，请登录");
+        await KV.setStr(kv_tmp_pwd, _pwdCtrl.text);
+        await Future.delayed(Duration(milliseconds: 1000));
         CusRoute.pushReplacement(context, LoginPage());
       }
       // 注册失败

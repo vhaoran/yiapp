@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/model/bo/broker_product_res.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -41,7 +43,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   // 根据id获取单个商品详情
   _fetch() async {
     try {
-      Product res = await ApiProduct.productGet(widget.id_of_es);
+      Product res = await ApiProduct.bProductGet(widget.id_of_es);
+      Log.info("当前商品详情：${res.toJson()}");
       if (res != null) _product = res;
     } catch (e) {
       Log.error("查看商品时，根据id获取商品出现异常：$e");
@@ -60,8 +63,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             }
             if (_product == null) {
               return Center(
-                child: CusText("暂未有商品详情", t_gray, 30),
+                child: Text(
+                  "暂无数据",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                ),
               );
+              return Center(child: CusText("暂无数据", t_gray, 30));
             }
             return Column(children: <Widget>[
               Expanded(

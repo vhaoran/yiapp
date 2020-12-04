@@ -28,14 +28,21 @@ class DemoGetData extends StatelessWidget {
     return ListView(
       children: <Widget>[
         NormalBox(
-          title: "01 获取数据库中所有用户信息",
+          title: "01 数据库中所有用户信息",
           onTap: () async {
             var l = await LoginDao(glbDB).readAll();
             for (var i = 0; i < l.length; i++) {
               Log.info("第 ${i + 1} 个用户：${l[i].toJson()}");
             }
           },
-        )
+        ),
+        NormalBox(
+          title: "02 当前登录用户",
+          onTap: () async {
+            var user = await LoginDao(glbDB).readUserByUid();
+            Log.info("当前登录用户详情: ${user.toJson()}");
+          },
+        ),
       ],
     );
   }

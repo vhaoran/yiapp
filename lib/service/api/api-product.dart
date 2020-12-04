@@ -62,8 +62,8 @@ class ApiProduct {
   }
 
 //-----------通过id获取商品-------------------------------------
-  static Future<Product> productGet(String id) async {
-    var url = pre + "ProductGet";
+  static Future<Product> bProductGet(String id) async {
+    var url = pre + "BProductGet";
     var data = {"id_of_es": id};
     return await ApiBase.postObj(url, data, (m) {
       return Product.fromJson(m);

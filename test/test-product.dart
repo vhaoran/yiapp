@@ -72,7 +72,7 @@ void main() {
     Map<String, dynamic> m = {};
 
     var id = "UHQDcXQBUEDNcUc8k4Sk";
-    var r = await ApiProduct.productGet(id);
+    var r = await ApiProduct.bProductGet(id);
     print("-----result---$r---------");
     print("-----result---${r.toJson()}---------");
     // r.data.forEach((e) {

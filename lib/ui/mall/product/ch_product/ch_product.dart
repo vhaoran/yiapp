@@ -63,7 +63,7 @@ class _ChProductState extends State<ChProduct> {
     }
     // 根据id获取单个商品详情
     try {
-      Product res = await ApiProduct.productGet(widget.id);
+      Product res = await ApiProduct.bProductGet(widget.id);
       if (res != null) _product = res;
     } catch (e) {
       Log.error("修改商品时，根据id获取商品出现异常：$e");

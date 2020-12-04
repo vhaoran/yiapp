@@ -40,7 +40,7 @@ class CusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingColor: t_gray,
     this.actions,
     this.bottom,
-    this.barHeight: 40,
+    this.barHeight: 46,
     this.leadingSize: 18,
     this.leadingIcon: Icons.arrow_back_ios,
     this.leadingFn,
