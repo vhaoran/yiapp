@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/complex/cus_order_data.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -10,24 +11,25 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 // ------------------------------------------------------
 
 class ShopKV {
-  static String key = ""; // 登录时不同用户切换购物车存储的key
+//  static String key = ""; // 登录时不同用户切换购物车存储的key
 
   /// 获取本地购物车数据
   static Future<String> load() async {
-    if ("${ApiBase.uid}" == key.substring(4)) {
-      return await KV.getStr(key);
-    }
-    return null;
+    return await KV.getStr(kv_shop);
+//    if ("${ApiBase.uid}" == key.substring(4)) {
+//      return await KV.getStr(key);
+//    }
+//    return null;
   }
 
   /// 更新本地购物车数据
   static Future<bool> refresh(AllShopData data) async {
-    return await KV.setStr(key, json.encode(data.toJson()));
+    return await KV.setStr(kv_shop, json.encode(data.toJson()));
   }
 
   /// 清空本地购物车数据
   static Future<bool> clear() async {
-    return await KV.remove(key);
+    return await KV.remove(kv_shop);
   }
 
   /// 本地数据转换为实体类

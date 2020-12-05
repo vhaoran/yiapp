@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/temp/shopcart_func.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -13,7 +16,6 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/model/complex/cus_order_data.dart';
-import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mine/com_pay_page.dart';
 import 'package:yiapp/ui/mall/product/product_detail/p_order_address.dart';
@@ -26,8 +28,9 @@ import 'package:yiapp/ui/mall/product/product_detail/p_order_address.dart';
 
 class ProductOrderPage extends StatefulWidget {
   final AllShopData allShop;
+  final bool isShop; // 是否购物车
 
-  ProductOrderPage({this.allShop, Key key}) : super(key: key);
+  ProductOrderPage({this.allShop, this.isShop, Key key}) : super(key: key);
 
   @override
   _ProductOrderPageState createState() => _ProductOrderPageState();
@@ -46,7 +49,6 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
   /// 提交订单
   void _doBuy() async {
     SpinKit.threeBounce(context);
-    Navigator.pop(context);
     List<Map> maps = [];
     _l.forEach((e) {
       maps.add({
@@ -65,27 +67,35 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
     try {
       var res = await ApiProductOrder.productOrderAdd(m);
       if (res != null) {
-        AllShopData data = await ShopKV.remove(widget.allShop);
-        bool ok = await ShopKV.refresh(data);
-        if (ok) {
-          CusToast.toast(
-            context,
-            text: "订单提交成功，即将跳转到支付界面",
-            milliseconds: 1500,
-          );
-          Future.delayed(Duration(milliseconds: 1500)).then(
-            (value) => CusRoute.pushReplacement(
-              context,
-              ComPayPage(
-                tip: "商城订单付款",
-                b_type: b_yi_order,
-                orderId: res.id,
-                amt: num.parse("${widget.allShop.amt}"),
-              ),
-            ),
-          );
-          Navigator.of(context).pop("");
+        Navigator.pop(context);
+        if (widget.isShop) {
+          // 如果是购物车，则清空数据
+          AllShopData data = await ShopKV.remove(widget.allShop);
+          bool ok = await ShopKV.refresh(data);
+          print(">>>删除购物车数据结果：$ok");
         }
+        BalancePay(
+          context,
+          data: PayData(amt: widget.allShop.amt, b_type: b_p_order, id: res.id),
+        );
+
+//        CusToast.toast(
+//          context,
+//          text: "订单提交成功，即将跳转到支付界面",
+//          milliseconds: 1500,
+//        );
+//        Future.delayed(Duration(milliseconds: 1500)).then(
+//          (value) => CusRoute.pushReplacement(
+//            context,
+//            ComPayPage(
+//              tip: "商城订单付款",
+//              b_type: b_yi_order,
+//              orderId: res.id,
+//              amt: num.parse("${widget.allShop.amt}"),
+//            ),
+//          ),
+//        );
+//        Navigator.of(context).pop("");
       }
     } catch (e) {
       Log.error("提交订单出现异常：$e");
@@ -110,13 +120,12 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: <Widget>[
-                SizedBox(height: Adapt.px(10)),
+                SizedBox(height: S.h(5)),
                 // 显示和选择收货地址
                 ProOrderAddress(
                   onChanged: (val) => setState(() => _addr = val),
                 ),
                 ..._l.map((e) => _colorPrice(e)), // 商品的颜色和价格
-                SizedBox(height: 60),
               ],
             ),
           ),
@@ -165,13 +174,22 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          CusText("共${widget.allShop.counts}件", t_gray, 28),
-          SizedBox(width: Adapt.px(10)),
-          CusText("￥合计:${widget.allShop.amt}", t_yi, 32),
+          Text(
+            "共${widget.allShop.counts}件",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
+          SizedBox(width: S.w(5)),
+          Text(
+            "￥合计:${widget.allShop.amt}",
+            style: TextStyle(color: t_yi, fontSize: S.sp(16)),
+          ),
           InkWell(
             onTap: _doBuy,
             child: Container(
-              child: CusText("提交订单", Colors.white, 28),
+              child: Text(
+                "提交订单",
+                style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
+              ),
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               decoration: BoxDecoration(

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/snap_done.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_user.dart';
@@ -48,7 +47,7 @@ class _ProOrderAddressState extends State<ProOrderAddress> {
         }
       }
     } catch (e) {
-      Log.error("出现异常：$e");
+      Log.error("确认订单时，获取用户地址出现异常：$e");
     }
   }
 
@@ -60,61 +59,83 @@ class _ProOrderAddressState extends State<ProOrderAddress> {
         if (!snapDone(snap)) {
           return Center(child: CircularProgressIndicator());
         }
-        return Container(
-          child: InkWell(
-            onTap: () => CusRoute.push(
-              context,
-              UserAddressPage(event: true),
-            ).then((val) => setState(
-                  () {
-                    _res = val;
-                    if (widget.onChanged != null) {
-                      widget.onChanged(_res);
-                    }
-                  },
-                )),
-            child: _addrCtr(),
-          ),
-        );
+        return _addrTip();
       },
     );
   }
 
-  /// 显示收货地址
-  Widget _addrCtr() {
+  /// 有地址则显示，无地址则提示
+  Widget _addrTip() {
     return Container(
-      color: fif_primary,
-      padding: EdgeInsets.all(Adapt.px(20)),
-      child: Row(
-        children: <Widget>[
-          Icon(FontAwesomeIcons.mapMarker, color: t_yi),
-          SizedBox(width: Adapt.px(40)),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    CusText(_res.contact_person, t_gray, 30), // 收件人
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: Adapt.px(30)),
-                      child: CusText(_res.mobile, t_gray, 30),
-                    ), // 手机号
-                    if (_res.is_default == 1) // 显示默认收件地址
-                      CusText("默认", t_primary, 28)
-                  ],
-                ),
-                Text(
-                  _res.detail, // 收货地址
-                  style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ],
-            ),
-          )
-        ],
+      child: InkWell(
+        onTap: () => CusRoute.push(
+          context,
+          UserAddressPage(event: true),
+        ).then((val) {
+          if (val != null) {
+            _res = val;
+            if (widget.onChanged != null) {
+              widget.onChanged(_res);
+            }
+            setState(() {});
+          }
+        }),
+        child: Container(
+          color: fif_primary,
+          padding: EdgeInsets.all(S.w(10)),
+          child: _res == null
+              ? Center(
+                  child: Text(
+                    "暂未添加收货地址，点击添加",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                )
+              : _addrData(),
+        ),
       ),
+    );
+  }
+
+  /// 显示收货地址
+  Widget _addrData() {
+    return Row(
+      children: <Widget>[
+        Icon(FontAwesomeIcons.mapMarker, color: t_yi),
+        SizedBox(width: S.w(20)),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    _res.contact_person, // 收件人
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: S.w(15)),
+                    child: Text(
+                      _res.mobile,
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
+                  ), // 手机号
+                  if (_res.is_default == 1) // 显示默认收件地址
+                    Text(
+                      "默认",
+                      style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                    ),
+                ],
+              ),
+              Text(
+                _res.detail, // 收货地址
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/under_field.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -111,13 +112,16 @@ class _AddChAddrPageState extends State<AddChAddrPage> {
         autofocus: _isAdd,
         fromValue: _isAdd ? null : widget.res.contact_person,
       ),
+      SizedBox(height: S.h(20)),
       CusUnderField(
         controller: _mobileCtrl, // 手机号输入框
         hintText: "手机号码",
         errorText: _mobileErr,
+        onlyNumber: true,
         maxLength: 11,
         fromValue: _isAdd ? null : widget.res.mobile,
       ),
+      SizedBox(height: S.h(20)),
       CusUnderField(
         controller: _addrCtrl, // 地址输入框
         hintText: "详细地址（确保地址可用）",

@@ -2,8 +2,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -82,7 +81,7 @@ class _NetPhotoViewState extends State<NetPhotoView> {
             alignment: Alignment(0, 0.9),
             child: Text(
               '${curIndex + 1} / ${widget.imageList.length}',
-              style: TextStyle(color: Colors.white, fontSize: Adapt.px(35)),
+              style: TextStyle(color: Colors.white, fontSize: S.sp(17)),
             ),
           ),
         ],

@@ -153,7 +153,7 @@ class _ShopCartPageState extends State<ShopCartPage> {
               } else {
                 CusRoute.push(
                   context,
-                  ProductOrderPage(allShop: _allShop),
+                  ProductOrderPage(allShop: _allShop, isShop: true),
                 ).then((val) {
                   if (val != null) _refresh();
                 });

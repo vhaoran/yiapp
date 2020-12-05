@@ -11,6 +11,7 @@ const String tb_login = "tb_login"; // 本地登录信息表名
 const String kv_jwt = "/login/jwt"; // 本地存储jwt的键
 const String kv_tmp_pwd = "tmp_pwd"; // 保存临时密码
 const String kv_liuyao = "liu_yao"; // 存储六爻数据
+const String kv_shop = "shop"; // 本地购物车键
 
 /// 微服务类型前缀
 const String w_yi_cms = "/yi/cms/";

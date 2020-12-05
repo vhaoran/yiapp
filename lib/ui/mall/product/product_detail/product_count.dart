@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/global/cus_fn.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 
 // ------------------------------------------------------
@@ -32,7 +31,7 @@ class _ProductCountState extends State<ProductCount> {
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(
         children: <Widget>[
-          CusText("购买数量", t_gray, 30),
+          Text("购买数量", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
           Spacer(),
           _doReduce(), // 减少数量
           _showCount(), // 显示购买数量
@@ -44,16 +43,18 @@ class _ProductCountState extends State<ProductCount> {
 
   /// 显示购买数量
   Widget _showCount() {
-    return InkWell(
-      child: Container(
-        width: Adapt.px(100),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(color: Colors.grey),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: CusText("$_count", Colors.white, 28),
+    return Container(
+      width: S.w(50),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: Border.all(color: Colors.grey),
+      ),
+      constraints: BoxConstraints(maxHeight: S.h(30)),
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: Text(
+        "$_count",
+        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
       ),
     );
   }
@@ -77,8 +78,9 @@ class _ProductCountState extends State<ProductCount> {
           color: Colors.transparent,
           border: Border.all(color: Colors.grey),
         ),
+        constraints: BoxConstraints(maxHeight: S.h(30)),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: CusText("-", t_gray, 28),
+        child: Text("-", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
       ),
     );
   }
@@ -98,8 +100,9 @@ class _ProductCountState extends State<ProductCount> {
           color: Colors.transparent,
           border: Border.all(color: Colors.grey),
         ),
+        constraints: BoxConstraints(maxHeight: S.h(30)),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: CusText("+", t_gray, 28),
+        child: Text("+", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
       ),
     );
   }

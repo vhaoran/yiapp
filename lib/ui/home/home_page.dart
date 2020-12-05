@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_login.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       Log.error("用户登录出现异常：$e");
     }
-    LoginVerify.init(login, context);
+    await LoginVerify.init(login, context);
     _dynamicModules(); // 动态的运营商模块
   }
 

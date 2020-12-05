@@ -24,6 +24,7 @@ import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 
 class LoginVerify {
   static void init(LoginResult login, BuildContext context) async {
+    await KV.remove(kv_shop); // 清除本地购物车数据
     Log.info("用户登录结果：${login.toJson()}");
     // 初始化全局信息
     await setLoginInfo(login);
@@ -32,7 +33,6 @@ class LoginVerify {
     await KV.setStr(kv_jwt, login.jwt);
     // 在状态管理中初始化用户登录信息
     context.read<UserInfoState>().init(login.user_info);
-
     // 如果本地数据库有，则更新登录结果
     if ((await LoginDao(glbDB).exists(login.user_info.id))) {
       Log.info("更新本地用户信息：${login.user_info.id}");
@@ -45,8 +45,6 @@ class LoginVerify {
     }
     // TODO 这里应该把大师信息也存储到本地数据库
     if (CusRole.is_master) _fetchMaster(context);
-    // TODO 这里将会用购物车本地数据库代替之前用 KV 实现的
-    ShopKV.key = "shop${ApiBase.uid}";
   }
 
   /// 初始化全局信息

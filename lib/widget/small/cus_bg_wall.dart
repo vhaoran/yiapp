@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/service/api/api_image.dart';
+import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,12 +28,12 @@ class BackgroundWall extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        constraints: BoxConstraints.expand(height: Adapt.px(height)),
+        constraints: BoxConstraints.expand(height: S.h(height)),
         child: CachedNetworkImage(
           imageUrl: "${ApiImage.thumbnail(
             url,
             height: 360.toInt(),
-            width: (360 + 100).toInt(),
+            width: 460.toInt(),
           )}",
           fit: boxFit,
           placeholder: (context, url) => _errImage(),

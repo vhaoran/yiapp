@@ -1,13 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/temp/shopcart_func.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/gather/net_photoview.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
@@ -36,15 +36,15 @@ class ProductColorShow extends StatefulWidget {
 class _ProductColorShowState extends State<ProductColorShow> {
   int _curSelect = -1; // 当前选择的哪一个
   int _count = 1; // 购买的数量
-  List _l = []; // 图片地址列表,用于滑动查看图片
-  ProductColor _color; // 当前选择的商品颜色和价格
+  List _urls = []; // 图片地址列表,用于滑动查看图片
   String _path; // 选择图片的url
+  Map<String, ProductColor> _select = {}; // 当前选择的商品颜色和价格
   SingleShopData _order; // 当前选择的单个订单详情
   AllShopData _allShop; // 所有订单详情
 
   @override
   void initState() {
-    _l = widget.product.images.map((e) => e.toJson()).toList();
+    _urls = widget.product.images.map((e) => e.toJson()).toList();
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
     _allShop = AllShopData(shops: [_order]);
     CusRoute.push(
       context,
-      ProductOrderPage(allShop: _allShop),
+      ProductOrderPage(allShop: _allShop, isShop: false),
     ).then((val) => {if (val != null) Navigator.pop(context)});
   }
 
@@ -73,15 +73,15 @@ class _ProductColorShowState extends State<ProductColorShow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "商品可选颜色"),
+      appBar: CusAppBar(text: "选择商品"),
       body: _co(),
       backgroundColor: primary,
     );
   }
 
   Widget _co() {
+    Product p = widget.product;
     // 这里如果颜色和图片保持一致的话，这个判断就不需要了
-    bool b = widget.product.colors.length <= widget.product.images.length;
     return Column(
       children: <Widget>[
         Expanded(
@@ -89,18 +89,14 @@ class _ProductColorShowState extends State<ProductColorShow> {
             behavior: CusBehavior(),
             child: ListView(
               children: <Widget>[
-                SizedBox(height: Adapt.px(10)),
+                SizedBox(height: S.h(5)),
                 // 商品的图片,价格和颜色
-                if (b)
-                  ...List.generate(
-                    widget.product.colors.length,
-                    (i) => _productItem(widget.product.colors[i], i),
-                  ),
-                if (!b)
-                  ...List.generate(
-                    widget.product.images.length,
-                    (i) => _productItem(widget.product.colors[i], i),
-                  ),
+                ...List.generate(
+                  p.colors.length <= p.images.length
+                      ? p.colors.length
+                      : p.images.length,
+                  (i) => _productItem(p.colors[i], i),
+                ),
                 // 购买数量
                 ProductCount(
                   count: _count,
@@ -114,6 +110,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
         widget.shopCart
             ? _bottomBtn("加入购物车", onPressed: _doAddShopCart)
             : _bottomBtn("立即购买", onPressed: _doBuyNow),
+        SizedBox(height: S.h(5)),
       ],
     );
   }
@@ -121,15 +118,25 @@ class _ProductColorShowState extends State<ProductColorShow> {
   /// 单个商品的价格和颜色
   Widget _productItem(ProductColor e, int i) {
     if (i > widget.product.images.length) {
-      Log.info("66666666");
+      Log.error("i > product.images.length");
       i = widget.product.images.length;
     }
     String path = widget.product.images[i]?.path ?? "";
     return InkWell(
       onTap: () => setState(() {
         _curSelect = i;
-        _color = e;
         _path = path;
+        print(">>>颜色：${e.code}");
+        if (_select.isEmpty) {
+          _select.addAll({"$i": e});
+        } else {
+          if (_select.containsKey("$i")) {
+            _select.remove("$i");
+          } else {
+            _select.clear();
+            _select.addAll({"$i": e});
+          }
+        }
       }),
       child: Card(
         color: fif_primary,
@@ -140,24 +147,30 @@ class _ProductColorShowState extends State<ProductColorShow> {
               InkWell(
                 onTap: () => CusRoute.push(
                   context,
-                  NetPhotoView(imageList: _l, index: i),
+                  NetPhotoView(imageList: _urls, index: i),
                 ),
                 child: CusAvatar(url: path, rate: 20, size: 100),
               ),
-              SizedBox(width: Adapt.px(Adapt.px(50))),
+              SizedBox(width: S.w(20)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CusText("颜色：${e.code}", t_gray, 28),
-                  SizedBox(height: Adapt.px(30)),
-                  CusText("价格：${e.price}", t_gray, 28),
+                  Text(
+                    "颜色：${e.code}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  SizedBox(height: S.h(15)),
+                  Text(
+                    "价格：${e.price}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
                 ],
               ),
               Spacer(),
-              if (_curSelect == i) // 显示已选择
+              if (_select.containsKey("$i")) // 显示已选择
                 Image.asset(
                   'assets/images/icon_selected_20x20.png',
-                  scale: Adapt.px(2.5),
+                  scale: 1.4,
                 ),
             ],
           ),
@@ -169,23 +182,19 @@ class _ProductColorShowState extends State<ProductColorShow> {
   Widget _bottomBtn(String text, {VoidCallback onPressed}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: CusBtn(
-        text: text,
-        pdVer: 15,
-        borderRadius: 100,
-        minWidth: double.infinity,
-        textColor: Colors.black,
-        backgroundColor: Color(0xFFEB7E31),
-        fontSize: 28,
+      child: CusRaisedButton(
+        child: Text(text, style: TextStyle(fontSize: S.sp(14))),
+        padding: EdgeInsets.symmetric(horizontal: S.screenW() / 4),
+        radius: 50,
         onPressed: () {
           // 购买的数量不用判断，因为至少为1
-          if (_color == null) {
+          if (_select.isEmpty) {
             CusToast.toast(context, text: "未选择商品");
             return;
           }
           _order = SingleShopData(
             product: widget.product,
-            color: _color,
+            color: _select['$_curSelect'],
             path: _path,
             count: _count,
           );
@@ -200,7 +209,8 @@ class _ProductColorShowState extends State<ProductColorShow> {
     setState(() {
       _curSelect = -1;
       _count = 1;
-      _color = _path = _order = null;
+      _path = _order = null;
+      _select.clear();
     });
   }
 }
