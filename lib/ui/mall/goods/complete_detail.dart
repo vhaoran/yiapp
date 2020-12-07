@@ -3,10 +3,10 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
-import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/orders/productOrder-item.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
@@ -81,14 +81,14 @@ class _CompleteDetailState extends State<CompleteDetail> {
               children: <Widget>[
                 CusText("订单详情", t_primary, 30),
                 SizedBox(width: Adapt.px(60)),
-                CusText("合计:￥${_order.total_amt}", t_primary, 30),
+                CusText("合计:￥${_order.amt}", t_primary, 30),
               ],
             ),
           ),
           ..._order.items.map((e) => _colorPrice(e)), // 商品的颜色和价格
           Padding(
             padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
-            child: CusText("时间：${_order.createDate}", t_primary, 30),
+            child: CusText("时间：${_order.create_date}", t_primary, 30),
           ),
         ],
       ),
@@ -97,11 +97,11 @@ class _CompleteDetailState extends State<CompleteDetail> {
 
   /// 收货人
   Widget _addrCtr() {
-    return Card(
-      color: fif_primary,
-      shadowColor: t_gray,
-      child: Padding(
-        padding: EdgeInsets.all(Adapt.px(25)),
+    return Padding(
+      padding: EdgeInsets.all(S.w(10)),
+      child: Card(
+        color: fif_primary,
+        shadowColor: t_gray,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -109,7 +109,7 @@ class _CompleteDetailState extends State<CompleteDetail> {
               children: <Widget>[
                 CusText(_order.contact, t_primary, 30), // 收件人
                 SizedBox(width: Adapt.px(30)),
-                CusText(_order.addr.mobile, t_primary, 30), // 手机号
+                CusText(_order.addr.mobile ?? "111", t_primary, 30), // 手机号
               ],
             ),
             SizedBox(height: Adapt.px(10)),

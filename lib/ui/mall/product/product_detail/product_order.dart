@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/complex/address_result.dart';
+import 'package:yiapp/model/complex/cus_order_data.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/temp/shopcart_func.dart';
+import 'package:yiapp/ui/mall/product/product_detail/p_order_address.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
-import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/widget/small/cus_loading.dart';
-import 'package:yiapp/model/complex/address_result.dart';
-import 'package:yiapp/model/complex/cus_order_data.dart';
-import 'package:yiapp/service/api/api-product-order.dart';
-import 'package:yiapp/ui/mine/com_pay_page.dart';
-import 'package:yiapp/ui/mall/product/product_detail/p_order_address.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -48,7 +44,6 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
 
   /// 提交订单
   void _doBuy() async {
-    SpinKit.threeBounce(context);
     List<Map> maps = [];
     _l.forEach((e) {
       maps.add({
@@ -67,6 +62,7 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
     try {
       var res = await ApiProductOrder.productOrderAdd(m);
       if (res != null) {
+        Log.info("商城订单已生成");
         Navigator.pop(context);
         if (widget.isShop) {
           // 如果是购物车，则清空数据
@@ -76,26 +72,8 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
         }
         BalancePay(
           context,
-          data: PayData(amt: widget.allShop.amt, b_type: b_p_order, id: res.id),
+          data: PayData(amt: widget.allShop.amt, b_type: b_mall, id: res.id),
         );
-
-//        CusToast.toast(
-//          context,
-//          text: "订单提交成功，即将跳转到支付界面",
-//          milliseconds: 1500,
-//        );
-//        Future.delayed(Duration(milliseconds: 1500)).then(
-//          (value) => CusRoute.pushReplacement(
-//            context,
-//            ComPayPage(
-//              tip: "商城订单付款",
-//              b_type: b_yi_order,
-//              orderId: res.id,
-//              amt: num.parse("${widget.allShop.amt}"),
-//            ),
-//          ),
-//        );
-//        Navigator.of(context).pop("");
       }
     } catch (e) {
       Log.error("提交订单出现异常：$e");

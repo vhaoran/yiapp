@@ -16,10 +16,6 @@ class ShopKV {
   /// 获取本地购物车数据
   static Future<String> load() async {
     return await KV.getStr(kv_shop);
-//    if ("${ApiBase.uid}" == key.substring(4)) {
-//      return await KV.getStr(key);
-//    }
-//    return null;
   }
 
   /// 更新本地购物车数据

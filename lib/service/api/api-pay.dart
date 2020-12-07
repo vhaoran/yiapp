@@ -1,9 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/ui/home/home_page.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 import 'api_base.dart';
 
 class ApiPay {
   /*
   * b_type: 业务类型,
-  *  p_order   商城订单付款
+  *  mall   商城订单付款
 	// yi_order  大师订单付款
 	// bbs_prize 悬赏贴付款
 	// bbs_vie   闪断贴付款
@@ -28,10 +36,5 @@ class ApiPay {
         "trade_no=$trade_no&"
         "amt=$amt";
     return url;
-  }
-
-  /// 订单付款
-  static OrderPay() {
-
   }
 }

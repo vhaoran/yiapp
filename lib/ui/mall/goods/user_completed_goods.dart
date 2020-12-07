@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mall/goods/complete_detail.dart';
-import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,7 +27,7 @@ class CompletedGoods extends StatefulWidget {
 
 class _CompletedGoodsState extends State<CompletedGoods> {
   var _future;
-  int _pageNo = 0;
+  int _page_no = 0;
   int _rowsCount = 0;
   final int _rows_per_page = 10; // 默认每页查询个数
   List<ProductOrder> _l = []; // 已完成订单列表
@@ -41,17 +40,17 @@ class _CompletedGoodsState extends State<CompletedGoods> {
 
   /// 分页查询已完成订单
   _fetch() async {
-    if (_pageNo * _rows_per_page > _rowsCount) return;
-    _pageNo++;
+    if (_page_no * _rows_per_page > _rowsCount) return;
+    _page_no++;
     var m = {
-      "page_no": _pageNo,
+      "page_no": _page_no,
       "rows_per_page": _rows_per_page,
       "sort": {"create_time_int": -1},
-      "where": {"stat": 2},
+      "where": {"stat": 1},
     };
     try {
       PageBean pb = await ApiProductOrder.productOrderPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as ProductOrder).toList();
       Log.info("已完成订单总个数：$_rowsCount");
       l.forEach((src) {
@@ -76,7 +75,12 @@ class _CompletedGoodsState extends State<CompletedGoods> {
             return Center(child: CircularProgressIndicator());
           }
           if (_l.isEmpty) {
-            return Center(child: CusText("您还没有相关的订单", t_gray, 28));
+            return Center(
+              child: Text(
+                "",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+              ),
+            );
           }
           return _lv();
         },
@@ -91,83 +95,94 @@ class _CompletedGoodsState extends State<CompletedGoods> {
       footer: CusFooter(),
       child: ListView(
         children: <Widget>[
-          ...List.generate(_l.length, (i) => _coverItem(_l[i])),
+          ..._l.map(
+            (e) => InkWell(
+              onTap: () => CusRoute.push(
+                context,
+                CompleteDetail(order: e, id: e.id),
+              ),
+              child: _coverItem(e),
+            ),
+          ),
         ],
       ),
       onLoad: () async {
         await _fetch();
         setState(() {});
       },
-      onRefresh: () async {
-        await _refresh();
-      },
+      onRefresh: () async => _refresh(),
     );
   }
 
   /// 单个已完成订单封面
   Widget _coverItem(ProductOrder order) {
-    return InkWell(
-      onTap: () => CusRoute.push(
-        context,
-        CompleteDetail(order: order, id: order.id),
-      ),
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              ...order.items.map(
-                (e) => Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: InkWell(
-                    onTap: () => CusRoute.push(
-                      context,
-                      ProductDetails(id_of_es: e.product_id),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          flex: 1,
-                          child: CusText("${e.name}x${e.qty}", t_gray, 30),
-                        ), // 商品名称
-                        Flexible(
-                          flex: 1,
-                          child: CusText("颜色：${e.color_code}", t_gray, 30),
-                        ), // 商品颜色
-                        Flexible(
-                          flex: 1,
-                          child: CusText("总价:￥${e.amt}", t_yi, 30),
-                        ), // 商品价格
-                      ],
-                    ),
-                  ),
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: S.w(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            ...order.items.map(
+              (e) => Padding(
+                padding: EdgeInsets.symmetric(vertical: S.h(5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        "${e.name}x${e.qty}",
+                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      ),
+                    ), // 商品名称
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        "颜色：${e.color_code}",
+                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      ),
+                    ), // 商品颜色
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        "颜色：${e.color_code}",
+                        style: TextStyle(color: t_yi, fontSize: S.sp(15)),
+                      ),
+                    ), // 商品价格
+                  ],
                 ),
               ),
-              Row(
-                children: <Widget>[
-                  CusText("${order.createDate}", t_gray, 28),
-                  Spacer(),
-                  CusText("合计:￥${order.total_amt}", t_primary, 28),
-                ],
-              )
-            ],
-          ),
+            ),
+            SizedBox(height: S.h(10)),
+            Row(
+              children: <Widget>[
+                Text(
+                  "${order.create_date}",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+                Spacer(),
+                Text(
+                  "合计:￥${order.amt}",
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+              ],
+            ),
+            SizedBox(height: S.h(10)),
+          ],
         ),
-        color: fif_primary,
-        shadowColor: t_gray,
-        shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-        ),
+      ),
+      color: fif_primary,
+      shadowColor: t_gray,
+      shape: RoundedRectangleBorder(
+        side: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
     );
   }
 
   /// 刷新数据
   void _refresh() async {
-    _pageNo = _rowsCount = 0;
+    _page_no = _rowsCount = 0;
     _l.clear();
     await _fetch();
     setState(() {});

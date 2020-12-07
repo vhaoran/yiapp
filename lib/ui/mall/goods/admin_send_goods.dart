@@ -157,7 +157,7 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
               ),
               Container(
                 alignment: Alignment.centerRight,
-                child: CusText("合计:${p.total_amt}", t_primary, 30),
+                child: CusText("合计:${p.amt}", t_primary, 30),
               ), // 合计
             ],
           ),

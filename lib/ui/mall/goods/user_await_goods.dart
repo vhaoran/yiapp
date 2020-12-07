@@ -30,8 +30,8 @@ class AwaitGetGoods extends StatefulWidget {
 
 class _AwaitGetGoodsState extends State<AwaitGetGoods> {
   var _future;
-  int _pageNo = 0;
-  int _rowsCount = 0;
+  int _page_no = 0;
+  int _rows_count = 0;
   final int _rows_per_page = 10; // 默认每页查询个数
   List<ProductOrder> _l = []; // 待收货列表
 
@@ -43,18 +43,18 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
 
   /// 分页查询待收货订单
   _fetch() async {
-    if (_pageNo * _rows_per_page > _rowsCount) return;
-    _pageNo++;
+    if (_page_no * _rows_per_page > _rows_count) return;
+    _page_no++;
     var m = {
-      "page_no": _pageNo,
+      "page_no": _page_no,
       "rows_per_page": _rows_per_page,
       "where": {"stat": 2},
     };
     try {
       PageBean pb = await ApiProductOrder.productOrderPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as ProductOrder).toList();
-      Log.info("待收货订单总个数：$_rowsCount");
+      Log.info("待收货订单总个数：$_rows_count");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -166,7 +166,7 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                CusText("合计:￥${order.total_amt}", t_primary, 28),
+                CusText("合计:￥${order.amt}", t_primary, 28),
                 SizedBox(width: 15),
                 CusBtn(
                   text: "确认收货",
@@ -193,7 +193,7 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
 
   /// 刷新数据
   void _refresh() async {
-    _pageNo = _rowsCount = 0;
+    _page_no = _rows_count = 0;
     _l.clear();
     await _fetch();
     setState(() {});

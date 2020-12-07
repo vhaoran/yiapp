@@ -20,7 +20,7 @@ const String w_yi_trade = "/yi/trade/";
 const String w_yi_msg = "/yi/msg/";
 
 /// 业务类型(business)
-const String b_p_order = "p_order"; // 商城订单付款
+const String b_mall = "mall"; // 商城订单付款
 const String b_yi_order = "yi_order"; // 大师订单付款
 const String b_bbs_prize = "bbs_prize"; // 悬赏帖付款
 const String b_bbs_vie = "bbs_vie"; // 闪断帖付款

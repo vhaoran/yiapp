@@ -33,7 +33,7 @@ class DemoSimulate extends StatelessWidget {
           onTap: () {
             BalancePay(
               context,
-              data: PayData(amt: 12, b_type: b_p_order, id: "id"),
+              data: PayData(amt: 12, b_type: b_mall, id: "id"),
             );
           },
         ),

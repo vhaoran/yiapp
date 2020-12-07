@@ -10,7 +10,7 @@ import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/home/cus_navigation.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/luck/luck_main.dart';
-import 'package:yiapp/ui/mall/product/product_store.dart';
+import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/question_page.dart';

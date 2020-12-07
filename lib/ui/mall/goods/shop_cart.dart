@@ -5,6 +5,7 @@ import 'package:yiapp/temp/shopcart_func.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
@@ -59,7 +60,10 @@ class _ShopCartPageState extends State<ShopCartPage> {
         actions: <Widget>[
           FlatButton(
             onPressed: _clearShopCart, // 清空购物车
-            child: CusText("清空购物车", t_gray, 28),
+            child: Text(
+              "清空购物车",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
           )
         ],
       ),
@@ -76,7 +80,12 @@ class _ShopCartPageState extends State<ShopCartPage> {
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: CusText("购物车竟然是空的~", t_gray, 30));
+          return Center(
+            child: Text(
+              "购物车竟然是空的~",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            ),
+          );
         }
         return Column(
           children: <Widget>[
@@ -238,13 +247,15 @@ class _ShopCartPageState extends State<ShopCartPage> {
 
   /// 清空购物车
   void _clearShopCart() async {
+    // 如果购物车是空的，则不做任何操作
+    if (await ShopKV.load() == null) return;
     CusDialog.err(context, title: "确定清空购物车吗?", onApproval: () async {
       await ShopKV.clear();
       _m.clear();
       _l.clear();
       await _localData();
       setState(() {});
-      CusToast.toast(context, text: "已清空购物车");
+      CusToast.toast(context, text: "购物车已清空~");
     });
   }
 

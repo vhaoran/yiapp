@@ -29,6 +29,25 @@ class SpinKit {
     );
   }
 
+  static ring(
+    BuildContext context, {
+    Color color = Colors.white,
+    double size = 40,
+    bool show = true,
+    String text,
+    int seconds,
+    String errText,
+  }) {
+    _comDialog(
+      context,
+      show: show,
+      text: text,
+      seconds: seconds,
+      errText: errText,
+      child: SpinKitRing(color: color, size: size, lineWidth: 4),
+    );
+  }
+
   static ripple(BuildContext context,
       {Color color = Colors.white, double size = 120, bool show = true}) {
     _comDialog(
@@ -53,15 +72,6 @@ class SpinKit {
       context,
       show: show,
       child: SpinKitDualRing(color: color, size: size),
-    );
-  }
-
-  static ring(BuildContext context,
-      {Color color = Colors.white, double size = 60, bool show = true}) {
-    _comDialog(
-      context,
-      show: show,
-      child: SpinKitRing(color: color, size: size),
     );
   }
 

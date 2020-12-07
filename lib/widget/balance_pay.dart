@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/home/home_page.dart';
+import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'flutter/cus_toast.dart';
+import 'small/cus_loading.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -17,11 +24,7 @@ class BalancePay {
   final PayData data;
   final VoidCallback onCancel;
 
-  BalancePay(
-    BuildContext context, {
-    @required this.data,
-    this.onCancel,
-  }) {
+  BalancePay(BuildContext context, {@required this.data, this.onCancel}) {
     _showBottomSheet(context);
   }
 
@@ -40,7 +43,7 @@ class BalancePay {
       builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 15),
-          height: Adapt.screenH() / 1.5,
+          height: S.screenH() / 1.5,
           child: _co(context),
         );
       },
@@ -52,34 +55,22 @@ class BalancePay {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 5),
-        IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            CusDialog.normal(context,
-                title: "是否放弃本次付款",
-                textAgree: "继续付款",
-                textCancel: "放弃", onCancel: () {
-              Navigator.pop(context);
-              if (onCancel != null) {
-                onCancel();
-              }
-            });
-          },
-        ),
+        SizedBox(height: S.h(5)),
+        _closePay(context), // 关闭支付界面
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text("￥",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              "￥",
+              style: TextStyle(fontSize: S.sp(24), fontWeight: FontWeight.bold),
+            ),
             Text(
               "${data.amt}.00",
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: S.sp(36), fontWeight: FontWeight.bold),
             ),
           ],
         ),
-        SizedBox(height: 20),
+        SizedBox(height: S.h(20)),
         _rowInfo("订单信息", _bType()),
         CusDivider(color: Colors.black54),
         _rowInfo("付款方式", "账户余额"),
@@ -88,15 +79,15 @@ class BalancePay {
           text: "立即付款",
           backgroundColor: Color(0xFF3D77F1),
           minWidth: double.infinity,
-          onPressed: () {},
+          onPressed: () => _orderPay(context, data),
         ),
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
             "鸿运来支付",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: S.sp(14),
               color: Colors.grey[500],
               fontWeight: FontWeight.bold,
             ),
@@ -106,8 +97,49 @@ class BalancePay {
     );
   }
 
-  /// 支付
-  void _doPay() async {}
+  /// 订单付款
+  void _orderPay(BuildContext context, PayData payData) async {
+    var m = {"amt": payData.amt, "b_type": payData.b_type, "id": payData.id};
+    Log.info("订单详情：$m");
+    try {
+      SpinKit.ring(context, text: "正在支付...");
+      var url = w_yi_trade + "OrderPay";
+      bool ok = await ApiBase.postValue(url, m);
+      if (ok != null) {
+        await Future.delayed(Duration(milliseconds: 1500));
+        Navigator.pop(context);
+        CusToast.toast(context, text: "支付成功");
+        CusRoute.pushReplacement(context, HomePage());
+      }
+    } catch (e) {
+      if (e.toString().contains("余额不足")) {
+        CusToast.toast(context, text: "余额不足，请充值", milliseconds: 1500);
+        Navigator.pop(context);
+        CusRoute.pushReplacement(
+          context,
+          RechargePage(amt: payData.amt, auto: true),
+        );
+      }
+      Log.error("订单付款出现异常：$e");
+    }
+  }
+
+  /// 关闭支付界面
+  Widget _closePay(context) {
+    return IconButton(
+      icon: Icon(Icons.clear),
+      onPressed: () => CusDialog.normal(
+        context,
+        title: "是否放弃本次付款",
+        textAgree: "继续付款",
+        textCancel: "放弃",
+        onCancel: () {
+          Navigator.pop(context);
+          if (onCancel != null) onCancel();
+        },
+      ),
+    );
+  }
 
   Widget _rowInfo(String left, String right) {
     return Row(
@@ -115,9 +147,9 @@ class BalancePay {
       children: <Widget>[
         Text(
           left,
-          style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+          style: TextStyle(fontSize: S.sp(16), color: Colors.grey[700]),
         ),
-        Text(right, style: TextStyle(fontSize: 15))
+        Text(right, style: TextStyle(fontSize: S.sp(16)))
       ],
     );
   }
@@ -125,7 +157,7 @@ class BalancePay {
   String _bType() {
     String str = "";
     switch (data.b_type) {
-      case b_p_order:
+      case b_mall:
         str = "商城订单付款";
         break;
       case b_yi_order:
