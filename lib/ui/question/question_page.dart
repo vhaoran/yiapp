@@ -5,9 +5,8 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
@@ -32,66 +31,69 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   // 提问类型
-  final List<String> _queTypes = ["六爻", "四柱", "合婚", "其他", "取消"];
+  final List<String> _selectTypes = ["六爻", "四柱", "合婚", "其他"];
   var _user = CusLoginRes(); // 本地用户信息
-  List<String> _tabs = [];
+  List<String> _tabsName = [];
+  List<Widget> _tabsWidget = [];
   var _future;
 
   @override
   void initState() {
     Log.info("进了提问页面");
-    _future = _loadInit();
+    _future = _initLoad();
     super.initState();
   }
 
   /// 动态显示悬赏帖和闪断帖
-  _loadInit() async {
+  _initLoad() async {
     _user = await LoginDao(glbDB).readUserByUid();
-    setState(() {
-      if (CusRole.is_master) {
-        _tabs = ["悬赏帖", "闪断帖"];
-      } else {
-        if (_user.enable_prize == 1) {
-          _tabs.add("悬赏帖");
-        }
-        if (_user.enable_vie == 1) {
-          _tabs.add("闪断帖");
-        }
-      }
-    });
+    if (_user.enable_prize == 1) {
+      _tabsName.add("悬赏帖");
+      _tabsWidget.add(RewardPostPage());
+    }
+    if (_user.enable_vie == 1) {
+      _tabsName.add("闪断帖");
+      _tabsWidget.add(FlashPostPage());
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return DefaultTabController(
-      length: _tabs.length,
+      length: _tabsName.length,
       child: Scaffold(
-        appBar: CusAppBar(
-          text: "提问区",
-          showLeading: false,
-          actions: <Widget>[
-            if (!CusRole.is_master)
-              FlatButton(
-                onPressed: () {
-                  // 选择发帖类型
-                  showDialog(context: context, child: _typeDialog(context));
-                },
-                child:
-                    Text("发帖", style: TextStyle(fontSize: 16, color: t_gray)),
-              ),
-          ],
-        ),
+        appBar: _appBar(),
         body: FutureBuilder(
             future: _future,
             builder: (context, snap) {
-              if (!snapDone(snap)) {
+              if (snap.connectionState != ConnectionState.done) {
                 return Center(child: CircularProgressIndicator());
               }
               return _bodyCtr();
             }),
         backgroundColor: primary,
       ),
+    );
+  }
+
+  Widget _appBar() {
+    return CusAppBar(
+      text: "提问区",
+      showLeading: false,
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () {
+            // 选择发帖类型
+            showDialog(context: context, child: _typeDialog(context));
+          },
+          child: Text(
+            "发帖",
+            style: TextStyle(fontSize: S.sp(15), color: t_gray),
+          ),
+        ),
+      ],
     );
   }
 
@@ -106,55 +108,59 @@ class _QuestionPageState extends State<QuestionPage>
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
-            _tabs.length,
-            (i) => Text(_tabs[i], style: TextStyle(fontSize: 18)),
+            _tabsName.length,
+            (i) => Text(_tabsName[i], style: TextStyle(fontSize: S.sp(16))),
           ),
           onTap: (index) {
-            // 在这里设置悬赏帖还是闪断帖
+            // 设置悬赏帖还是闪断帖
             CusRole.isFlash = index == 1 ? true : false;
           },
         ),
-        Expanded(
-            child: TabBarView(
-          children: <Widget>[
-            if (CusRole.is_master) ...[RewardPostPage(), FlashPostPage()],
-            if (!CusRole.is_master) ...[
-              if (_user.enable_prize == 1) RewardPostPage(),
-              if (_user.enable_vie == 1) FlashPostPage(),
-            ],
-          ],
-        )),
+        Expanded(child: TabBarView(children: _tabsWidget)),
       ],
     );
   }
 
   /// 选择问命类型
   Widget _typeDialog(context) {
-    return SimpleDialog(
-      backgroundColor: tipBg,
-      title: Center(child: Text('请选择一个您想咨询的类型')),
-      titlePadding: EdgeInsets.all(24),
-      contentPadding: EdgeInsets.all(0),
-      children: List.generate(
-        _queTypes.length,
-        (i) => Column(
-          children: <Widget>[
-            Divider(height: 1),
-            Container(
-              width: double.infinity, // 点击整行都可跳转
-              child: FlatButton(
-                child: CusText(_queTypes[i], Colors.black, 30),
-                onPressed: () => _pushWhere(context, i),
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SimpleDialog(
+          backgroundColor: tip_bg,
+          title: Center(
+            child: Text("选择一个你想咨询的类型", style: TextStyle(fontSize: S.sp(15))),
+          ),
+          titlePadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.all(0),
+          children: List.generate(
+            _selectTypes.length,
+            (i) => Column(
+              children: <Widget>[
+                Divider(height: 1),
+                Container(
+                  width: double.infinity, // 点击整行都可跳转
+                  child: FlatButton(
+                    child: Text(_selectTypes[i],
+                        style: TextStyle(fontSize: S.sp(15))),
+                    onPressed: () => _pushWhere(context, i),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        IconButton(
+          icon: Icon(Icons.clear, color: t_gray),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
     );
   }
 
   /// 根据发帖类型跳转
   void _pushWhere(context, int i) {
+    // i 的顺序是 _selectTypes 列表的顺序
     switch (i) {
       case 0: // 六爻
         CusRoute.pushReplacement(context, LiuYaoPage());
@@ -162,18 +168,17 @@ class _QuestionPageState extends State<QuestionPage>
       case 1: // 四柱
         CusRoute.pushReplacement(
           context,
-          AskQuestionPage(content_type: post_sizhu, barName: "四柱"),
+          AskQuestionPage(content_type: post_sizhu),
         );
         break;
       case 2: // 合婚
         CusRoute.pushReplacement(
           context,
-          AskQuestionPage(content_type: post_hehun, barName: "合婚"),
+          AskQuestionPage(content_type: post_hehun),
         );
         break;
       case 3: // 其他
-        CusRoute.pushReplacement(
-            context, AskQuestionPage(content_type: 0, barName: "其他"));
+        CusRoute.pushReplacement(context, AskQuestionPage(content_type: 0));
         break;
       default:
         Navigator.pop(context);

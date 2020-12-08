@@ -14,7 +14,7 @@ const Color ter_primary = Color(0xFF332C2C); // 三级背景色，比如 AppBar
 const Color fou_primary = Color(0xFF4E4141); // 四级背景色，高亮
 const Color fif_primary = Color(0xFF413F42); // 五级背景色
 const Color six_primary = Color(0xFFCFCFCF); // 六级背景色(待定)
-const Color tipBg = Color(0xFFC7C7CC); // 提示框背景色
+const Color tip_bg = Color(0xFFC7C7CC); // 提示框背景色
 
 // 文本
 const Color t_primary = Color(0xFFFFC679); // 主文本颜色

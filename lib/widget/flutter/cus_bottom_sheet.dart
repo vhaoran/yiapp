@@ -22,7 +22,7 @@ class CusBottomSheet {
     this.titles: const ["从相册获取", "拍摄", "取消"],
     this.titleSize: 28,
     this.titleColor: Colors.black,
-    this.backgroundColor: tipBg,
+    this.backgroundColor: tip_bg,
     this.fnLists: const [],
     this.OnFile,
   }) {

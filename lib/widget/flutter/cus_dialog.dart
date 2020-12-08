@@ -59,7 +59,7 @@ class _ComDialog {
 
   Widget _dialogCtr(BuildContext context) {
     return AlertDialog(
-      backgroundColor: tipBg,
+      backgroundColor: tip_bg,
       content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,

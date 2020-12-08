@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -99,7 +100,12 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
             return Center(child: CircularProgressIndicator());
           }
           if (_l.isEmpty) {
-            return Center(child: CusText("您还没有相关的订单", t_gray, 28));
+            return Center(
+              child: Text(
+                "暂无待收货记录",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+              ),
+            );
           }
           return _lv();
         },

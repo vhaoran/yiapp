@@ -31,7 +31,7 @@ class BalancePay {
   void _showBottomSheet(context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: tipBg,
+      backgroundColor: tip_bg,
       isScrollControlled: true,
       isDismissible: false,
       shape: RoundedRectangleBorder(

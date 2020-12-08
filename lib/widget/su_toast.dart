@@ -18,6 +18,7 @@ enum SuToastStyle { dark, light }
 
 typedef SuToastContentBuilder = Widget Function(BuildContext context);
 
+// 目前该Toast存在双击输入框出现异常，暂时先不用
 class SuToast {
   /// 文本
   static void text({

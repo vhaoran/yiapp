@@ -54,19 +54,11 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
           style: TextStyle(color: t_primary, fontSize: S.sp(18)),
         ),
         Text(
-          "申请成为大师前需要您已绑定手机号，已设置登录密码，若您暂未设置",
+          "申请成为大师前需要您已绑定手机号，已设置登录密码",
           style: TextStyle(color: t_gray, fontSize: S.sp(16), height: S.h(1.4)),
         ),
-        SizedBox(height: S.h(5)),
-        InkWell(
-          onTap: () => CusRoute.push(context, BindUserCodePwd()),
-          child: Text(
-            "请点此设置",
-            style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(16)),
-          ),
-        ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: S.h(10)),
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
             "个人简介",
             style: TextStyle(color: t_primary, fontSize: S.sp(18)),

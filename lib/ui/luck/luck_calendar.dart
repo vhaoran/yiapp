@@ -37,7 +37,7 @@ class LuckCalendar extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: S.h(8)),
       child: Text(
-        "${TimeUtil.dateYMD()}  ${TimeUtil.ganZhi()}年${TimeUtil.lunarMD()}",
+        "${TimeUtil.YMD()}  ${TimeUtil.ganZhi()}年${TimeUtil.lunarMD()}",
         style: TextStyle(color: t_primary, fontSize: S.sp(18)),
       ),
     );

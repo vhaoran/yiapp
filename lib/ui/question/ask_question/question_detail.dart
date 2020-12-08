@@ -5,12 +5,11 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/math_util.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
-import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
@@ -34,13 +33,9 @@ class QueDetailPage extends StatefulWidget {
   final String timeStr;
   final PostLiuYaoCtr liuYaoView;
 
-  QueDetailPage({
-    this.barName,
-    this.data,
-    this.timeStr,
-    this.liuYaoView,
-    Key key,
-  }) : super(key: key);
+  QueDetailPage(
+      {this.barName, this.data, this.timeStr, this.liuYaoView, Key key})
+      : super(key: key);
 
   @override
   _QueDetailPageState createState() => _QueDetailPageState();
@@ -49,7 +44,7 @@ class QueDetailPage extends StatefulWidget {
 class _QueDetailPageState extends State<QueDetailPage> {
   var _future;
   List<PriceLevelRes> _l = []; // 运营商悬赏帖标准
-  List<num> _prices = []; // 价格降序
+  List<num> _prices = []; // 价格降序重新排列
   num _score = 0; // 选择的悬赏金额
   int _select = -1; // 当前选择的第几个悬赏帖标准
   var _selectPrice = PriceLevelRes(); // 选择的悬赏帖标准详情
@@ -62,6 +57,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
     super.initState();
   }
 
+  /// 用户获取运营商设置的悬赏帖和闪断帖的标准
   _fetch() async {
     try {
       var res = CusRole.isFlash
@@ -75,7 +71,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
         }
       }
     } catch (e) {
-      Log.error("获取运营商悬赏帖标准出现异常：$e");
+      Log.error("用户获取运营商悬赏帖标准出现异常：$e");
     }
   }
 
@@ -86,7 +82,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           return _lv();
@@ -105,38 +101,13 @@ class _QueDetailPageState extends State<QueDetailPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10),
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    if (widget.liuYaoView != null) // 六爻排盘信息
-                      widget.liuYaoView,
-                    SizedBox(height: 15),
-                    _titleCtr("基本信息"),
-                    Row(
-                      children: <Widget>[
-                        _subtitleCtr("${_data.content.name}"), // 姓名
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: _subtitleCtr("${widget.timeStr}"),
-                        ), // 出生日期
-                        _subtitleCtr(
-                            "${_data.content.is_male ? '男' : '女'}"), // 性别
-                      ],
-                    ),
-                    CusDivider(),
-                    _titleCtr("帖子标题"),
-                    _subtitleCtr("${_data.title}"),
-                    _titleCtr("帖子内容"),
-                    _subtitleCtr("${_data.brief}"),
-                  ],
-                ),
-                CusDivider(),
+                _postInfo(), // 帖子基本信息
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    _l.isEmpty ? "运营商暂未设置悬赏金额" : "请选择您的悬赏金额",
-                    style: TextStyle(fontSize: 18, color: t_primary),
+                    _l.isEmpty ? "运营商暂未设置悬赏金额" : "请选择你的悬赏金额",
+                    style: TextStyle(fontSize: S.sp(17), color: t_primary),
                   ),
                 ),
                 // 运营商如果已经设置了悬赏金额，用户才可以看到下面这些
@@ -162,9 +133,43 @@ class _QueDetailPageState extends State<QueDetailPage> {
               onPressed: _doPost,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: S.h(5)),
         ],
       ),
+    );
+  }
+
+  /// 帖子基本信息
+  Widget _postInfo() {
+    TextStyle style1 = TextStyle(color: t_primary, fontSize: S.sp(17));
+    TextStyle style2 = TextStyle(color: t_gray, fontSize: S.sp(15));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (widget.liuYaoView != null) // 六爻排盘信息
+          widget.liuYaoView,
+        SizedBox(height: S.h(15)),
+        Text("基本信息", style: style1),
+        Text("${_data.content.name}", style: style2), // 姓名
+        Row(
+          children: <Widget>[
+            Text("${widget.timeStr}", style: style2), // 出生日期
+            SizedBox(width: S.w(15)),
+            // 性别
+            Text("${_data.content.is_male ? '男' : '女'}", style: style2),
+          ],
+        ),
+        SizedBox(height: S.h(15)),
+        Divider(thickness: 0.2, height: 0, color: t_gray),
+        SizedBox(height: S.h(15)),
+        Text("帖子标题", style: style1),
+        Text("${_data.title}", style: style2), // 帖子标题
+        SizedBox(height: S.h(15)),
+        Text("帖子内容", style: style1),
+        Text("${_data.brief}", style: style2), // 帖子内容
+        SizedBox(height: S.h(15)),
+        Divider(thickness: 0.2, height: 0, color: t_gray),
+      ],
     );
   }
 
@@ -191,7 +196,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           color: checked ? t_primary : t_gray,
         ),
         child: Text(
-          "${val} 元宝",
+          "$val 元宝",
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -234,24 +239,5 @@ class _QueDetailPageState extends State<QueDetailPage> {
       }
       Log.error("我要提问出现异常：$e");
     }
-  }
-
-  /// 标题组件
-  Widget _titleCtr(String text) {
-    return Text(
-      text,
-      style: TextStyle(color: t_primary, fontSize: 18),
-    );
-  }
-
-  /// 内容组件
-  Widget _subtitleCtr(String text) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: Text(
-        text,
-        style: TextStyle(color: t_gray, fontSize: 16),
-      ),
-    );
   }
 }

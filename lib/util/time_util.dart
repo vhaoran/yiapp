@@ -10,8 +10,7 @@ import 'package:yiapp/model/complex/yi_date_time.dart';
 
 class TimeUtil {
   /// 根据阴阳历，转换相应的年月日，comment 是否显示文字"公历""农历"，默认不显示
-  static String dateYMD(
-      {bool isSolar = true, bool comment = false, dynamic date}) {
+  static String YMD({bool isSolar = true, bool comment = false, dynamic date}) {
     if (date == null) {
       date = DateTime.now();
     } else {
@@ -48,6 +47,7 @@ class TimeUtil {
     // 二〇二〇年十月初十
     Lunar lunar = Solar.fromDate(date ?? DateTime.now()).getLunar();
     String md = lunar.toString().substring(5); // 十月初十
+    print(">>>md:++++++$md");
     return md;
   }
 
@@ -62,5 +62,20 @@ class TimeUtil {
     DateTime date = DateTime.parse(createdAt);
     String res = "${date.year}年${date.month}月${date.day}日";
     return res;
+  }
+
+  /// 年月日时分
+  static String YMDHM(
+      {bool isSolar = true, bool comment = false, dynamic date}) {
+    String ymd = YMD(isSolar: isSolar, comment: comment, date: date);
+    String hm = HM(hour: date.hour, minute: date.minute);
+    return ymd + " " + hm; // 默认年月日和时分之间有空格
+  }
+
+  /// 时分 如 09:05
+  static String HM({int hour, int minute}) {
+    String h = "${hour.toString().padLeft(2, "0")}";
+    String m = "${minute.toString().padLeft(2, "0")}";
+    return "$h:$m";
   }
 }

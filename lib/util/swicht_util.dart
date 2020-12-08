@@ -8,38 +8,16 @@ import 'package:yiapp/const/con_int.dart';
 
 class SwitchUtil {
   /// 显示帖子类型
-  static String contentType(int content_type) {
-    String str = "";
-    switch (content_type) {
-      case post_liuyao: // 六爻
-        str = "六爻";
-        break;
-      case post_sizhu: // 四柱
-        str = "四柱";
-        break;
-      case he_hun: // 合婚
-        str = "合婚";
-        break;
-      default:
-        str = "未知";
-    }
-    return str;
+  static String contentType(int type) {
+    if (type == post_liuyao) return "六爻";
+    if (type == post_sizhu) return "四柱";
+    if (type == post_hehun) return "合婚";
+    return "其他";
   }
 
   /// 符号，老阴、老阳显示 X 和 O，少阴少阳不显示
   static String xoSymbol(int code) {
-    String str;
-    switch (code) {
-      case lao_yin: // 老阴
-        str = "X";
-        break;
-      case lao_yang: // 老阳
-        str = "O";
-        break;
-      default:
-        str = "";
-        break;
-    }
-    return str;
+    if (code == lao_yin) return "X"; // 老阴
+    return "O"; // 老阴
   }
 }

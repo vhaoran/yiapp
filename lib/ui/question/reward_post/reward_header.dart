@@ -48,7 +48,7 @@ class RewardHeader extends StatelessWidget {
           _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
           _show(
             "出生日期",
-            TimeUtil.dateYMD(isSolar: _content.is_solar, date: _yiDate),
+            TimeUtil.YMD(isSolar: _content.is_solar, date: _yiDate),
           ),
           _show("所问类型", SwitchUtil.contentType(data.content_type)),
           _show("标题", "${data.title}"),
