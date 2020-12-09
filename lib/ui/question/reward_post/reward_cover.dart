@@ -3,10 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/ui/question/reward_post/reward_pay_cancel.dart';
 import 'package:yiapp/ui/question/reward_post/reward_content.dart';
@@ -19,7 +18,7 @@ import 'package:yiapp/ui/question/reward_post/reward_content.dart';
 
 class RewardCover extends StatefulWidget {
   final BBSPrize data;
-  VoidCallback onChanged; // 取消和支付的回调
+  final VoidCallback onChanged; // 取消和支付的回调
 
   RewardCover({this.data, this.onChanged, Key key}) : super(key: key);
 
@@ -28,9 +27,7 @@ class RewardCover extends StatefulWidget {
 }
 
 class _RewardCoverState extends State<RewardCover> {
-  // 临时设置，后边改为图片显示
-  Color _typeColor = Colors.transparent; // 所求类型图片的背景色
-  String _type = ""; // 所求类型的文字
+  Map<String, Color> _m = {}; // 测算类别，图片
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,6 @@ class _RewardCoverState extends State<RewardCover> {
   Widget _coverItem() {
     return Card(
       color: fif_primary,
-      margin: EdgeInsets.symmetric(vertical: Adapt.px(10)),
       shadowColor: Colors.white70,
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -52,12 +48,11 @@ class _RewardCoverState extends State<RewardCover> {
         child: Column(
           children: <Widget>[
             _iconNameScore(), // 发帖人头像，昵称，悬赏金
-            _briefAndType(), // 帖子标题和类型显示
+            SizedBox(height: S.h(5)),
+            _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
-            RewardPayCancel(
-              data: widget.data,
-              onChanged: widget.onChanged,
-            ),
+            SizedBox(height: S.h(5)),
+            RewardPayCancel(data: widget.data, onChanged: widget.onChanged),
           ],
         ),
       ),
@@ -68,67 +63,60 @@ class _RewardCoverState extends State<RewardCover> {
   Widget _iconNameScore() {
     return Row(
       children: <Widget>[
-        CusAvatar(
-          url: widget.data.icon ?? "", // 头像
-          size: 30,
-          circle: true,
+        CusAvatar(url: widget.data.icon ?? "", size: 30, circle: true), // 头像
+        SizedBox(width: S.w(15)),
+        Expanded(
+          child: Text(
+            widget.data.nick.isEmpty ? "" : widget.data.nick, // 昵称
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
         ),
-        // 昵称
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
-          child: CusText(
-              widget.data.nick.isEmpty ? "至尊宝" : widget.data.nick, t_gray, 28),
+        Text(
+          "悬赏 ${widget.data.amt} $yuan_bao", // 悬赏金
+          style: TextStyle(color: t_yi, fontSize: S.sp(15)),
         ),
-        CusText("悬赏 ${widget.data.amt} $yuan_bao", t_yi, 28), // 悬赏金
       ],
     );
   }
 
   /// 帖子标题和所求类型的图片（目前先用文字代替）
-  Widget _briefAndType() {
-    _dynamicType();
+  Widget _briefType() {
+    _postType();
     return Row(
       children: <Widget>[
         Expanded(
           child: Text(
             widget.data.title, // 帖子标题
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             softWrap: true,
           ),
         ),
-        SizedBox(width: Adapt.px(12)),
+        SizedBox(width: S.w(10)),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: _typeColor,
+            color: _m.values.first,
           ),
           padding: EdgeInsets.all(20),
-          child: Text(_type, style: TextStyle(fontSize: Adapt.px(30))),
+          child: Text(_m.keys.first, style: TextStyle(fontSize: S.sp(16))),
         ),
       ],
     );
   }
 
-  /// 临时设置，根据所求类型，动态更改类型颜色和背景色
-  void _dynamicType() {
-    switch (widget.data.content_type) {
-      case post_liuyao: // 六爻
-        _type = "六爻";
-        _typeColor = Color(0xFF78BA3B);
-        break;
-      case post_sizhu: // 四柱
-        _type = "四柱";
-        _typeColor = Color(0xFF80DAEA);
-        break;
-      case post_hehun: // 合婚
-        _type = "合婚";
-        _typeColor = Color(0xFFE0694D);
-        break;
-      default:
-        _type = "其他";
-        _typeColor = Colors.blueGrey;
+  /// 显示测算类别
+  void _postType() {
+    int type = widget.data.content_type;
+    if (type == post_liuyao) {
+      _m = {"六爻": Color(0xFF78BA3B)};
+    } else if (type == post_sizhu) {
+      _m = {"四柱": Color(0xFF80DAEA)};
+    } else if (type == post_hehun) {
+      _m = {"合婚": Color(0xFFE0694D)};
+    } else {
+      _m = {"其他": Colors.blueGrey};
     }
   }
 }

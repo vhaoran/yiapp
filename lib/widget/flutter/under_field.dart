@@ -30,7 +30,6 @@ class CusUnderField extends StatefulWidget {
   final TextStyle hintStyle;
   final TextStyle errorStyle;
   final Widget suffixIcon;
-  final bool formatter;
   String errorText; // 错误提示
 
   CusUnderField({
@@ -52,7 +51,6 @@ class CusUnderField extends StatefulWidget {
     this.errorStyle,
     this.suffixIcon,
     this.errorText,
-    this.formatter: false,
     Key key,
   }) : super(key: key);
 

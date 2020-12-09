@@ -47,7 +47,6 @@ class TimeUtil {
     // 二〇二〇年十月初十
     Lunar lunar = Solar.fromDate(date ?? DateTime.now()).getLunar();
     String md = lunar.toString().substring(5); // 十月初十
-    print(">>>md:++++++$md");
     return md;
   }
 

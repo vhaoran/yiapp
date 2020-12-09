@@ -20,12 +20,13 @@ const String w_yi_trade = "/yi/trade/";
 const String w_yi_msg = "/yi/msg/";
 
 /// 业务类型(business)
-const String b_mall = "mall"; // 商城订单付款
-const String b_yi_order = "yi_order"; // 大师订单付款
-const String b_bbs_prize = "bbs_prize"; // 悬赏帖付款
-const String b_bbs_vie = "bbs_vie"; // 闪断帖付款
 const String b_recharge = "recharge"; // 充值
-const String b_master_draw_money = "master_draw_money"; // 大师提现
+// 这里名称中有的是下划线，有的是中间杠 如 bbs-prize 和 bbs_prize
+const String b_mall = "mall"; // 商城订单付款
+const String b_yi_order = "yi-order"; // 大师订单付款
+const String b_bbs_prize = "bbs-prize"; // 悬赏帖付款
+const String b_bbs_vie = "bbs-vie"; // 闪断帖付款
+const String b_master_draw_money = "master-draw-money"; // 大师提现
 
 /// 命名路由名称 r 是 route 的缩写
 const String r_con_pair = "con_pair"; // 星座配对

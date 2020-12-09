@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -44,7 +43,7 @@ class _RewardPostPageState extends State<RewardPostPage>
   _fetch() async {
     if (_page_no * _rows_per_page > _rows_count) return;
     _page_no++;
-    // 这里应该设置已支付未打赏的在后面，已打赏的在后面，方便查看
+    // TODO 这里需要设置未打赏的在前面，已打赏的在后面
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
@@ -58,9 +57,7 @@ class _RewardPostPageState extends State<RewardPostPage>
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
       if (pb != null) {
-        if (_rows_count == 0) {
-          _rows_count = pb.rowsCount ?? 0;
-        }
+        if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
         Log.info("总的悬赏帖个数：$_rows_count");
         var l = pb.data.map((e) => e as BBSPrize).toList();
         // 在原来的基础上继续添加新的数据
@@ -77,6 +74,7 @@ class _RewardPostPageState extends State<RewardPostPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: _buildFb(),
@@ -84,37 +82,34 @@ class _RewardPostPageState extends State<RewardPostPage>
   }
 
   Widget _buildFb() {
+    final TextStyle style = TextStyle(color: t_gray, fontSize: S.sp(15));
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        return EasyRefresh(
-          header: CusHeader(),
-          footer: CusFooter(),
-          child: ListView(
-            children: <Widget>[
-              // 没有帖子
-              if (_l.isEmpty)
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 200),
-                  child: CusText("暂未有人发帖", t_gray, 30),
-                ),
-              // 有帖子，则展示所有帖子
-              ..._l.map((e) => RewardCover(data: e)),
-            ],
-          ),
-          onLoad: () async {
-            await _refresh();
-          },
-          onRefresh: () async {
-            _page_no = _rows_count = 0;
-            _l.clear();
-            _refresh();
-          },
-        );
+        if (_l.isEmpty) {
+          return Center(child: Text("暂无帖子", style: style));
+        }
+        return _lv();
+      },
+    );
+  }
+
+  Widget _lv() {
+    return EasyRefresh(
+      header: CusHeader(),
+      footer: CusFooter(),
+      child: ListView(
+        // 显示悬赏帖
+        children: <Widget>[..._l.map((e) => RewardCover(data: e))],
+      ),
+      onLoad: () async => _refresh(),
+      onRefresh: () async {
+        _page_no = _rows_count = 0;
+        _l.clear();
+        _refresh();
       },
     );
   }

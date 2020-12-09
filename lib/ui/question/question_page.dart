@@ -34,7 +34,7 @@ class _QuestionPageState extends State<QuestionPage>
   final List<String> _selectTypes = ["六爻", "四柱", "合婚", "其他"];
   var _user = CusLoginRes(); // 本地用户信息
   List<String> _tabsName = [];
-  List<Widget> _tabsWidget = [];
+  List<Widget> _tabsWidget = []; // 悬赏帖闪断帖页面
   var _future;
 
   @override

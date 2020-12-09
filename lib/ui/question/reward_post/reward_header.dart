@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/time_util.dart';
-import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_divider.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs_content.dart';
 import 'package:yiapp/ui/question/yuan_bao_ctr.dart';
@@ -38,28 +36,30 @@ class RewardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _postTop(), // 头像、昵称、赏金、发帖时间
+          _topView(), // 头像、昵称、赏金、发帖时间
           CusDivider(),
-          _show("姓名", data.nick ?? ""),
-          _show("性别", _content?.is_male ? "男" : "女" ?? "保密"),
-          _show(
-            "出生日期",
-            TimeUtil.YMD(isSolar: _content.is_solar, date: _yiDate),
+          _info(tip: "姓名", text: data.nick ?? ""),
+          _info(tip: "性别", text: _content.is_male ? "男" : "女" ?? "保密"),
+          _info(
+            tip: "出生日期",
+            text: TimeUtil.YMD(isSolar: _content.is_solar, date: _yiDate),
           ),
-          _show("所问类型", SwitchUtil.contentType(data.content_type)),
-          _show("标题", "${data.title}"),
-
+          _info(tip: "所问类型", text: SwitchUtil.contentType(data.content_type)),
+          _info(tip: "标题", text: "${data.title}"),
           Padding(
             padding: EdgeInsets.only(top: 10, bottom: 5),
-            child: CusText("内容：", t_gray, 30),
+            child: Text(
+              "内容：",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
           ),
           Text(
             "${data.brief}",
-            style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
           CusDivider(),
         ],
@@ -68,26 +68,31 @@ class RewardHeader extends StatelessWidget {
   }
 
   /// 头像、昵称、赏金、发帖时间
-  Widget _postTop() {
+  Widget _topView() {
     return ListTile(
-      leading: CusAvatar(
-        url: data.icon ?? "", // 头像
-        circle: true,
-        size: 50,
+      // 头像
+      leading: CusAvatar(url: data.icon ?? "", circle: true, size: 50),
+      title: Text(
+        data.nick ?? "", // 昵称
+        style: TextStyle(color: t_primary, fontSize: S.sp(15)),
       ),
-      // 昵称
-      title: CusText(data.nick ?? "", t_primary, 28),
       subtitle: Padding(
-        padding: EdgeInsets.only(top: Adapt.px(10)),
-        child: CusText(data.create_date, t_gray, 28), // 发帖时间
+        padding: EdgeInsets.only(top: S.h(5)),
+        child: Text(
+          data.create_date, // 发帖时间
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ),
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           YuanBaoCtr(),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
-            child: CusText("${data.amt}", t_primary, 28), // 赏金
+            padding: EdgeInsets.symmetric(horizontal: S.w(5)),
+            child: Text(
+              "${data.amt}", // 赏金
+              style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+            ),
           ),
         ],
       ),
@@ -95,12 +100,13 @@ class RewardHeader extends StatelessWidget {
     );
   }
 
-  Widget _show(String title, subtitle) {
+  /// 用户基本信息
+  Widget _info({String tip, String text}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Adapt.px(10)),
+      padding: EdgeInsets.only(top: S.h(8)),
       child: Text(
-        "$title:  $subtitle",
-        style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+        "$tip:  $text",
+        style: TextStyle(color: t_gray, fontSize: S.sp(16)),
       ),
     );
   }

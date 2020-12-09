@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/util/math_util.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_bo.dart';
-import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 import 'post_liuyao.dart';
 
@@ -75,6 +76,44 @@ class _QueDetailPageState extends State<QueDetailPage> {
     }
   }
 
+  /// 满足发帖条件
+  void _doPost() async {
+    if (_score == 0) {
+      CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
+      return;
+    }
+    _data.amt = _score;
+    _data.level_id = _selectPrice.price_level_id;
+    var m = _data.toJson();
+    Log.info("发帖详情：$m");
+    try {
+      var data;
+      data = CusRole.isFlash
+          ? await ApiBBSVie.bbsVieAdd(m)
+          : await ApiBBSPrize.bbsPrizeAdd(m);
+      if (data != null) {
+        String b_type = CusRole.isFlash ? b_bbs_vie : b_bbs_prize;
+        BalancePay(
+          context,
+          data: PayData(amt: _data.amt, b_type: b_type, id: data.id),
+        );
+      }
+    } catch (e) {
+      if (e.toString().contains("余额")) {
+        CusDialog.normal(
+          context,
+          title: "余额不足，请充值",
+          textAgree: "充值",
+          onApproval: () => CusRoute.push(
+            context,
+            RechargePage(amt: _data.amt),
+          ),
+        );
+      }
+      Log.error("我要提问${widget.barName}出现异常：$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,21 +154,19 @@ class _QueDetailPageState extends State<QueDetailPage> {
                   // 选择悬赏金额
                   Wrap(
                     children: List.generate(
-                      _prices.length,
-                      (i) => _priceItem(_prices[i], i),
-                    ),
+                        _prices.length, (i) => _priceItem(_prices[i], i)),
                   ),
                 ],
-                SizedBox(height: 20),
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.symmetric(horizontal: S.w(10)),
             child: CusBtn(
               text: "完成，发${CusRole.isFlash ? '闪断' : '悬赏'}帖",
               minWidth: double.infinity,
               backgroundColor: Colors.blueGrey,
+              borderRadius: 50,
               onPressed: _doPost,
             ),
           ),
@@ -148,7 +185,6 @@ class _QueDetailPageState extends State<QueDetailPage> {
       children: <Widget>[
         if (widget.liuYaoView != null) // 六爻排盘信息
           widget.liuYaoView,
-        SizedBox(height: S.h(15)),
         Text("基本信息", style: style1),
         Text("${_data.content.name}", style: style2), // 姓名
         Row(
@@ -159,9 +195,10 @@ class _QueDetailPageState extends State<QueDetailPage> {
             Text("${_data.content.is_male ? '男' : '女'}", style: style2),
           ],
         ),
-        SizedBox(height: S.h(15)),
-        Divider(thickness: 0.2, height: 0, color: t_gray),
-        SizedBox(height: S.h(15)),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: S.h(15)),
+          child: Divider(thickness: 0.2, height: 0, color: t_gray),
+        ),
         Text("帖子标题", style: style1),
         Text("${_data.title}", style: style2), // 帖子标题
         SizedBox(height: S.h(15)),
@@ -201,43 +238,5 @@ class _QueDetailPageState extends State<QueDetailPage> {
         ),
       ),
     );
-  }
-
-  /// 满足发帖条件
-  void _doPost() async {
-    if (_score == 0) {
-      CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
-      return;
-    }
-//    BalancePay(context);
-    _data.amt = _score;
-    _data.level_id = _selectPrice.price_level_id;
-    var m = _data.toJson();
-    Log.info("发帖详情：$m");
-    SpinKit.threeBounce(context);
-    try {
-      var data;
-      data = CusRole.isFlash
-          ? await ApiBBSVie.bbsVieAdd(m)
-          : await ApiBBSPrize.bbsPrizeAdd(m);
-      if (data != null) {
-        Navigator.pop(context);
-        CusToast.toast(context, text: "发帖成功");
-        CusRoute.pushReplacement(context, HomePage());
-      }
-    } catch (e) {
-      if (e.toString().contains("余额")) {
-        CusDialog.normal(
-          context,
-          title: "余额不足，请充值",
-          textAgree: "充值",
-          onApproval: () => CusRoute.push(
-            context,
-            RechargePage(amt: _data.amt),
-          ),
-        );
-      }
-      Log.error("我要提问出现异常：$e");
-    }
   }
 }

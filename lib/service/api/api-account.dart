@@ -6,6 +6,7 @@
 // ------------------------------------------------------
 
 import 'package:yiapp/model/dicts/account.dart';
+import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/model/pays/business.dart';
 
 import 'api_base.dart';
@@ -57,5 +58,14 @@ class ApiAccount {
   static businessPage(Map<String, dynamic> pb) async {
     var url = "/yi/trade/BusinessPage";
     return await ApiBase.postPage(url, pb, (m) => Business.fromJson(m));
+  }
+
+  /// 获取个人余额
+  static Future<BalanceRes> remainderGet() async {
+    var url = "/yi/trade/RemainderGet";
+    var data = {"uid": ApiBase.uid};
+    return await ApiBase.postObj(url, data, (m) {
+      return BalanceRes.fromJson(m);
+    }, enableJwt: true);
   }
 }

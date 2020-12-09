@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/util/screen_util.dart';
 import '../../util/adapt.dart';
 
 // ------------------------------------------------------
@@ -24,8 +25,8 @@ class CusBtn extends StatelessWidget {
   CusBtn({
     this.text = '确定',
     this.pdHor = 0,
-    this.pdVer = 20,
-    this.fontSize: 30,
+    this.pdVer = 10,
+    this.fontSize: 16,
     this.borderRadius = 5,
     this.minWidth = 40,
     this.height: 0,
@@ -38,10 +39,10 @@ class CusBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
-      minWidth: Adapt.px(minWidth),
-      height: Adapt.px(height),
-      padding: EdgeInsets.symmetric(
-          horizontal: Adapt.px(pdHor), vertical: Adapt.px(pdVer)),
+      minWidth: S.w(minWidth),
+      height: S.h(height),
+      padding:
+          EdgeInsets.symmetric(horizontal: S.w(pdHor), vertical: S.h(pdVer)),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
       child: RaisedButton(
@@ -50,10 +51,7 @@ class CusBtn extends StatelessWidget {
         elevation: 0,
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: Adapt.px(fontSize),
-            color: textColor,
-          ),
+          style: TextStyle(fontSize: S.sp(fontSize), color: textColor),
         ),
       ),
     );

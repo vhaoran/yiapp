@@ -71,10 +71,9 @@ class _LoginPageState extends State<LoginPage> {
           controller: _mobileCtrl,
           hintText: "请输入手机号",
           errorText: _mobileErr,
-          keyboardType: TextInputType.phone,
+          onlyNumber: true,
           maxLength: 11,
           autofocus: true,
-          formatter: true,
         ),
         SizedBox(height: Adapt.px(50)),
         // 密码输入框

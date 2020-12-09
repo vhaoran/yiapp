@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -40,7 +41,7 @@ class _RewardContentState extends State<RewardContent> {
   bool _loadAll = false; // 是否加载完毕
 
   int _pageNo = 0;
-  int _rowsCount = 0;
+  int _replyNum = 0; // 回复评论的个数
 
   @override
   void initState() {
@@ -53,10 +54,10 @@ class _RewardContentState extends State<RewardContent> {
     try {
       BBSPrize bbsPrize = await ApiBBSPrize.bbsPrizeGet(widget.id);
       if (bbsPrize != null) {
-        print(">>>bbsPrize:${bbsPrize.toJson()}");
+        Log.info("当前悬赏帖详情:${bbsPrize.toJson()}");
         _bbsPrize = bbsPrize;
-        _rowsCount = _bbsPrize.reply.length;
-        Log.info("帖子总长度：$_rowsCount");
+        _replyNum = _bbsPrize.reply.length;
+        Log.info("帖子评论总长度：$_replyNum");
         if (_l.isEmpty) _fetchComment();
       }
     } catch (e) {
@@ -66,13 +67,13 @@ class _RewardContentState extends State<RewardContent> {
 
   /// 模拟分页添加评论列表
   void _fetchComment() async {
-    if (_pageNo * 20 > _rowsCount) {
+    if (_pageNo * 20 > _replyNum) {
       setState(() => _loadAll = true);
       return;
     }
     _pageNo++;
     _l = _bbsPrize.reply.take(_pageNo * 20).toList();
-    Log.info("_l的长度：${_l.length}");
+    Log.info("当前评论列表的长度：${_l.length}");
     setState(() {});
   }
 
@@ -89,58 +90,60 @@ class _RewardContentState extends State<RewardContent> {
           if (_bbsPrize == null) {
             return Center(child: CusText("帖子找不到了~", t_gray, 32));
           }
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: EasyRefresh(
-                  header: CusHeader(),
-                  footer: CusFooter(),
-                  controller: _easyCtrl,
-                  child: ListView(
-                    controller: _scrollCtrl,
-                    physics: BouncingScrollPhysics(),
-                    children: <Widget>[
-                      // 帖子头部信息
-                      RewardHeader(data: _bbsPrize),
-                      // 帖子评论区域
-                      RewardReply(data: _bbsPrize),
-                    ],
-                  ),
-                  onLoad: _loadAll
-                      ? null
-                      : () async {
-                          await Future.delayed(Duration(milliseconds: 100));
-                          await _fetchComment();
-                        },
-                  onRefresh: () async {
-                    await _refresh();
-                  },
-                ),
-              ),
-              // 大师和发帖人可以回复
-              if (CusRole.is_master || _bbsPrize.uid == ApiBase.uid)
-                RewardInput(
-                  data: _bbsPrize,
-                  onSend: () async {
-                    await _refresh();
-                    Timer(
-                      Duration(milliseconds: 500),
-                      () => _scrollCtrl
-                          .jumpTo(_scrollCtrl.position.maxScrollExtent),
-                    );
-                  },
-                ),
-            ],
-          );
+          return _co();
         },
       ),
       backgroundColor: primary,
     );
   }
 
+  Widget _co() {
+    return Column(
+      children: <Widget>[
+        Expanded(child: _lv()),
+        // 大师和发帖人可以回复
+        if (CusRole.is_master || _bbsPrize.uid == ApiBase.uid)
+          RewardInput(
+            data: _bbsPrize,
+            onSend: () async {
+              await _refresh();
+              Timer(
+                Duration(milliseconds: 500),
+                () =>
+                    _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent),
+              );
+            },
+          ),
+      ],
+    );
+  }
+
+  Widget _lv() {
+    return EasyRefresh(
+      header: CusHeader(),
+      footer: CusFooter(),
+      controller: _easyCtrl,
+      child: ListView(
+        controller: _scrollCtrl,
+        physics: BouncingScrollPhysics(),
+        children: <Widget>[
+          RewardHeader(data: _bbsPrize), // 帖子头部信息
+          RewardReply(data: _bbsPrize), // 帖子评论区域
+        ],
+      ),
+      onLoad: _loadAll
+          ? null
+          : () async {
+              await Future.delayed(Duration(milliseconds: 100));
+              await _fetchComment();
+            },
+      onRefresh: () async => _refresh(),
+    );
+  }
+
   void _refresh() async {
     _l.clear();
-    _pageNo = _rowsCount = 0;
+    _pageNo = _replyNum = 0;
     _loadAll = false;
     await _fetch();
     setState(() {});
