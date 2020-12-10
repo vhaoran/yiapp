@@ -6,7 +6,7 @@ class BBSPrize {
   String brief;
   int broker_id;
   String broker_name;
-  RewardContent content;
+  PostContentRes content;
   int content_type;
   String create_date;
   int create_data_int;
@@ -50,7 +50,7 @@ class BBSPrize {
     int i = json['content_type'] as int;
 //    c = json["content"];
     c = json["content"] != null
-        ? RewardContent.fromJson(json['content'])
+        ? PostContentRes.fromJson(json['content'])
         : null;
 
     if (i == 0) {}

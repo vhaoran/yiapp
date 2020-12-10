@@ -8,12 +8,12 @@ import 'package:yiapp/util/adapt.dart';
 // usage ：单个元宝组件
 // ------------------------------------------------------
 
-class YuanBaoCtr extends StatelessWidget {
+class YuanBao extends StatelessWidget {
   final int iconData;
   final Color color;
   final double size;
 
-  const YuanBaoCtr({
+  const YuanBao({
     this.iconData: 0xe602,
     this.color: const Color(0xFFFAE74c),
     this.size: 40,

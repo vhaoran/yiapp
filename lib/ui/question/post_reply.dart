@@ -6,30 +6,30 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-Reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/26 18:04
-// usage ：悬赏帖单条回帖的内容
+// date  ：2020/12/10 下午3:36
+// usage ：单条回帖的内容
 // ------------------------------------------------------
 
-class RewardReply extends StatefulWidget {
-  final BBSPrize data;
+class PostReply extends StatefulWidget {
+  final data;
 
-  RewardReply({this.data, Key key}) : super(key: key);
+  PostReply({this.data, Key key}) : super(key: key);
 
   @override
-  _RewardReplyState createState() => _RewardReplyState();
+  _PostReplyState createState() => _PostReplyState();
 }
 
-class _RewardReplyState extends State<RewardReply> {
+class _PostReplyState extends State<PostReply> {
   double _localSize = 30;
 
   @override
@@ -74,11 +74,11 @@ class _RewardReplyState extends State<RewardReply> {
     );
   }
 
-  Widget _item(BBSReply e, int level) {
+  Widget _item(e, int level) {
     return Container(
       child: e.is_master // 根据是否为大师显示打赏功能
           ? CupertinoLeftScroll(
-              closeTag: LeftScrollCloseTag("reward_reply"),
+              closeTag: LeftScrollCloseTag("post_reply"),
               key: Key(e.create_date.toString()),
               child: _showReward(e, level),
               buttons: [
@@ -94,7 +94,7 @@ class _RewardReplyState extends State<RewardReply> {
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsets.only(bottom: Adapt.px(10)), // 评论间隔
+      margin: EdgeInsets.only(bottom: S.h(5)), // 评论间隔
     );
   }
 

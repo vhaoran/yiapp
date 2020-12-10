@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
@@ -10,7 +11,6 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/ui/question/reward_post/reward_cover.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -90,7 +90,7 @@ class _RewardPaidPayState extends State<RewardPaidPay>
                     child: CusText("暂无相关订单", t_gray, 32),
                   ),
                 ..._l.map(
-                  (e) => RewardCover(data: e, onChanged: _refresh),
+                  (e) => PostCover(data: e, onChanged: _refresh),
                 ),
               ],
             ),

@@ -13,7 +13,7 @@ import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
-import 'package:yiapp/ui/question/question_page.dart';
+import 'package:yiapp/ui/question/que_main_page.dart';
 import 'package:yiapp/util/us_util.dart';
 
 // ------------------------------------------------------
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
     if (res.enable_prize == 1 || res.enable_vie == 1) {
       if (res.enable_prize == 1) Log.info("开启了悬赏帖");
       if (res.enable_vie == 1) Log.info("开启了闪断帖");
-      _barWidgets.insert(_barWidgets.length - 1, QuestionPage());
+      _barWidgets.insert(_barWidgets.length - 1, QueMainPage());
       _barNames.insert(_barNames.length - 1, "问命");
     }
     if (res.enable_master == 1) {

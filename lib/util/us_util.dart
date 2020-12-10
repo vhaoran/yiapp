@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -31,5 +31,10 @@ class UsUtil {
   static String newUUID() {
     var uuid = Uuid();
     return uuid.v4();
+  }
+
+  /// 便于打印
+  static String isFlash() {
+    return CusRole.isFlash ? "闪断帖" : "悬赏帖";
   }
 }

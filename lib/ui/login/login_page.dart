@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(height: Adapt.px(60)),
         CusBtn(
           text: '登录',
-          fontSize: 28,
+//          fontSize: 28,
           textColor: Colors.black,
           backgroundColor: Color(0xFFEE9972),
           onPressed: _doLogin,

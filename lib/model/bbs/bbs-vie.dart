@@ -6,6 +6,7 @@
 // ------------------------------------------------------
 
 import 'bbs-Reply.dart';
+import 'bbs_content.dart';
 
 class BBSVie {
   //悬赏分值
@@ -15,7 +16,7 @@ class BBSVie {
   int broker_id;
   String broker_name;
   //内容，由前端自定义
-  dynamic content;
+  PostContentRes content;
   //内容类别 0：四柱 1：六多，由前端自定义
   int content_type;
   String create_date;
@@ -62,7 +63,7 @@ class BBSVie {
   });
 
   factory BBSVie.fromJson(Map<String, dynamic> json) {
-    var c = json['content'];
+    var c = PostContentRes.fromJson(json['content']);
     return BBSVie(
       amt: json['amt'],
       brief: json['brief'],
@@ -112,7 +113,7 @@ class BBSVie {
     data['title'] = this.title;
     data['uid'] = this.uid;
     if (this.content != null) {
-      data['content'] = this.content;
+      data['content'] = this.content.toJson();
     }
     if (this.images != null) {
       data['images'] = this.images;

@@ -4,35 +4,34 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/question/post_content.dart';
+import 'package:yiapp/ui/question/post_pay_cancel.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/ui/question/reward_post/reward_pay_cancel.dart';
-import 'package:yiapp/ui/question/reward_post/reward_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/9/21 10:52
-// usage ：悬赏帖封面
+// usage ：帖子封面
 // ------------------------------------------------------
 
-class RewardCover extends StatefulWidget {
-  final BBSPrize data;
+class PostCover extends StatefulWidget {
+  final data; // BBSVie、BBSPrize
   final VoidCallback onChanged; // 取消和支付的回调
 
-  RewardCover({this.data, this.onChanged, Key key}) : super(key: key);
+  PostCover({this.data, this.onChanged, Key key}) : super(key: key);
 
   @override
-  _RewardCoverState createState() => _RewardCoverState();
+  _PostCoverState createState() => _PostCoverState();
 }
 
-class _RewardCoverState extends State<RewardCover> {
+class _PostCoverState extends State<PostCover> {
   Map<String, Color> _m = {}; // 测算类别，图片
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CusRoute.push(context, RewardContent(id: widget.data.id)),
+      onTap: () => CusRoute.push(context, PostContent(id: widget.data.id)),
       child: _coverItem(),
     );
   }
@@ -52,7 +51,7 @@ class _RewardCoverState extends State<RewardCover> {
             _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
             SizedBox(height: S.h(5)),
-            RewardPayCancel(data: widget.data, onChanged: widget.onChanged),
+            PostPayCancel(data: widget.data, onChanged: widget.onChanged),
           ],
         ),
       ),

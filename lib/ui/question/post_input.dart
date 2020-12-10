@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/service/bus/im-bus.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/26 18:17
-// usage ：悬赏帖回复评论输入框
+// date  ：2020/12/10 下午3:06
+// usage ：回帖评论输入框
 // ------------------------------------------------------
 
-class RewardInput extends StatefulWidget {
-  final BBSPrize data;
+class PostInput extends StatefulWidget {
+  final data;
   final VoidCallback onSend;
 
-  RewardInput({this.data, this.onSend, Key key}) : super(key: key);
+  PostInput({this.data, this.onSend, Key key}) : super(key: key);
 
   @override
-  _RewardInputState createState() => _RewardInputState();
+  _PostInputState createState() => _PostInputState();
 }
 
-class _RewardInputState extends State<RewardInput> {
+class _PostInputState extends State<PostInput> {
   var _replyCtrl = TextEditingController();
   var _focusNode = FocusNode();
 
@@ -62,12 +61,13 @@ class _RewardInputState extends State<RewardInput> {
       "text": [_replyCtrl.text],
     };
     try {
-      bool ok = await ApiBBSPrize.bbsPrizeReply(m);
+      bool ok = CusRole.isFlash
+          ? await ApiBBSVie.bbsVieReply(m)
+          : await ApiBBSPrize.bbsPrizeReply(m);
       if (ok) {
         _replyCtrl.clear();
         _focusNode.unfocus();
         CusToast.toast(context, text: "回帖成功");
-        glbEventBus.fire(MsgNotifyHis());
         if (widget.onSend != null) widget.onSend();
       }
     } catch (e) {

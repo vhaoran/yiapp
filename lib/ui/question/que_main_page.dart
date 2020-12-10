@@ -5,14 +5,13 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
-import 'package:yiapp/ui/question/flash_post/flash_post_page.dart';
-import 'package:yiapp/ui/question/reward_post/reward_post_page.dart';
 import 'ask_question/ask_main_page.dart';
 
 // ------------------------------------------------------
@@ -21,14 +20,14 @@ import 'ask_question/ask_main_page.dart';
 // usage ：底部导航栏 - 问命页面
 // ------------------------------------------------------
 
-class QuestionPage extends StatefulWidget {
-  QuestionPage({Key key}) : super(key: key);
+class QueMainPage extends StatefulWidget {
+  QueMainPage({Key key}) : super(key: key);
 
   @override
-  _QuestionPageState createState() => _QuestionPageState();
+  _QueMainPageState createState() => _QueMainPageState();
 }
 
-class _QuestionPageState extends State<QuestionPage>
+class _QueMainPageState extends State<QueMainPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   // 提问类型
   final List<String> _selectTypes = ["六爻", "四柱", "合婚", "其他"];
@@ -49,11 +48,11 @@ class _QuestionPageState extends State<QuestionPage>
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
       _tabsName.add("悬赏帖");
-      _tabsWidget.add(RewardPostPage());
+      _tabsWidget.add(PostDataPage());
     }
     if (_user.enable_vie == 1) {
       _tabsName.add("闪断帖");
-      _tabsWidget.add(FlashPostPage());
+      _tabsWidget.add(PostDataPage());
     }
     setState(() {});
   }

@@ -4,7 +4,7 @@
 // usage ：自定义悬赏帖内容
 // ------------------------------------------------------
 
-class RewardContent {
+class PostContentRes {
   int year;
   int month;
   int day;
@@ -14,7 +14,7 @@ class RewardContent {
   bool is_solar;
   String name;
 
-  RewardContent({
+  PostContentRes({
     this.year,
     this.month,
     this.day,
@@ -25,8 +25,8 @@ class RewardContent {
     this.name,
   });
 
-  factory RewardContent.fromJson(Map<String, dynamic> json) {
-    return RewardContent(
+  factory PostContentRes.fromJson(Map<String, dynamic> json) {
+    return PostContentRes(
       year: json['year'],
       month: json['month'],
       day: json['day'],
