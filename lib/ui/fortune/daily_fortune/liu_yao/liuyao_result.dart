@@ -146,7 +146,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
 
   /// 求测悬赏帖还是闪断帖
   void _doPost(bool isFlash) async {
-    CusRole.isFlash = isFlash;
+    CusRole.isVie = isFlash;
     CusRoute.push(
       context,
       AskQuestionPage(

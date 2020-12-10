@@ -7,7 +7,6 @@ import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
 import 'package:yiapp/ui/question/post_reply.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -24,8 +23,8 @@ import 'package:yiapp/service/api/api_base.dart';
 
 class PostContent extends StatefulWidget {
   final String id;
-
-  PostContent({this.id, Key key}) : super(key: key);
+  final bool isVie;
+  PostContent({this.id, this.isVie: false, Key key}) : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -50,9 +49,11 @@ class _PostContentState extends State<PostContent> {
   /// 获取单条帖子详情
   _fetch() async {
     try {
-      var data = CusRole.isFlash
+      print(">>>widget.isvie:${widget.isVie}");
+      var data = widget.isVie
           ? await ApiBBSVie.bbsVieGet(widget.id)
           : await ApiBBSPrize.bbsPrizeGet(widget.id);
+      print(">>>data:$data");
       if (data != null) {
         _data = data;
         _replyNum = _data.reply.length;
@@ -60,7 +61,7 @@ class _PostContentState extends State<PostContent> {
         if (_l.isEmpty) _fetchReply();
       }
     } catch (e) {
-      Log.error("查询单条${UsUtil.isFlash()}出现异常：$e");
+      Log.error("查询单条帖子出现异常：$e");
     }
   }
 

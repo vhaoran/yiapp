@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/ui/mine/my_orders/post_await_pay.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -54,8 +56,8 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
         Expanded(
           child: TabBarView(
             children: [
-              RewardAwaitPay(), // 悬赏帖待付款
-              FlashAwaitPay(), // 闪断帖待付款
+              PostAwaitPay(isVie: false), // 悬赏帖待付款
+              PostAwaitPay(isVie: true), // 闪断帖待付款
             ],
           ),
         ),

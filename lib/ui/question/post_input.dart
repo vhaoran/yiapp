@@ -61,7 +61,7 @@ class _PostInputState extends State<PostInput> {
       "text": [_replyCtrl.text],
     };
     try {
-      bool ok = CusRole.isFlash
+      bool ok = CusRole.isVie
           ? await ApiBBSVie.bbsVieReply(m)
           : await ApiBBSPrize.bbsPrizeReply(m);
       if (ok) {

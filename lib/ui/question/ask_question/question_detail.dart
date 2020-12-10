@@ -61,7 +61,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
   /// 用户获取运营商设置的悬赏帖和闪断帖的标准
   _fetch() async {
     try {
-      var res = CusRole.isFlash
+      var res = CusRole.isVie
           ? await ApiBo.brokerPriceLevelVieUserList()
           : await ApiBo.brokerPriceLevelPrizeUserList();
       if (res != null) {
@@ -88,11 +88,11 @@ class _QueDetailPageState extends State<QueDetailPage> {
     Log.info("发帖详情：$m");
     try {
       var data;
-      data = CusRole.isFlash
+      data = CusRole.isVie
           ? await ApiBBSVie.bbsVieAdd(m)
           : await ApiBBSPrize.bbsPrizeAdd(m);
       if (data != null) {
-        String b_type = CusRole.isFlash ? b_bbs_vie : b_bbs_prize;
+        String b_type = CusRole.isVie ? b_bbs_vie : b_bbs_prize;
         BalancePay(
           context,
           data: PayData(amt: _data.amt, b_type: b_type, id: data.id),
@@ -163,7 +163,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: S.w(10)),
             child: CusBtn(
-              text: "完成，发${CusRole.isFlash ? '闪断' : '悬赏'}帖",
+              text: "完成，发${CusRole.isVie ? '闪断' : '悬赏'}帖",
               minWidth: double.infinity,
               backgroundColor: Colors.blueGrey,
               borderRadius: 50,

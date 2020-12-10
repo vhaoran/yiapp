@@ -32,9 +32,4 @@ class UsUtil {
     var uuid = Uuid();
     return uuid.v4();
   }
-
-  /// 便于打印
-  static String isFlash() {
-    return CusRole.isFlash ? "闪断帖" : "悬赏帖";
-  }
 }

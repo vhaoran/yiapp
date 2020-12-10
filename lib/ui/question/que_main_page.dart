@@ -48,11 +48,11 @@ class _QueMainPageState extends State<QueMainPage>
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
       _tabsName.add("悬赏帖");
-      _tabsWidget.add(PostDataPage());
+      _tabsWidget.add(PostDataPage(isVie: false));
     }
     if (_user.enable_vie == 1) {
       _tabsName.add("闪断帖");
-      _tabsWidget.add(PostDataPage());
+      _tabsWidget.add(PostDataPage(isVie: true));
     }
     setState(() {});
   }
@@ -112,7 +112,7 @@ class _QueMainPageState extends State<QueMainPage>
           ),
           onTap: (index) {
             // 设置悬赏帖还是闪断帖
-            CusRole.isFlash = index == 1 ? true : false;
+            CusRole.isVie = index == 1 ? true : false;
           },
         ),
         Expanded(child: TabBarView(children: _tabsWidget)),

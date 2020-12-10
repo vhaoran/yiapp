@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
@@ -21,7 +20,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostDataPage extends StatefulWidget {
-  PostDataPage({Key key}) : super(key: key);
+  final bool isVie; // 是否闪断帖
+
+  PostDataPage({this.isVie: false, Key key}) : super(key: key);
 
   @override
   _PostDataPageState createState() => _PostDataPageState();
@@ -56,11 +57,8 @@ class _PostDataPageState extends State<PostDataPage>
       },
       "sort": {"create_date": -1}, // 按时间倒序排列
     };
-    if (CusRole.isFlash) {
-      await _fetchVie(m);
-    } else {
-      await _fetchPrize(m);
-    }
+    print(">>>widget.isVie:${widget.isVie}");
+    widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
   /// 获取悬赏帖

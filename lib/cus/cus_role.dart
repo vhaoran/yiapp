@@ -21,5 +21,5 @@ class CusRole {
   static num broker_id = 0;
 
   // 是否闪断帖
-  static bool isFlash = false;
+  static bool isVie = false;
 }
