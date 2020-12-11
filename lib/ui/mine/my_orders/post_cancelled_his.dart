@@ -4,12 +4,11 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -20,18 +19,18 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // usage ：已取消帖子历史
 // ------------------------------------------------------
 
-class PostCancelPayHis extends StatefulWidget {
+class PostCancelledHis extends StatefulWidget {
   final bool isVie;
   final bool isHis;
 
-  PostCancelPayHis({this.isVie: false, this.isHis: false, Key key})
+  PostCancelledHis({this.isVie: false, this.isHis: false, Key key})
       : super(key: key);
 
   @override
-  _PostCancelPayHisState createState() => _PostCancelPayHisState();
+  _PostCancelledHisState createState() => _PostCancelledHisState();
 }
 
-class _PostCancelPayHisState extends State<PostCancelPayHis>
+class _PostCancelledHisState extends State<PostCancelledHis>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
@@ -100,37 +99,44 @@ class _PostCancelPayHisState extends State<PostCancelPayHis>
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        return ScrollConfiguration(
-          behavior: CusBehavior(),
-          child: EasyRefresh(
-            header: CusHeader(),
-            footer: CusFooter(),
-            onLoad: () async => await _fetch(),
-            onRefresh: () async => await _refresh(),
-            child: ListView(
-              children: <Widget>[
-                if (_l.isEmpty)
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(top: 200),
-                    child: CusText("暂无订单", t_gray, 32),
-                  ),
-                ..._l.map(
-                  (e) => PostCover(
-                    data: e,
-                    isVie: widget.isVie,
-                    isHis: widget.isHis,
-                    onChanged: _refresh,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        return _lv();
       },
+    );
+  }
+
+  Widget _lv() {
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: EasyRefresh(
+        header: CusHeader(),
+        footer: CusFooter(),
+        onLoad: () async => await _fetch(),
+        onRefresh: () async => await _refresh(),
+        child: ListView(
+          children: <Widget>[
+            if (_l.isEmpty)
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 200),
+                child: Text(
+                  "暂无订单",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+              ),
+            ..._l.map(
+              (e) => PostCover(
+                data: e,
+                isVie: widget.isVie,
+                isHis: widget.isHis,
+                onChanged: _refresh,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

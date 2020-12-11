@@ -44,7 +44,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
   _LiuYaoResPageState(this._res);
 
   List<int> _codes = []; // 六爻编码
-  String _user_nick; // 卦主
+  String _userNick; // 卦主
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
 
   @override
   Widget build(BuildContext context) {
-    _user_nick = context.watch<UserInfoState>()?.userInfo?.nick ?? "";
+    _userNick = context.watch<UserInfoState>()?.userInfo?.nick ?? "";
     return Scaffold(
       appBar: CusAppBar(text: "六爻排盘", backData: ""),
       body: _lv(),
@@ -72,7 +72,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             padding: EdgeInsets.all(Adapt.px(30)),
             children: <Widget>[
               _show("占类", "在线起卦"),
-              _show("卦主", _user_nick),
+              _show("卦主", _userNick),
               _show(
                   "时间",
                   "${YiTool.fullDateGong(
@@ -111,7 +111,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             text: "闪断帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFED9951),
-            height: 90,
+            height: 45,
             onPressed: () => _doPost(true),
           ),
         ),
@@ -120,7 +120,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             text: "悬赏帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE96C62),
-            height: 90,
+            height: 45,
             onPressed: () => _doPost(false),
           ),
         ),
@@ -129,7 +129,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             text: "大师亲测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE8493E),
-            height: 90,
+            height: 45,
             onPressed: () async {
               CusLiuYaoData data = CusLiuYaoData(res: _res, codes: _codes);
               String str = json.encode(data.toJson());
@@ -154,7 +154,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
         res: widget.res,
         l: widget.l,
         guaTime: widget.guaTime,
-        user_nick: _user_nick,
+        user_nick: _userNick,
       ),
     );
   }

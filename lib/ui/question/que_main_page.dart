@@ -115,6 +115,7 @@ class _QueMainPageState extends State<QueMainPage>
             CusRole.isVie = index == 1 ? true : false;
           },
         ),
+        SizedBox(height: S.h(5)),
         Expanded(child: TabBarView(children: _tabsWidget)),
       ],
     );

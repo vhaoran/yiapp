@@ -134,6 +134,7 @@ class _PickerViewState extends State<PickerView> {
             onFirm: _onConfirm,
             showLunar: widget.showLunar,
             selectLunar: (b) {
+              if (b == null) return;
               _isLunar = b;
               if (widget.isLunar != null) {
                 widget.isLunar(b);

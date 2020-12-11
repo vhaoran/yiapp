@@ -18,12 +18,12 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/10 上午10:56
-// usage ：单条帖子详情（分查询单条帖子、单条历史帖子）
+// usage ：单条帖子详情（1、查询单条帖子、2、查询单条帖子历史）
 // ------------------------------------------------------
 
 class PostContent extends StatefulWidget {
   final String id;
-  final bool isHis; // 是否查询帖子历史
+  final bool isHis; // 是否查询历史帖子
   final bool isVie; // 是否查询的闪断帖
 
   PostContent({this.id, this.isVie: false, this.isHis: false, Key key})
@@ -37,7 +37,7 @@ class _PostContentState extends State<PostContent> {
   var _data; // 单条帖子数据
   var _future;
   int _pageNo = 0;
-  int _replyNum = 0; // 回复评论的个数
+  int _replyNum = 0; // 回复评论的条数
   bool _loadAll = false; // 是否加载完毕
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
@@ -66,7 +66,7 @@ class _PostContentState extends State<PostContent> {
       if (data != null) {
         _data = data;
         _replyNum = _data.reply.length;
-        Log.info("帖子评论总长度：$_replyNum");
+        Log.info("帖子评论总条数：$_replyNum");
         if (_l.isEmpty) _fetchReply();
       }
     } catch (e) {
@@ -76,13 +76,14 @@ class _PostContentState extends State<PostContent> {
 
   /// 模拟分页加载评论列表
   void _fetchReply() async {
-    if (_pageNo * 20 > _replyNum) {
+    final int count = 20; // 默认每次加载20条
+    if (_pageNo * count > _replyNum) {
       setState(() => _loadAll = true);
       return;
     }
     _pageNo++;
-    _l = _data.reply.take(_pageNo * 20).toList();
-    Log.info("当前已加载评论长度：${_l.length}");
+    _l = _data.reply.take(_pageNo * count).toList();
+    Log.info("当前已加载评论条数：${_l.length}");
     setState(() {});
   }
 
@@ -159,11 +160,11 @@ class _PostContentState extends State<PostContent> {
               await Future.delayed(Duration(milliseconds: 100));
               _fetchReply();
             },
-      onRefresh: () async => _refresh(),
+      onRefresh: () async => await _refresh(),
     );
   }
 
-  void _refresh() async {
+  Future<void> _refresh() async {
     _l.clear();
     _pageNo = _replyNum = 0;
     _loadAll = false;

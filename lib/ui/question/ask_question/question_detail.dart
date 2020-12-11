@@ -9,6 +9,7 @@ import 'package:yiapp/util/math_util.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
@@ -157,20 +158,20 @@ class _QueDetailPageState extends State<QueDetailPage> {
                         _prices.length, (i) => _priceItem(_prices[i], i)),
                   ),
                 ],
+                SizedBox(height: S.h(20)),
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: S.w(10)),
-            child: CusBtn(
-              text: "完成，发${CusRole.isVie ? '闪断' : '悬赏'}帖",
-              minWidth: double.infinity,
-              backgroundColor: Colors.blueGrey,
-              borderRadius: 50,
+
+          SizedBox(
+            width: S.screenW(),
+            child: CusRaisedButton(
+              child: Text("完成，发${CusRole.isVie ? '闪断' : '悬赏'}帖"),
+              radius: 50,
               onPressed: _doPost,
             ),
           ),
-          SizedBox(height: S.h(5)),
+          SizedBox(height: S.h(8)),
         ],
       ),
     );

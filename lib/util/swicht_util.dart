@@ -18,6 +18,7 @@ class SwitchUtil {
   /// 符号，老阴、老阳显示 X 和 O，少阴少阳不显示
   static String xoSymbol(int code) {
     if (code == lao_yin) return "X"; // 老阴
-    return "O"; // 老阴
+    if (code == lao_yang) return "O"; // 老阳
+    return ""; // 少阴、少阳
   }
 }

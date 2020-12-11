@@ -9,6 +9,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -82,12 +83,11 @@ class _RegisterPageState extends State<RegisterPage> {
           onlyLetter: true,
         ),
         SizedBox(height: 40),
-        CusBtn(
-          text: '注册',
-          textColor: Colors.black,
-          fontSize: 28,
-          backgroundColor: Color(0xFFEE9972),
+        CusRaisedButton(
+          child: Text("注册"),
           onPressed: _verify,
+          backgroundColor: Color(0xFFEE9972),
+          radius: 50,
         ),
         _userAgreement(), // 用户协议
       ],

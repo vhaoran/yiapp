@@ -16,7 +16,7 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/10 上午 9:28
-// usage ：展示悬赏帖,闪断帖
+// usage ：显示悬赏帖、闪断帖
 // ------------------------------------------------------
 
 class PostDataPage extends StatefulWidget {
@@ -31,9 +31,9 @@ class PostDataPage extends StatefulWidget {
 class _PostDataPageState extends State<PostDataPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  int _page_no = 0;
-  int _rows_count = 0;
-  final int _rows_per_page = 10; // 默认每页查询个数
+  int _pageNo = 0;
+  int _rowsCount = 0;
+  final int _rowsPerPage = 10; // 默认每页查询个数
   List _l = [];
 
   @override
@@ -44,12 +44,12 @@ class _PostDataPageState extends State<PostDataPage>
 
   /// 分页查询帖子
   _fetch() async {
-    if (_page_no * _rows_per_page > _rows_count) return;
-    _page_no++;
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
+    _pageNo++;
     // TODO 这里需要设置未打赏的在前面，已打赏的在后面
     var m = {
-      "page_no": _page_no,
-      "rows_per_page": _rows_per_page,
+      "page_no": _pageNo,
+      "rows_per_page": _rowsPerPage,
       "where": {
         "stat": {
           "\$in": [1, 2] // 1 已支付 和 2 已打赏
@@ -65,8 +65,8 @@ class _PostDataPageState extends State<PostDataPage>
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
       if (pb != null) {
-        if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
-        Log.info("总的悬赏帖个数：$_rows_count");
+        if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
+        Log.info("悬赏帖总条数：$_rowsCount");
         var l = pb.data.map((e) => e as BBSPrize).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -84,8 +84,8 @@ class _PostDataPageState extends State<PostDataPage>
     try {
       PageBean pb = await ApiBBSVie.bbsViePage(m);
       if (pb != null) {
-        if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
-        Log.info("总的闪断帖个数：$_rows_count");
+        if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
+        Log.info("闪断帖总条数：$_rowsCount");
         var l = pb.data.map((e) => e as BBSVie).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -121,7 +121,7 @@ class _PostDataPageState extends State<PostDataPage>
       footer: CusFooter(),
       onLoad: () async => _refresh(),
       onRefresh: () async {
-        _page_no = _rows_count = 0;
+        _pageNo = _rowsCount = 0;
         _l.clear();
         _refresh();
       },

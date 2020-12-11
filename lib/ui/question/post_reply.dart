@@ -21,7 +21,7 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostReply extends StatefulWidget {
-  final data;
+  final data; // BBSVie、BBSPrize
 
   PostReply({this.data, Key key}) : super(key: key);
 
@@ -38,7 +38,7 @@ class _PostReplyState extends State<PostReply> {
       children: <Widget>[
         ...List.generate(
           widget.data.reply.length,
-          (i) => _item(widget.data.reply[i], i + 1),
+          (i) => _commentItem(widget.data.reply[i], i + 1),
         ),
       ],
     );
@@ -48,7 +48,7 @@ class _PostReplyState extends State<PostReply> {
   void _doReward(BBSReply reply) {
     CusDialog.normal(
       context,
-      title: "您确定为大师 ${reply.nick} 打赏 ${widget.data.amt} $yuan_bao吗",
+      title: "确定给大师 ${reply.nick} 打赏 ${widget.data.amt} $yuan_bao吗",
       onApproval: () async {
         var m = {
           "id": widget.data.id,
@@ -74,7 +74,8 @@ class _PostReplyState extends State<PostReply> {
     );
   }
 
-  Widget _item(e, int level) {
+  /// 单条评论的内容
+  Widget _commentItem(e, int level) {
     return Container(
       child: e.is_master // 根据是否为大师显示打赏功能
           ? CupertinoLeftScroll(

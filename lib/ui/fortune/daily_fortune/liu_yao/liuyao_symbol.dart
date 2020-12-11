@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
@@ -11,7 +12,7 @@ import 'package:yiapp/util/temp/yi_tool.dart';
 // usage ：生成六爻符号
 // ------------------------------------------------------
 
-const double _width = 130; // 阴爻中单个符号的宽度
+const double _width = 60; // 阴爻中单个符号的宽度
 
 class LiuYaoSymbol extends StatelessWidget {
   final int code; // 当前爻码 0 1 2 3
@@ -22,94 +23,62 @@ class LiuYaoSymbol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: Adapt.px(18)), // 爻间距
+      padding: EdgeInsets.only(top: S.h(10)), // 爻间距
       child: _row(),
     );
   }
 
   Widget _row() {
+    final style = TextStyle(color: t_gray, fontSize: S.sp(15));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        // 第几爻
+        // 第几爻，什么爻
         Text(
-          "${YiTool.numToChinese(num)}爻:",
-          style: TextStyle(color: t_yi, fontSize: Adapt.px(30)),
-        ),
-        // 什么爻
-        Text(
-          " ${_liuYao(code).first}",
-          style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
+          "${YiTool.numToChinese(num)}爻  ${_liu(code)['type']}",
+          style: TextStyle(color: t_yi, fontSize: S.sp(15)),
         ),
         // 爻的符号
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Adapt.px(10)),
-          child: code.isOdd // 是否奇数，奇数为阳，偶数为阴
-              ? _yaoSym(width: 2 * _width + 20)
-              : Row(
-                  children: <Widget>[
-                    _yaoSym(),
-                    SizedBox(width: Adapt.px(20)),
-                    _yaoSym(),
-                  ],
-                ),
-        ),
+        SizedBox(width: S.w(5)),
+        _yaoSym(),
+        SizedBox(width: S.w(5)),
         // 老阴、老阳显示符号，其它的不显示
-        Container(
-          width: Adapt.px(25),
-          height: Adapt.px(30),
-          margin: EdgeInsets.only(right: Adapt.px(10)),
-          child: Text(
-            SwitchUtil.xoSymbol(code),
-            style: TextStyle(
-              color: t_gray,
-              fontSize: Adapt.px(30),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        SizedBox(
+          width: S.w(15),
+          child: Text(SwitchUtil.xoSymbol(code), style: style),
         ),
         // 几背几字
-        Text(
-          "${_liuYao(code).last}",
-          style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-        ),
+        Text("${_liu(code)['detail']}", style: style),
       ],
     );
   }
 
   /// 根据code，返回爻的内容
-  List<String> _liuYao(int code) {
-    String yao = "";
-    String detail = "";
-    switch (code) {
-      case shao_yin: // 0
-        yao = "少阴";
-        detail = "(2背1字)";
-        break;
-      case shao_yang: // 1
-        yao = "少阳";
-        detail = "(1背2字)";
-        break;
-      case lao_yin: // 2
-        yao = "老阴";
-        detail = "(0背3字)";
-        break;
-      case lao_yang: // 3
-        yao = "老阳";
-        detail = "(3背0字)";
-        break;
-      default:
-        break;
-    }
-    return [yao, detail];
+  Map<String, String> _liu(code) {
+    var m = Map<String, String>();
+    if (code == shao_yin) m = {"type": "少阴", "detail": "(2背1字)"};
+    if (code == shao_yang) m = {"type": "少阳", "detail": "(1背2字)"};
+    if (code == lao_yin) m = {"type": "老阴", "detail": "(0背3字)"};
+    if (code == lao_yang) m = {"type": "老阳", "detail": "(3背0字)"};
+    return m;
   }
 
-  /// 爻的符号 阳爻 ——  阴爻 - -
-  Widget _yaoSym({double width = _width}) {
-    return Container(
-      height: Adapt.px(45),
-      width: Adapt.px(width),
-      color: Colors.black,
-    );
+  /// 爻的符号 奇数阳爻 ——  偶数阴爻 - -
+  Widget _yaoSym() {
+    final double width = 60;
+    final double space = 10;
+    if (code.isOdd) {
+      return Container(
+          height: S.h(20), width: S.w(2 * width + space), color: Colors.black);
+    } else if (code.isEven) {
+      return Row(
+        children: <Widget>[
+          Container(height: S.h(20), width: S.w(width), color: Colors.black),
+          SizedBox(width: S.w(space)),
+          Container(height: S.h(20), width: S.w(width), color: Colors.black),
+        ],
+      );
+    }
+    return SizedBox.shrink();
   }
 }

@@ -32,7 +32,7 @@ class AgreementPage extends StatelessWidget {
       children: <Widget>[
         Html(
           data: agreeHtml,
-          style: {"html": Style(fontSize: FontSize(16))},
+          style: {"html": Style(fontSize: FontSize(15))},
         ),
       ],
     );

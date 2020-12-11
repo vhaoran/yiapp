@@ -68,7 +68,7 @@ class _PostAwaitPayState extends State<PostAwaitPay>
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
-        Log.info("当前已查询待付款悬赏帖 ${_l.length} 条");
+        Log.info("当前已查询待付款悬赏帖多少条： ${_l.length}");
       }
     } catch (e) {
       Log.error("分页查询待付款的悬赏帖出现异常：$e");
@@ -87,7 +87,7 @@ class _PostAwaitPayState extends State<PostAwaitPay>
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
-        Log.info("当前已查询待付款闪断帖 ${_l.length} 条");
+        Log.info("当前已查询待付款闪断帖多少条： ${_l.length}");
       }
     } catch (e) {
       Log.error("分页查询待付款的闪断帖出现异常：$e");
@@ -103,31 +103,35 @@ class _PostAwaitPayState extends State<PostAwaitPay>
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        return ScrollConfiguration(
-          behavior: CusBehavior(),
-          child: EasyRefresh(
-            header: CusHeader(),
-            footer: CusFooter(),
-            onLoad: () async => await _fetch(),
-            onRefresh: () async => await _refresh(),
-            child: ListView(
-              children: <Widget>[
-                if (_l.isEmpty)
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(top: S.screenH() / 4),
-                    child: Text(
-                      "暂无待付款订单",
-                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-                    ),
-                  ),
-                ..._l.map((e) => PostCover(
-                    data: e, isVie: widget.isVie, onChanged: _refresh)),
-              ],
-            ),
-          ),
-        );
+        return _lv();
       },
+    );
+  }
+
+  Widget _lv() {
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: EasyRefresh(
+        header: CusHeader(),
+        footer: CusFooter(),
+        onLoad: () async => await _fetch(),
+        onRefresh: () async => await _refresh(),
+        child: ListView(
+          children: <Widget>[
+            if (_l.isEmpty)
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: S.screenH() / 4),
+                child: Text(
+                  "暂无待付款订单",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+              ),
+            ..._l.map((e) =>
+                PostCover(data: e, isVie: widget.isVie, onChanged: _refresh)),
+          ],
+        ),
+      ),
     );
   }
 

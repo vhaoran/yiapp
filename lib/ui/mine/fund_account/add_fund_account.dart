@@ -27,7 +27,7 @@ class AddFundAccount extends StatefulWidget {
 class _AddFundAccountState extends State<AddFundAccount> {
   var _nameCtrl = TextEditingController(); // 账号输入框
   String _err;
-  int _account_type = pay_alipay; // 0:支付宝 1:微信
+  int _accountType = pay_alipay; // 0:支付宝 1:微信
 
   /// 添加资金账号
   void _doAdd() async {
@@ -36,7 +36,7 @@ class _AddFundAccountState extends State<AddFundAccount> {
     });
     if (_err != null) return;
     var m = {
-      "account_type": _account_type,
+      "account_type": _accountType,
       "account_code": _nameCtrl.text.trim(),
       "is_default": 0,
     };
@@ -104,11 +104,11 @@ class _AddFundAccountState extends State<AddFundAccount> {
     return <Widget>[
       Radio(
         value: value,
-        groupValue: _account_type,
+        groupValue: _accountType,
         activeColor: t_primary,
         onChanged: (val) {
           if (_err != null) _err = null;
-          _account_type = val;
+          _accountType = val;
           setState(() {});
         },
       ),

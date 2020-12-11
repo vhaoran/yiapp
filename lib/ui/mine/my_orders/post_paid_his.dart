@@ -4,12 +4,11 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -20,18 +19,18 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // usage ：已付款帖子历史
 // ------------------------------------------------------
 
-class PostPaidPay extends StatefulWidget {
+class PostPaidHis extends StatefulWidget {
   final bool isVie;
   final bool isHis;
 
-  PostPaidPay({this.isVie: false, this.isHis: false, Key key})
+  PostPaidHis({this.isVie: false, this.isHis: false, Key key})
       : super(key: key);
 
   @override
-  _PostPaidPayState createState() => _PostPaidPayState();
+  _PostPaidHisState createState() => _PostPaidHisState();
 }
 
-class _PostPaidPayState extends State<PostPaidPay>
+class _PostPaidHisState extends State<PostPaidHis>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
@@ -100,7 +99,7 @@ class _PostPaidPayState extends State<PostPaidPay>
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         return ScrollConfiguration(
@@ -110,27 +109,34 @@ class _PostPaidPayState extends State<PostPaidPay>
             footer: CusFooter(),
             onLoad: () async => await _fetch(),
             onRefresh: () async => await _refresh(),
-            child: ListView(
-              children: <Widget>[
-                if (_l.isEmpty)
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(top: 200),
-                    child: CusText("暂无订单", t_gray, 32),
-                  ),
-                ..._l.map(
-                  (e) => PostCover(
-                    data: e,
-                    isVie: widget.isVie,
-                    isHis: widget.isHis,
-                    onChanged: _refresh,
-                  ),
-                ),
-              ],
-            ),
+            child: _lv(),
           ),
         );
       },
+    );
+  }
+
+  Widget _lv() {
+    return ListView(
+      children: <Widget>[
+        if (_l.isEmpty)
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 200),
+            child: Text(
+              "暂无订单",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+          ),
+        ..._l.map(
+          (e) => PostCover(
+            data: e,
+            isVie: widget.isVie,
+            isHis: widget.isHis,
+            onChanged: _refresh,
+          ),
+        ),
+      ],
     );
   }
 

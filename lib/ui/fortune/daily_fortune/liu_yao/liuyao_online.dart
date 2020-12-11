@@ -7,10 +7,11 @@ import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
@@ -24,104 +25,93 @@ import 'package:provider/provider.dart';
 // usage ：在线起卦
 // ------------------------------------------------------
 
-const String _zi = "assets/images/zi_mian.png"; // 铜钱字面(正面)
-const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)
+const String _zi = "assets/images/zi_mian.png"; // 铜钱字面(正面)，阴面
+const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)，阳面
 
-class LiuYaoByOnLine extends StatefulWidget {
-  List<int> l = []; // 六爻编码
-  FnYiDate guaTime; // 当前点击铜钱的时间，传递给外部的起卦时间
-  YiDateTime pickerTime; // 如果通过选择器更改了时间，则同步该时间
+class LiuYaoByShake extends StatefulWidget {
+  final List<int> l; // 六爻编码
+  final FnYiDate guaTime; // 当前点击铜钱的时间
 
-  LiuYaoByOnLine({
-    this.l,
-    this.guaTime,
-    this.pickerTime,
-    Key key,
-  }) : super(key: key);
+  LiuYaoByShake({this.l, this.guaTime, Key key}) : super(key: key);
 
   @override
-  _LiuYaoByOnLineState createState() => _LiuYaoByOnLineState();
+  _LiuYaoByShakeState createState() => _LiuYaoByShakeState();
 }
 
-class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
+class _LiuYaoByShakeState extends State<LiuYaoByShake> {
   bool _shaking = false; // 是否正在摇卦
   bool _hadShaken = false; // 是否已经摇完6爻
   YiDateTime _guaTime;
   String _assets = _bei;
-  List<String> _ziBei = []; // 铜钱字背面
-  int _sex; // 用户性别
+  List<String> _ziBeiList = []; // 铜钱字背面
+  num _sex; // 用户性别
 
   @override
   Widget build(BuildContext context) {
     _hadShaken = widget.l.length == 6 ? true : false;
     _sex = context.watch<UserInfoState>()?.userInfo?.sex ?? -1;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(15)),
-      child: Column(
-        children: <Widget>[
-          ..._shake(), // 点击铜钱摇卦
-          ..._showLiuYao(), // 显示六爻
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        _shake(), // 点击铜钱摇卦
+        _showLiuYao(), // 显示六爻
+      ],
     );
   }
 
   /// 点击铜钱摇卦
-  List<Widget> _shake() {
-    return <Widget>[
-      if (!_hadShaken)
-        Text(
-          _shaking ? "点击铜钱出卦" : "点击铜钱进行摇卦",
-          style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-        ),
-      // 铜钱
-      InkWell(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            3,
-            (i) => Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Adapt.px(25), vertical: Adapt.px(20)),
-              child: Image.asset(
-                _ziBei.isEmpty ? _assets : _ziBei[i],
-                scale: 4,
+  Widget _shake() {
+    var style = TextStyle(color: t_gray, fontSize: S.sp(16));
+    return Column(
+      children: <Widget>[
+        if (!_hadShaken) // 没有摇完六爻时
+          Text(_shaking ? "点击铜钱出卦" : "点击铜钱进行摇卦", style: style),
+        SizedBox(height: S.h(10)),
+        // 铜钱
+        InkWell(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              3,
+              (i) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: S.w(i == 1 ? 10 : 0)),
+                child: Image.asset(
+                  _ziBeiList.isEmpty ? _assets : _ziBeiList[i],
+                  scale: 4,
+                ),
               ),
             ),
           ),
+          onTap: _hadShaken ? null : _doShake,
         ),
-        onTap: _hadShaken ? null : _doShake,
-      ),
-      // 剩余次数
-      if (!_hadShaken)
-        Text(
-          "剩余 ${6 - widget.l.length} 次",
-          style: TextStyle(color: t_gray, fontSize: Adapt.px(32)),
-        ),
-    ];
+        SizedBox(height: S.h(10)),
+        // 剩余次数
+        if (!_hadShaken)
+          Text("剩余 ${6 - widget.l.length} 次", style: style),
+      ],
+    );
   }
 
   /// 显示六爻
-  List<Widget> _showLiuYao() {
-    return <Widget>[
-      // 逐个显示爻
-      Column(
-        children: List.generate(
+  Widget _showLiuYao() {
+    return Column(
+      children: <Widget>[
+        // 逐个显示爻
+        ...List.generate(
           widget.l.length,
           (i) => LiuYaoSymbol(code: widget.l[i], num: i + 1),
-        ).reversed.toList(),
-      ),
-      // 六爻都摇完后，显示起卦按钮
-      if (_hadShaken)
-        Padding(
-          padding: EdgeInsets.only(top: Adapt.px(30)),
-          child: CusBtn(
-            text: "开始起卦",
-            minWidth: double.infinity,
-            onPressed: _doQiGua,
+        ).reversed,
+        // 六爻都摇完后，显示起卦按钮
+        SizedBox(height: S.h(15)),
+        if (_hadShaken)
+          SizedBox(
+            width: S.screenW() / 1.5,
+            child: CusRaisedButton(
+              child: Text("开始起卦", style: TextStyle(fontSize: S.sp(15))),
+              onPressed: _doQiGua,
+            ),
           ),
-        ),
-    ];
+      ],
+    );
   }
 
   /// 开始起卦
@@ -129,7 +119,6 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
     SpinKit.threeBounce(context);
     String code = "";
     widget.l.forEach((e) => code += e.toString());
-    print(">>>guaTime:${_guaTime.toJson()}");
     var m = {
       "year": _guaTime.year,
       "month": _guaTime.month,
@@ -139,10 +128,11 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       "code": code,
       "male": _sex,
     };
+    Log.info("提交六爻起卦数据:$m");
     try {
       var res = await ApiYi.liuYaoQiGua(m);
-      Log.info("六爻起卦的数据是：${res.toJson()}");
       if (res != null) {
+        Navigator.pop(context);
         CusRoute.pushReplacement(
           context,
           LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),
@@ -156,30 +146,20 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
   }
 
   /// 点击铜钱摇卦
-  void _doShake() {
-    _ziBei.clear(); // 清空上一次的数据
-    if (_guaTime == null) {
-      _guaTime = YiTool.toYiDate(DateTime.now());
-      // 先通过选择器选择时间，再点铜钱，不能去改变选择器的时间，所以加了pickerTime == null
-      if (widget.guaTime != null && widget.pickerTime == null) {
-        widget.guaTime(_guaTime);
-      }
-    }
-    if (widget.pickerTime != null) {
-      _guaTime = widget.pickerTime;
-    }
+  void _doShake() async {
+    // 清空上一次的数据
+    _ziBeiList.clear();
+    // 记录当前点击铜钱的时间
+    _guaTime = YiTool.toYiDate(DateTime.now());
+    widget.guaTime(_guaTime);
     _shaking = !_shaking;
+    // 如果没有正在摇卦，且没有摇够六次，返回六爻数据
     if (!_shaking && !_hadShaken) {
-      int code = _ranLiuYao;
+      int code = DateTime.now().microsecond % 4;
       widget.l.add(code);
-      _showZiBei(code); // 根据少阳少阴老阳老阴，显示具体的铜钱面
+      _showZiBei(code); // 具体铜钱面
     }
-    _shakeAni(); // 模拟点击铜钱的动画，交替显示铜钱正反面
-    setState(() {});
-  }
-
-  /// 模拟点击铜钱的动画，交替显示铜钱正反面
-  void _shakeAni() async {
+    // 铜钱动画
     bool b = false;
     while (_shaking) {
       b = !b;
@@ -187,55 +167,30 @@ class _LiuYaoByOnLineState extends State<LiuYaoByOnLine> {
       await Future.delayed(Duration(milliseconds: 200));
       if (mounted) setState(() {});
     }
+    if (mounted) setState(() {});
   }
-
-  /// 根据少阳少阴老阳老阴，显示具体的铜钱面
-  void _showZiBei(int code) {
-    switch (code) {
-      case shao_yin:
-        switch (Random().nextInt(3)) {
-          case 0:
-            _ziBei.addAll([_bei, _bei, _zi]);
-            break;
-          case 1:
-            _ziBei.addAll([_bei, _zi, _bei]);
-            break;
-          case 2:
-            _ziBei.addAll([_zi, _bei, _bei]);
-            break;
-        }
-        break;
-      case shao_yang:
-        switch (Random().nextInt(3)) {
-          case 0:
-            _ziBei.addAll([_bei, _zi, _zi]);
-            break;
-          case 1:
-            _ziBei.addAll([_zi, _zi, _bei]);
-            break;
-          case 2:
-            _ziBei.addAll([_zi, _bei, _zi]);
-            break;
-        }
-        break;
-      case lao_yin:
-        _ziBei.addAll([_zi, _zi, _zi]);
-        break;
-      case lao_yang:
-        _ziBei.addAll([_bei, _bei, _bei]);
-        break;
-      default:
-        break;
-    }
-    setState(() {});
-  }
-
-  /// 返回六爻数据
-  int get _ranLiuYao => DateTime.now().microsecond % 4;
 
   @override
   void dispose() {
     _shaking = false; // 正在摇铜钱但是直接返回上一页面，需要设置该项，否则i会继续增加
     super.dispose();
+  }
+
+  /// 根据少阳少阴老阳老阴，显示具体的铜钱面
+  void _showZiBei(int code) {
+    int r = Random().nextInt(3);
+    if (code == shao_yin) {
+      if (r == 0) _ziBeiList.addAll([_bei, _bei, _zi]);
+      if (r == 1) _ziBeiList.addAll([_bei, _zi, _bei]);
+      if (r == 2) _ziBeiList.addAll([_zi, _bei, _bei]);
+    }
+    if (code == shao_yang) {
+      if (r == 0) _ziBeiList.addAll([_bei, _zi, _zi]);
+      if (r == 1) _ziBeiList.addAll([_zi, _zi, _bei]);
+      if (r == 2) _ziBeiList.addAll([_zi, _bei, _zi]);
+    }
+    if (code == lao_yin) _ziBeiList.addAll([_zi, _zi, _zi]);
+    if (code == lao_yang) _ziBeiList.addAll([_bei, _bei, _bei]);
+    if (mounted) setState(() {});
   }
 }

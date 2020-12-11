@@ -37,10 +37,10 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
-          indicatorWeight: S.w(3),
+          indicatorWeight: 3,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorColor: t_primary,
-          labelPadding: EdgeInsets.all(S.w(4)),
+          labelPadding: EdgeInsets.only(bottom: 3),
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
@@ -49,7 +49,7 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
                 style: TextStyle(color: t_gray, fontSize: S.sp(15))),
           ),
         ),
-        SizedBox(height: S.h(10)),
+        SizedBox(height: S.h(5)),
         Expanded(
           child: TabBarView(
             children: [

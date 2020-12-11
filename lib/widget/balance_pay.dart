@@ -7,7 +7,7 @@ import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
@@ -75,11 +75,13 @@ class BalancePay {
         CusDivider(color: Colors.black54),
         _rowInfo("付款方式", "账户余额"),
         Spacer(),
-        CusBtn(
-          text: "立即付款",
-          backgroundColor: Color(0xFF3D77F1),
-          minWidth: double.infinity,
-          onPressed: () => _orderPay(context, data),
+        SizedBox(
+          width: S.screenW(),
+          child: CusRaisedButton(
+            child: Text("立即付款"),
+            backgroundColor: Color(0xFF3D77F1),
+            onPressed: () => _orderPay(context, data),
+          ),
         ),
         Container(
           alignment: Alignment.center,
