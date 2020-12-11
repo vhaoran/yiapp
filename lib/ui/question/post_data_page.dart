@@ -57,7 +57,6 @@ class _PostDataPageState extends State<PostDataPage>
       },
       "sort": {"create_date": -1}, // 按时间倒序排列
     };
-    print(">>>widget.isVie:${widget.isVie}");
     widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
@@ -130,7 +129,7 @@ class _PostDataPageState extends State<PostDataPage>
         // 显示帖子
         children: <Widget>[
           if (_l.isEmpty) _noData(),
-          ..._l.map((e) => PostCover(data: e)),
+          ..._l.map((e) => PostCover(data: e, isVie: widget.isVie)),
         ],
       ),
     );

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/mine/my_orders/post_his_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/mine/my_orders/flash_his_main.dart';
 import 'package:yiapp/ui/mine/my_orders/my_master_orders.dart';
 import 'package:yiapp/ui/mine/my_orders/pay_await_main.dart';
-import 'package:yiapp/ui/mine/my_orders/reward_his_main.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -36,11 +35,11 @@ class AllMyPostPage extends StatelessWidget {
           ),
           NormalBox(
             title: "悬赏帖历史",
-            onTap: () => CusRoute.push(context, RewardHisMain()),
+            onTap: () => CusRoute.push(context, PostHisMain()),
           ),
           NormalBox(
             title: "闪断帖历史",
-            onTap: () => CusRoute.push(context, FlashHisMain()),
+            onTap: () => CusRoute.push(context, PostHisMain(isVie: true)),
           ),
           NormalBox(
             title: "大师待处理订单",

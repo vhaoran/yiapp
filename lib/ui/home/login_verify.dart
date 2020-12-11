@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/temp/shopcart_func.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -23,12 +22,12 @@ import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 // ------------------------------------------------------
 
 class LoginVerify {
-  static void init(LoginResult login, BuildContext context) async {
+  static Future<void> init(LoginResult login, BuildContext context) async {
     await KV.remove(kv_shop); // 清除本地购物车数据
     Log.info("用户登录结果：${login.toJson()}");
     // 初始化全局信息
     await setLoginInfo(login);
-    await initGlobal(login);
+    initGlobal(login);
     // 更新本地存储的token
     await KV.setStr(kv_jwt, login.jwt);
     // 在状态管理中初始化用户登录信息
@@ -44,7 +43,7 @@ class LoginVerify {
       await LoginDao(glbDB).insert(CusLoginRes.from(login));
     }
     // TODO 这里应该把大师信息也存储到本地数据库
-    if (CusRole.is_master) _fetchMaster(context);
+    if (CusRole.is_master) await _fetchMaster(context);
   }
 
   /// 初始化全局信息
@@ -63,7 +62,7 @@ class LoginVerify {
   }
 
   /// 如果是大师，获取大师基本资料
-  static void _fetchMaster(BuildContext context) async {
+  static Future<void> _fetchMaster(BuildContext context) async {
     Log.info("是大师");
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);

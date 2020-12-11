@@ -18,13 +18,16 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/10 上午10:56
-// usage ：单条帖子详情
+// usage ：单条帖子详情（分查询单条帖子、单条历史帖子）
 // ------------------------------------------------------
 
 class PostContent extends StatefulWidget {
   final String id;
-  final bool isVie;
-  PostContent({this.id, this.isVie: false, Key key}) : super(key: key);
+  final bool isHis; // 是否查询帖子历史
+  final bool isVie; // 是否查询的闪断帖
+
+  PostContent({this.id, this.isVie: false, this.isHis: false, Key key})
+      : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -48,12 +51,18 @@ class _PostContentState extends State<PostContent> {
 
   /// 获取单条帖子详情
   _fetch() async {
+    _whatPost(); // 打印帖子类型
+    var data;
     try {
-      print(">>>widget.isvie:${widget.isVie}");
-      var data = widget.isVie
-          ? await ApiBBSVie.bbsVieGet(widget.id)
-          : await ApiBBSPrize.bbsPrizeGet(widget.id);
-      print(">>>data:$data");
+      if (widget.isHis) {
+        data = widget.isVie
+            ? await ApiBBSVie.bbsVieHisGet(widget.id)
+            : await ApiBBSPrize.bbsPrizeHisGet(widget.id);
+      } else {
+        data = widget.isVie
+            ? await ApiBBSVie.bbsVieGet(widget.id)
+            : await ApiBBSPrize.bbsPrizeGet(widget.id);
+      }
       if (data != null) {
         _data = data;
         _replyNum = _data.reply.length;
@@ -100,29 +109,35 @@ class _PostContentState extends State<PostContent> {
             style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ));
         }
-        return _co();
+        return Column(
+          children: <Widget>[
+            Expanded(child: _lv()),
+            _postInput(), //  回帖输入框
+          ],
+        );
       },
     );
   }
 
-  Widget _co() {
-    return Column(
-      children: <Widget>[
-        Expanded(child: _lv()),
-        // 大师和发帖人可以回复
-        if (CusRole.is_master || _data.uid == ApiBase.uid)
-          PostInput(
-            data: _data,
-            onSend: () async {
-              _refresh();
-              Timer(
-                Duration(milliseconds: 500),
-                () => _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent),
-              );
-            },
-          ),
-      ],
-    );
+  /// 回帖输入框
+  Widget _postInput() {
+    // 查看历史帖子时不需要显示回帖输入框
+    if (!widget.isHis) {
+      // 大师和发帖人可以回复
+      if (CusRole.is_master || _data.uid == ApiBase.uid) {
+        return PostInput(
+          data: _data,
+          onSend: () async {
+            _refresh();
+            Timer(
+              Duration(milliseconds: 500),
+              () => _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent),
+            );
+          },
+        );
+      }
+    }
+    return SizedBox.shrink();
   }
 
   Widget _lv() {
@@ -161,5 +176,12 @@ class _PostContentState extends State<PostContent> {
     _scrollCtrl.dispose();
     _easyCtrl.dispose();
     super.dispose();
+  }
+
+  /// 打印帖子类型
+  void _whatPost() {
+    String type = widget.isVie ? '闪断帖' : '悬赏帖';
+    String his = widget.isHis ? '历史' : '';
+    Log.info("------------- 查询单条$type$his的内容 -------------");
   }
 }

@@ -48,7 +48,7 @@ class _QueMainPageState extends State<QueMainPage>
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
       _tabsName.add("悬赏帖");
-      _tabsWidget.add(PostDataPage(isVie: false));
+      _tabsWidget.add(PostDataPage());
     }
     if (_user.enable_vie == 1) {
       _tabsName.add("闪断帖");
@@ -166,15 +166,11 @@ class _QueMainPageState extends State<QueMainPage>
         break;
       case 1: // 四柱
         CusRoute.pushReplacement(
-          context,
-          AskQuestionPage(content_type: post_sizhu),
-        );
+            context, AskQuestionPage(content_type: post_sizhu));
         break;
       case 2: // 合婚
         CusRoute.pushReplacement(
-          context,
-          AskQuestionPage(content_type: post_hehun),
-        );
+            context, AskQuestionPage(content_type: post_hehun));
         break;
       case 3: // 其他
         CusRoute.pushReplacement(context, AskQuestionPage(content_type: 0));

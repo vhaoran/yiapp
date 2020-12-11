@@ -121,7 +121,8 @@ class _PostAwaitPayState extends State<PostAwaitPay>
                       style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                     ),
                   ),
-                ..._l.map((e) => PostCover(data: e, onChanged: _refresh)),
+                ..._l.map((e) => PostCover(
+                    data: e, isVie: widget.isVie, onChanged: _refresh)),
               ],
             ),
           ),

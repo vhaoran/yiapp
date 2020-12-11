@@ -18,10 +18,16 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 class PostCover extends StatefulWidget {
   final data; // BBSVie、BBSPrize
   final bool isVie;
+  final bool isHis;
   final VoidCallback onChanged; // 取消和支付的回调
 
-  PostCover({this.data, this.isVie: false, this.onChanged, Key key})
-      : super(key: key);
+  PostCover({
+    this.data,
+    this.isVie: false,
+    this.isHis: false,
+    this.onChanged,
+    Key key,
+  }) : super(key: key);
 
   @override
   _PostCoverState createState() => _PostCoverState();
@@ -35,7 +41,8 @@ class _PostCoverState extends State<PostCover> {
     return GestureDetector(
       onTap: () => CusRoute.push(
         context,
-        PostContent(id: widget.data.id, isVie: widget.isVie),
+        PostContent(
+            id: widget.data.id, isVie: widget.isVie, isHis: widget.isHis),
       ),
       child: _coverItem(),
     );

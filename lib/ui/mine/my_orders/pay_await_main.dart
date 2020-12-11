@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/ui/mine/my_orders/post_await_pay.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
-import 'package:yiapp/ui/mine/my_orders/flash_await_pay.dart';
-import 'package:yiapp/ui/mine/my_orders/reward_await_pay.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -41,18 +37,19 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
-          indicatorWeight: Adapt.px(6),
+          indicatorWeight: S.w(3),
           indicatorSize: TabBarIndicatorSize.label,
           indicatorColor: t_primary,
-          labelPadding: EdgeInsets.all(Adapt.px(8)),
+          labelPadding: EdgeInsets.all(S.w(4)),
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
             _tabs.length,
-            (i) => CusText(_tabs[i], t_gray, 28),
+            (i) => Text(_tabs[i],
+                style: TextStyle(color: t_gray, fontSize: S.sp(15))),
           ),
         ),
-        SizedBox(height: Adapt.px(15)),
+        SizedBox(height: S.h(10)),
         Expanded(
           child: TabBarView(
             children: [
