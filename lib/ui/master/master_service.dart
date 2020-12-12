@@ -4,7 +4,8 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/snap_done.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -50,6 +51,7 @@ class _MasterServicePageState extends State<MasterServicePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
@@ -89,14 +91,15 @@ class _MasterServicePageState extends State<MasterServicePage>
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: CusBtn(
-            text: "添加服务",
-            minWidth: double.infinity,
-            backgroundColor: fif_primary,
-            pdVer: 20,
+        SizedBox(
+          width: S.screenW(),
+          child: CusRaisedButton(
+            child: Text(
+              "添加服务",
+              style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+            ),
             onPressed: _doFn,
+            colors: [Colors.grey, t_yi],
           ),
         ),
       ],

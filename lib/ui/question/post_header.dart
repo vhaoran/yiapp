@@ -48,7 +48,6 @@ class PostHeader extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text("${data.brief}", style: style),
         ),
-        Divider(height: 0, thickness: 0.2, color: t_gray),
       ],
     );
   }

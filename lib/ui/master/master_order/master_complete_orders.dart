@@ -60,9 +60,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      if (mounted) {
-        setState(() {});
-      }
+      if (mounted) setState(() {});
       Log.info("当前已查询大师已完成订单个数：${_l.length}");
     } catch (e) {
       Log.error("分页查询大师大师已完成订单出现异常：$e");
@@ -82,7 +80,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: CusText("暂无相关订单", t_gray, 32));
+          return Center(child: CusText("暂无订单", t_gray, 32));
         }
         return ScrollConfiguration(
           behavior: CusBehavior(),

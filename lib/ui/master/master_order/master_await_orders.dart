@@ -49,7 +49,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderPageOfMaster(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
       Log.info("总的大师未完成列表个数：$_rowsCount");
       l.forEach((src) {
@@ -57,7 +57,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      setState(() {});
+      if (mounted) setState(() {});
       Log.info("当前已查询大师未完成列表个数：${_l.length}");
     } catch (e) {
       Log.error("分页查询大师未完成列表出现异常：$e");

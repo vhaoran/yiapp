@@ -77,7 +77,7 @@ class _PostReplyState extends State<PostReply> {
   /// 单条评论的内容
   Widget _commentItem(e, int level) {
     return Container(
-      child: e.is_master // 根据是否为大师显示打赏功能
+      child: !e.is_master // 根据是否为大师显示打赏功能
           ? CupertinoLeftScroll(
               closeTag: LeftScrollCloseTag("post_reply"),
               key: Key(e.create_date.toString()),

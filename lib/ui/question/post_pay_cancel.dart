@@ -23,10 +23,12 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 
 class PostPayCancel extends StatefulWidget {
+  final bool isVie;
   final data;
   final VoidCallback onChanged; // 取消和支付的回调
 
-  PostPayCancel({this.data, this.onChanged, Key key}) : super(key: key);
+  PostPayCancel({this.data, this.isVie: false, this.onChanged, Key key})
+      : super(key: key);
 
   @override
   _PostPayCancelState createState() => _PostPayCancelState();
@@ -70,7 +72,8 @@ class _PostPayCancelState extends State<PostPayCancel> {
           ),
         ],
         // 状态为已付款，是大师，并且该单没有被抢
-        if (widget.data.stat == pay_paid &&
+        if (widget.isVie &&
+            widget.data.stat == pay_paid &&
             (CusRole.is_master && widget.data.master_id == 0))
           _comBtn(text: "抢单", onPressed: _doRob),
       ],
@@ -79,6 +82,7 @@ class _PostPayCancelState extends State<PostPayCancel> {
 
   /// 抢单
   void _doRob() async {
+    Log.info("抢单 id :${widget.data.id}");
     try {
       BBSVie res = await ApiBBSVie.bbsVieAim(widget.data.id);
       if (res != null) CusToast.toast(context, text: "抢单成功");
@@ -110,7 +114,7 @@ class _PostPayCancelState extends State<PostPayCancel> {
       child: CusRaisedButton(
         child: Text(text, style: TextStyle(fontSize: S.sp(14))),
         onPressed: onPressed,
-        radius: 50,
+        borderRadius: 50,
         backgroundColor: primary,
       ),
     );

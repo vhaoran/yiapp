@@ -11,7 +11,6 @@ import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/under_field.dart';
@@ -87,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Text("注册"),
           onPressed: _verify,
           backgroundColor: Color(0xFFEE9972),
-          radius: 50,
+          borderRadius: 50,
         ),
         _userAgreement(), // 用户协议
       ],

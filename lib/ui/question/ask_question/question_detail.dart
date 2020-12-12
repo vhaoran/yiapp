@@ -12,7 +12,6 @@ import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/bbs/question_res.dart';
@@ -79,6 +78,10 @@ class _QueDetailPageState extends State<QueDetailPage> {
 
   /// 满足发帖条件
   void _doPost() async {
+    if (CusRole.is_guest) {
+      CusToast.toast(context, text: "请先绑定运营商", milliseconds: 1500);
+      return;
+    }
     if (_score == 0) {
       CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
       return;
@@ -146,7 +149,9 @@ class _QueDetailPageState extends State<QueDetailPage> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    _l.isEmpty ? "运营商暂未设置悬赏金额" : "请选择你的悬赏金额",
+                    CusRole.is_guest
+                        ? ""
+                        : _l.isEmpty ? "运营商暂未设置悬赏金额" : "请选择你的悬赏金额",
                     style: TextStyle(fontSize: S.sp(17), color: t_primary),
                   ),
                 ),
@@ -162,12 +167,11 @@ class _QueDetailPageState extends State<QueDetailPage> {
               ],
             ),
           ),
-
           SizedBox(
             width: S.screenW(),
             child: CusRaisedButton(
               child: Text("完成，发${CusRole.isVie ? '闪断' : '悬赏'}帖"),
-              radius: 50,
+              borderRadius: 50,
               onPressed: _doPost,
             ),
           ),

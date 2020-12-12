@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
@@ -8,7 +7,6 @@ import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/under_field.dart';
@@ -116,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
         CusRaisedButton(
           child: Text("登录"),
           onPressed: _doLogin,
-          radius: 50,
+          borderRadius: 50,
           backgroundColor: Color(0xFFEE9972),
         ),
       ],

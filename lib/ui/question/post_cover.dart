@@ -63,7 +63,11 @@ class _PostCoverState extends State<PostCover> {
             _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
             SizedBox(height: S.h(5)),
-            PostPayCancel(data: widget.data, onChanged: widget.onChanged),
+            PostPayCancel(
+              data: widget.data,
+              isVie: widget.isVie,
+              onChanged: widget.onChanged,
+            ),
           ],
         ),
       ),

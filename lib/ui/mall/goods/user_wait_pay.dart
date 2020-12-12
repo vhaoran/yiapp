@@ -153,7 +153,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
             SizedBox(height: S.h(10)),
             CusRaisedButton(
               child: Text("付款"),
-              radius: 50,
+              borderRadius: 50,
               onPressed: () => BalancePay(
                 context,
                 data: PayData(amt: order.amt, b_type: b_mall, id: order.id),

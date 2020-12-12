@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 
@@ -102,15 +102,10 @@ class _CusServiceState extends State<CusService> {
         children: <Widget>[
           CusText(widget.m.yi_cate_name, t_gray, 32), // 主标题
           Spacer(),
-          CusBtn(
-            backgroundColor: t_primary,
-            textColor: Colors.black,
-            fontSize: 22,
-            text: "修改服务", // 按钮
-            borderRadius: 50,
-            pdHor: 20,
-            pdVer: 4,
+          CusRaisedButton(
+            child: Text("修改服务"),
             onPressed: () => widget.onChange(widget.m),
+            borderRadius: 50,
           ),
         ],
       ),

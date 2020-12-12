@@ -16,9 +16,11 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostInput extends StatefulWidget {
   final data;
+  final bool isVie;
   final VoidCallback onSend;
 
-  PostInput({this.data, this.onSend, Key key}) : super(key: key);
+  PostInput({this.data, this.isVie: false, this.onSend, Key key})
+      : super(key: key);
 
   @override
   _PostInputState createState() => _PostInputState();
@@ -61,7 +63,7 @@ class _PostInputState extends State<PostInput> {
       "text": [_replyCtrl.text],
     };
     try {
-      bool ok = CusRole.isVie
+      bool ok = widget.isVie
           ? await ApiBBSVie.bbsVieReply(m)
           : await ApiBBSPrize.bbsPrizeReply(m);
       if (ok) {

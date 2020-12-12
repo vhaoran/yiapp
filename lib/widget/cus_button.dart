@@ -15,7 +15,7 @@ class CusRaisedButton extends StatelessWidget {
   final Color textColor;
   final Color disabledTextColor;
   final Color splashColor; // 点击按钮时的颜色
-  final double radius; // 按钮半径
+  final double borderRadius; // 按钮半径
   final List<Color> colors; // 线性颜色
   final VoidCallback onPressed;
 
@@ -27,7 +27,7 @@ class CusRaisedButton extends StatelessWidget {
     this.textColor: Colors.white,
     this.disabledTextColor,
     this.splashColor,
-    this.radius: 0,
+    this.borderRadius: 0,
     this.colors: const [t_yi, t_red],
     @required this.onPressed,
     Key key,
@@ -124,9 +124,9 @@ class _CusRaisedButton extends MaterialButton {
       end: Alignment.centerRight,
       tileMode: TileMode.clamp,
     );
-    final ShapeBorder shape = button.radius != 0
+    final ShapeBorder shape = button.borderRadius != 0
         ? RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(button.radius)),
+            borderRadius: BorderRadius.all(Radius.circular(button.borderRadius)),
           )
         : button.shape;
     return _CusRaisedButton(

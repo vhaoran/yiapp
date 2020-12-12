@@ -25,7 +25,7 @@ dependencies:
   # 从浏览器中打开一个url
   url_launcher: ^5.4.7
   # 下拉刷新、上拉加载
-  flutter_easyrefresh: ^2.1.5
+  flutter_easyrefresh: ^2.1.7
   # a___for model json
   json_annotation: ^3.0.1
   #

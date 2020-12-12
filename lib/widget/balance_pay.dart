@@ -157,29 +157,12 @@ class BalancePay {
   }
 
   String _bType() {
-    String str = "";
-    switch (data.b_type) {
-      case b_mall:
-        str = "商城订单付款";
-        break;
-      case b_yi_order:
-        str = "大师订单付款";
-        break;
-      case b_bbs_prize:
-        str = "悬赏帖付款";
-        break;
-      case b_bbs_vie:
-        str = "闪断帖付款";
-        break;
-      case b_recharge:
-        str = "充值";
-        break;
-      case b_master_draw_money:
-        str = "大师提现";
-        break;
-      default:
-        break;
-    }
-    return str;
+    if (data.b_type == b_mall) return "商城订单付款";
+    if (data.b_type == b_yi_order) return "大师订单付款";
+    if (data.b_type == b_bbs_prize) return "悬赏帖付款";
+    if (data.b_type == b_bbs_vie) return "闪断帖付款";
+    if (data.b_type == b_recharge) return "充值";
+    if (data.b_type == b_master_draw_money) return "大师提现";
+    return "未知交易类型";
   }
 }

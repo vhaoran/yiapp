@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
 import 'package:yiapp/ui/question/post_reply.dart';
@@ -69,6 +74,7 @@ class _PostContentState extends State<PostContent> {
         Log.info("帖子评论总条数：$_replyNum");
         if (_l.isEmpty) _fetchReply();
       }
+      Log.info("当前查询的帖子详情：${_data.toJson()}");
     } catch (e) {
       Log.error("查询单条帖子出现异常：$e");
     }
@@ -89,34 +95,53 @@ class _PostContentState extends State<PostContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "问题详情"),
-      body: _buildFb(),
-      backgroundColor: primary,
-    );
-  }
-
-  Widget _buildFb() {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        if (_data == null) {
-          return Center(
-              child: Text(
-            "帖子找不到了~",
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-          ));
-        }
-        return Column(
-          children: <Widget>[
-            Expanded(child: _lv()),
-            _postInput(), //  回帖输入框
-          ],
+        return Scaffold(
+          appBar: _appBar(),
+          body: _body(),
+          backgroundColor: primary,
         );
       },
+    );
+  }
+
+  Widget _appBar() {
+    var u = _data as BBSVie;
+    var style = TextStyle(color: t_gray, fontSize: S.sp(15));
+    String b_type = widget.isVie ? b_bbs_vie : b_bbs_prize;
+    return CusAppBar(
+      text: "问题详情",
+      actions: <Widget>[
+        // 发帖人是自己，且订单已支付，显示投诉功能
+        if (u.stat == pay_paid && u.uid == ApiBase.uid)
+          FlatButton(
+            child: Text("投诉", style: style),
+            onPressed: () {
+              CusRoute.push(context, RefundOrderAdd(data: u, b_type: b_type));
+            },
+          )
+      ],
+    );
+  }
+
+  Widget _body() {
+    if (_data == null) {
+      return Center(
+          child: Text(
+        "帖子找不到了~",
+        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+      ));
+    }
+    return Column(
+      children: <Widget>[
+        Expanded(child: _lv()),
+        _postInput(), //  回帖输入框
+      ],
     );
   }
 
@@ -128,6 +153,7 @@ class _PostContentState extends State<PostContent> {
       if (CusRole.is_master || _data.uid == ApiBase.uid) {
         return PostInput(
           data: _data,
+          isVie: widget.isVie,
           onSend: () async {
             _refresh();
             Timer(
@@ -151,6 +177,10 @@ class _PostContentState extends State<PostContent> {
         physics: BouncingScrollPhysics(),
         children: <Widget>[
           PostHeader(data: _data), // 帖子头部信息
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: S.h(10)),
+            child: Divider(height: 0, thickness: 0.2, color: t_gray),
+          ),
           PostReply(data: _data), // 帖子评论区域
         ],
       ),

@@ -185,7 +185,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
       child: CusRaisedButton(
         child: Text(text, style: TextStyle(fontSize: S.sp(14))),
         padding: EdgeInsets.symmetric(horizontal: S.screenW() / 4),
-        radius: 50,
+        borderRadius: 50,
         onPressed: () {
           // 购买的数量不用判断，因为至少为1
           if (_select.isEmpty) {

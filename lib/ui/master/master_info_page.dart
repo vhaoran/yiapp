@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/master/post_of_master.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/sticky_delegate.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/func/snap_done.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
@@ -35,7 +35,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
     with SingleTickerProviderStateMixin {
   MasterInfo _m; // 大师个人信息
   List<MasterImages> _l; // 大师图片列表
-  List<String> _tabs = ["主页", "待做订单", "历史订单", "服务"];
+  List<String> _tabs = ["主页", "待做订单", "帖子", "历史订单", "服务"];
   var _future;
 
   /// 获取大师图片列表
@@ -64,7 +64,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
         body: FutureBuilder(
             future: _future,
             builder: (context, snap) {
-              if (!snapDone(snap)) {
+              if (snap.connectionState != ConnectionState.done) {
                 return Center(child: CircularProgressIndicator());
               }
               return NestedScrollView(
@@ -73,9 +73,13 @@ class _MasterInfoPageState extends State<MasterInfoPage>
                 body: TabBarView(
                   children: <Widget>[
                     // 大师主页
-                    Center(child: CusText("主页", t_gray, 32)),
+                    Text("这是大师主页",
+                        style:
+                            TextStyle(color: Colors.white, fontSize: S.sp(15))),
                     // 大师待处理订单
                     MasterAwaitOrders(),
+                    // 大师查看帖子
+                    PostOfMaster(),
                     // 大师已完成订单
                     MasterCompletedOrders(master_id: _m.uid),
                     // 大师服务
@@ -115,11 +119,17 @@ class _MasterInfoPageState extends State<MasterInfoPage>
         pinned: true,
         delegate: StickyTabBarDelegate(
           child: TabBar(
-            labelColor: Colors.white,
+            indicatorWeight: 3,
+            indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: t_primary,
+            labelPadding: EdgeInsets.only(bottom: 3),
+            labelColor: Colors.white,
             tabs: List.generate(
               _tabs.length,
-              (i) => Tab(child: CusText(_tabs[i], Colors.white, 30)),
+              (i) => Tab(
+                child: Text(_tabs[i],
+                    style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
+              ),
             ),
           ),
         ),
