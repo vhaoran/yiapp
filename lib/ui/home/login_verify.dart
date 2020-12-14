@@ -25,7 +25,7 @@ class LoginVerify {
   static Future<void> init(LoginResult login, BuildContext context) async {
     await KV.remove(kv_shop); // 清除本地购物车数据
     Log.info("用户登录结果：${login.toJson()}");
-    // 初始化全局信息
+    // 初始化全局信息和网络
     await setLoginInfo(login);
     initGlobal(login);
     // 更新本地存储的token
@@ -42,7 +42,6 @@ class LoginVerify {
       Log.info("存储新的用户信息：${login.user_info.id}");
       await LoginDao(glbDB).insert(CusLoginRes.from(login));
     }
-    // TODO 这里应该把大师信息也存储到本地数据库
     if (CusRole.is_master) await _fetchMaster(context);
   }
 
@@ -63,7 +62,7 @@ class LoginVerify {
 
   /// 如果是大师，获取大师基本资料
   static Future<void> _fetchMaster(BuildContext context) async {
-    Log.info("是大师");
+    Log.info("大师登录");
     try {
       MasterInfo res = await ApiMaster.masterInfoGet(ApiBase.uid);
       if (res != null) {

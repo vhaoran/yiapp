@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -29,8 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> _barWidgets = []; // 底部导航组件
-  List<String> _barNames = []; // 底部导航名称
+  Map<String, Widget> _m = {}; // 底部导航名称、组件
   int _curIndex = 0; // 当前导航栏索引
   var _pc = PageController();
   var _future;
@@ -47,8 +47,8 @@ class _HomePageState extends State<HomePage> {
       body: PageView.builder(
         controller: _pc,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: _barWidgets.length,
-        itemBuilder: (context, index) => _barWidgets[index],
+        itemCount: _m.length,
+        itemBuilder: (context, index) => _m.values.toList()[index],
       ),
       bottomNavigationBar: _cusNavigationBar(),
       backgroundColor: Colors.black26,
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         }
         return CusBottomNavigationBar(
           curIndex: _curIndex,
-          barNames: _barNames,
+          barNames: _m.keys.toList(),
           onChanged: (val) {
             if (val == null) return;
             if (_curIndex != val) {
@@ -103,27 +103,23 @@ class _HomePageState extends State<HomePage> {
 
   /// 动态设置运营商模块
   Future<void> _dynamicModules() async {
-    // 默认开启运势中的"免费测算"和"我的"(这里大师和游客看到的是一样的)
-    _barWidgets = [LuckMainPage(), MinePage()];
-    _barNames = ["运势", "我的"];
+    _m = {"运势": LuckMainPage()};
+    // 大师添加控制台导航
     CusLoginRes res = await LoginDao(glbDB).readUserByUid();
-    if (res.enable_mall == 1) {
-      Log.info("开启了商城");
-      _barWidgets.insert(_barWidgets.length - 1, MallPage());
-      _barNames.insert(_barNames.length - 1, "商城");
-    }
-    if (res.enable_prize == 1 || res.enable_vie == 1) {
-      if (res.enable_prize == 1) Log.info("开启了悬赏帖");
-      if (res.enable_vie == 1) Log.info("开启了闪断帖");
-      _barWidgets.insert(_barWidgets.length - 1, QueMainPage());
-      _barNames.insert(_barNames.length - 1, "问命");
-    }
-    if (res.enable_master == 1) {
-      Log.info("开启了大师");
-      _barWidgets.insert(_barWidgets.length - 1, MasterListPage());
-      _barNames.insert(_barNames.length - 1, "大师");
-    }
+    if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
+    if (res.enable_prize == 1 || res.enable_vie == 1)
+      _m.addAll({"问命": QueMainPage()});
+    if (res.enable_master == 1) _m.addAll({"大师": MasterListPage()});
+    _m.addAll({"我的": MinePage()});
     setState(() {});
+  }
+
+  /// 打印开启的服务模块
+  void _modulePrint(CusLoginRes res) {
+    if (CusRole.is_master) Log.info("大师开启控制台导航栏");
+    if (res.enable_mall == 1) Log.info("开启了商城");
+    if (res.enable_prize == 1) Log.info("开启了悬赏帖");
+    if (res.enable_master == 1) Log.info("开启了大师模块");
   }
 
   @override

@@ -7,7 +7,6 @@ import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/sticky_delegate.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
@@ -60,48 +59,50 @@ class _MasterInfoPageState extends State<MasterInfoPage>
     _m = context.watch<MasterInfoState>()?.masterInfo ?? MasterInfo();
     return DefaultTabController(
       length: _tabs.length,
-      child: Scaffold(
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snap) {
-              if (snap.connectionState != ConnectionState.done) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return NestedScrollView(
-                physics: BouncingScrollPhysics(),
-                headerSliverBuilder: (context, bool) => _buildHeader(),
-                body: TabBarView(
-                  children: <Widget>[
-                    // 大师主页
-                    Text("这是大师主页",
-                        style:
-                            TextStyle(color: Colors.white, fontSize: S.sp(15))),
-                    // 大师待处理订单
-                    MasterAwaitOrders(),
-                    // 大师查看帖子
-                    PostOfMaster(),
-                    // 大师已完成订单
-                    MasterCompletedOrders(master_id: _m.uid),
-                    // 大师服务
-                    MasterServicePage(),
-                    // 这里将服务放到最后，是因为放中间滑动时，红色的左滑删除按钮会
-                    // 在切换选项卡的时候显示出来，故临时先设置其位置到最后
-                  ],
-                ),
-              );
-            }),
-        backgroundColor: primary,
-      ),
+      child: Scaffold(body: _buildFb(), backgroundColor: primary),
+    );
+  }
+
+  Widget _buildFb() {
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return NestedScrollView(
+          physics: BouncingScrollPhysics(),
+          headerSliverBuilder: (context, bool) => _buildHeader(),
+          body: TabBarView(
+            children: <Widget>[
+              // 大师主页
+              Text("这是大师主页",
+                  style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
+              // 大师待处理订单
+              MasterAwaitOrders(),
+              // 大师查看帖子
+              PostOfMaster(),
+              // 大师已完成订单
+              MasterCompletedOrders(master_id: _m.uid),
+              // 大师服务
+              MasterServicePage(),
+              // 这里将服务放到最后，是因为放中间滑动时，红色的左滑删除按钮会在
+              // 切换选项卡的时候显示出来，故临时先设置其位置到最后
+            ],
+          ),
+        );
+      },
     );
   }
 
   /// 头部信息、含大师昵称、头像、轮播图
   List<Widget> _buildHeader() {
     return <Widget>[
+      // SliverAppBar 控件可以实现页面头部区域展开、折叠的效果
       SliverAppBar(
-        pinned: true, // SliverAppBar 控件可以实现页面头部区域展开、折叠的效果
+        pinned: true,
         elevation: 0,
-        expandedHeight: Adapt.px(360),
+        expandedHeight: S.h(180),
         backgroundColor: primary,
         title: Text("大师"),
         centerTitle: true,

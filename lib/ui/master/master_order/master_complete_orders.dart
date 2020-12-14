@@ -52,7 +52,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderHisPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
       Log.info("总的大师大师已完成订单个数：$_rowsCount");
       l.forEach((src) {

@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/util/temp/cus_tool.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_snackbar.dart';
@@ -79,7 +75,7 @@ class _AddProductState extends State<AddProduct> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           return _lv();

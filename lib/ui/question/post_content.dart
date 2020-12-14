@@ -5,6 +5,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
@@ -95,6 +96,7 @@ class _PostContentState extends State<PostContent> {
 
   @override
   Widget build(BuildContext context) {
+    print(">>>_data.type:${_data is BBSPrize}");
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
@@ -111,7 +113,8 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _appBar() {
-    var u = _data as BBSVie;
+//    var u = _data as BBSVie;
+    var u = _data;
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
     String b_type = widget.isVie ? b_bbs_vie : b_bbs_prize;
     return CusAppBar(
