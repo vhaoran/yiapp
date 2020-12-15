@@ -5,7 +5,6 @@ import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -96,7 +95,7 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           if (_l.isEmpty) {

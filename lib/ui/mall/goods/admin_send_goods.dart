@@ -5,7 +5,6 @@ import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
@@ -78,7 +77,7 @@ class _AdminSendGoodsPageState extends State<AdminSendGoodsPage> {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {

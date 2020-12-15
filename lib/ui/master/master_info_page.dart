@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/ui/master/post_of_master.dart';
-import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/widget/sticky_delegate.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/provider/master_state.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/master/master_nick_avatar.dart';
 import 'package:yiapp/ui/master/master_service.dart';
-import 'master_order/master_await_orders.dart';
-import 'master_order/master_complete_orders.dart';
+import 'package:yiapp/ui/provider/master_state.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/sticky_delegate.dart';
 import 'master_loops.dart';
 
 // ------------------------------------------------------
@@ -34,7 +31,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
     with SingleTickerProviderStateMixin {
   MasterInfo _m; // 大师个人信息
   List<MasterImages> _l; // 大师图片列表
-  List<String> _tabs = ["主页", "待做订单", "帖子", "历史订单", "服务"];
+  List<String> _tabs = ["主页", "服务"];
   var _future;
 
   /// 获取大师图片列表
@@ -78,15 +75,9 @@ class _MasterInfoPageState extends State<MasterInfoPage>
               // 大师主页
               Text("这是大师主页",
                   style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
-              // 大师待处理订单
-              MasterAwaitOrders(),
-              // 大师查看帖子
-              PostOfMaster(),
-              // 大师已完成订单
-              MasterCompletedOrders(master_id: _m.uid),
               // 大师服务
               MasterServicePage(),
-              // 这里将服务放到最后，是因为放中间滑动时，红色的左滑删除按钮会在
+              // 这里将服务放到后面，是因为放中间滑动时，红色的左滑删除按钮会在
               // 切换选项卡的时候显示出来，故临时先设置其位置到最后
             ],
           ),

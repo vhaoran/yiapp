@@ -4,7 +4,6 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/temp/shopcart_func.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -76,7 +75,7 @@ class _ShopCartPageState extends State<ShopCartPage> {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {

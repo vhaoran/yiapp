@@ -2,14 +2,14 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
@@ -51,7 +51,14 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
         Align(
           alignment: Alignment(0, 0.75),
           child: InkWell(
-            child: CusText(widget.m.nick ?? "", t_primary, 30),
+            child: Text(
+              widget.m.nick ?? "",
+              style: TextStyle(
+                color: t_primary,
+                fontSize: S.sp(16),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onTap: CusRole.is_master
                 ? () => CusRoute.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))

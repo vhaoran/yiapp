@@ -3,7 +3,6 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/gather/net_photoview.dart';
@@ -54,7 +53,7 @@ class _ArticlePageState extends State<ArticlePage> {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         return Scaffold(

@@ -5,8 +5,6 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
@@ -71,7 +69,7 @@ class _PostContentState extends State<PostContent> {
       }
       if (data != null) {
         _data = data;
-        _replyNum = _data.reply.length;
+        _replyNum = _data.master_reply.length;
         Log.info("帖子评论总条数：$_replyNum");
         if (_l.isEmpty) _fetchReply();
       }
@@ -89,14 +87,14 @@ class _PostContentState extends State<PostContent> {
       return;
     }
     _pageNo++;
-    _l = _data.reply.take(_pageNo * count).toList();
+    _l = _data.master_reply.take(_pageNo * count).toList();
     Log.info("当前已加载评论条数：${_l.length}");
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print(">>>_data.type:${_data is BBSPrize}");
+    // FutureBuilder在外部，因为是否显示投诉(_data.stat)需要先等_data有结果
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
@@ -105,7 +103,7 @@ class _PostContentState extends State<PostContent> {
         }
         return Scaffold(
           appBar: _appBar(),
-          body: _body(),
+          body: _lv(),
           backgroundColor: primary,
         );
       },
@@ -113,37 +111,20 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _appBar() {
-//    var u = _data as BBSVie;
     var u = _data;
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
-    String b_type = widget.isVie ? b_bbs_vie : b_bbs_prize;
+    String bType = widget.isVie ? b_bbs_vie : b_bbs_prize;
     return CusAppBar(
       text: "问题详情",
       actions: <Widget>[
         // 发帖人是自己，且订单已支付，显示投诉功能
-        if (u.stat == pay_paid && u.uid == ApiBase.uid)
+        if (u.stat == pay_rewarded && u.uid == ApiBase.uid)
           FlatButton(
             child: Text("投诉", style: style),
             onPressed: () {
-              CusRoute.push(context, RefundOrderAdd(data: u, b_type: b_type));
+              CusRoute.push(context, RefundOrderAdd(data: u, b_type: bType));
             },
           )
-      ],
-    );
-  }
-
-  Widget _body() {
-    if (_data == null) {
-      return Center(
-          child: Text(
-        "帖子找不到了~",
-        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-      ));
-    }
-    return Column(
-      children: <Widget>[
-        Expanded(child: _lv()),
-        _postInput(), //  回帖输入框
       ],
     );
   }
@@ -171,6 +152,18 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _lv() {
+    // 没有帖子数据时
+    if (_data == null) {
+      return Container(
+        alignment: Alignment.center,
+        child: Text(
+          "帖子找不到了~",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ),
+        padding: EdgeInsets.only(bottom: (S.screenH() / 2)),
+      );
+    }
+    // 有帖子数据时
     return EasyRefresh(
       header: CusHeader(),
       footer: CusFooter(),

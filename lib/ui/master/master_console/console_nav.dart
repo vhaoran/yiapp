@@ -7,28 +7,27 @@ import 'package:yiapp/widget/badge/su_badge.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/2 下午2:33
-// usage ：自定义底部导航栏
+// date  ：2020/12/15 上午9:47
+// usage ：自定义大师工作台底部导航栏
 // ------------------------------------------------------
 
-class CusBottomNavigationBar extends StatefulWidget {
+class CusConsoleBar extends StatefulWidget {
   final int curIndex;
   final List<String> barNames;
   final FnInt onChanged;
 
-  CusBottomNavigationBar(
-      {this.curIndex: 0, this.barNames, this.onChanged, Key key})
+  CusConsoleBar({this.curIndex: 0, this.barNames, this.onChanged, Key key})
       : super(key: key);
 
   @override
-  _CusBottomNavigationBarState createState() => _CusBottomNavigationBarState();
+  _CusConsoleBarState createState() => _CusConsoleBarState();
 }
 
-class _CusBottomNavigationBarState extends State<CusBottomNavigationBar> {
+class _CusConsoleBarState extends State<CusConsoleBar> {
   // 底部导航栏图标
-  final List<int> _codesInt = [0xe618, 0xe666, 0xe66b, 0xe605, 0xe608];
+  final List<int> _codesInt = [0xe676, 0xe675, 0xe609];
   // 底部导航栏名称
-  final List<String> _barNames = ["运势", "商城", "问命", "大师", "我的"];
+  final List<String> _barNames = ["悬赏帖", "闪断帖", "大师订单"];
 
   @override
   Widget build(BuildContext context) {

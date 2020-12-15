@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'luck_list.dart';
@@ -19,8 +20,11 @@ class LuckCalculate extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _title(text: "付费测算"),
-        _iconView(LuckList.pay, context),
+        // 大师不显示付费项目
+        if (!CusRole.is_master) ...[
+          _title(text: "付费测算"),
+          _iconView(LuckList.pay, context),
+        ],
         _title(text: "免费测算"),
         _iconView(LuckList.free, context),
       ],

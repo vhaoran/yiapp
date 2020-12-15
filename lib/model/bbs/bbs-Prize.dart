@@ -13,10 +13,11 @@ class BBSPrize {
   String icon;
   String id;
   List<String> images;
+  String last_reply;
   String last_updated;
   int level_id;
   String nick;
-  List<BBSReply> reply;
+  List<BBSReply> master_reply;
   int stat;
   String title;
   int uid;
@@ -33,10 +34,11 @@ class BBSPrize {
     this.icon,
     this.id,
     this.images,
+    this.last_reply,
     this.last_updated,
     this.level_id,
     this.nick,
-    this.reply,
+    this.master_reply,
     this.stat,
     this.title,
     this.uid,
@@ -67,6 +69,7 @@ class BBSPrize {
       create_data_int: json['create_data_int'],
       icon: json['icon'],
       id: json['id'],
+      last_reply: json['last_reply'],
       last_updated: json['last_updated'],
       level_id: json['level_id'],
       nick: json['nick'],
@@ -76,8 +79,10 @@ class BBSPrize {
       content: c,
       images:
           json['images'] != null ? new List<String>.from(json['images']) : null,
-      reply: json['reply'] != null
-          ? (json['reply'] as List).map((i) => BBSReply.fromJson(i)).toList()
+      master_reply: json['master_reply'] != null
+          ? (json['master_reply'] as List)
+              .map((i) => BBSReply.fromJson(i))
+              .toList()
           : null,
     );
   }
@@ -93,6 +98,7 @@ class BBSPrize {
     data['create_data_int'] = this.create_data_int;
     data['icon'] = this.icon;
     data['id'] = this.id;
+    data['last_reply'] = this.last_reply;
     data['last_updated'] = this.last_updated;
     data['level_id'] = this.level_id;
     data['nick'] = this.nick;
@@ -106,8 +112,8 @@ class BBSPrize {
     if (this.images != null) {
       data['images'] = this.images;
     }
-    if (this.reply != null) {
-      data['reply'] = this.reply.map((v) => v.toJson()).toList();
+    if (this.master_reply != null) {
+      data['master_reply'] = this.master_reply.map((v) => v.toJson()).toList();
     }
     return data;
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/model/bbs/bbs-Prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -84,7 +84,8 @@ class _PostInputState extends State<PostInput> {
       focusNode: _focusNode,
       style: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
       decoration: InputDecoration(
-        hintText: widget.data.reply.isEmpty ? "暂时没有评论，大师们快抢沙发吧" : "回复新楼层",
+        hintText:
+            widget.data.master_reply.isEmpty ? "暂时没有评论，大师们快抢沙发吧" : "回复新楼层",
         hintStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
         contentPadding: EdgeInsets.only(left: Adapt.px(20)),
       ),

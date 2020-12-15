@@ -4,7 +4,6 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/article/article_result.dart';
 import 'package:yiapp/model/article/article_type.dart';
@@ -78,7 +77,7 @@ class _ArticleTypePageState extends State<ArticleTypePage> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           if (_allArticles.isEmpty) {

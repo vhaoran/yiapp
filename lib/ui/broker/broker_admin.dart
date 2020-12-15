@@ -4,7 +4,6 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/admin/group_batch_member.dart';
 import 'package:yiapp/widget/admin/search_admin.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -125,7 +124,7 @@ class _BrokerAdminPageState extends State<BrokerAdminPage> {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         if (_adminBrokers.isEmpty) {

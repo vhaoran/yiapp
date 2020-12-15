@@ -16,6 +16,7 @@ import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
+import 'package:yiapp/ui/master/master_console/master_console.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
@@ -24,13 +25,11 @@ import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
-import 'package:yiapp/widget/small/cus_loading.dart';
 import 'my_orders/all_my_post.dart';
 
 // ------------------------------------------------------
@@ -122,11 +121,16 @@ class _MinePageState extends State<MinePage>
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
         // 如果是大师
-        if (CusRole.is_master)
+        if (CusRole.is_master) ...[
+          NormalBox(
+            title: "大师控制台",
+            onTap: () => CusRoute.push(context, MasterConsole()),
+          ),
           NormalBox(
             title: "大师信息",
             onTap: () => CusRoute.push(context, MasterInfoPage()),
           ),
+        ],
         // 游客身份看不到的内容
         if (!CusRole.is_guest && !CusRole.is_master) ...[
           NormalBox(

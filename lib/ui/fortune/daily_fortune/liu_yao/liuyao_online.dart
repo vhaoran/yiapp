@@ -132,7 +132,6 @@ class _LiuYaoByShakeState extends State<LiuYaoByShake> {
     try {
       var res = await ApiYi.liuYaoQiGua(m);
       if (res != null) {
-        Navigator.pop(context);
         CusRoute.pushReplacement(
           context,
           LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),

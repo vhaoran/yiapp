@@ -20,7 +20,7 @@ import 'package:yiapp/util/file_util.dart';
 // ------------------------------------------------------
 
 class MasterLoops extends StatefulWidget {
-  List<MasterImages> l; // 大师轮播图
+  final List<MasterImages> l; // 大师轮播图
   final VoidCallback onChanged; // 轮播图更改
 
   MasterLoops({this.l, this.onChanged, Key key}) : super(key: key);
@@ -109,7 +109,7 @@ class _MasterLoopsState extends State<MasterLoops> {
   }
 
   /// 添加图片
-  void _doAddImage(File file, num sort_no) async {
+  void _doAddImage(File file, num sortNo) async {
     if (file == null) return;
     try {
       String url = await FileUtil.singleFile(file);

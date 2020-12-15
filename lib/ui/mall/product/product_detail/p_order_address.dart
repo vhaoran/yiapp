@@ -4,7 +4,6 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/model/complex/address_result.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -56,7 +55,7 @@ class _ProOrderAddressState extends State<ProOrderAddress> {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
-        if (!snapDone(snap)) {
+        if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
         return _addrTip();

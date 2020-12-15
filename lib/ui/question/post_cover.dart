@@ -5,7 +5,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/question/post_content.dart';
-import 'package:yiapp/ui/question/post_pay_cancel.dart';
+import 'package:yiapp/ui/question/post_cover_event.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 
@@ -63,7 +63,7 @@ class _PostCoverState extends State<PostCover> {
             _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
             SizedBox(height: S.h(5)),
-            PostPayCancel(
+            PostCoverEvent(
               data: widget.data,
               isVie: widget.isVie,
               onChanged: widget.onChanged,

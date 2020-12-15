@@ -5,10 +5,11 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_snackbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -79,11 +80,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
         _choseDate(),
         SizedBox(height: Adapt.px(70)),
         // 大师亲测
-        CusBtn(
-          text: "大师亲测",
-          backgroundColor: Colors.blueGrey,
-          onPressed: _doMasterTest,
-        ),
+        CusRaisedButton(child: Text("大师亲测"), onPressed: _doMasterTest),
       ],
     );
   }
@@ -131,19 +128,19 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
           child:
               CusRectField(hintText: _timeStr, hideBorder: true, enable: false),
         ),
-        CusBtn(
-          text: "选择",
-          pdVer: 0,
-          pdHor: 15,
-          fontSize: 28,
-          textColor: Colors.black,
-          backgroundColor: t_gray,
-          onPressed: () => TimePicker(
-            context,
-            pickMode: PickerMode.yi,
-            showLunar: true,
-            isLunar: (val) => setState(() => _isLunar = val),
-            onConfirm: (val) => setState(() => _yi = val),
+        SizedBox(
+          height: S.h(30),
+          width: S.w(55),
+          child: CusRaisedButton(
+            backgroundColor: Colors.grey,
+            child: Text("选择", style: TextStyle(color: Colors.black)),
+            onPressed: () => TimePicker(
+              context,
+              pickMode: PickerMode.yi,
+              showLunar: true,
+              isLunar: (val) => setState(() => _isLunar = val),
+              onConfirm: (val) => setState(() => _yi = val),
+            ),
           ),
         ),
         SizedBox(width: Adapt.px(20)),

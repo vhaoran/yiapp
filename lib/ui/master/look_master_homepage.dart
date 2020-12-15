@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/ui/master/look_master_base_data.dart';
 import 'package:yiapp/ui/master/master_info_home.dart';
-
 import 'master_order/master_complete_orders.dart';
 
 // ------------------------------------------------------
@@ -57,7 +55,7 @@ class _LookMasterHomePageState extends State<LookMasterHomePage> {
         body: FutureBuilder(
           future: _future,
           builder: (context, snap) {
-            if (!snapDone(snap)) {
+            if (snap.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
             }
             return _co();

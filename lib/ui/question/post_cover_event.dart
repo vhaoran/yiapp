@@ -4,8 +4,10 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/question/post_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -19,22 +21,22 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/10 下午3:14
-// usage ：帖子的取消和支付按钮
+// usage ：帖子封面上的按钮事件，含抢单、详情、取消、支付
 // ------------------------------------------------------
 
-class PostPayCancel extends StatefulWidget {
+class PostCoverEvent extends StatefulWidget {
   final bool isVie;
   final data;
   final VoidCallback onChanged; // 取消和支付的回调
 
-  PostPayCancel({this.data, this.isVie: false, this.onChanged, Key key})
+  PostCoverEvent({this.data, this.isVie: false, this.onChanged, Key key})
       : super(key: key);
 
   @override
-  _PostPayCancelState createState() => _PostPayCancelState();
+  _PostCoverEventState createState() => _PostCoverEventState();
 }
 
-class _PostPayCancelState extends State<PostPayCancel> {
+class _PostCoverEventState extends State<PostCoverEvent> {
   var _p;
 
   @override
@@ -62,8 +64,8 @@ class _PostPayCancelState extends State<PostPayCancel> {
         // 状态为待付款，且本人帖子
         if (widget.data.stat == pay_await &&
             widget.data.uid == ApiBase.uid) ...[
-          // 没有人回复时显示取消按钮
-          if (widget.data.reply.isEmpty)
+          // 没有人回复时显示取消订单按钮
+          if (widget.data.master_reply.isEmpty)
             _comBtn(text: "取消", onPressed: _doCancel), // 取消订单
           SizedBox(width: S.w(5)),
           _comBtn(
@@ -71,11 +73,41 @@ class _PostPayCancelState extends State<PostPayCancel> {
             onPressed: () => BalancePay(context, data: _p),
           ),
         ],
-        // 状态为已付款，是大师，并且该单没有被抢
-        if (widget.isVie &&
-            widget.data.stat == pay_paid &&
-            (CusRole.is_master && widget.data.master_id == 0))
-          _comBtn(text: "抢单", onPressed: _doRob),
+        // 如果是大师，显示抢单和详情按钮
+        if (CusRole.is_master) ...[
+          _comBtn(
+            text: "详情",
+            onPressed: () => CusRoute.push(
+              context,
+              PostContent(id: widget.data.id, isVie: widget.isVie),
+            ),
+          ),
+          SizedBox(width: S.w(5)),
+          _comBtn(
+              text: "抢单",
+              onPressed: () async {
+                Log.info("帖子id:${widget.data.id}");
+                var m = {"order_id": widget.data.id};
+                try {
+                  bool ok = await ApiBBSPrize.bbsPrizeMasterAim(m);
+                  if (ok) {
+                    CusToast.toast(context, text: "抢单成功");
+                  }
+                } catch (e) {
+                  if (e.toString() == "操作错误已存在，不需要再次添加") {
+                    CusToast.toast(context, text: "你已经抢过了");
+                    
+                  }
+                  Log.error("大师抢悬赏帖单子出现异常：$e");
+                }
+              }),
+        ],
+
+//        // 状态为已付款，是大师，并且该单没有被抢
+//        if (widget.isVie &&
+//            widget.data.stat == pay_paid &&
+//            (CusRole.is_master && widget.data.master_id == 0))
+//          _comBtn(text: "抢单", onPressed: _doRob),
       ],
     );
   }

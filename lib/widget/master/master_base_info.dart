@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/ui/chat/chat_main.dart';
 import 'package:yiapp/ui/master/look_master_homepage.dart';
 
@@ -16,7 +16,8 @@ import 'package:yiapp/ui/master/look_master_homepage.dart';
 // ------------------------------------------------------
 
 class MasterCover extends StatelessWidget {
-  final MasterInfo info;
+//  final MasterInfo info;
+  final BrokerMasterRes info;
   final VoidCallback onPressed;
 
   const MasterCover({this.info, this.onPressed, Key key}) : super(key: key);
@@ -55,15 +56,11 @@ class MasterCover extends StatelessWidget {
                     CusText(info.nick, t_gray, 32),
                     Spacer(),
                     // 按钮
-                    CusBtn(
-                      text: "约聊大师",
-                      backgroundColor: Color(0xFFDF5A54),
-                      fontSize: 26,
-                      pdVer: 10,
-                      pdHor: 20,
-                      borderRadius: 100,
-                      onPressed: onPressed ??
-                          () => CusRoute.push(context, ChatMain()),
+                    CusRaisedButton(
+                      child: Text("约聊大师"),
+                      borderRadius: 50,
+                      onPressed:
+                          onPressed ?? () => CusRoute.push(context, ChatMain()),
                     ),
                   ],
                 ),

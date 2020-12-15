@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'console_await.dart';
+import 'console_prize.dart';
+import 'console_vie.dart';
+import 'console_nav.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -16,18 +19,42 @@ class MasterConsole extends StatefulWidget {
 }
 
 class _MasterConsoleState extends State<MasterConsole> {
+  var _pc = PageController();
+  int _curIndex = 0; // 当前导航栏索引
+  // 大师控制台底部导航栏
+  final Map<String, Widget> _mc = {
+    "悬赏帖": ConsolePrize(),
+    "闪断帖": ConsoleVie(),
+    "大师订单": ConsoleAwait(),
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "测试"),
-      body: _lv(),
-      backgroundColor: primary,
+      body: PageView.builder(
+        controller: _pc,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _mc.length,
+        itemBuilder: (context, index) => _mc.values.toList()[index],
+      ),
+      bottomNavigationBar: _cusNavigationBar(),
+      backgroundColor: Colors.black26,
     );
   }
 
-  Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+  /// 大师控制天底部导航栏
+  Widget _cusNavigationBar() {
+    return CusConsoleBar(
+      curIndex: _curIndex,
+      barNames: _mc.keys.toList(),
+      onChanged: (int val) {
+        if (val == null) return;
+        if (_curIndex != val) {
+          _curIndex = val;
+          _pc.jumpToPage(_curIndex);
+          setState(() {});
+        }
+      },
     );
   }
 }

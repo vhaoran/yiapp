@@ -6,10 +6,9 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -68,7 +67,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           return _lv();
@@ -108,11 +107,7 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
             errorText: _err,
           ),
           SizedBox(height: Adapt.px(20)),
-          CusBtn(
-            text: "下单",
-            backgroundColor: Colors.blueGrey,
-            onPressed: _doOrder,
-          ),
+          CusRaisedButton(child: Text("下单"), onPressed: _doOrder),
         ],
       ),
     );
@@ -125,12 +120,12 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
     });
     if (_err != null) return;
     SpinKit.threeBounce(context);
-    Navigator.pop(context);
     LiuYaoRiqi riqi = _data.res.riqi;
     var m = {
       "master_id": widget.master_id,
       "comment": _contentCtrl.text.trim(),
       "master_cate_id": ApiBase.uid,
+      "yi_cate_id": 1,
       "liu_yao": {
         "year": riqi.year,
         "month": riqi.month,
@@ -141,10 +136,11 @@ class _MeetLiuyaoPageState extends State<MeetLiuyaoPage> {
         "yao_code": _data.strCode
       },
     };
-    Log.info("数据：${m.toString()}");
+    Log.info("六爻数据：${m.toString()}");
     try {
       YiOrder res = await ApiYiOrder.yiOrderAdd(m);
       if (res != null) {
+        Navigator.pop(context);
         CusToast.toast(context, text: "下单成功");
         CusRoute.pushReplacement(context, HomePage());
       }

@@ -83,4 +83,10 @@ class ApiBBSPrize {
     var data = m;
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
+
+  /// ----------------- 大师抢悬赏帖 -----------------
+  static Future<bool> bbsPrizeMasterAim(Map<String, dynamic> m) async {
+    var url = pre + "BBSPrizeMasterAim";
+    return await ApiBase.postValue<bool>(url, m, enableJwt: true);
+  }
 }

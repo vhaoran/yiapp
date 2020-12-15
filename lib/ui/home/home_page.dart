@@ -106,20 +106,21 @@ class _HomePageState extends State<HomePage> {
     _m = {"运势": LuckMainPage()};
     // 大师添加控制台导航
     CusLoginRes res = await LoginDao(glbDB).readUserByUid();
-    if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
-    if (res.enable_prize == 1 || res.enable_vie == 1)
+    if (res.enable_mall == 1) {
+      Log.info("商城模块已开启");
+      _m.addAll({"商城": MallPage()});
+    }
+    if (res.enable_prize == 1 || res.enable_vie == 1) {
+      if (res.enable_prize == 1) Log.info("悬赏帖模块已开启");
+      if (res.enable_vie == 1) Log.info("闪断帖模块已开启");
       _m.addAll({"问命": QueMainPage()});
-    if (res.enable_master == 1) _m.addAll({"大师": MasterListPage()});
+    }
+    if (res.enable_master == 1) {
+      Log.info("大师模块已开启");
+      _m.addAll({"大师": MasterListPage()});
+    }
     _m.addAll({"我的": MinePage()});
     setState(() {});
-  }
-
-  /// 打印开启的服务模块
-  void _modulePrint(CusLoginRes res) {
-    if (CusRole.is_master) Log.info("大师开启控制台导航栏");
-    if (res.enable_mall == 1) Log.info("开启了商城");
-    if (res.enable_prize == 1) Log.info("开启了悬赏帖");
-    if (res.enable_master == 1) Log.info("开启了大师模块");
   }
 
   @override

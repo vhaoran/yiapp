@@ -1,43 +1,40 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/master/master_console/console_process.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/12 上午11:18
-// usage ：大师查看悬赏闪断帖
+// date  ：2020/12/15 上午9:39
+// usage ：大师控制台 -- 查看悬赏帖可抢单的和处理中的
 // ------------------------------------------------------
 
-class PostOfMaster extends StatefulWidget {
-  PostOfMaster({Key key}) : super(key: key);
+class ConsolePrize extends StatefulWidget {
+  ConsolePrize({Key key}) : super(key: key);
 
   @override
-  _PostOfMasterState createState() => _PostOfMasterState();
+  _ConsolePrizeState createState() => _ConsolePrizeState();
 }
 
-class _PostOfMasterState extends State<PostOfMaster>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final List<String> _tabsName = ["悬赏帖", "闪断帖"];
-
-  @override
-  void initState() {
-    Log.info("大师查看悬赏和闪断帖");
-    super.initState();
-  }
+class _ConsolePrizeState extends State<ConsolePrize> {
+  final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return DefaultTabController(
       length: _tabsName.length,
-      child: _bodyCtr(),
+      child: Scaffold(
+        appBar: CusAppBar(text: "悬赏帖"),
+        body: _body(),
+        backgroundColor: primary,
+      ),
     );
   }
 
-  Widget _bodyCtr() {
+  Widget _body() {
     return Column(
       children: <Widget>[
         TabBar(
@@ -54,16 +51,16 @@ class _PostOfMasterState extends State<PostOfMaster>
         ),
         SizedBox(height: S.h(5)),
         Expanded(
-            child: TabBarView(
-          children: <Widget>[
-            PostDataPage(),
-            PostDataPage(isVie: true),
-          ],
+            child: ScrollConfiguration(
+          behavior: CusBehavior(),
+          child: TabBarView(
+            children: <Widget>[
+              PostDataPage(),
+              ConsoleProcess(),
+            ],
+          ),
         )),
       ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

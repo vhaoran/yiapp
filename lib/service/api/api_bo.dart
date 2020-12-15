@@ -1,5 +1,6 @@
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/bo/broker_cate_res.dart';
+import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/model/bo/broker_product_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
 import 'api_base.dart';
@@ -42,5 +43,13 @@ class ApiBo {
     return await ApiBase.postList(
         url, data, (l) => l.map((x) => BrokerCateRes.fromJson(x)).toList(),
         enableJwt: true);
+  }
+
+  /// U+B+S，查看运营商下面的大师
+  static bMasterPage(Map<String, dynamic> pb) async {
+    var url = w_yi_user + "BMasterPage";
+    return await ApiBase.postPage(url, pb, (m) {
+      return BrokerMasterRes.fromJson(m);
+    }, enableJwt: true);
   }
 }

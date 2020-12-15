@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/bo/broker_master_res.dart';
+import 'package:yiapp/service/api/api_bo.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/func/snap_done.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_divider.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/master/cus_number_data.dart';
 import 'package:yiapp/widget/master/master_base_info.dart';
-import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pagebean.dart';
-import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/ui/master/master_order/meet_hehun.dart';
 import 'package:yiapp/ui/master/master_order/meet_liuyao.dart';
 import 'package:yiapp/ui/master/master_order/meet_sizhu.dart';
@@ -55,8 +52,8 @@ class _MasterRecommendState extends State<MasterRecommend> {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
-  final int _rows_per_page = 10; // 默认每页查询个数
-  List<MasterInfo> _l = []; // 大师列表
+  final int _rowsPerPage = 10; // 默认每页查询个数
+  List<BrokerMasterRes> _l = []; // 大师列表
 
   @override
   void initState() {
@@ -66,17 +63,18 @@ class _MasterRecommendState extends State<MasterRecommend> {
 
   /// 分页查询大师信息
   _fetch() async {
-    if (_pageNo * _rows_per_page > _rowsCount) return;
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    var m = {"page_no": _pageNo, "rows_per_page": _rows_per_page};
+    var m = {"page_no": _pageNo, "rows_per_page": _rowsPerPage};
     try {
-      PageBean pb = await ApiMaster.masterInfoPage(m);
+      PageBean pb = await ApiBo.bMasterPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount;
-      var l = pb.data.map((e) => e as MasterInfo).toList();
+      var l = pb.data.map((e) => e as BrokerMasterRes).toList();
       Log.info("总的大师个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
-        var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
+        var dst = _l.firstWhere((e) => src.broker_id != e.broker_id,
+            orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
@@ -93,11 +91,16 @@ class _MasterRecommendState extends State<MasterRecommend> {
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
-          if (!snapDone(snap)) {
+          if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           if (_l.isEmpty) {
-            return Center(child: CusText("暂无", t_gray, 28));
+            return Center(
+              child: Text(
+                "暂无",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+              ),
+            );
           }
           return _lv();
         },
@@ -116,11 +119,12 @@ class _MasterRecommendState extends State<MasterRecommend> {
         onRefresh: () async => await _refresh(),
         child: ListView(
           children: List.generate(_l.length, (i) {
-            MasterInfo e = _l[i];
+            BrokerMasterRes e = _l[i];
             return Padding(
               padding: EdgeInsets.only(bottom: 10),
               child: Column(
                 children: <Widget>[
+                  Container(height: 10, color: fif_primary),
                   MasterCover(
                     info: e,
                     onPressed: () => _pushPage(e),
@@ -132,7 +136,6 @@ class _MasterRecommendState extends State<MasterRecommend> {
                       subtitles: ["服务人数", "好评率", "粉丝数"],
                     ),
                   ), // 详情数据
-                  Container(height: 10, color: fif_primary),
                 ],
               ),
             );
@@ -143,7 +146,7 @@ class _MasterRecommendState extends State<MasterRecommend> {
   }
 
   /// 根据类型跳转路由
-  void _pushPage(MasterInfo e) {
+  void _pushPage(BrokerMasterRes e) {
     switch (widget.type) {
       case post_liuyao:
         CusRoute.push(
@@ -178,7 +181,7 @@ class _MasterRecommendState extends State<MasterRecommend> {
   }
 
   /// 刷新数据
-  void _refresh() async {
+  Future<void> _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
     await _fetch();
