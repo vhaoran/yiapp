@@ -17,10 +17,11 @@ const int m_disable = 0; // 停用大师
 const int m_enable = 1; // 启用大师
 
 // ------------------------- 帖子状态 ------------------------
-const int pay_cancelled = -1; // 已取消
-const int pay_await = 0; // 待付款
-const int pay_paid = 1; // 已付款
-const int pay_rewarded = 2; // 已打赏
+const int bbs_rm = -1; // 已取消
+const int bbs_init = 0; // 待付款(待处理)
+const int bbs_paid = 1; // 已付款
+const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
+const int bbs_ok = 3; // 已打赏
 
 // ------------------------- 悬赏帖类型 ------------------------
 const int post_liuyao = 1; // 六爻类型

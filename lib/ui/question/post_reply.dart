@@ -11,7 +11,7 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs-Reply.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 // ------------------------------------------------------

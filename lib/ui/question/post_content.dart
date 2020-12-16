@@ -5,6 +5,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
@@ -15,7 +16,7 @@ import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/model/bbs/bbs-Reply.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
 
@@ -26,12 +27,9 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 
 class PostContent extends StatefulWidget {
-  final String id;
-  final bool isHis; // 是否查询历史帖子
-  final bool isVie; // 是否查询的闪断帖
+  final Post post;
 
-  PostContent({this.id, this.isVie: false, this.isHis: false, Key key})
-      : super(key: key);
+  PostContent({this.post, Key key}) : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -46,9 +44,12 @@ class _PostContentState extends State<PostContent> {
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
   List<BBSReply> _l = []; // 帖子评论列表
+  Post _p;
 
   @override
   void initState() {
+    _p = widget.post;
+    print(">>>_p:${_p.toJson()}");
     _future = _fetch();
     super.initState();
   }
@@ -58,14 +59,14 @@ class _PostContentState extends State<PostContent> {
     _whatPost(); // 打印帖子类型
     var data;
     try {
-      if (widget.isHis) {
-        data = widget.isVie
-            ? await ApiBBSVie.bbsVieHisGet(widget.id)
-            : await ApiBBSPrize.bbsPrizeHisGet(widget.id);
+      if (_p.is_his) {
+        data = _p.is_vie
+            ? await ApiBBSVie.bbsVieHisGet(_p.data.id)
+            : await ApiBBSPrize.bbsPrizeHisGet(_p.data.id);
       } else {
-        data = widget.isVie
-            ? await ApiBBSVie.bbsVieGet(widget.id)
-            : await ApiBBSPrize.bbsPrizeGet(widget.id);
+        data = _p.is_vie
+            ? await ApiBBSVie.bbsVieGet(_p.data.id)
+            : await ApiBBSPrize.bbsPrizeGet(_p.data.id);
       }
       if (data != null) {
         _data = data;
@@ -113,12 +114,12 @@ class _PostContentState extends State<PostContent> {
   Widget _appBar() {
     var u = _data;
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
-    String bType = widget.isVie ? b_bbs_vie : b_bbs_prize;
+    String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
     return CusAppBar(
       text: "问题详情",
       actions: <Widget>[
         // 发帖人是自己，且订单已支付，显示投诉功能
-        if (u.stat == pay_rewarded && u.uid == ApiBase.uid)
+        if (u.stat == bbs_ok && u.uid == ApiBase.uid)
           FlatButton(
             child: Text("投诉", style: style),
             onPressed: () {
@@ -132,12 +133,11 @@ class _PostContentState extends State<PostContent> {
   /// 回帖输入框
   Widget _postInput() {
     // 查看历史帖子时不需要显示回帖输入框
-    if (!widget.isHis) {
+    if (!_p.is_his) {
       // 大师和发帖人可以回复
       if (CusRole.is_master || _data.uid == ApiBase.uid) {
         return PostInput(
-          data: _data,
-          isVie: widget.isVie,
+          post: Post(data: _data, is_vie: widget.post.is_vie),
           onSend: () async {
             _refresh();
             Timer(
@@ -177,6 +177,12 @@ class _PostContentState extends State<PostContent> {
             padding: EdgeInsets.symmetric(vertical: S.h(10)),
             child: Divider(height: 0, thickness: 0.2, color: t_gray),
           ),
+          Center(
+            child: Text(
+              _replyNum == 0 ? "暂无评论" : "评论区",
+              style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+            ),
+          ),
           PostReply(data: _data), // 帖子评论区域
         ],
       ),
@@ -207,8 +213,8 @@ class _PostContentState extends State<PostContent> {
 
   /// 打印帖子类型
   void _whatPost() {
-    String type = widget.isVie ? '闪断帖' : '悬赏帖';
-    String his = widget.isHis ? '历史' : '';
+    String type = widget.post.is_vie ? '闪断帖' : '悬赏帖';
+    String his = widget.post.is_his ? '历史' : '';
     Log.info("------------- 查询单条$type$his的内容 -------------");
   }
 }

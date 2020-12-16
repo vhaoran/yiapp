@@ -5,6 +5,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -48,11 +49,11 @@ class _QueMainPageState extends State<QueMainPage>
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
       _tabsName.add("悬赏帖");
-      _tabsWidget.add(PostDataPage());
+      _tabsWidget.add(PostDataPage(post: Post(is_vie: false)));
     }
     if (_user.enable_vie == 1) {
       _tabsName.add("闪断帖");
-      _tabsWidget.add(PostDataPage(isVie: true));
+      _tabsWidget.add(PostDataPage(post: Post(is_vie: true)));
     }
     setState(() {});
   }

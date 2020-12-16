@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 
@@ -20,9 +22,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostDataPage extends StatefulWidget {
-  final bool isVie; // 是否闪断帖
+  final Post post;
 
-  PostDataPage({this.isVie: false, Key key}) : super(key: key);
+  PostDataPage({this.post, Key key}) : super(key: key);
 
   @override
   _PostDataPageState createState() => _PostDataPageState();
@@ -46,18 +48,20 @@ class _PostDataPageState extends State<PostDataPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    // TODO 这里需要设置未打赏的在前面，已打赏的在后面
+    // 大师看到的是已支付未打赏的，用户看到的是1 已支付(前排) 和 2 已打赏(后排)
+    var stat1 = {"stat": 1};
+    var stat2 = {
+      "stat": {
+        "\$in": [1, 2]
+      }
+    };
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {
-        "stat": {
-          "\$in": [1, 2] // 1 已支付 和 2 已打赏
-        }
-      },
+      "where": CusRole.is_master ? stat1 : stat2,
       "sort": {"create_date": -1}, // 按时间倒序排列
     };
-    widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
   /// 获取悬赏帖
@@ -129,7 +133,15 @@ class _PostDataPageState extends State<PostDataPage>
         // 显示帖子
         children: <Widget>[
           if (_l.isEmpty) _noData(),
-          ..._l.map((e) => PostCover(data: e, isVie: widget.isVie)),
+          ..._l.map(
+            (e) => PostCover(
+              post: Post(
+                data: e,
+                is_vie: widget.post.is_vie,
+                is_ing: widget.post.is_ing,
+              ),
+            ),
+          ),
         ],
       ),
     );

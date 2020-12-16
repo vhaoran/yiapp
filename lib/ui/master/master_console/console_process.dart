@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
+import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:43
-// usage ：处理中的订单
+// usage ：处理中的悬赏帖订单
 // ------------------------------------------------------
 
 class ConsoleProcess extends StatefulWidget {
-  final bool isVie; // 是否闪断帖
+  final bool isProcessing; // 是否正在处理中的单子
 
-  ConsoleProcess({this.isVie, Key key}) : super(key: key);
+  ConsoleProcess({this.isProcessing: false, Key key}) : super(key: key);
 
   @override
   _ConsoleProcessState createState() => _ConsoleProcessState();
@@ -21,6 +28,7 @@ class ConsoleProcess extends StatefulWidget {
 class _ConsoleProcessState extends State<ConsoleProcess>
     with AutomaticKeepAliveClientMixin {
   var _future;
+  List<BBSPrize> _l = []; // 处理中的帖子列表
 
   @override
   void initState() {
@@ -30,7 +38,18 @@ class _ConsoleProcessState extends State<ConsoleProcess>
 
   /// 获取正在处理中的悬赏帖
   _fetch() async {
-    await Future.delayed(Duration(milliseconds: 100));
+    var m = {
+      "sort": {"last_updated": 1}
+    };
+    try {
+      var l = await ApiBBSPrize.bbsPrizeMasterList(m);
+      if (l != null) {
+        _l = l;
+        Log.info("大师处理中的悬赏帖个数：${_l.length}");
+      }
+    } catch (e) {
+      Log.error("获取大师处理中的订单出现异常：$e");
+    }
   }
 
   @override
@@ -51,10 +70,22 @@ class _ConsoleProcessState extends State<ConsoleProcess>
   }
 
   Widget _lv() {
-    return ListView(
-      children: <Widget>[
-        _noData(),
-      ],
+    return EasyRefresh(
+      header: CusHeader(),
+      footer: CusFooter(),
+      onRefresh: () async {
+        _l.clear();
+        await _fetch();
+        setState(() {});
+      },
+      child: ListView(
+        children: <Widget>[
+          if (_l.isEmpty) _noData(),
+          ..._l.map(
+            (e) => PostCover(post: Post(data: e, is_ing: true)),
+          ),
+        ],
+      ),
     );
   }
 

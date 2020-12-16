@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -9,7 +10,7 @@ import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 
@@ -20,11 +21,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostCancelledHis extends StatefulWidget {
-  final bool isVie;
-  final bool isHis;
+  final Post post;
 
-  PostCancelledHis({this.isVie: false, this.isHis: false, Key key})
-      : super(key: key);
+  PostCancelledHis({this.post, Key key}) : super(key: key);
 
   @override
   _PostCancelledHisState createState() => _PostCancelledHisState();
@@ -51,10 +50,10 @@ class _PostCancelledHisState extends State<PostCancelledHis>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": pay_cancelled},
+      "where": {"stat": bbs_rm},
       "sort": {"create_date": -1},
     };
-    widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
   /// 获取悬赏帖已取消历史
@@ -128,9 +127,11 @@ class _PostCancelledHisState extends State<PostCancelledHis>
               ),
             ..._l.map(
               (e) => PostCover(
-                data: e,
-                isVie: widget.isVie,
-                isHis: widget.isHis,
+                post: Post(
+                  data: e,
+                  is_vie: widget.post.is_vie,
+                  is_his: widget.post.is_his,
+                ),
                 onChanged: _refresh,
               ),
             ),

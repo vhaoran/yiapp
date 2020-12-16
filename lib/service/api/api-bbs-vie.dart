@@ -1,4 +1,4 @@
-import 'package:yiapp/model/bbs/bbs-Reply.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'api_base.dart';
 

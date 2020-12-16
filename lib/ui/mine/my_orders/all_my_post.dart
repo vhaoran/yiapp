@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/mine/my_orders/post_his_main.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -36,11 +37,17 @@ class AllMyPostPage extends StatelessWidget {
           ),
           NormalBox(
             title: "悬赏帖历史",
-            onTap: () => CusRoute.push(context, PostHisMain()),
+            onTap: () => CusRoute.push(
+              context,
+              PostHisMain(post: Post(is_vie: false)),
+            ),
           ),
           NormalBox(
             title: "闪断帖历史",
-            onTap: () => CusRoute.push(context, PostHisMain(isVie: true)),
+            onTap: () => CusRoute.push(
+              context,
+              PostHisMain(post: Post(is_vie: true)),
+            ),
           ),
           NormalBox(
             title: "大师待处理订单",

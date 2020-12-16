@@ -1,6 +1,6 @@
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
-import 'package:yiapp/model/bbs/bbs-Reply.dart';
-
+import 'package:yiapp/model/bbs/bbs_prize.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
+import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------
@@ -85,8 +85,18 @@ class ApiBBSPrize {
   }
 
   /// ----------------- 大师抢悬赏帖 -----------------
-  static Future<bool> bbsPrizeMasterAim(Map<String, dynamic> m) async {
+  static Future<bool> bbsPrizeMasterAim(String id) async {
     var url = pre + "BBSPrizeMasterAim";
-    return await ApiBase.postValue<bool>(url, m, enableJwt: true);
+    var data = {"order_id": id};
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  /// ----------------- 处理中的悬赏贴 适用于大师 -----------------
+  static Future<List<BBSPrize>> bbsPrizeMasterList(
+      Map<String, dynamic> m) async {
+    var url = pre + "BBSPrizeMasterList";
+    return await ApiBase.postList(url, m, (l) {
+      return l.map((e) => BBSPrize.fromJson(e)).toList();
+    }, enableJwt: true);
   }
 }

@@ -4,6 +4,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/question/post_content.dart';
 import 'package:yiapp/ui/question/post_cover_event.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -16,33 +17,31 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // ------------------------------------------------------
 
 class PostCover extends StatefulWidget {
-  final data; // BBSVie、BBSPrize
-  final bool isVie;
-  final bool isHis;
-  final VoidCallback onChanged; // 取消和支付的回调
+  final Post post;
+  final VoidCallback onChanged; // 底部事件的回调
 
-  PostCover({
-    this.data,
-    this.isVie: false,
-    this.isHis: false,
-    this.onChanged,
-    Key key,
-  }) : super(key: key);
+  PostCover({this.post, this.onChanged, Key key}) : super(key: key);
 
   @override
   _PostCoverState createState() => _PostCoverState();
 }
 
 class _PostCoverState extends State<PostCover> {
-  Map<String, Color> _m = {}; // 测算类别，图片
+  Map<String, Color> _m = {}; // 测算类别，颜色
+  Post _p;
+
+  @override
+  void initState() {
+    _p = widget.post;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => CusRoute.push(
         context,
-        PostContent(
-            id: widget.data.id, isVie: widget.isVie, isHis: widget.isHis),
+        PostContent(post: Post(is_vie: _p.is_vie, is_his: _p.is_his)),
       ),
       child: _coverItem(),
     );
@@ -64,8 +63,12 @@ class _PostCoverState extends State<PostCover> {
             // 如果本人帖子订单待支付，显示取消和支付按钮
             SizedBox(height: S.h(5)),
             PostCoverEvent(
-              data: widget.data,
-              isVie: widget.isVie,
+              post: Post(
+                data: _p.data,
+                is_vie: _p.is_vie,
+                is_his: _p.is_his,
+                is_ing: _p.is_ing,
+              ),
               onChanged: widget.onChanged,
             ),
           ],
@@ -78,16 +81,16 @@ class _PostCoverState extends State<PostCover> {
   Widget _iconNameScore() {
     return Row(
       children: <Widget>[
-        CusAvatar(url: widget.data.icon ?? "", size: 30, circle: true), // 头像
+        CusAvatar(url: _p.data.icon ?? "", size: 30, circle: true), // 头像
         SizedBox(width: S.w(15)),
         Expanded(
           child: Text(
-            widget.data.nick.isEmpty ? "" : widget.data.nick, // 昵称
+            _p.data.nick.isEmpty ? "" : _p.data.nick, // 昵称
             style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
         ),
         Text(
-          "悬赏 ${widget.data.amt} $yuan_bao", // 悬赏金
+          "悬赏 ${_p.data.amt} $yuan_bao", // 悬赏金
           style: TextStyle(color: t_yi, fontSize: S.sp(15)),
         ),
       ],
@@ -101,7 +104,7 @@ class _PostCoverState extends State<PostCover> {
       children: <Widget>[
         Expanded(
           child: Text(
-            widget.data.title, // 帖子标题
+            _p.data.title, // 帖子标题
             style: TextStyle(color: t_gray, fontSize: S.sp(15)),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
@@ -123,7 +126,7 @@ class _PostCoverState extends State<PostCover> {
 
   /// 显示测算类别
   void _postType() {
-    int type = widget.data.content_type;
+    int type = _p.data.content_type;
     if (type == post_liuyao) {
       _m = {"六爻": Color(0xFF78BA3B)};
     } else if (type == post_sizhu) {

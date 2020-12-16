@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -9,7 +10,7 @@ import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -50,7 +51,7 @@ class _PostAwaitPayState extends State<PostAwaitPay>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": pay_await, "uid": ApiBase.uid},
+      "where": {"stat": bbs_init, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
@@ -127,8 +128,9 @@ class _PostAwaitPayState extends State<PostAwaitPay>
                   style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                 ),
               ),
-            ..._l.map((e) =>
-                PostCover(data: e, isVie: widget.isVie, onChanged: _refresh)),
+            ..._l.map((e) => PostCover(
+                post: Post(data: e, is_vie: widget.isVie),
+                onChanged: _refresh)),
           ],
         ),
       ),

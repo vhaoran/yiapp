@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/bbs/bbs-Prize.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -15,12 +15,10 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostInput extends StatefulWidget {
-  final data;
-  final bool isVie;
+  final Post post;
   final VoidCallback onSend;
 
-  PostInput({this.data, this.isVie: false, this.onSend, Key key})
-      : super(key: key);
+  PostInput({this.post, this.onSend, Key key}) : super(key: key);
 
   @override
   _PostInputState createState() => _PostInputState();
@@ -59,11 +57,11 @@ class _PostInputState extends State<PostInput> {
       return;
     }
     var m = {
-      "id": widget.data.id,
+      "id": widget.post.data.id,
       "text": [_replyCtrl.text],
     };
     try {
-      bool ok = widget.isVie
+      bool ok = widget.post.is_vie
           ? await ApiBBSVie.bbsVieReply(m)
           : await ApiBBSPrize.bbsPrizeReply(m);
       if (ok) {
@@ -85,7 +83,7 @@ class _PostInputState extends State<PostInput> {
       style: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
       decoration: InputDecoration(
         hintText:
-            widget.data.master_reply.isEmpty ? "暂时没有评论，大师们快抢沙发吧" : "回复新楼层",
+            widget.post.data.master_reply.isEmpty ? "暂时没有评论，大师们快抢沙发吧" : "回复新楼层",
         hintStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
         contentPadding: EdgeInsets.only(left: Adapt.px(20)),
       ),

@@ -5,7 +5,7 @@
 //
 // ------------------------------------------------------
 
-import 'bbs-Reply.dart';
+import 'bbs_reply.dart';
 import 'bbs_content.dart';
 
 class BBSVie {

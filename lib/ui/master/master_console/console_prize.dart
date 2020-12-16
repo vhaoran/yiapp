@@ -56,7 +56,7 @@ class _ConsolePrizeState extends State<ConsolePrize> {
           child: TabBarView(
             children: <Widget>[
               PostDataPage(),
-              ConsoleProcess(),
+              ConsoleProcess(isProcessing: true),
             ],
           ),
         )),

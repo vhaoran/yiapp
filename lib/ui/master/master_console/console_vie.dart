@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/master/master_console/console_process.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -55,7 +56,7 @@ class _ConsoleVieState extends State<ConsoleVie> {
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              PostDataPage(isVie: true),
+              PostDataPage(post: Post(is_vie: true)),
               ConsoleProcess(),
             ],
           ),
