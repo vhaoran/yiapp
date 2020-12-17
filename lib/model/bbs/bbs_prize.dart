@@ -28,7 +28,7 @@ class BBSPrize {
   BBSReply last_reply;
   PostContentRes content;
   List<String> images;
-  List<PrizeMasterReply> master_reply;
+  List<BBSPrizeReply> master_reply;
   // TODO 这里还有一个 List rewards; 暂时不知道用法
 
   BBSPrize({
@@ -89,7 +89,7 @@ class BBSPrize {
       images: json['images'] != null ? List<String>.from(json['images']) : null,
       master_reply: json['master_reply'] != null
           ? (json['master_reply'] as List)
-              .map((e) => PrizeMasterReply.fromJson(e))
+              .map((e) => BBSPrizeReply.fromJson(e))
               .toList()
           : null,
     );

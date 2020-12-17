@@ -37,8 +37,8 @@ class _PostReplyState extends State<PostReply> {
     return Column(
       children: <Widget>[
         ...List.generate(
-          widget.data.master_reply.length,
-          (i) => _commentItem(widget.data.master_reply[i], i + 1),
+          widget.data.reply.length,
+          (i) => _commentItem(widget.data.reply[i], i + 1),
         ),
       ],
     );

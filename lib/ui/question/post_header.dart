@@ -16,6 +16,7 @@ import 'package:yiapp/widget/yuan_bao_ctr.dart';
 
 class PostHeader extends StatelessWidget {
   final data;
+
   PostHeader({this.data, Key key}) : super(key: key);
 
   PostContentRes _content; // 自定义的帖子内容

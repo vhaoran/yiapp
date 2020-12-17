@@ -41,7 +41,10 @@ class _PostCoverState extends State<PostCover> {
     return GestureDetector(
       onTap: () => CusRoute.push(
         context,
-        PostContent(post: Post(is_vie: _p.is_vie, is_his: _p.is_his)),
+        PostContent(
+          post: Post(is_vie: _p.is_vie, is_his: _p.is_his, is_ing: _p.is_ing),
+          id: widget.post.data.id,
+        ),
       ),
       child: _coverItem(),
     );
@@ -62,15 +65,7 @@ class _PostCoverState extends State<PostCover> {
             _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
             SizedBox(height: S.h(5)),
-            PostCoverEvent(
-              post: Post(
-                data: _p.data,
-                is_vie: _p.is_vie,
-                is_his: _p.is_his,
-                is_ing: _p.is_ing,
-              ),
-              onChanged: widget.onChanged,
-            ),
+            PostCoverEvent(post: _p, onChanged: widget.onChanged),
           ],
         ),
       ),

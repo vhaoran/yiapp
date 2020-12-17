@@ -28,8 +28,9 @@ import 'package:yiapp/service/api/api_base.dart';
 
 class PostContent extends StatefulWidget {
   final Post post;
+  final String id; // 根据帖子id查询帖子最新信息
 
-  PostContent({this.post, Key key}) : super(key: key);
+  PostContent({this.post, this.id, Key key}) : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -49,47 +50,48 @@ class _PostContentState extends State<PostContent> {
   @override
   void initState() {
     _p = widget.post;
-    print(">>>_p:${_p.toJson()}");
     _future = _fetch();
     super.initState();
   }
 
   /// 获取单条帖子详情
   _fetch() async {
-    _whatPost(); // 打印帖子类型
     var data;
     try {
       if (_p.is_his) {
         data = _p.is_vie
-            ? await ApiBBSVie.bbsVieHisGet(_p.data.id)
-            : await ApiBBSPrize.bbsPrizeHisGet(_p.data.id);
+            ? await ApiBBSVie.bbsVieHisGet(widget.id)
+            : await ApiBBSPrize.bbsPrizeHisGet(widget.id);
       } else {
         data = _p.is_vie
-            ? await ApiBBSVie.bbsVieGet(_p.data.id)
-            : await ApiBBSPrize.bbsPrizeGet(_p.data.id);
+            ? await ApiBBSVie.bbsVieGet(widget.id)
+            : await ApiBBSPrize.bbsPrizeGet(widget.id);
       }
       if (data != null) {
         _data = data;
-        _replyNum = _data.master_reply.length;
-        Log.info("帖子评论总条数：$_replyNum");
-        if (_l.isEmpty) _fetchReply();
+        Log.info("当前$_whatPos的详情：${_data.toJson()}");
+        // 如果是闪断帖
+        if (_l.isEmpty && _p.is_vie) {
+          _replyNum = _data.reply.length;
+          Log.info("当前$_whatPos评论总条数：$_replyNum");
+          _fetchVieReply();
+        }
       }
-      Log.info("当前查询的帖子详情：${_data.toJson()}");
     } catch (e) {
-      Log.error("查询单条帖子出现异常：$e");
+      Log.error("查询单条$_whatPos出现异常：$e");
     }
   }
 
-  /// 模拟分页加载评论列表
-  void _fetchReply() async {
+  /// 如果是闪断帖，则模拟分页加载评论列表
+  void _fetchVieReply() async {
     final int count = 20; // 默认每次加载20条
     if (_pageNo * count > _replyNum) {
       setState(() => _loadAll = true);
       return;
     }
     _pageNo++;
-    _l = _data.master_reply.take(_pageNo * count).toList();
-    Log.info("当前已加载评论条数：${_l.length}");
+    _l = _data.reply.take(_pageNo * count).toList();
+    Log.info("当前闪断帖已加载评论条数：${_l.length}");
     setState(() {});
   }
 
@@ -102,30 +104,61 @@ class _PostContentState extends State<PostContent> {
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        return Scaffold(
-          appBar: _appBar(),
-          body: _lv(),
-          backgroundColor: primary,
-        );
+        return _scaffold();
       },
     );
   }
 
-  Widget _appBar() {
-    var u = _data;
-    var style = TextStyle(color: t_gray, fontSize: S.sp(15));
-    String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
-    return CusAppBar(
-      text: "问题详情",
-      actions: <Widget>[
-        // 发帖人是自己，且订单已支付，显示投诉功能
-        if (u.stat == bbs_ok && u.uid == ApiBase.uid)
-          FlatButton(
-            child: Text("投诉", style: style),
-            onPressed: () {
-              CusRoute.push(context, RefundOrderAdd(data: u, b_type: bType));
-            },
-          )
+  Widget _scaffold() {
+    // 没有帖子数据时
+    if (_data == null) return _noData();
+    // 有帖子数据时
+    return Scaffold(
+      appBar: _appBar(),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: EasyRefresh(
+              header: CusHeader(),
+              footer: CusFooter(),
+              controller: _easyCtrl,
+              child: _lv(),
+              onLoad: _onLoad,
+              onRefresh: () async => await _refresh(),
+            ),
+          ),
+          if (widget.post.is_ing) _postInput(),
+        ],
+      ),
+      backgroundColor: primary,
+    );
+  }
+
+  Future<void> _onLoad() async {
+    if (_p.is_vie) {
+      if (_loadAll) return;
+      await Future.delayed(Duration(milliseconds: 100));
+      _fetchVieReply();
+    }
+  }
+
+  Widget _lv() {
+    return ListView(
+      controller: _scrollCtrl,
+      physics: BouncingScrollPhysics(),
+      children: <Widget>[
+        PostHeader(data: _data), // 帖子头部信息
+        Divider(height: 0, thickness: 0.2, color: t_gray),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: S.h(10)),
+          alignment: Alignment.center,
+          child: Text(
+            _replyNum == 0 ? "暂无评论" : "评论区",
+            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+          ),
+        ),
+        if (_replyNum != 0)
+          PostReply(data: _data), // 帖子评论区域
       ],
     );
   }
@@ -151,57 +184,44 @@ class _PostContentState extends State<PostContent> {
     return SizedBox.shrink();
   }
 
-  Widget _lv() {
-    // 没有帖子数据时
-    if (_data == null) {
-      return Container(
-        alignment: Alignment.center,
-        child: Text(
-          "帖子找不到了~",
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-        ),
-        padding: EdgeInsets.only(bottom: (S.screenH() / 2)),
-      );
-    }
-    // 有帖子数据时
-    return EasyRefresh(
-      header: CusHeader(),
-      footer: CusFooter(),
-      controller: _easyCtrl,
-      child: ListView(
-        controller: _scrollCtrl,
-        physics: BouncingScrollPhysics(),
-        children: <Widget>[
-          PostHeader(data: _data), // 帖子头部信息
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: S.h(10)),
-            child: Divider(height: 0, thickness: 0.2, color: t_gray),
-          ),
-          Center(
-            child: Text(
-              _replyNum == 0 ? "暂无评论" : "评论区",
-              style: TextStyle(color: t_primary, fontSize: S.sp(16)),
-            ),
-          ),
-          PostReply(data: _data), // 帖子评论区域
-        ],
-      ),
-      onLoad: _loadAll
-          ? null
-          : () async {
-              await Future.delayed(Duration(milliseconds: 100));
-              _fetchReply();
-            },
-      onRefresh: () async => await _refresh(),
-    );
-  }
-
   Future<void> _refresh() async {
     _l.clear();
     _pageNo = _replyNum = 0;
     _loadAll = false;
     await _fetch();
     setState(() {});
+  }
+
+  Widget _appBar() {
+    var u = _data;
+    var style = TextStyle(color: t_gray, fontSize: S.sp(15));
+    String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
+    return CusAppBar(
+      text: "问题详情",
+      actions: <Widget>[
+        if (u != null)
+          // 发帖人是自己，且订单已支付，显示投诉功能
+          if (u.stat == bbs_ok && u.uid == ApiBase.uid)
+            FlatButton(
+              child: Text("投诉", style: style),
+              onPressed: () {
+                CusRoute.push(context, RefundOrderAdd(data: u, b_type: bType));
+              },
+            )
+      ],
+    );
+  }
+
+  /// 没有帖子数据时的显示
+  Widget _noData() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        "帖子已被删除",
+        style: TextStyle(color: t_yi, fontSize: S.sp(16)),
+      ),
+      padding: EdgeInsets.only(bottom: (S.screenH() / 4)),
+    );
   }
 
   @override
@@ -212,9 +232,9 @@ class _PostContentState extends State<PostContent> {
   }
 
   /// 打印帖子类型
-  void _whatPost() {
-    String type = widget.post.is_vie ? '闪断帖' : '悬赏帖';
-    String his = widget.post.is_his ? '历史' : '';
-    Log.info("------------- 查询单条$type$his的内容 -------------");
+  String get _whatPos {
+    String type = _p.is_vie ? '闪断帖' : '悬赏帖';
+    String his = _p.is_his ? '历史' : '';
+    return "$type$his";
   }
 }

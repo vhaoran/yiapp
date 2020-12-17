@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/bbs-vie.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -22,9 +22,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PostDataPage extends StatefulWidget {
-  final Post post;
+  final bool is_vie;
 
-  PostDataPage({this.post, Key key}) : super(key: key);
+  PostDataPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
   _PostDataPageState createState() => _PostDataPageState();
@@ -44,24 +44,21 @@ class _PostDataPageState extends State<PostDataPage>
     super.initState();
   }
 
-  /// 分页查询帖子
+  /// 分页查询悬赏帖中已付款的帖子，闪断帖中已付款但未被抢的单子
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    // 大师看到的是已支付未打赏的，用户看到的是1 已支付(前排) 和 2 已打赏(后排)
-    var stat1 = {"stat": 1};
-    var stat2 = {
-      "stat": {
-        "\$in": [1, 2]
-      }
-    };
+    // 如果是闪断帖，则不显示 master_id 不为0的帖子
+    Map<String, dynamic> where = {"stat": bbs_paid};
+    if (widget.is_vie) where.addAll({"master_id": 0});
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": CusRole.is_master ? stat1 : stat2,
+      "where": where,
       "sort": {"create_date": -1}, // 按时间倒序排列
     };
-    widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
+    setState(() {});
   }
 
   /// 获取悬赏帖
@@ -123,23 +120,16 @@ class _PostDataPageState extends State<PostDataPage>
     return EasyRefresh(
       header: CusHeader(),
       footer: CusFooter(),
-      onLoad: () async => _refresh(),
-      onRefresh: () async {
-        _pageNo = _rowsCount = 0;
-        _l.clear();
-        _refresh();
-      },
+      onLoad: () async => _fetch(),
+      onRefresh: () async => _refresh(),
       child: ListView(
         // 显示帖子
         children: <Widget>[
           if (_l.isEmpty) _noData(),
           ..._l.map(
             (e) => PostCover(
-              post: Post(
-                data: e,
-                is_vie: widget.post.is_vie,
-                is_ing: widget.post.is_ing,
-              ),
+              post: Post(data: e, is_vie: widget.is_vie),
+              onChanged: _refresh,
             ),
           ),
         ],
@@ -160,8 +150,9 @@ class _PostDataPageState extends State<PostDataPage>
   }
 
   void _refresh() async {
+    _pageNo = _rowsCount = 0;
+    _l.clear();
     await _fetch();
-    setState(() {});
   }
 
   @override

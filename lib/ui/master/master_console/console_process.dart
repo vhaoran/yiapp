@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
+import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -13,13 +15,13 @@ import 'package:yiapp/widget/refresh_hf.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:43
-// usage ：处理中的悬赏帖订单
+// usage ：处理中的帖子订单
 // ------------------------------------------------------
 
 class ConsoleProcess extends StatefulWidget {
-  final bool isProcessing; // 是否正在处理中的单子
+  final bool is_vie;
 
-  ConsoleProcess({this.isProcessing: false, Key key}) : super(key: key);
+  ConsoleProcess({this.is_vie: false, Key key}) : super(key: key);
 
   @override
   _ConsoleProcessState createState() => _ConsoleProcessState();
@@ -28,7 +30,7 @@ class ConsoleProcess extends StatefulWidget {
 class _ConsoleProcessState extends State<ConsoleProcess>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  List<BBSPrize> _l = []; // 处理中的帖子列表
+  List _l = []; // 处理中的帖子列表
 
   @override
   void initState() {
@@ -36,17 +38,27 @@ class _ConsoleProcessState extends State<ConsoleProcess>
     super.initState();
   }
 
-  /// 获取正在处理中的悬赏帖
+  /// 获取正在处理中的帖子
   _fetch() async {
-    var m = {
-      "sort": {"last_updated": 1}
-    };
     try {
-      var l = await ApiBBSPrize.bbsPrizeMasterList(m);
-      if (l != null) {
-        _l = l;
-        Log.info("大师处理中的悬赏帖个数：${_l.length}");
+      if (widget.is_vie) {
+        var m1 = {
+          "where": {"stat": bbs_aim},
+          "sort": {"last_updated": -1}
+        };
+        PageBean pb = await ApiBBSVie.bbsViePage(m1);
+
+        if (pb != null) {
+          _l = pb.data.map((e) => e).toList();
+        }
+      } else {
+        var m2 = {
+          "sort": {"last_updated": -1}
+        };
+        var res = await ApiBBSPrize.bbsPrizeMasterList(m2);
+        if (res != null) _l = res;
       }
+      Log.info("大师处理中的${widget.is_vie ? '闪断' : '悬赏'}帖个数：${_l.length}");
     } catch (e) {
       Log.error("获取大师处理中的订单出现异常：$e");
     }
@@ -82,7 +94,9 @@ class _ConsoleProcessState extends State<ConsoleProcess>
         children: <Widget>[
           if (_l.isEmpty) _noData(),
           ..._l.map(
-            (e) => PostCover(post: Post(data: e, is_ing: true)),
+            (e) => PostCover(
+              post: Post(data: e, is_vie: widget.is_vie, is_ing: true),
+            ),
           ),
         ],
       ),

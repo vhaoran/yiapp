@@ -77,13 +77,15 @@ class _PostInputState extends State<PostInput> {
 
   /// 回复内容输入框
   Widget _input() {
+    var l = widget.post.is_vie
+        ? widget.post.data.reply
+        : widget.post.data.master_reply;
     return TextField(
       controller: _replyCtrl,
       focusNode: _focusNode,
       style: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
       decoration: InputDecoration(
-        hintText:
-            widget.post.data.master_reply.isEmpty ? "暂时没有评论，大师们快抢沙发吧" : "回复新楼层",
+        hintText: l.isEmpty ? "暂无评论，大师们快抢沙发吧" : "回复内容",
         hintStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
         contentPadding: EdgeInsets.only(left: Adapt.px(20)),
       ),

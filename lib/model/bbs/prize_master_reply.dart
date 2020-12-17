@@ -3,17 +3,17 @@ import 'package:yiapp/model/bbs/bbs_reply.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/16 上午10:38
-// usage ：悬赏帖大师回复内容 master_reply
+// usage ：悬赏帖评论内容 master_reply
 // ------------------------------------------------------
 
-class PrizeMasterReply {
+class BBSPrizeReply {
   String master_icon;
   int master_id;
   String master_nick;
   BBSReply last_reply;
   List<BBSReply> reply;
 
-  PrizeMasterReply({
+  BBSPrizeReply({
     this.master_icon,
     this.master_id,
     this.master_nick,
@@ -21,8 +21,8 @@ class PrizeMasterReply {
     this.reply,
   });
 
-  factory PrizeMasterReply.fromJson(Map<String, dynamic> json) {
-    return PrizeMasterReply(
+  factory BBSPrizeReply.fromJson(Map<String, dynamic> json) {
+    return BBSPrizeReply(
       master_icon: json['master_icon'],
       master_id: json['master_id'],
       master_nick: json['master_nick'],

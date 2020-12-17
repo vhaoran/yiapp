@@ -35,6 +35,14 @@ class PostCoverEvent extends StatefulWidget {
 }
 
 class _PostCoverEventState extends State<PostCoverEvent> {
+  Post _p;
+
+  @override
+  void initState() {
+    _p = widget.post;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,112 +55,111 @@ class _PostCoverEventState extends State<PostCoverEvent> {
     return Row(
       children: <Widget>[
         Text(
-          "${TimeUtil.parseYMD(widget.post.data.create_date)}", // 发帖时间
+          "${TimeUtil.parseYMD(_p.data.create_date)}", // 发帖时间
           style: TextStyle(color: t_gray, fontSize: S.sp(15)),
         ),
         Spacer(),
         // 查看帖子详情按钮，所有角色可见
         _eventBtn(
           text: "详情",
-          onPressed: () => CusRoute.push(
-            context,
-            PostContent(
-                post: Post(
-              is_vie: widget.post.is_vie,
-              is_his: widget.post.is_his,
-            )),
-          ),
+          onPressed: () {
+            Post post = Post(is_vie: _p.is_vie, is_his: _p.is_his);
+            CusRoute.push(context, PostContent(post: post, id: _p.data.id));
+          },
         ),
         // 如果是发帖人
-        if (widget.post.data.uid == ApiBase.uid)
+        if (_p.data.uid == ApiBase.uid)
           _posterView(),
-        // 如果是大师，显示抢单和详情按钮
+        // 如果是大师
         if (CusRole.is_master)
           _masterView(),
-//        // 状态为已付款，是大师，并且该单没有被抢
-//        if (widget.isVie &&
-//            widget.data.stat == pay_paid &&
-//            (CusRole.is_master && widget.data.master_id == 0))
-//          _comBtn(text: "抢单", onPressed: _doRob),
       ],
     );
   }
 
   /// 发帖人可点击事件（取消、支付）
   Widget _posterView() {
-    // 帖子待付款
-    if (widget.post.data.stat == bbs_init) {
-      return Row(
-        children: <Widget>[
-          SizedBox(width: S.w(5)),
-          _eventBtn(text: "取消", onPressed: _doCancel),
+    // 悬赏帖回复评论是 master_reply ,闪断帖回复评论是 reply
+    var l = _p.is_vie ? _p.data.reply : _p.data.master_reply;
+    return Row(
+      children: <Widget>[
+        // 帖子待付款，显示支付按钮
+        if (_p.data.stat == bbs_init) ...[
           SizedBox(width: S.w(5)),
           _eventBtn(
-              text: "支付", // 支付订单
-              onPressed: () {
-                var payData = PayData(
-                  amt: widget.post.data.amt,
-                  b_type: b_bbs_prize,
-                  id: widget.post.data.id,
-                );
-                BalancePay(context, data: payData);
-              }),
+            text: "支付",
+            onPressed: () {
+              var payData = PayData(
+                  amt: _p.data.amt, b_type: b_bbs_prize, id: _p.data.id);
+              BalancePay(context, data: payData);
+            },
+          ),
         ],
-      );
-    }
-    return SizedBox.shrink();
+        // 帖子已付款，且没有评论时，显示取消按钮
+        if (_p.data.stat == bbs_paid && l.isEmpty) ...[
+          SizedBox(width: S.w(5)),
+          _eventBtn(text: "取消", onPressed: _doCancel),
+        ],
+      ],
+    );
   }
 
   /// 大师可点击事件（详情）
   Widget _masterView() {
-    // 帖子已付款
-    if (widget.post.data.stat == bbs_paid) {
-      Widget child = widget.post.is_ing
-          ? _eventBtn(text: "回复", onPressed: _doAim)
-          : _eventBtn(text: "抢单", onPressed: _doAim);
-      return Row(
-        children: <Widget>[
-          SizedBox(width: S.w(5)),
-          child,
-        ],
-      );
-    }
-    return SizedBox.shrink();
+    return Row(
+      children: <Widget>[
+        SizedBox(width: S.w(5)),
+        // 帖子已付款
+        if (_p.data.stat == bbs_paid)
+          _eventBtn(text: "抢单", onPressed: _doAim),
+        // 已抢帖子
+        if (_p.data.stat == bbs_aim)
+          _eventBtn(
+              text: "回复",
+              onPressed: () {
+                print(">>>点了回复");
+              })
+      ],
+    );
   }
 
   /// 抢单(悬赏帖、闪断帖)
   void _doAim() async {
-    String tip = widget.post.is_vie ? "闪断帖" : "悬赏帖";
-    Log.info("当前抢单的$tip的 id：${widget.post.data.id}");
+    String tip = _p.is_vie ? "闪断帖" : "悬赏帖";
+    Log.info("当前抢$tip单的 id：${_p.data.id}");
     var data;
     try {
-      data = widget.post.is_vie
-          ? await ApiBBSVie.bbsVieAim(widget.post.data.id)
-          : await ApiBBSPrize.bbsPrizeMasterAim(widget.post.data.id);
+      data = _p.is_vie
+          ? await ApiBBSVie.bbsVieAim(_p.data.id)
+          : await ApiBBSPrize.bbsPrizeMasterAim(_p.data.id);
       if (data != null) {
         CusToast.toast(context, text: "抢单成功");
         if (widget.onChanged != null) widget.onChanged();
       }
     } catch (e) {
-      if (widget.post.is_vie && e.toString() == "操作错误已存在，不需要再次添加") {
+      if (_p.is_vie && e.toString() == "操作错误已存在，不需要再次添加") {
         CusToast.toast(context, text: "你已经抢过了");
       }
       Log.error("大师抢闪断帖出现异常：$e");
     }
   }
 
-  /// 取消订单
+  /// 取消订单(悬赏帖、闪断帖)
   void _doCancel() {
+    String tip = _p.is_vie ? "闪断帖" : "悬赏帖";
     CusDialog.normal(context, title: "确定取消该订单吗?", onApproval: () async {
       try {
-        bool ok = await ApiBBSPrize.bbsPrizeCancel(widget.post.data.id);
+        bool ok = _p.is_vie
+            ? await ApiBBSVie.bbsVieCancel(_p.data.id)
+            : await ApiBBSPrize.bbsPrizeCancel(_p.data.id);
         if (ok) {
-          Log.info("取消订单结果：$ok");
+          Log.info("取消$tip订单结果：$ok");
           CusToast.toast(context, text: "取消成功");
           if (widget.onChanged != null) widget.onChanged();
         }
       } catch (e) {
-        Log.error("取消订单出现异常：$e");
+        CusToast.toast(context, text: "订单信息异常");
+        Log.error("取消$tip订单出现异常：$e");
       }
     });
   }

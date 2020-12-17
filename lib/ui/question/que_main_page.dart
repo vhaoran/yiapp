@@ -5,7 +5,6 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -33,8 +32,7 @@ class _QueMainPageState extends State<QueMainPage>
   // 提问类型
   final List<String> _selectTypes = ["六爻", "四柱", "合婚", "其他"];
   var _user = CusLoginRes(); // 本地用户信息
-  List<String> _tabsName = [];
-  List<Widget> _tabsWidget = []; // 悬赏帖闪断帖页面
+  Map<String, Widget> _tabW = {};
   var _future;
 
   @override
@@ -48,12 +46,10 @@ class _QueMainPageState extends State<QueMainPage>
   _initLoad() async {
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
-      _tabsName.add("悬赏帖");
-      _tabsWidget.add(PostDataPage(post: Post(is_vie: false)));
+      _tabW.addAll({"悬赏帖": PostDataPage()});
     }
     if (_user.enable_vie == 1) {
-      _tabsName.add("闪断帖");
-      _tabsWidget.add(PostDataPage(post: Post(is_vie: true)));
+      _tabW.addAll({"闪断帖": PostDataPage(is_vie: true)});
     }
     setState(() {});
   }
@@ -62,7 +58,7 @@ class _QueMainPageState extends State<QueMainPage>
   Widget build(BuildContext context) {
     super.build(context);
     return DefaultTabController(
-      length: _tabsName.length,
+      length: _tabW.keys.toList().length,
       child: Scaffold(
         appBar: _appBar(),
         body: FutureBuilder(
@@ -108,8 +104,11 @@ class _QueMainPageState extends State<QueMainPage>
           labelColor: t_primary,
           unselectedLabelColor: t_gray,
           tabs: List.generate(
-            _tabsName.length,
-            (i) => Text(_tabsName[i], style: TextStyle(fontSize: S.sp(16))),
+            _tabW.keys.toList().length,
+            (i) => Text(
+              _tabW.keys.toList()[i],
+              style: TextStyle(fontSize: S.sp(16)),
+            ),
           ),
           onTap: (index) {
             // 设置悬赏帖还是闪断帖
@@ -117,7 +116,7 @@ class _QueMainPageState extends State<QueMainPage>
           },
         ),
         SizedBox(height: S.h(5)),
-        Expanded(child: TabBarView(children: _tabsWidget)),
+        Expanded(child: TabBarView(children: _tabW.values.toList())),
       ],
     );
   }
