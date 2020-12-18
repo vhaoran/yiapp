@@ -60,13 +60,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
         ),
         Spacer(),
         // 查看帖子详情按钮，所有角色可见
-        _eventBtn(
-          text: "详情",
-          onPressed: () {
-            Post post = Post(is_vie: _p.is_vie, is_his: _p.is_his);
-            CusRoute.push(context, PostContent(post: post, id: _p.data.id));
-          },
-        ),
+        _eventBtn(text: "详情", onPressed: _comJump),
         // 如果是发帖人
         if (_p.data.uid == ApiBase.uid)
           _posterView(),
@@ -80,7 +74,9 @@ class _PostCoverEventState extends State<PostCoverEvent> {
   /// 发帖人可点击事件（取消、支付）
   Widget _posterView() {
     // 悬赏帖回复评论是 master_reply ,闪断帖回复评论是 reply
-    var l = _p.is_vie ? _p.data.reply : _p.data.master_reply;
+    List l = _p.is_vie ? _p.data.reply : _p.data.master_reply;
+    // 因为闪断帖没有 bbs_aim 已抢单的状态，所以这里区分下
+    bool rep = _p.is_vie ? _p.data.stat == bbs_aim : _p.data.stat == bbs_paid;
     return Row(
       children: <Widget>[
         // 帖子待付款，显示支付按钮
@@ -100,6 +96,11 @@ class _PostCoverEventState extends State<PostCoverEvent> {
           SizedBox(width: S.w(5)),
           _eventBtn(text: "取消", onPressed: _doCancel),
         ],
+        // 帖子已付款，有评论时，且是处理中状态
+        if (rep && l.isNotEmpty && _p.is_ing) ...[
+          SizedBox(width: S.w(5)),
+          _eventBtn(text: "回复", onPressed: _comJump),
+        ],
       ],
     );
   }
@@ -114,11 +115,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
           _eventBtn(text: "抢单", onPressed: _doAim),
         // 已抢帖子
         if (_p.data.stat == bbs_aim)
-          _eventBtn(
-              text: "回复",
-              onPressed: () {
-                print(">>>点了回复");
-              })
+          _eventBtn(text: "回复", onPressed: _comJump)
       ],
     );
   }
@@ -162,6 +159,12 @@ class _PostCoverEventState extends State<PostCoverEvent> {
         Log.error("取消$tip订单出现异常：$e");
       }
     });
+  }
+
+  /// 详情、回复时的通用跳转路由
+  void _comJump() {
+    Post post = Post(is_vie: _p.is_vie, is_his: _p.is_his, is_ing: _p.is_ing);
+    CusRoute.push(context, PostContent(post: post, id: _p.data.id));
   }
 
   /// 通用的事件按钮

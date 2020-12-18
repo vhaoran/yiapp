@@ -1,5 +1,5 @@
 import 'package:yiapp/model/bbs/bbs_reply.dart';
-import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------

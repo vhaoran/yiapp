@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/model/bbs/bbs-vie.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------

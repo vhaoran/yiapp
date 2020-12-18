@@ -18,7 +18,7 @@ const int m_enable = 1; // 启用大师
 
 // ------------------------- 帖子状态 ------------------------
 const int bbs_rm = -1; // 已取消
-const int bbs_init = 0; // 待付款(待处理)
+const int bbs_init = 0; // 待付款
 const int bbs_paid = 1; // 已付款
 const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
 const int bbs_ok = 3; // 已打赏

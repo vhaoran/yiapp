@@ -3,6 +3,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/ui/mine/my_orders/post_his_main.dart';
+import 'package:yiapp/ui/mine/my_orders/poster_ing_main.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
@@ -34,6 +35,10 @@ class AllMyPostPage extends StatelessWidget {
           NormalBox(
             title: "待付款",
             onTap: () => CusRoute.push(context, RewardAwaitMain()),
+          ),
+          NormalBox(
+            title: "处理中",
+            onTap: () => CusRoute.push(context, PosterIngMain()),
           ),
           NormalBox(
             title: "悬赏帖历史",

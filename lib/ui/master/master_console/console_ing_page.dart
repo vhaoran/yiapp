@@ -15,19 +15,19 @@ import 'package:yiapp/widget/refresh_hf.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:43
-// usage ：处理中的帖子订单
+// usage ：大师处理中的帖子订单
 // ------------------------------------------------------
 
-class ConsoleProcess extends StatefulWidget {
+class ConsoleIngPage extends StatefulWidget {
   final bool is_vie;
 
-  ConsoleProcess({this.is_vie: false, Key key}) : super(key: key);
+  ConsoleIngPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
-  _ConsoleProcessState createState() => _ConsoleProcessState();
+  _ConsoleIngPageState createState() => _ConsoleIngPageState();
 }
 
-class _ConsoleProcessState extends State<ConsoleProcess>
+class _ConsoleIngPageState extends State<ConsoleIngPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   List _l = []; // 处理中的帖子列表

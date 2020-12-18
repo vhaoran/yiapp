@@ -5,6 +5,8 @@ import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
@@ -20,16 +22,16 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // usage ：单条回帖的内容
 // ------------------------------------------------------
 
-class PostReply extends StatefulWidget {
-  final data; // BBSVie、BBSPrize
+class PostVieReply extends StatefulWidget {
+  final BBSVie data;
 
-  PostReply({this.data, Key key}) : super(key: key);
+  PostVieReply({this.data, Key key}) : super(key: key);
 
   @override
-  _PostReplyState createState() => _PostReplyState();
+  _PostVieReplyState createState() => _PostVieReplyState();
 }
 
-class _PostReplyState extends State<PostReply> {
+class _PostVieReplyState extends State<PostVieReply> {
   double _localSize = 30;
 
   @override
@@ -75,9 +77,9 @@ class _PostReplyState extends State<PostReply> {
   }
 
   /// 单条评论的内容
-  Widget _commentItem(e, int level) {
+  Widget _commentItem(BBSReply e, int level) {
     return Container(
-      child: !e.is_master // 根据是否为大师显示打赏功能
+      child: e.uid == ApiBase.uid // 如果是发帖人，显示打赏功能
           ? CupertinoLeftScroll(
               closeTag: LeftScrollCloseTag("post_reply"),
               key: Key(e.create_date.toString()),

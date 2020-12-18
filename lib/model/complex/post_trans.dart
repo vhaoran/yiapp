@@ -7,7 +7,7 @@
 class Post {
   bool is_vie; // 是否闪断帖
   bool is_his; // 是否查询历史帖子
-  bool is_ing; // 是否正在处理中的单子
+  bool is_ing; // 是否正在处理中的单子,决定是否显示回复评论输入框
   dynamic data; // 单条帖子的数据
 
   Post({

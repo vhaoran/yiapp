@@ -10,7 +10,7 @@ import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
-import 'package:yiapp/ui/question/post_reply.dart';
+import 'package:yiapp/ui/question/post_vie_reply.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
@@ -157,8 +157,8 @@ class _PostContentState extends State<PostContent> {
             style: TextStyle(color: t_primary, fontSize: S.sp(16)),
           ),
         ),
-        if (_replyNum != 0)
-          PostReply(data: _data), // 帖子评论区域
+        if (_replyNum != 0) // 闪断帖评论区域
+          PostVieReply(data: _data),
       ],
     );
   }
