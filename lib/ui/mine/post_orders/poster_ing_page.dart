@@ -38,9 +38,8 @@ class _PosterIngPageState extends State<PosterIngPage>
     super.initState();
   }
 
-  /// 用户获取正在处理中的帖子
+  /// 用户获取处理中的帖子
   _fetch() async {
-    String tip = widget.is_vie ? '闪断帖' : '悬赏帖';
     try {
       var m = {
         "stat": 1,
@@ -55,9 +54,9 @@ class _PosterIngPageState extends State<PosterIngPage>
         // 如果帖子的 last_reply 不为空，说明有大师回复了
         _l.retainWhere((e) => e.last_reply != null);
       }
-      Log.info("用户处理中的$tip个数：${_l.length}");
+      Log.info("用户处理中的${logVie(widget.is_vie)}个数：${_l.length}");
     } catch (e) {
-      Log.error("获取用户处理中的$tip出现异常：$e");
+      Log.error("获取用户处理中的${logVie(widget.is_vie)}出现异常：$e");
     }
   }
 

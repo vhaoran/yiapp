@@ -53,8 +53,8 @@ class _PosterAwaitMainState extends State<PosterAwaitMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PostAwaitPage(isVie: false), // 悬赏帖待付款
-              PostAwaitPage(isVie: true), // 闪断帖待付款
+              PostAwaitPage(), // 用户待付款的悬赏帖
+              PostAwaitPage(is_vie: true), // 用户待付款的闪断帖
             ],
           ),
         ),

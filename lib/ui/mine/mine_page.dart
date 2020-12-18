@@ -32,7 +32,6 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
-import 'my_orders/post_orders_main.dart';
 
 // ------------------------------------------------------
 // author：suxing

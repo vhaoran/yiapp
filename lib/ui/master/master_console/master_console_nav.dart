@@ -26,8 +26,6 @@ class MasterConsoleNav extends StatefulWidget {
 class _MasterConsoleNavState extends State<MasterConsoleNav> {
   // 底部导航栏图标
   final List<int> _codesInt = [0xe676, 0xe675, 0xe609];
-  // 底部导航栏名称
-  final List<String> _barNames = ["悬赏帖", "闪断帖", "大师订单"];
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +45,12 @@ class _MasterConsoleNavState extends State<MasterConsoleNav> {
   }
 
   BottomNavigationBarItem _barItem(String name, int i) {
-    int index = _barNames.indexOf(name);
     return BottomNavigationBarItem(
       icon: InkWell(
         onTap: () => widget.onChanged(i),
         child: SuBadge(
           child: Icon(
-            IconData(_codesInt[index], fontFamily: "AliIcon"),
+            IconData(_codesInt[i], fontFamily: "AliIcon"),
             size: S.w(24),
           ),
           hidden: true, // 是否隐藏未读消息个数组件

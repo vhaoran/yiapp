@@ -22,14 +22,14 @@ class PosterHisMain extends StatefulWidget {
 }
 
 class _PosterHisMainState extends State<PosterHisMain> {
-  final List<String> _tabs = ["已付款", "已取消"];
+  final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: '${widget.is_vie ? '闪断' : '悬赏'}帖订单'),
+        appBar: CusAppBar(text: "已完成"),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -57,12 +57,8 @@ class _PosterHisMainState extends State<PosterHisMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PosterHisPage(
-                post: Post(is_vie: widget.is_vie, is_his: true),
-              ), // 已付款
-              PosterCancelPage(
-                post: Post(is_vie: widget.is_vie, is_his: true),
-              ), // 已取消
+              PosterHisPage(), // 用户已打赏悬赏帖订单
+              PosterHisPage(is_vie: true), // 用户已打赏闪断帖订单
             ],
           ),
         ),

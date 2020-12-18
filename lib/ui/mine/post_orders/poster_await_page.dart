@@ -22,9 +22,9 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 
 class PostAwaitPage extends StatefulWidget {
-  final bool isVie;
+  final bool is_vie;
 
-  PostAwaitPage({this.isVie, Key key}) : super(key: key);
+  PostAwaitPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
   _PostAwaitPageState createState() => _PostAwaitPageState();
@@ -44,7 +44,7 @@ class _PostAwaitPageState extends State<PostAwaitPage>
     super.initState();
   }
 
-  /// 悬赏帖待付款分页查询
+  /// 用户分页查询待付款
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
@@ -54,10 +54,10 @@ class _PostAwaitPageState extends State<PostAwaitPage>
       "where": {"stat": bbs_init, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
-    widget.isVie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
-  /// 获取悬赏帖
+  /// 获取悬赏帖待付款
   _fetchPrize(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
@@ -76,7 +76,7 @@ class _PostAwaitPageState extends State<PostAwaitPage>
     }
   }
 
-  /// 获取闪断帖
+  /// 获取闪断帖待付款
   _fetchVie(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSVie.bbsViePage(m);
@@ -124,12 +124,12 @@ class _PostAwaitPageState extends State<PostAwaitPage>
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(top: S.screenH() / 4),
                 child: Text(
-                  "暂无待付款订单",
+                  "暂无订单",
                   style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                 ),
               ),
             ..._l.map((e) => PostCover(
-                post: Post(data: e, is_vie: widget.isVie),
+                post: Post(data: e, is_vie: widget.is_vie),
                 onChanged: _refresh)),
           ],
         ),

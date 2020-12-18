@@ -21,9 +21,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PosterCancelPage extends StatefulWidget {
-  final Post post;
+  final bool is_vie;
 
-  PosterCancelPage({this.post, Key key}) : super(key: key);
+  PosterCancelPage({this.is_vie, Key key}) : super(key: key);
 
   @override
   _PosterCancelPageState createState() => _PosterCancelPageState();
@@ -53,7 +53,7 @@ class _PosterCancelPageState extends State<PosterCancelPage>
       "where": {"stat": bbs_rm},
       "sort": {"create_date": -1},
     };
-    widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
   /// 获取悬赏帖已取消历史
@@ -129,8 +129,8 @@ class _PosterCancelPageState extends State<PosterCancelPage>
               (e) => PostCover(
                 post: Post(
                   data: e,
-                  is_vie: widget.post.is_vie,
-                  is_his: widget.post.is_his,
+                  is_vie: widget.is_vie,
+                  is_his: true,
                 ),
                 onChanged: _refresh,
               ),

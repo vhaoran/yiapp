@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_ing_page.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_cancel_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
@@ -56,8 +56,8 @@ class _PosterCancelMainState extends State<PosterCancelMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PosterIngPage(), // 用户处理中的悬赏帖
-              PosterIngPage(is_vie: true), // 用户处理中的闪断帖
+              PosterCancelPage(), // 用户已取消悬赏帖历史
+              PosterCancelPage(is_vie: true), // 用户已取消闪断帖历史
             ],
           ),
         ),

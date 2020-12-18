@@ -21,9 +21,9 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 // ------------------------------------------------------
 
 class PosterHisPage extends StatefulWidget {
-  final Post post;
+  final bool is_vie;
 
-  PosterHisPage({this.post, Key key}) : super(key: key);
+  PosterHisPage({this.is_vie, Key key}) : super(key: key);
 
   @override
   _PosterHisPageState createState() => _PosterHisPageState();
@@ -35,7 +35,7 @@ class _PosterHisPageState extends State<PosterHisPage>
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List _l = []; // 已付款列表
+  List _l = []; // 已打赏列表
 
   @override
   void initState() {
@@ -43,52 +43,52 @@ class _PosterHisPageState extends State<PosterHisPage>
     super.initState();
   }
 
-  /// 帖子已付款历史分页查询
+  /// 帖子已打赏历史分页查询
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_paid},
+      "where": {"stat": bbs_ok},
       "sort": {"create_date": -1},
     };
-    widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
+    widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
-  /// 获取悬赏帖已付款历史
+  /// 获取悬赏帖已打赏历史
   _fetchPrize(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizeHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BBSPrize).toList();
-      Log.info("总的悬赏帖已付款历史个数：$_rowsCount");
+      Log.info("总的悬赏帖已打赏历史个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Log.info("当前已查询悬赏帖已付款历史个数：${_l.length}");
+      Log.info("当前已查询悬赏帖已打赏历史个数：${_l.length}");
     } catch (e) {
-      Log.error("查询悬赏帖已付款历史出现异常：$e");
+      Log.error("查询悬赏帖已打赏历史出现异常：$e");
     }
   }
 
-  /// 获取闪断帖已付款历史
+  /// 获取闪断帖已打赏历史
   _fetchVie(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSVie.bbsVieHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BBSVie).toList();
-      Log.info("总的闪断帖已付款历史个数：$_rowsCount");
+      Log.info("总的闪断帖已打赏历史个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Log.info("当前已查询闪断帖已付款历史个数：${_l.length}");
+      Log.info("当前已查询闪断帖已打赏历史个数：${_l.length}");
     } catch (e) {
-      Log.error("查询闪断帖已付款历史出现异常：$e");
+      Log.error("查询闪断帖已打赏历史出现异常：$e");
     }
   }
 
@@ -131,8 +131,8 @@ class _PosterHisPageState extends State<PosterHisPage>
           (e) => PostCover(
             post: Post(
               data: e,
-              is_vie: widget.post.is_vie,
-              is_his: widget.post.is_his,
+              is_vie: widget.is_vie,
+              is_his: true,
             ),
             onChanged: _refresh,
           ),

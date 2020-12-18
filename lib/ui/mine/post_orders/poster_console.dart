@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_await_main.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_cancel_main.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_his_main.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_ing_main.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console_nav.dart';
@@ -8,7 +9,7 @@ import 'package:yiapp/ui/mine/post_orders/poster_console_nav.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/18 下午5:07
-// usage ：用户控制台
+// usage ：用户帖子控制台（处理中、待付款、已完成、已取消）
 // ------------------------------------------------------
 
 class PosterConsole extends StatefulWidget {
@@ -21,12 +22,13 @@ class PosterConsole extends StatefulWidget {
 class _PosterConsoleState extends State<PosterConsole> {
   var _pc = PageController();
   int _curIndex = 0; // 当前导航栏索引
+
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
     "处理中": PosterIngMain(),
     "待付款": PosterAwaitMain(),
     "已完成": PosterHisMain(),
-    "已取消": PosterIngMain(),
+    "已取消": PosterCancelMain(),
   };
 
   @override

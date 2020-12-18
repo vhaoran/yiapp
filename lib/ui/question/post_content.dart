@@ -110,26 +110,25 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _scaffold() {
-    // 没有帖子数据时
-    if (_data == null) return _noData();
+    var child = Column(
+      children: <Widget>[
+        Expanded(
+          child: EasyRefresh(
+            header: CusHeader(),
+            footer: CusFooter(),
+            controller: _easyCtrl,
+            child: _lv(),
+            onLoad: _onLoad,
+            onRefresh: () async => await _refresh(),
+          ),
+        ),
+        if (_p.is_ing) _postInput(),
+      ],
+    );
     // 有帖子数据时
     return Scaffold(
       appBar: _appBar(),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: EasyRefresh(
-              header: CusHeader(),
-              footer: CusFooter(),
-              controller: _easyCtrl,
-              child: _lv(),
-              onLoad: _onLoad,
-              onRefresh: () async => await _refresh(),
-            ),
-          ),
-          if (_p.is_ing) _postInput(),
-        ],
-      ),
+      body: _data == null ? _noData() : child,
       backgroundColor: primary,
     );
   }

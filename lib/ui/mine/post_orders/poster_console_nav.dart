@@ -24,10 +24,9 @@ class PosterConsoleNav extends StatefulWidget {
 }
 
 class _PosterConsoleNavState extends State<PosterConsoleNav> {
-  // 底部导航栏名称
-  final List<String> _barNames = ["处理中", "待付款", "已完成", "已取消"];
   // 底部导航栏图标
   final List<int> _codesInt = [0xe60c, 0xe624, 0xe6b2, 0xeba9];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -45,14 +44,14 @@ class _PosterConsoleNavState extends State<PosterConsoleNav> {
     );
   }
 
+  /// 底部导航栏名称
   BottomNavigationBarItem _barItem(String name, int i) {
-    int index = _barNames.indexOf(name);
     return BottomNavigationBarItem(
       icon: InkWell(
         onTap: () => widget.onChanged(i),
         child: SuBadge(
           child: Icon(
-            IconData(_codesInt[index], fontFamily: "AliIcon"),
+            IconData(_codesInt[i], fontFamily: "AliIcon"),
             size: S.w(24),
           ),
           hidden: true, // 是否隐藏未读消息个数组件
