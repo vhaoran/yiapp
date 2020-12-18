@@ -3,8 +3,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 
@@ -33,7 +32,7 @@ class _PostInputState extends State<PostInput> {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 9,
+          flex: 6,
           child: Container(child: _input(), color: Colors.grey),
         ),
         Expanded(
@@ -42,7 +41,10 @@ class _PostInputState extends State<PostInput> {
             color: t_yi,
             child: FlatButton(
               onPressed: _doReply,
-              child: CusText("发送", Colors.black, 28),
+              child: Text(
+                "发送",
+                style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
+              ),
               padding: EdgeInsets.all(0),
             ),
           ),
@@ -51,14 +53,48 @@ class _PostInputState extends State<PostInput> {
     );
   }
 
+  /// 回复内容输入框
+  Widget _input() {
+    var l = widget.post.is_vie
+        ? widget.post.data.reply
+        : widget.post.data.master_reply;
+    return LayoutBuilder(
+      builder: (context, size) {
+        var text = TextSpan(
+          text: _replyCtrl.text,
+          style: TextStyle(fontSize: S.sp(14)),
+        );
+        var tp = TextPainter(
+          text: text,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.left,
+        );
+        tp.layout(maxWidth: size.maxWidth);
+        final int lines = (tp.size.height / tp.preferredLineHeight).ceil();
+        return TextField(
+          controller: _replyCtrl,
+          focusNode: _focusNode,
+          style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
+          maxLines: lines < 8 ? null : 8,
+          decoration: InputDecoration(
+            hintText: l.isEmpty ? "暂无评论，大师们快抢沙发吧" : "回复内容",
+            hintStyle: TextStyle(color: Colors.black, fontSize: S.sp(14)),
+            contentPadding: EdgeInsets.only(left: S.w(10)),
+          ),
+        );
+      },
+    );
+  }
+
+  /// 回复悬赏帖或者闪断帖
   void _doReply() async {
-    if (_replyCtrl.text.isEmpty) {
-      CusToast.toast(context, text: "请输入回复内容", pos: ToastPos.bottom);
+    if (_replyCtrl.text.trim().isEmpty) {
+      CusToast.toast(context, text: "请输入回复内容");
       return;
     }
     var m = {
       "id": widget.post.data.id,
-      "text": [_replyCtrl.text],
+      "text": [_replyCtrl.text.trim()],
     };
     try {
       bool ok = widget.post.is_vie
@@ -73,23 +109,6 @@ class _PostInputState extends State<PostInput> {
     } catch (e) {
       Log.error("回帖出现异常：$e");
     }
-  }
-
-  /// 回复内容输入框
-  Widget _input() {
-    var l = widget.post.is_vie
-        ? widget.post.data.reply
-        : widget.post.data.master_reply;
-    return TextField(
-      controller: _replyCtrl,
-      focusNode: _focusNode,
-      style: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
-      decoration: InputDecoration(
-        hintText: l.isEmpty ? "暂无评论，大师们快抢沙发吧" : "回复内容",
-        hintStyle: TextStyle(color: Colors.black, fontSize: Adapt.px(28)),
-        contentPadding: EdgeInsets.only(left: Adapt.px(20)),
-      ),
-    );
   }
 
   @override

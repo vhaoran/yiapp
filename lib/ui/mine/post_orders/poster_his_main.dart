@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/my_orders/post_cancelled_his.dart';
-import 'package:yiapp/ui/mine/my_orders/post_paid_his.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_cancel_page.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_his_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/11 上午10:04
-// usage ：帖子历史记录
+// date  ：2020/12/18 下午5:28
+// usage ：用户已完成的帖子订单主页
 // ------------------------------------------------------
 
-class PostHisMain extends StatefulWidget {
-  final Post post;
+class PosterHisMain extends StatefulWidget {
+  final bool is_vie;
 
-  PostHisMain({this.post, Key key}) : super(key: key);
+  PosterHisMain({this.is_vie: false, Key key}) : super(key: key);
 
   @override
-  _PostHisMainState createState() => _PostHisMainState();
+  _PosterHisMainState createState() => _PosterHisMainState();
 }
 
-class _PostHisMainState extends State<PostHisMain> {
+class _PosterHisMainState extends State<PosterHisMain> {
   final List<String> _tabs = ["已付款", "已取消"];
 
   @override
@@ -29,7 +29,7 @@ class _PostHisMainState extends State<PostHisMain> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: '${widget.post.is_vie ? '闪断' : '悬赏'}帖订单'),
+        appBar: CusAppBar(text: '${widget.is_vie ? '闪断' : '悬赏'}帖订单'),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -57,11 +57,11 @@ class _PostHisMainState extends State<PostHisMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PostPaidHis(
-                post: Post(is_vie: widget.post.is_vie, is_his: true),
+              PosterHisPage(
+                post: Post(is_vie: widget.is_vie, is_his: true),
               ), // 已付款
-              PostCancelledHis(
-                post: Post(is_vie: widget.post.is_vie, is_his: true),
+              PosterCancelPage(
+                post: Post(is_vie: widget.is_vie, is_his: true),
               ), // 已取消
             ],
           ),

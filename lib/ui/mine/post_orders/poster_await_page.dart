@@ -18,19 +18,19 @@ import 'package:yiapp/service/api/api_base.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/10 下午4:19
-// usage ：待付款帖子
+// usage ：用户待付款的帖子订单
 // ------------------------------------------------------
 
-class PostAwaitPay extends StatefulWidget {
+class PostAwaitPage extends StatefulWidget {
   final bool isVie;
 
-  PostAwaitPay({this.isVie, Key key}) : super(key: key);
+  PostAwaitPage({this.isVie, Key key}) : super(key: key);
 
   @override
-  _PostAwaitPayState createState() => _PostAwaitPayState();
+  _PostAwaitPageState createState() => _PostAwaitPageState();
 }
 
-class _PostAwaitPayState extends State<PostAwaitPay>
+class _PostAwaitPageState extends State<PostAwaitPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;

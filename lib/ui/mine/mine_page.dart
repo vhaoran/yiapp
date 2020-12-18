@@ -21,7 +21,9 @@ import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_main.dart';
+import 'package:yiapp/ui/mine/my_orders/other_orders_main.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
 import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
@@ -30,7 +32,7 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
-import 'my_orders/all_my_post.dart';
+import 'my_orders/post_orders_main.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -134,8 +136,12 @@ class _MinePageState extends State<MinePage>
         // 游客身份看不到的内容
         if (!CusRole.is_guest && !CusRole.is_master) ...[
           NormalBox(
-            title: "我的订单",
-            onTap: () => CusRoute.push(context, AllMyPostPage()),
+            title: "帖子订单",
+            onTap: () => CusRoute.push(context, PosterConsole()),
+          ),
+          NormalBox(
+            title: "其它订单",
+            onTap: () => CusRoute.push(context, OtherOrdersMain()),
           ),
           NormalBox(
             title: "我的商品",

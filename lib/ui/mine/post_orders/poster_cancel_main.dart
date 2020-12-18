@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/mine/my_orders/post_await_pay.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_ing_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/28 10:37
-// usage ：待付款主页
+// date  ：2020/12/18 下午5:36
+// usage ：用户已取消的帖子订单主页
 // ------------------------------------------------------
 
-class RewardAwaitMain extends StatefulWidget {
-  RewardAwaitMain({Key key}) : super(key: key);
+class PosterCancelMain extends StatefulWidget {
+  final Post post;
+
+  PosterCancelMain({this.post, Key key}) : super(key: key);
 
   @override
-  _RewardAwaitMainState createState() => _RewardAwaitMainState();
+  _PosterCancelMainState createState() => _PosterCancelMainState();
 }
 
-class _RewardAwaitMainState extends State<RewardAwaitMain> {
+class _PosterCancelMainState extends State<PosterCancelMain> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -25,7 +28,7 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: '待付款'),
+        appBar: CusAppBar(text: "处理中"),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -53,8 +56,8 @@ class _RewardAwaitMainState extends State<RewardAwaitMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PostAwaitPay(isVie: false), // 悬赏帖待付款
-              PostAwaitPay(isVie: true), // 闪断帖待付款
+              PosterIngPage(), // 用户处理中的悬赏帖
+              PosterIngPage(is_vie: true), // 用户处理中的闪断帖
             ],
           ),
         ),

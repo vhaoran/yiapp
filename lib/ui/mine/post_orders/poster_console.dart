@@ -1,31 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'console_await.dart';
-import 'console_prize.dart';
-import 'console_vie.dart';
-import 'master_console_nav.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_await_main.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_his_main.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_ing_main.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_console_nav.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/14 下午5:23
-// usage ：大师控制台
+// date  ：2020/12/18 下午5:07
+// usage ：用户控制台
 // ------------------------------------------------------
 
-class MasterConsole extends StatefulWidget {
-  MasterConsole({Key key}) : super(key: key);
+class PosterConsole extends StatefulWidget {
+  PosterConsole({Key key}) : super(key: key);
 
   @override
-  _MasterConsoleState createState() => _MasterConsoleState();
+  _PosterConsoleState createState() => _PosterConsoleState();
 }
 
-class _MasterConsoleState extends State<MasterConsole> {
+class _PosterConsoleState extends State<PosterConsole> {
   var _pc = PageController();
   int _curIndex = 0; // 当前导航栏索引
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
-    "悬赏帖": ConsolePrize(),
-    "闪断帖": ConsoleVie(),
-    "大师订单": ConsoleAwait(),
+    "处理中": PosterIngMain(),
+    "待付款": PosterAwaitMain(),
+    "已完成": PosterHisMain(),
+    "已取消": PosterIngMain(),
   };
 
   @override
@@ -44,7 +45,7 @@ class _MasterConsoleState extends State<MasterConsole> {
 
   /// 大师控制天底部导航栏
   Widget _cusNavigationBar() {
-    return MasterConsoleNav(
+    return PosterConsoleNav(
       curIndex: _curIndex,
       barNames: _mc.keys.toList(),
       onChanged: (int val) {

@@ -14,8 +14,8 @@ import 'package:yiapp/widget/refresh_hf.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/18 上午9:27
-// usage ：用户处理中的帖子
+// date  ：2020/12/18 下午5:30
+// usage ：用户处理中的帖子订单
 // ------------------------------------------------------
 
 class PosterIngPage extends StatefulWidget {

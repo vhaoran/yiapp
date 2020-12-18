@@ -11,3 +11,8 @@ class Log {
   /// 报错打印，黄色
   static error(String error) => print("<<<$error");
 }
+
+/// 临时便于打印
+String logVie(bool isVie) {
+  return isVie ? "闪断帖" : "悬赏帖";
+}

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/my_orders/poster_ing_page.dart';
+import 'package:yiapp/ui/mine/post_orders/poster_ing_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/18 上午9:19
-// usage ：用户处理中的帖子订单
+// usage ：用户处理中的帖子订单主页
 // ------------------------------------------------------
 
 class PosterIngMain extends StatefulWidget {
@@ -28,7 +28,7 @@ class _PosterIngMainState extends State<PosterIngMain> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "处理中的"),
+        appBar: CusAppBar(text: "处理中"),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),

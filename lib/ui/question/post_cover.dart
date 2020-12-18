@@ -45,7 +45,9 @@ class _PostCoverState extends State<PostCover> {
           post: Post(is_vie: _p.is_vie, is_his: _p.is_his, is_ing: _p.is_ing),
           id: widget.post.data.id,
         ),
-      ),
+      ).then((value) {
+        if (value != null) widget.onChanged();
+      }),
       child: _coverItem(),
     );
   }

@@ -127,7 +127,7 @@ class _PostContentState extends State<PostContent> {
               onRefresh: () async => await _refresh(),
             ),
           ),
-          if (widget.post.is_ing) _postInput(),
+          if (_p.is_ing) _postInput(),
         ],
       ),
       backgroundColor: primary,
@@ -158,7 +158,7 @@ class _PostContentState extends State<PostContent> {
           ),
         ),
         if (_replyNum != 0) // 闪断帖评论区域
-          PostVieReply(data: _data),
+          PostVieReply(data: _data, onSuccess: _refresh),
       ],
     );
   }

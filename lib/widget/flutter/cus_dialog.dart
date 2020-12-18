@@ -222,7 +222,7 @@ class CusDialog {
       context,
       textAgree: textAgree ?? "确定",
       textCancel: textCancel ?? "取消",
-      agreeColor: agreeColor ?? Colors.lightBlue,
+      agreeColor: agreeColor ?? Colors.black,
       cancelColor: cancelColor,
       fnDataApproval: fnDataApproval,
       fnDataCancel: fnDataCancel,

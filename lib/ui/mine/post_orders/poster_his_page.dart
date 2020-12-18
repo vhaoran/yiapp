@@ -16,26 +16,26 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/11 上午10:15
-// usage ：已取消帖子历史
+// date  ：2020/12/18 下午5:23
+// usage ：用户已完成的帖子订单
 // ------------------------------------------------------
 
-class PostCancelledHis extends StatefulWidget {
+class PosterHisPage extends StatefulWidget {
   final Post post;
 
-  PostCancelledHis({this.post, Key key}) : super(key: key);
+  PosterHisPage({this.post, Key key}) : super(key: key);
 
   @override
-  _PostCancelledHisState createState() => _PostCancelledHisState();
+  _PosterHisPageState createState() => _PosterHisPageState();
 }
 
-class _PostCancelledHisState extends State<PostCancelledHis>
+class _PosterHisPageState extends State<PosterHisPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List _l = []; // 已取消帖子列表
+  List _l = []; // 已付款列表
 
   @override
   void initState() {
@@ -43,52 +43,52 @@ class _PostCancelledHisState extends State<PostCancelledHis>
     super.initState();
   }
 
-  /// 已取消帖子历史分页查询
+  /// 帖子已付款历史分页查询
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_rm},
+      "where": {"stat": bbs_paid},
       "sort": {"create_date": -1},
     };
     widget.post.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }
 
-  /// 获取悬赏帖已取消历史
+  /// 获取悬赏帖已付款历史
   _fetchPrize(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizeHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BBSPrize).toList();
-      Log.info("总的悬赏帖已取消历史个数：$_rowsCount");
+      Log.info("总的悬赏帖已付款历史个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Log.info("当前已查询悬赏帖已取消历史个数：${_l.length}");
+      Log.info("当前已查询悬赏帖已付款历史个数：${_l.length}");
     } catch (e) {
-      Log.error("查询悬赏帖已取消历史出现异常：$e");
+      Log.error("查询悬赏帖已付款历史出现异常：$e");
     }
   }
 
-  /// 获取闪断帖已取消历史
+  /// 获取闪断帖已付款历史
   _fetchVie(Map<String, dynamic> m) async {
     try {
       PageBean pb = await ApiBBSVie.bbsVieHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BBSVie).toList();
-      Log.info("总的闪断帖已取消历史个数：$_rowsCount");
+      Log.info("总的闪断帖已付款历史个数：$_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Log.info("当前已查询闪断帖已取消历史个数：${_l.length}");
+      Log.info("当前已查询闪断帖已付款历史个数：${_l.length}");
     } catch (e) {
-      Log.error("查询闪断帖已取消历史出现异常：$e");
+      Log.error("查询闪断帖已付款历史出现异常：$e");
     }
   }
 
@@ -101,43 +101,43 @@ class _PostCancelledHisState extends State<PostCancelledHis>
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        return _lv();
+        return ScrollConfiguration(
+          behavior: CusBehavior(),
+          child: EasyRefresh(
+            header: CusHeader(),
+            footer: CusFooter(),
+            onLoad: () async => await _fetch(),
+            onRefresh: () async => await _refresh(),
+            child: _lv(),
+          ),
+        );
       },
     );
   }
 
   Widget _lv() {
-    return ScrollConfiguration(
-      behavior: CusBehavior(),
-      child: EasyRefresh(
-        header: CusHeader(),
-        footer: CusFooter(),
-        onLoad: () async => await _fetch(),
-        onRefresh: () async => await _refresh(),
-        child: ListView(
-          children: <Widget>[
-            if (_l.isEmpty)
-              Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(top: 200),
-                child: Text(
-                  "暂无订单",
-                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-                ),
-              ),
-            ..._l.map(
-              (e) => PostCover(
-                post: Post(
-                  data: e,
-                  is_vie: widget.post.is_vie,
-                  is_his: widget.post.is_his,
-                ),
-                onChanged: _refresh,
-              ),
+    return ListView(
+      children: <Widget>[
+        if (_l.isEmpty)
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 200),
+            child: Text(
+              "暂无订单",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
             ),
-          ],
+          ),
+        ..._l.map(
+          (e) => PostCover(
+            post: Post(
+              data: e,
+              is_vie: widget.post.is_vie,
+              is_his: widget.post.is_his,
+            ),
+            onChanged: _refresh,
+          ),
         ),
-      ),
+      ],
     );
   }
 

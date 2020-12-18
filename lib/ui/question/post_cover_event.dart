@@ -122,8 +122,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
 
   /// 抢单(悬赏帖、闪断帖)
   void _doAim() async {
-    String tip = _p.is_vie ? "闪断帖" : "悬赏帖";
-    Log.info("当前抢$tip单的 id：${_p.data.id}");
+    Log.info("当前抢${logVie(_p.is_vie)}单的 id：${_p.data.id}");
     var data;
     try {
       data = _p.is_vie
@@ -143,20 +142,20 @@ class _PostCoverEventState extends State<PostCoverEvent> {
 
   /// 取消订单(悬赏帖、闪断帖)
   void _doCancel() {
-    String tip = _p.is_vie ? "闪断帖" : "悬赏帖";
-    CusDialog.normal(context, title: "确定取消该订单吗?", onApproval: () async {
+    CusDialog.normal(context, title: "确定取消该订单吗?", textCancel: "再想想",
+        onApproval: () async {
       try {
         bool ok = _p.is_vie
             ? await ApiBBSVie.bbsVieCancel(_p.data.id)
             : await ApiBBSPrize.bbsPrizeCancel(_p.data.id);
         if (ok) {
-          Log.info("取消$tip订单结果：$ok");
+          Log.info("取消${logVie(_p.is_vie)}订单结果：$ok");
           CusToast.toast(context, text: "取消成功");
           if (widget.onChanged != null) widget.onChanged();
         }
       } catch (e) {
         CusToast.toast(context, text: "订单信息异常");
-        Log.error("取消$tip订单出现异常：$e");
+        Log.error("取消${logVie(_p.is_vie)}订单出现异常：$e");
       }
     });
   }

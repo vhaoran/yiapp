@@ -8,22 +8,22 @@ import 'package:yiapp/widget/badge/su_badge.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午9:47
-// usage ：自定义大师工作台底部导航栏
+// usage ：大师工作台底部导航栏
 // ------------------------------------------------------
 
-class CusConsoleBar extends StatefulWidget {
+class MasterConsoleNav extends StatefulWidget {
   final int curIndex;
   final List<String> barNames;
   final FnInt onChanged;
 
-  CusConsoleBar({this.curIndex: 0, this.barNames, this.onChanged, Key key})
+  MasterConsoleNav({this.curIndex: 0, this.barNames, this.onChanged, Key key})
       : super(key: key);
 
   @override
-  _CusConsoleBarState createState() => _CusConsoleBarState();
+  _MasterConsoleNavState createState() => _MasterConsoleNavState();
 }
 
-class _CusConsoleBarState extends State<CusConsoleBar> {
+class _MasterConsoleNavState extends State<MasterConsoleNav> {
   // 底部导航栏图标
   final List<int> _codesInt = [0xe676, 0xe675, 0xe609];
   // 底部导航栏名称
