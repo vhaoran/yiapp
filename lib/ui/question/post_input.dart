@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -15,9 +16,10 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostInput extends StatefulWidget {
   final Post post;
+  final BBSReply reply;
   final VoidCallback onSend;
 
-  PostInput({this.post, this.onSend, Key key}) : super(key: key);
+  PostInput({this.post, this.reply, this.onSend, Key key}) : super(key: key);
 
   @override
   _PostInputState createState() => _PostInputState();
@@ -55,7 +57,7 @@ class _PostInputState extends State<PostInput> {
 
   /// 回复内容输入框
   Widget _input() {
-    var l = widget.post.is_vie
+    List l = widget.post.is_vie
         ? widget.post.data.reply
         : widget.post.data.master_reply;
     return LayoutBuilder(
@@ -77,7 +79,7 @@ class _PostInputState extends State<PostInput> {
           style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
           maxLines: lines < 8 ? null : 8,
           decoration: InputDecoration(
-            hintText: l.isEmpty ? "暂无评论，快抢沙发吧" : "回复内容",
+            hintText: _hintTip(l),
             hintStyle: TextStyle(color: Colors.black, fontSize: S.sp(14)),
             contentPadding: EdgeInsets.only(left: S.w(10)),
           ),
@@ -86,14 +88,23 @@ class _PostInputState extends State<PostInput> {
     );
   }
 
+  String _hintTip(List l) {
+    if (l.isEmpty) return "暂无评论，快抢沙发吧";
+    if (widget.reply != null) return "回复：${widget.reply.nick}";
+    return "点就大师评论进行回复";
+  }
+
   /// 回复悬赏帖或者闪断帖
   void _doReply() async {
     if (_replyCtrl.text.trim().isEmpty) {
       CusToast.toast(context, text: "请输入回复内容");
       return;
     }
+    return;
     var m = {
       "id": widget.post.data.id,
+      "master_id": widget.reply.uid,
+      "amt": 1, // 打赏金额，先为1
       "text": [_replyCtrl.text.trim()],
     };
     try {

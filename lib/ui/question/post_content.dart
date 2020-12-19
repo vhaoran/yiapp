@@ -46,6 +46,7 @@ class _PostContentState extends State<PostContent> {
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
   List<BBSReply> _l = []; // 帖子评论列表
+  BBSReply _selectReply; // 用户当前点击的哪个大师的评论
   Post _p;
 
   @override
@@ -135,12 +136,11 @@ class _PostContentState extends State<PostContent> {
     );
   }
 
+  /// 闪断帖的话，模拟分页加载评论数据
   Future<void> _onLoad() async {
-    if (_p.is_vie) {
-      if (_loadAll) return;
-      await Future.delayed(Duration(milliseconds: 100));
-      _fetchVieReply();
-    }
+    if (!_p.is_vie || _loadAll) return;
+    await Future.delayed(Duration(milliseconds: 100));
+    _fetchVieReply();
   }
 
   Widget _lv() {
@@ -150,17 +150,13 @@ class _PostContentState extends State<PostContent> {
       children: <Widget>[
         PostHeader(data: _data), // 帖子头部信息
         Divider(height: 0, thickness: 0.2, color: t_gray),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: S.h(10)),
-          alignment: Alignment.center,
-          child: Text(
-            _replyNum == 0 ? "暂无评论" : "评论区",
-            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+        if (!_p.is_vie) // 悬赏帖评论区
+          PostPrizeReply(
+            data: _data,
+            fnBBSReply: (val) => setState(() => _selectReply = val),
+            onSuccess: _refresh,
           ),
-        ),
-        if (_replyNum == 0)
-          PostPrizeReply(data: _data, onSuccess: _refresh),
-        if (_replyNum != 0) // 闪断帖评论区域
+        if (_p.is_vie) // 闪断帖评论区
           PostVieReply(data: _data, onSuccess: _refresh),
       ],
     );
@@ -174,6 +170,7 @@ class _PostContentState extends State<PostContent> {
       if (CusRole.is_master || _data.uid == ApiBase.uid) {
         return PostInput(
           post: Post(data: _data, is_vie: widget.post.is_vie),
+          reply: _selectReply,
           onSend: () async {
             _refresh();
             Timer(

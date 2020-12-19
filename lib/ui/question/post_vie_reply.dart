@@ -37,6 +37,14 @@ class _PostVieReplyState extends State<PostVieReply> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
+          alignment: Alignment.center,
+          child: Text(
+            widget.data.reply.isEmpty ? "暂无评论" : "评论区",
+            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+          ),
+        ),
         ...List.generate(
           widget.data.reply.length,
           (i) => _commentItem(widget.data.reply[i], i + 1),

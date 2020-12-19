@@ -1,22 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs_reply.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,11 +21,15 @@ import 'package:yiapp/model/bbs/bbs_reply.dart';
 // usage ：悬赏帖回帖的内容
 // ------------------------------------------------------
 
+typedef FnBBSReply = Function(BBSReply reply);
+
 class PostPrizeReply extends StatefulWidget {
   final BBSPrize data;
+  final FnBBSReply fnBBSReply;
   final VoidCallback onSuccess;
 
-  PostPrizeReply({this.data, this.onSuccess, Key key}) : super(key: key);
+  PostPrizeReply({this.data, this.fnBBSReply, this.onSuccess, Key key})
+      : super(key: key);
 
   @override
   _PostPrizeReplyState createState() => _PostPrizeReplyState();
@@ -39,103 +40,116 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ...List.generate(
-          widget.data.master_reply.length,
-          (i) => _commentItem(widget.data.master_reply[i], i + 1),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
+          alignment: Alignment.center,
+          child: Text(
+            widget.data.master_reply.isEmpty ? "暂无评论" : "评论区",
+            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+          ),
         ),
+        if (widget.data.master_reply.isNotEmpty)
+          ...List.generate(
+            widget.data.master_reply.length,
+            (i) => _tmpItem(widget.data.master_reply[i], i + 1),
+          ),
       ],
     );
   }
 
   /// 单条评论的内容
-  Widget _commentItem(BBSPrizeReply e, int level) {
-    Widget child = Text(
-      "这是悬赏帖的评论内容",
-      style: TextStyle(color: Colors.white),
-    );
-    // 如果当前是大师的评论，且是发帖人，则可以看到打赏按钮
-//    if (e.is_master && widget.data.uid == ApiBase.uid) {
-//      child = CupertinoLeftScroll(
-//        closeTag: LeftScrollCloseTag("vie_reply"),
-//        key: Key(e.create_date.toString()),
-//        child: _item(e, level),
-//        buttons: [
-//          LeftScrollItem(
-//            text: "打赏",
-//            onTap: () => _doReward(e),
-//            color: t_red,
-//          ),
-//        ],
-//      );
-//    } else {
-//      child = _item(e, level);
-//    }
+  Widget _tmpItem(BBSPrizeReply rep, int level) {
     return Container(
-      child: child,
+      padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
       decoration: BoxDecoration(
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsets.only(bottom: S.h(5)), // 评论间隔
-    );
-  }
-
-  /// 单条评论的数据
-  Widget _item(BBSReply e, int level) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        // 评论人头像、昵称、评论时间、楼层数
-        _commentInfo(e, level),
-        // 评论内容
-        Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-          child: Text(
-            e.text.first,
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+      margin: EdgeInsets.only(bottom: S.h(10)), // 评论间隔
+      child: Column(
+        children: <Widget>[
+          /// 大师基本信息、楼层数
+          _masterInfo(rep, level),
+          SizedBox(height: S.h(5)),
+          ...List.generate(
+            rep.reply.length,
+            (index) => _commentDetail(rep.reply[index]),
           ),
-        ),
-      ],
-    );
-  }
-
-  /// 评论人头像、昵称、评论时间
-  Widget _commentInfo(BBSReply e, int level) {
-    var subtitle = Padding(
-      padding: EdgeInsets.only(top: S.h(5)),
-      child: Text(
-        e.create_date,
-        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ],
       ),
     );
-    return ListTile(
-      // 评论人头像
-      leading: CusAvatar(url: e.icon ?? "", circle: true, size: 45),
-      title: _title(e, level),
-      // 评论时间
-      subtitle: subtitle,
-      contentPadding: EdgeInsets.symmetric(horizontal: S.w(12)),
-      dense: true,
+  }
+
+  /// 相互评论的详情
+  Widget _commentDetail(BBSReply r) {
+    var blue = TextStyle(color: Colors.lightBlue, fontSize: S.sp(15));
+    var gray = TextStyle(color: t_gray, fontSize: S.sp(15));
+    return InkWell(
+      onTap: () {
+        Log.info("点击评论的详情：${r.toJson()}");
+        if (r.is_master && widget.fnBBSReply != null) widget.fnBBSReply(r);
+      },
+      child: Container(
+        color: Colors.black12,
+        padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
+        margin: EdgeInsets.only(top: S.h(4)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                // 大师给帖主的回复
+                if (r.is_master) ...[
+                  Text("${r.nick}", style: blue),
+                  Text("►", style: gray),
+                  Text("${widget.data.nick}", style: blue),
+                ],
+                // 帖主的回复
+                if (!r.is_master)
+                  Text("${r.nick}", style: blue),
+                Text(
+                  "（帖主）",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(13)),
+                ),
+              ],
+            ),
+            SizedBox(height: S.h(5)),
+            Text(r.text.first, style: gray), // 回复的内容
+            SizedBox(height: S.h(5)),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Text(r.create_date, style: gray), // 回复的时间
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _title(BBSReply e, int level) {
-    var style = TextStyle(color: t_gray, fontSize: S.sp(14));
+  Widget _masterInfo(BBSPrizeReply e, int level) {
+    var style = TextStyle(color: t_gray, fontSize: S.sp(15));
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Text(
-          e.nick, // 评论人昵称
-          style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+        CusAvatar(url: e.master_icon ?? "", circle: true, size: 45),
+        SizedBox(width: S.w(15)),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    e.master_nick, // 大师昵称
+                    style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  Text("$level楼", style: style), // 大师所处楼层数
+                ],
+              ),
+              Text(e.reply.first.create_date, style: style) // 大师第一条评论的时间
+            ],
+          ),
         ),
-        // 显示帖主标识
-        Padding(
-          padding: EdgeInsets.only(left: S.h(5)),
-          child: e.uid == widget.data.uid ? Text("(帖主)", style: style) : null,
-        ),
-        Spacer(),
-        // 显示层数
-        Text("$level楼", style: style),
       ],
     );
   }
