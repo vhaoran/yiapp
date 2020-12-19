@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_cancel_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_his_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';

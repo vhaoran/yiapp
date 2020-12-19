@@ -77,7 +77,7 @@ class _PostInputState extends State<PostInput> {
           style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
           maxLines: lines < 8 ? null : 8,
           decoration: InputDecoration(
-            hintText: l.isEmpty ? "暂无评论，大师们快抢沙发吧" : "回复内容",
+            hintText: l.isEmpty ? "暂无评论，快抢沙发吧" : "回复内容",
             hintStyle: TextStyle(color: Colors.black, fontSize: S.sp(14)),
             contentPadding: EdgeInsets.only(left: S.w(10)),
           ),

@@ -17,14 +17,14 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // usage ：大师控制台 -- 大师未完成订单查询
 // ------------------------------------------------------
 
-class ConsoleAwait extends StatefulWidget {
-  ConsoleAwait({Key key}) : super(key: key);
+class MasterAwaitMain extends StatefulWidget {
+  MasterAwaitMain({Key key}) : super(key: key);
 
   @override
-  _ConsoleAwaitState createState() => _ConsoleAwaitState();
+  _MasterAwaitMainState createState() => _MasterAwaitMainState();
 }
 
-class _ConsoleAwaitState extends State<ConsoleAwait>
+class _MasterAwaitMainState extends State<MasterAwaitMain>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;

@@ -43,7 +43,7 @@ class _PostCoverState extends State<PostCover> {
         context,
         PostContent(
           post: Post(is_vie: _p.is_vie, is_his: _p.is_his, is_ing: _p.is_ing),
-          id: widget.post.data.id,
+          id: _p.data.id,
         ),
       ).then((value) {
         if (value != null) widget.onChanged();
@@ -66,8 +66,10 @@ class _PostCoverState extends State<PostCover> {
             SizedBox(height: S.h(5)),
             _briefType(), // 帖子标题和类型显示
             // 如果本人帖子订单待支付，显示取消和支付按钮
-            SizedBox(height: S.h(5)),
-            PostCoverEvent(post: _p, onChanged: widget.onChanged),
+            Padding(
+              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
+              child: PostCoverEvent(post: _p, onChanged: widget.onChanged),
+            ),
           ],
         ),
       ),

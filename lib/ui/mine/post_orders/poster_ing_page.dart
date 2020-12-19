@@ -81,17 +81,14 @@ class _PosterIngPageState extends State<PosterIngPage>
     return EasyRefresh(
       header: CusHeader(),
       footer: CusFooter(),
-      onRefresh: () async {
-        _l.clear();
-        await _fetch();
-        setState(() {});
-      },
+      onRefresh: () async => await _refresh(),
       child: ListView(
         children: <Widget>[
           if (_l.isEmpty) _noData(),
           ..._l.map(
             (e) => PostCover(
               post: Post(data: e, is_vie: widget.is_vie, is_ing: true),
+              onChanged: _refresh,
             ),
           ),
         ],
@@ -109,6 +106,12 @@ class _PosterIngPageState extends State<PosterIngPage>
         style: TextStyle(color: t_gray, fontSize: S.sp(15)),
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    _l.clear();
+    setState(() {});
+    await _fetch();
   }
 
   @override

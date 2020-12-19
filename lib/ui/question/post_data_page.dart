@@ -152,6 +152,7 @@ class _PostDataPageState extends State<PostDataPage>
   void _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
+    setState(() {});
     await _fetch();
   }
 

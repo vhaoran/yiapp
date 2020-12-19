@@ -3,10 +3,12 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -18,16 +20,16 @@ import 'package:yiapp/widget/refresh_hf.dart';
 // usage ：大师处理中的帖子订单
 // ------------------------------------------------------
 
-class ConsoleIngPage extends StatefulWidget {
+class MasterIngMain extends StatefulWidget {
   final bool is_vie;
 
-  ConsoleIngPage({this.is_vie: false, Key key}) : super(key: key);
+  MasterIngMain({this.is_vie: false, Key key}) : super(key: key);
 
   @override
-  _ConsoleIngPageState createState() => _ConsoleIngPageState();
+  _MasterIngMainState createState() => _MasterIngMainState();
 }
 
-class _ConsoleIngPageState extends State<ConsoleIngPage>
+class _MasterIngMainState extends State<MasterIngMain>
     with AutomaticKeepAliveClientMixin {
   var _future;
   List _l = []; // 处理中的帖子列表
@@ -38,16 +40,16 @@ class _ConsoleIngPageState extends State<ConsoleIngPage>
     super.initState();
   }
 
-  /// 获取正在处理中的帖子
+  /// 获取正在处理中的帖子(不需要分页查询)
   _fetch() async {
     try {
+      // 如果是闪断帖
       if (widget.is_vie) {
         var m1 = {
           "where": {"stat": bbs_aim},
           "sort": {"last_updated": -1}
         };
         PageBean pb = await ApiBBSVie.bbsViePage(m1);
-
         if (pb != null) {
           _l = pb.data.map((e) => e).toList();
         }
@@ -55,12 +57,13 @@ class _ConsoleIngPageState extends State<ConsoleIngPage>
         var m2 = {
           "sort": {"last_updated": -1}
         };
-        var res = await ApiBBSPrize.bbsPrizeMasterList(m2);
-        if (res != null) _l = res;
+        List<BBSPrize> l = await ApiBBSPrize.bbsPrizeMasterList(m2);
+        if (l != null) _l = l;
       }
-      Log.info("大师处理中的${widget.is_vie ? '闪断' : '悬赏'}帖个数：${_l.length}");
+      Log.info("大师处理中的${logVie(widget.is_vie)}个数：${_l.length}");
+      setState(() {});
     } catch (e) {
-      Log.error("获取大师处理中的订单出现异常：$e");
+      Log.error("获取大师处理中的${logVie(widget.is_vie)}订单出现异常：$e");
     }
   }
 
@@ -85,22 +88,25 @@ class _ConsoleIngPageState extends State<ConsoleIngPage>
     return EasyRefresh(
       header: CusHeader(),
       footer: CusFooter(),
-      onRefresh: () async {
-        _l.clear();
-        await _fetch();
-        setState(() {});
-      },
+      onRefresh: () async => await _refresh(),
       child: ListView(
         children: <Widget>[
           if (_l.isEmpty) _noData(),
           ..._l.map(
             (e) => PostCover(
               post: Post(data: e, is_vie: widget.is_vie, is_ing: true),
+              onChanged: _refresh,
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    _l.clear();
+    setState(() {});
+    await _fetch();
   }
 
   /// 显示没有帖子

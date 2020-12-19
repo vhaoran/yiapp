@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'console_await.dart';
-import 'console_prize.dart';
-import 'console_vie.dart';
+import 'master_await_main.dart';
+import 'master_prize_main.dart';
+import 'master_vie_main.dart';
 import 'master_console_nav.dart';
 
 // ------------------------------------------------------
@@ -23,9 +23,9 @@ class _MasterConsoleState extends State<MasterConsole> {
   int _curIndex = 0; // 当前导航栏索引
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
-    "悬赏帖": ConsolePrize(),
-    "闪断帖": ConsoleVie(),
-    "大师订单": ConsoleAwait(),
+    "悬赏帖": MasterPrizeMain(),
+    "闪断帖": MasterVieMain(),
+    "大师订单": MasterAwaitMain(),
   };
 
   @override

@@ -4,6 +4,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -23,7 +24,7 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 class PosterCancelPage extends StatefulWidget {
   final bool is_vie;
 
-  PosterCancelPage({this.is_vie, Key key}) : super(key: key);
+  PosterCancelPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
   _PosterCancelPageState createState() => _PosterCancelPageState();
@@ -50,7 +51,7 @@ class _PosterCancelPageState extends State<PosterCancelPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_rm},
+      "where": {"stat": bbs_rm, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);

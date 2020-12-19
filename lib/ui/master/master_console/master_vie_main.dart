@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/master/master_console/console_ing_page.dart';
+import 'package:yiapp/ui/master/master_console/master_ing_main.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -9,18 +8,18 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/15 上午9:39
-// usage ：大师控制台 -- 查看悬赏帖可抢单的和处理中的
+// date  ：2020/12/15 下午2:16
+// usage ：大师控制台 -- 查看闪断帖可抢单的和处理中的
 // ------------------------------------------------------
 
-class ConsolePrize extends StatefulWidget {
-  ConsolePrize({Key key}) : super(key: key);
+class MasterVieMain extends StatefulWidget {
+  MasterVieMain({Key key}) : super(key: key);
 
   @override
-  _ConsolePrizeState createState() => _ConsolePrizeState();
+  _MasterVieMainState createState() => _MasterVieMainState();
 }
 
-class _ConsolePrizeState extends State<ConsolePrize> {
+class _MasterVieMainState extends State<MasterVieMain> {
   final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override
@@ -28,7 +27,7 @@ class _ConsolePrizeState extends State<ConsolePrize> {
     return DefaultTabController(
       length: _tabsName.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "悬赏帖"),
+        appBar: CusAppBar(text: "闪断帖"),
         body: _body(),
         backgroundColor: primary,
       ),
@@ -56,8 +55,8 @@ class _ConsolePrizeState extends State<ConsolePrize> {
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              PostDataPage(),
-              ConsoleIngPage(),
+              PostDataPage(is_vie: true),
+              MasterIngMain(is_vie: true),
             ],
           ),
         )),

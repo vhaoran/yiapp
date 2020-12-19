@@ -10,6 +10,7 @@ import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
+import 'package:yiapp/ui/question/post_prize_reply.dart';
 import 'package:yiapp/ui/question/post_vie_reply.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -49,6 +50,7 @@ class _PostContentState extends State<PostContent> {
 
   @override
   void initState() {
+    Log.info("当前 post 格式：${widget.post.toJson()}");
     _p = widget.post;
     _future = _fetch();
     super.initState();
@@ -156,6 +158,8 @@ class _PostContentState extends State<PostContent> {
             style: TextStyle(color: t_primary, fontSize: S.sp(16)),
           ),
         ),
+        if (_replyNum == 0)
+          PostPrizeReply(data: _data, onSuccess: _refresh),
         if (_replyNum != 0) // 闪断帖评论区域
           PostVieReply(data: _data, onSuccess: _refresh),
       ],

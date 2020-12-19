@@ -4,6 +4,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -23,7 +24,7 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 class PosterHisPage extends StatefulWidget {
   final bool is_vie;
 
-  PosterHisPage({this.is_vie, Key key}) : super(key: key);
+  PosterHisPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
   _PosterHisPageState createState() => _PosterHisPageState();
@@ -50,7 +51,7 @@ class _PosterHisPageState extends State<PosterHisPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_ok},
+      "where": {"stat": bbs_ok, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
@@ -81,6 +82,7 @@ class _PosterHisPageState extends State<PosterHisPage>
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BBSVie).toList();
       Log.info("总的闪断帖已打赏历史个数：$_rowsCount");
+      Log.info("第一个已打赏帖子详情：${l.first.toJson()}");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);

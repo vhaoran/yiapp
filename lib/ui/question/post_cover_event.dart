@@ -9,7 +9,6 @@ import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/question/post_content.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -45,17 +44,10 @@ class _PostCoverEventState extends State<PostCoverEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: S.h(5)),
-      child: _row(),
-    );
-  }
-
-  Widget _row() {
     return Row(
       children: <Widget>[
         Text(
-          "${TimeUtil.parseYMD(_p.data.create_date)}", // 发帖时间
+          _p.data.create_date, // 发帖时间
           style: TextStyle(color: t_gray, fontSize: S.sp(15)),
         ),
         Spacer(),
@@ -85,8 +77,9 @@ class _PostCoverEventState extends State<PostCoverEvent> {
           _eventBtn(
             text: "支付",
             onPressed: () {
-              var payData = PayData(
-                  amt: _p.data.amt, b_type: b_bbs_prize, id: _p.data.id);
+              String b_type = _p.is_vie ? b_bbs_vie : b_bbs_prize;
+              var payData =
+                  PayData(amt: _p.data.amt, b_type: b_type, id: _p.data.id);
               BalancePay(context, data: payData);
             },
           ),
@@ -110,11 +103,11 @@ class _PostCoverEventState extends State<PostCoverEvent> {
     return Row(
       children: <Widget>[
         SizedBox(width: S.w(5)),
-        // 帖子已付款
-        if (_p.data.stat == bbs_paid)
+        // 不是处理中的，且帖子状态为已付款
+        if (!_p.is_ing && _p.data.stat == bbs_paid)
           _eventBtn(text: "抢单", onPressed: _doAim),
-        // 已抢帖子
-        if (_p.data.stat == bbs_aim)
+        // 闪断帖已抢帖子
+        if (_p.is_ing)
           _eventBtn(text: "回复", onPressed: _comJump)
       ],
     );
@@ -133,10 +126,13 @@ class _PostCoverEventState extends State<PostCoverEvent> {
         if (widget.onChanged != null) widget.onChanged();
       }
     } catch (e) {
-      if (_p.is_vie && e.toString() == "操作错误已存在，不需要再次添加") {
-        CusToast.toast(context, text: "你已经抢过了");
-      }
       Log.error("大师抢闪断帖出现异常：$e");
+      if (e.toString() == "操作错误已存在，不需要再次添加") {
+        CusToast.toast(context, text: "你已经抢过了");
+        return;
+      }
+      // 抢单时发生其它错误，先刷新一下界面
+      if (widget.onChanged != null) widget.onChanged();
     }
   }
 
