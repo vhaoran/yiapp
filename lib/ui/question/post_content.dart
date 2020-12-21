@@ -5,8 +5,10 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/master/master_console/master_prize_content.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
@@ -46,7 +48,7 @@ class _PostContentState extends State<PostContent> {
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
   List<BBSReply> _l = []; // 帖子评论列表
-  BBSReply _selectReply; // 用户当前点击的哪个大师的评论
+  BBSPrizeReply _selectReply; // 用户当前点击的哪个大师的评论
   Post _p;
 
   @override
@@ -75,7 +77,7 @@ class _PostContentState extends State<PostContent> {
         Log.info("当前$_whatPos的详情：${_data.toJson()}");
         // 如果是闪断帖
         if (_l.isEmpty && _p.is_vie) {
-          _replyNum = _data.reply.length;
+          _replyNum = _data.data.length;
           Log.info("当前$_whatPos评论总条数：$_replyNum");
           _fetchVieReply();
         }
@@ -93,7 +95,7 @@ class _PostContentState extends State<PostContent> {
       return;
     }
     _pageNo++;
-    _l = _data.reply.take(_pageNo * count).toList();
+    _l = _data.data.take(_pageNo * count).toList();
     Log.info("当前闪断帖已加载评论条数：${_l.length}");
     setState(() {});
   }
@@ -121,7 +123,7 @@ class _PostContentState extends State<PostContent> {
             footer: CusFooter(),
             controller: _easyCtrl,
             child: _lv(),
-            onLoad: _onLoad,
+            onLoad: _onVieLoad,
             onRefresh: () async => await _refresh(),
           ),
         ),
@@ -137,19 +139,28 @@ class _PostContentState extends State<PostContent> {
   }
 
   /// 闪断帖的话，模拟分页加载评论数据
-  Future<void> _onLoad() async {
+  Future<void> _onVieLoad() async {
     if (!_p.is_vie || _loadAll) return;
     await Future.delayed(Duration(milliseconds: 100));
     _fetchVieReply();
   }
 
   Widget _lv() {
+    List l = _p.is_vie ? _data.reply : _data.master_reply;
     return ListView(
       controller: _scrollCtrl,
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         PostHeader(data: _data), // 帖子头部信息
         Divider(height: 0, thickness: 0.2, color: t_gray),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
+          alignment: Alignment.center,
+          child: Text(
+            l.isEmpty ? "暂无评论" : "评论区",
+            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+          ),
+        ),
         if (!_p.is_vie) // 悬赏帖评论区
           PostPrizeReply(
             data: _data,
@@ -200,14 +211,26 @@ class _PostContentState extends State<PostContent> {
       text: "问题详情",
       actions: <Widget>[
         if (u != null)
-          // 发帖人是自己，且订单已支付，显示投诉功能
+          // 发帖人是自己，且订单已完成，显示投诉功能
           if (u.stat == bbs_ok && u.uid == ApiBase.uid)
             FlatButton(
               child: Text("投诉", style: style),
               onPressed: () {
                 CusRoute.push(context, RefundOrderAdd(data: u, b_type: bType));
               },
-            )
+            ),
+        // 大师查看正在处理中的悬赏帖时，显示详情按钮
+        if (!_p.is_vie)
+          if (CusRole.is_master && _p.is_ing && _data.last_reply != null)
+            FlatButton(
+              child: Text("详情", style: style),
+              onPressed: () {
+                CusRoute.push(
+                  context,
+                  MasterPrizeContent(post: _p, id: widget.id),
+                );
+              },
+            ),
       ],
     );
   }

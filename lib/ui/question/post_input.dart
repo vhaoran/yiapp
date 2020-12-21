@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/bbs/bbs_reply.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -16,7 +17,7 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostInput extends StatefulWidget {
   final Post post;
-  final BBSReply reply;
+  final BBSPrizeReply reply;
   final VoidCallback onSend;
 
   PostInput({this.post, this.reply, this.onSend, Key key}) : super(key: key);
@@ -88,9 +89,11 @@ class _PostInputState extends State<PostInput> {
     );
   }
 
+  /// 根据不同的身份，输入框显示不同的默认内容
   String _hintTip(List l) {
     if (l.isEmpty) return "暂无评论，快抢沙发吧";
-    if (widget.reply != null) return "回复：${widget.reply.nick}";
+    if (CusRole.is_master) return "回复帖主";
+    if (widget.reply != null) return "回复：${widget.reply.master_nick}";
     return "点就大师评论进行回复";
   }
 
@@ -100,11 +103,9 @@ class _PostInputState extends State<PostInput> {
       CusToast.toast(context, text: "请输入回复内容");
       return;
     }
-    return;
     var m = {
       "id": widget.post.data.id,
-      "master_id": widget.reply.uid,
-      "amt": 1, // 打赏金额，先为1
+      "to_master": widget.reply.master_id,
       "text": [_replyCtrl.text.trim()],
     };
     try {

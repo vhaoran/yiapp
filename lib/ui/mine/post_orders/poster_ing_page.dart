@@ -110,8 +110,8 @@ class _PosterIngPageState extends State<PosterIngPage>
 
   Future<void> _refresh() async {
     _l.clear();
-    setState(() {});
     await _fetch();
+    setState(() {});
   }
 
   @override

@@ -8,7 +8,6 @@ import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';

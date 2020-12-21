@@ -4,11 +4,13 @@ import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -21,15 +23,20 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // usage ：悬赏帖回帖的内容
 // ------------------------------------------------------
 
-typedef FnBBSReply = Function(BBSReply reply);
+// 用于返回用户选择的哪位大师
+typedef FnBBSReply = Function(BBSPrizeReply reply);
 
 class PostPrizeReply extends StatefulWidget {
   final BBSPrize data;
   final FnBBSReply fnBBSReply;
   final VoidCallback onSuccess;
 
-  PostPrizeReply({this.data, this.fnBBSReply, this.onSuccess, Key key})
-      : super(key: key);
+  PostPrizeReply({
+    this.data,
+    this.fnBBSReply,
+    this.onSuccess,
+    Key key,
+  }) : super(key: key);
 
   @override
   _PostPrizeReplyState createState() => _PostPrizeReplyState();
@@ -40,25 +47,31 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          alignment: Alignment.center,
-          child: Text(
-            widget.data.master_reply.isEmpty ? "暂无评论" : "评论区",
-            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
-          ),
-        ),
-        if (widget.data.master_reply.isNotEmpty)
-          ...List.generate(
-            widget.data.master_reply.length,
-            (i) => _tmpItem(widget.data.master_reply[i], i + 1),
-          ),
+        // 至少有一个大师评论时
+        if (widget.data.master_reply.isNotEmpty) ...[
+          // 是大师，只看自己和帖主的相互评论内容
+          if (CusRole.is_master)
+            _selfMasterComment(),
+          if (!CusRole.is_master)
+            ...List.generate(
+              widget.data.master_reply.length,
+              (i) => _commentItem(widget.data.master_reply[i], i + 1),
+            )
+        ],
       ],
     );
   }
 
+  /// 如果是大师，则看到的处理中的悬赏帖评论是只有他自己和帖主的回复
+  Widget _selfMasterComment() {
+    BBSPrizeReply reply =
+        widget.data.master_reply.singleWhere((e) => e.master_id == ApiBase.uid);
+    int level = widget.data.master_reply.indexOf(reply);
+    return _commentItem(reply, level + 1);
+  }
+
   /// 单条评论的内容
-  Widget _tmpItem(BBSPrizeReply rep, int level) {
+  Widget _commentItem(BBSPrizeReply rep, int level) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
       decoration: BoxDecoration(
@@ -68,29 +81,28 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
       margin: EdgeInsets.only(bottom: S.h(10)), // 评论间隔
       child: Column(
         children: <Widget>[
-          /// 大师基本信息、楼层数
-          _masterInfo(rep, level),
+          _masterInfo(rep, level), // 大师头像、昵称、评论时间、所处楼层数
           SizedBox(height: S.h(5)),
           ...List.generate(
             rep.reply.length,
-            (index) => _commentDetail(rep.reply[index]),
+            (index) => _commentDetail(rep.reply[index], rep),
           ),
         ],
       ),
     );
   }
 
-  /// 相互评论的详情
-  Widget _commentDetail(BBSReply r) {
-    var blue = TextStyle(color: Colors.lightBlue, fontSize: S.sp(15));
-    var gray = TextStyle(color: t_gray, fontSize: S.sp(15));
+  /// 相互评论的详情，这里all中的master_nick和r中nick有时不一致，以all为主
+  Widget _commentDetail(BBSReply r, BBSPrizeReply all) {
+    TextStyle blue = TextStyle(color: Colors.lightBlue, fontSize: S.sp(15));
+    TextStyle gray = TextStyle(color: t_gray, fontSize: S.sp(15));
     return InkWell(
       onTap: () {
-        Log.info("点击评论的详情：${r.toJson()}");
-        if (r.is_master && widget.fnBBSReply != null) widget.fnBBSReply(r);
+        Log.info("当前评论的详情：${r.toJson()}");
+        if (r.is_master && widget.fnBBSReply != null) widget.fnBBSReply(all);
       },
       child: Container(
-        color: Colors.black12,
+        color: Colors.black12, // 单条评论背景色
         padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
         margin: EdgeInsets.only(top: S.h(4)),
         child: Column(
@@ -100,13 +112,13 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
               children: <Widget>[
                 // 大师给帖主的回复
                 if (r.is_master) ...[
-                  Text("${r.nick}", style: blue),
+                  Text("${all.master_nick}", style: blue), // 大师昵称
                   Text("►", style: gray),
-                  Text("${widget.data.nick}", style: blue),
+                  Text("${widget.data.nick}", style: blue), // 帖主昵称
                 ],
                 // 帖主的回复
                 if (!r.is_master)
-                  Text("${r.nick}", style: blue),
+                  Text("${r.nick}", style: blue), // 帖主昵称
                 Text(
                   "（帖主）",
                   style: TextStyle(color: t_gray, fontSize: S.sp(13)),
@@ -126,6 +138,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
     );
   }
 
+  /// 大师头像、昵称、评论时间、所处楼层数
   Widget _masterInfo(BBSPrizeReply e, int level) {
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
     return Row(
