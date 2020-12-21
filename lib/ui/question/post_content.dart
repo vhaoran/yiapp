@@ -19,7 +19,6 @@ import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
 
@@ -42,12 +41,8 @@ class PostContent extends StatefulWidget {
 class _PostContentState extends State<PostContent> {
   var _data; // 单条帖子数据
   var _future;
-  int _pageNo = 0;
-  int _replyNum = 0; // 回复评论的条数
-  bool _loadAll = false; // 是否加载完毕
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
-  List<BBSReply> _l = []; // 帖子评论列表
   BBSPrizeReply _selectReply; // 用户当前点击的哪个大师的评论
   Post _p;
 
@@ -75,29 +70,11 @@ class _PostContentState extends State<PostContent> {
       if (data != null) {
         _data = data;
         Log.info("当前$_whatPos的详情：${_data.toJson()}");
-        // 如果是闪断帖
-        if (_l.isEmpty && _p.is_vie) {
-          _replyNum = _data.data.length;
-          Log.info("当前$_whatPos评论总条数：$_replyNum");
-          _fetchVieReply();
-        }
+
       }
     } catch (e) {
       Log.error("查询单条$_whatPos出现异常：$e");
     }
-  }
-
-  /// 如果是闪断帖，则模拟分页加载评论列表
-  void _fetchVieReply() async {
-    final int count = 20; // 默认每次加载20条
-    if (_pageNo * count > _replyNum) {
-      setState(() => _loadAll = true);
-      return;
-    }
-    _pageNo++;
-    _l = _data.data.take(_pageNo * count).toList();
-    Log.info("当前闪断帖已加载评论条数：${_l.length}");
-    setState(() {});
   }
 
   @override
@@ -123,7 +100,6 @@ class _PostContentState extends State<PostContent> {
             footer: CusFooter(),
             controller: _easyCtrl,
             child: _lv(),
-            onLoad: _onVieLoad,
             onRefresh: () async => await _refresh(),
           ),
         ),
@@ -138,12 +114,6 @@ class _PostContentState extends State<PostContent> {
     );
   }
 
-  /// 闪断帖的话，模拟分页加载评论数据
-  Future<void> _onVieLoad() async {
-    if (!_p.is_vie || _loadAll) return;
-    await Future.delayed(Duration(milliseconds: 100));
-    _fetchVieReply();
-  }
 
   Widget _lv() {
     List l = _p.is_vie ? _data.reply : _data.master_reply;
@@ -196,9 +166,6 @@ class _PostContentState extends State<PostContent> {
   }
 
   Future<void> _refresh() async {
-    _l.clear();
-    _pageNo = _replyNum = 0;
-    _loadAll = false;
     await _fetch();
     setState(() {});
   }
