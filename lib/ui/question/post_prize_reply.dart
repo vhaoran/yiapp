@@ -29,12 +29,12 @@ typedef FnBBSReply = Function(BBSPrizeReply reply);
 class PostPrizeReply extends StatefulWidget {
   final BBSPrize data;
   final FnBBSReply fnBBSReply;
-  final VoidCallback onSuccess;
+  final VoidCallback onReward; // 用户打赏大师后的回调
 
   PostPrizeReply({
     this.data,
     this.fnBBSReply,
-    this.onSuccess,
+    this.onReward,
     Key key,
   }) : super(key: key);
 
@@ -43,21 +43,21 @@ class PostPrizeReply extends StatefulWidget {
 }
 
 class _PostPrizeReplyState extends State<PostPrizeReply> {
+  final int max = 4; // 最多显示多少条评论
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        // 至少有一个大师评论时
-        if (widget.data.master_reply.isNotEmpty) ...[
-          // 是大师，只看自己和帖主的相互评论内容
-          if (CusRole.is_master)
-            _selfMasterComment(),
-          if (!CusRole.is_master)
-            ...List.generate(
-              widget.data.master_reply.length,
-              (i) => _commentItem(widget.data.master_reply[i], i + 1),
-            )
-        ],
+        // 是大师，只看自己和帖主的相互评论内容
+        if (CusRole.is_master)
+          _selfMasterComment(),
+        // 用户看到的是自己和所有大师的评论记录
+        if (!CusRole.is_master)
+          ...List.generate(
+            widget.data.master_reply.length,
+            (i) => _commentItem(widget.data.master_reply[i], i + 1),
+          )
       ],
     );
   }
@@ -83,10 +83,23 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
         children: <Widget>[
           _masterInfo(rep, level), // 大师头像、昵称、评论时间、所处楼层数
           SizedBox(height: S.h(5)),
-          ...List.generate(
-            rep.reply.length,
-            (index) => _commentDetail(rep.reply[index], rep),
-          ),
+          // 评论长度不大于4时，显示全部评论
+          if (rep.reply.length <= max)
+            ...List.generate(
+              rep.reply.length,
+              (index) => _commentDetail(rep.reply[index], rep),
+            ),
+          // 评论长度大于4时，显示查看更多评论按钮
+          if (rep.reply.length > max) ...[
+            ...List.generate(
+              4,
+              (index) => _commentDetail(rep.reply[index], rep),
+            ),
+            Text(
+              "还有${rep.reply.length - max}条回复...",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ],
         ],
       ),
     );
@@ -104,7 +117,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
       child: Container(
         color: Colors.black12, // 单条评论背景色
         padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
-        margin: EdgeInsets.only(top: S.h(4)),
+        margin: EdgeInsets.symmetric(vertical: S.h(4)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -184,7 +197,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
             Log.info("给大师 ${reply.uid} 打赏的结果:$ok");
             CusToast.toast(context, text: "打赏成功");
             CusRoute.pushReplacement(context, HomePage());
-            if (widget.onSuccess != null) widget.onSuccess();
+            if (widget.onReward != null) widget.onReward();
             LeftScrollGlobalListener.instance
                 ?.targetStatus(
                   LeftScrollCloseTag("vie_reply"),

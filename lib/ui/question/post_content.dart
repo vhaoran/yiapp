@@ -56,6 +56,9 @@ class _PostContentState extends State<PostContent> {
 
   /// 获取单条帖子详情
   _fetch() async {
+    String type = _p.is_vie ? '闪断帖' : '悬赏帖';
+    String his = _p.is_his ? '历史' : '';
+    String tip = type + his;
     var data;
     try {
       if (_p.is_his) {
@@ -69,11 +72,11 @@ class _PostContentState extends State<PostContent> {
       }
       if (data != null) {
         _data = data;
-        Log.info("当前$_whatPos的详情：${_data.toJson()}");
-
+        setState(() {});
+        Log.info("当前$tip的详情：${_data.toJson()}");
       }
     } catch (e) {
-      Log.error("查询单条$_whatPos出现异常：$e");
+      Log.error("查询单条$tip出现异常：$e");
     }
   }
 
@@ -92,6 +95,14 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _scaffold() {
+    // 帖子不存在
+    var noData = Center(
+      child: Text(
+        "帖子已被删除",
+        style: TextStyle(color: t_yi, fontSize: S.sp(16)),
+      ),
+    );
+    // 帖子存在
     var child = Column(
       children: <Widget>[
         Expanded(
@@ -100,20 +111,19 @@ class _PostContentState extends State<PostContent> {
             footer: CusFooter(),
             controller: _easyCtrl,
             child: _lv(),
-            onRefresh: () async => await _refresh(),
+            onRefresh: () async => await _fetch(),
           ),
         ),
-        if (_p.is_ing) _postInput(),
+        if (_p.is_ing) // 只有状态为处理中的帖子，才会显示输入框
+          _postInput(),
       ],
     );
-    // 有帖子数据时
     return Scaffold(
       appBar: _appBar(),
-      body: _data == null ? _noData() : child,
+      body: _data == null ? noData : child,
       backgroundColor: primary,
     );
   }
-
 
   Widget _lv() {
     List l = _p.is_vie ? _data.reply : _data.master_reply;
@@ -131,43 +141,34 @@ class _PostContentState extends State<PostContent> {
             style: TextStyle(color: t_primary, fontSize: S.sp(16)),
           ),
         ),
-        if (!_p.is_vie) // 悬赏帖评论区
-          PostPrizeReply(
-            data: _data,
-            fnBBSReply: (val) => setState(() => _selectReply = val),
-            onSuccess: _refresh,
-          ),
-        if (_p.is_vie) // 闪断帖评论区
-          PostVieReply(data: _data, onSuccess: _refresh),
+        // 至少有一个大师给了评论
+        if (l.isNotEmpty) ...[
+          if (!_p.is_vie) // 悬赏帖评论区
+            PostPrizeReply(
+              data: _data,
+              fnBBSReply: (val) => setState(() => _selectReply = val),
+              onReward: _fetch,
+            ),
+          if (_p.is_vie) // 闪断帖评论区
+            PostVieReply(data: _data, onSuccess: _fetch),
+        ],
       ],
     );
   }
 
   /// 回帖输入框
   Widget _postInput() {
-    // 查看历史帖子时不需要显示回帖输入框
-    if (!_p.is_his) {
-      // 大师和发帖人可以回复
-      if (CusRole.is_master || _data.uid == ApiBase.uid) {
-        return PostInput(
-          post: Post(data: _data, is_vie: widget.post.is_vie),
-          reply: _selectReply,
-          onSend: () async {
-            _refresh();
-            Timer(
-              Duration(milliseconds: 500),
-              () => _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent),
-            );
-          },
+    return PostInput(
+      post: Post(data: _data, is_vie: widget.post.is_vie),
+      reply: _selectReply,
+      onSend: () async {
+        await _fetch();
+        Timer(
+          Duration(milliseconds: 500),
+          () => _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent),
         );
-      }
-    }
-    return SizedBox.shrink();
-  }
-
-  Future<void> _refresh() async {
-    await _fetch();
-    setState(() {});
+      },
+    );
   }
 
   Widget _appBar() {
@@ -202,29 +203,10 @@ class _PostContentState extends State<PostContent> {
     );
   }
 
-  /// 没有帖子数据时的显示
-  Widget _noData() {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        "帖子已被删除",
-        style: TextStyle(color: t_yi, fontSize: S.sp(16)),
-      ),
-      padding: EdgeInsets.only(bottom: (S.screenH() / 4)),
-    );
-  }
-
   @override
   void dispose() {
     _scrollCtrl.dispose();
     _easyCtrl.dispose();
     super.dispose();
-  }
-
-  /// 打印帖子类型
-  String get _whatPos {
-    String type = _p.is_vie ? '闪断帖' : '悬赏帖';
-    String his = _p.is_his ? '历史' : '';
-    return "$type$his";
   }
 }
