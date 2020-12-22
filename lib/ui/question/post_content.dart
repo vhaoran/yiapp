@@ -5,6 +5,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -15,6 +16,8 @@ import 'package:yiapp/ui/question/post_input.dart';
 import 'package:yiapp/ui/question/post_prize_reply.dart';
 import 'package:yiapp/ui/question/post_vie_reply.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -43,8 +46,9 @@ class _PostContentState extends State<PostContent> {
   var _future;
   var _scrollCtrl = ScrollController();
   var _easyCtrl = EasyRefreshController();
-  BBSPrizeReply _selectReply; // 用户当前点击的哪个大师的评论
+  BBSPrizeReply _userSelectReply; // 用户当前点击的哪个大师的评论
   Post _p;
+  bool _overBtn = false; // 是否隐藏结单按钮，赏金发完显示结单按钮，隐藏打赏大师按钮
 
   @override
   void initState() {
@@ -72,6 +76,12 @@ class _PostContentState extends State<PostContent> {
       }
       if (data != null) {
         _data = data;
+        if (!_p.is_vie) {
+          BBSPrize res = _data as BBSPrize;
+          num money = 0;
+          res.master_reply.forEach((e) => {money += e.amt});
+          _overBtn = res.amt == money ? true : false;
+        }
         setState(() {});
         Log.info("当前$tip的详情：${_data.toJson()}");
       }
@@ -119,14 +129,19 @@ class _PostContentState extends State<PostContent> {
       ],
     );
     return Scaffold(
-      appBar: _appBar(),
+      appBar: CusAppBar(
+        text: "问题详情",
+        actions: <Widget>[
+          if (_data != null) _appBarAction(),
+        ],
+      ),
       body: _data == null ? noData : child,
       backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    List l = _p.is_vie ? _data.reply : _data.master_reply;
+    List l = _p.is_vie ? _data.userSelectReply : _data.master_reply;
     return ListView(
       controller: _scrollCtrl,
       physics: BouncingScrollPhysics(),
@@ -146,7 +161,9 @@ class _PostContentState extends State<PostContent> {
           if (!_p.is_vie) // 悬赏帖评论区
             PostPrizeReply(
               data: _data,
-              fnBBSReply: (val) => setState(() => _selectReply = val),
+              post: _p,
+              overBtn: _overBtn,
+              fnBBSReply: (val) => setState(() => _userSelectReply = val),
               onReward: _fetch,
             ),
           if (_p.is_vie) // 闪断帖评论区
@@ -160,7 +177,7 @@ class _PostContentState extends State<PostContent> {
   Widget _postInput() {
     return PostInput(
       post: Post(data: _data, is_vie: widget.post.is_vie),
-      reply: _selectReply,
+      userSelectReply: _userSelectReply,
       onSend: () async {
         await _fetch();
         Timer(
@@ -171,36 +188,52 @@ class _PostContentState extends State<PostContent> {
     );
   }
 
-  Widget _appBar() {
-    var u = _data;
+  Widget _appBarAction() {
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
     String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
-    return CusAppBar(
-      text: "问题详情",
-      actions: <Widget>[
-        if (u != null)
-          // 发帖人是自己，且订单已完成，显示投诉功能
-          if (u.stat == bbs_ok && u.uid == ApiBase.uid)
-            FlatButton(
-              child: Text("投诉", style: style),
-              onPressed: () {
-                CusRoute.push(context, RefundOrderAdd(data: u, b_type: bType));
-              },
-            ),
-        // 大师查看正在处理中的悬赏帖时，显示详情按钮
-        if (!_p.is_vie)
-          if (CusRole.is_master && _p.is_ing && _data.last_reply != null)
-            FlatButton(
-              child: Text("详情", style: style),
-              onPressed: () {
-                CusRoute.push(
-                  context,
-                  MasterPrizeContent(post: _p, id: widget.id),
-                );
-              },
-            ),
-      ],
-    );
+    // 发帖人是本人,且已打赏
+    if (_data.uid == ApiBase.uid && _data.stat == bbs_ok) {
+      // 订单已完成，显示投诉功能
+      return FlatButton(
+        child: Text("投诉", style: style),
+        onPressed: () {
+          CusRoute.push(context, RefundOrderAdd(data: _data, b_type: bType));
+        },
+      );
+    }
+    // 悬赏帖要显示的
+    if (!_p.is_vie) {
+      // 大师处理中的，且帖子已经有评论，显示查看详情按钮
+      if (CusRole.is_master && _p.is_ing && _data.last_reply != null)
+        return FlatButton(
+          child: Text("详情", style: style),
+          onPressed: () {
+            CusRoute.push(
+              context,
+              MasterPrizeContent(post: _p, id: widget.id),
+            );
+          },
+        );
+      // 本人帖子，且悬赏金已经发完，显示结单按钮
+      if (_data.uid == ApiBase.uid && _overBtn)
+        return FlatButton(
+          child: Text("结单", style: style),
+          onPressed: () {
+            CusDialog.normal(context, title: "确定结束该订单吗?", onApproval: () async {
+              try {
+                bool ok = await ApiBBSPrize.bbsPrizeDue((_data as BBSPrize).id);
+                if (ok) {
+                  CusToast.toast(context, text: "该帖已结单");
+                  Navigator.of(context).pop("");
+                }
+              } catch (e) {
+                Log.error("用户悬赏帖结单出现异常：$e");
+              }
+            });
+          },
+        );
+      return SizedBox.shrink();
+    }
   }
 
   @override

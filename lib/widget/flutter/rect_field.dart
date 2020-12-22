@@ -57,7 +57,7 @@ class CusRectField extends StatefulWidget {
     this.hideBorder: false,
     this.isClear: false,
     this.pdHor: 10,
-    this.fontSize: 16,
+    this.fontSize: 15,
     this.borderRadius: 5,
     this.backgroundColor: fif_primary,
     this.prefixColor: t_yi,

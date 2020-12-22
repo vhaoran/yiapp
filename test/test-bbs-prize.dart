@@ -171,7 +171,7 @@ void main() {
       "comment_1": "aa"
     };
 
-    var r = await ApiBBSPrize.bbsPrizeDue(m);
+    var r = await ApiBBSPrize.bbsPrizeSetMasterReward(m);
 
     print("-----result--bbsPrizeCancel  -$r---------");
     //print("-----result---${r.toJson()}---------");
@@ -188,7 +188,7 @@ void main() {
 
     Map<String, dynamic> m = {
       "id": "5f59cf88506a5a960749eb77",
-      "text":["aaa","bbb","cc"],
+      "text": ["aaa", "bbb", "cc"],
     };
 
     var r = await ApiBBSPrize.bbsPrizeReply(m);

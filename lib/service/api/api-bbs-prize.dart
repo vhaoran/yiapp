@@ -71,9 +71,16 @@ class ApiBBSPrize {
   }
 
   //-----------w悬赏贴打赏,兑现分值v-------------------------------------
-  static Future<bool> bbsPrizeDue(Map<String, dynamic> m) async {
-    var url = pre + "BBSPrizeDue";
+  static Future<bool> bbsPrizeSetMasterReward(Map<String, dynamic> m) async {
+    var url = pre + "BBSPrizeSetMasterReward";
     var data = m;
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  //-----------悬赏帖结单---------------------------------
+  static Future<bool> bbsPrizeDue(String id) async {
+    var url = pre + "BBSPrizeDue";
+    var data = {"id": id};
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 

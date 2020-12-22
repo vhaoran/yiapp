@@ -7,6 +7,7 @@ import 'package:yiapp/model/bbs/bbs_reply.dart';
 // ------------------------------------------------------
 
 class BBSPrizeReply {
+  int amt;
   String master_icon;
   int master_id;
   String master_nick;
@@ -14,6 +15,7 @@ class BBSPrizeReply {
   List<BBSReply> reply;
 
   BBSPrizeReply({
+    this.amt,
     this.master_icon,
     this.master_id,
     this.master_nick,
@@ -23,6 +25,7 @@ class BBSPrizeReply {
 
   factory BBSPrizeReply.fromJson(Map<String, dynamic> json) {
     return BBSPrizeReply(
+      amt: json['amt'],
       master_icon: json['master_icon'],
       master_id: json['master_id'],
       master_nick: json['master_nick'],
@@ -37,6 +40,7 @@ class BBSPrizeReply {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['amt'] = this.amt;
     data['master_icon'] = this.master_icon;
     data['master_id'] = this.master_id;
     data['master_nick'] = this.master_nick;

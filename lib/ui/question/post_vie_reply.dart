@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
@@ -49,7 +50,9 @@ class _PostVieReplyState extends State<PostVieReply> {
   Widget _commentItem(BBSReply e, int level) {
     Widget child;
     // 如果当前是大师的评论，且是发帖人，则可以看到打赏按钮
-    if (e.is_master && widget.data.uid == ApiBase.uid) {
+    if (e.is_master &&
+        widget.data.uid == ApiBase.uid &&
+        widget.data.stat == bbs_paid) {
       child = CupertinoLeftScroll(
         closeTag: LeftScrollCloseTag("vie_reply"),
         key: Key(e.create_date.toString()),

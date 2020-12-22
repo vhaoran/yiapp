@@ -5,6 +5,7 @@ import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
@@ -17,10 +18,11 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostInput extends StatefulWidget {
   final Post post;
-  final BBSPrizeReply reply;
+  final BBSPrizeReply userSelectReply; // 用户选择大师进行回复，大师不需要这个
   final VoidCallback onSend;
 
-  PostInput({this.post, this.reply, this.onSend, Key key}) : super(key: key);
+  PostInput({this.post, this.userSelectReply, this.onSend, Key key})
+      : super(key: key);
 
   @override
   _PostInputState createState() => _PostInputState();
@@ -59,7 +61,7 @@ class _PostInputState extends State<PostInput> {
   /// 回复内容输入框
   Widget _input() {
     List l = widget.post.is_vie
-        ? widget.post.data.reply
+        ? widget.post.data.userSelectReply
         : widget.post.data.master_reply;
     return LayoutBuilder(
       builder: (context, size) {
@@ -76,6 +78,7 @@ class _PostInputState extends State<PostInput> {
         final int lines = (tp.size.height / tp.preferredLineHeight).ceil();
         return TextField(
           controller: _replyCtrl,
+          autofocus: false,
           focusNode: _focusNode,
           style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
           maxLines: lines < 8 ? null : 8,
@@ -93,8 +96,9 @@ class _PostInputState extends State<PostInput> {
   String _hintTip(List l) {
     if (l.isEmpty) return "暂无评论，快抢沙发吧";
     if (CusRole.is_master) return "回复帖主";
-    if (widget.reply != null) return "回复：${widget.reply.master_nick}";
-    return "点就大师评论进行回复";
+    if (widget.userSelectReply != null)
+      return "回复：${widget.userSelectReply.master_nick}";
+    return "选择大师进行回复";
   }
 
   /// 回复悬赏帖或者闪断帖
@@ -105,9 +109,11 @@ class _PostInputState extends State<PostInput> {
     }
     var m = {
       "id": widget.post.data.id,
-      "to_master": widget.reply.master_id,
+      "to_master":
+          CusRole.is_master ? ApiBase.uid : widget.userSelectReply.master_id,
       "text": [_replyCtrl.text.trim()],
     };
+    Log.info("回帖时要提交的数据：$m");
     try {
       bool ok = widget.post.is_vie
           ? await ApiBBSVie.bbsVieReply(m)
