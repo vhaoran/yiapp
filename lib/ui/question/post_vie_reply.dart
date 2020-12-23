@@ -49,10 +49,10 @@ class _PostVieReplyState extends State<PostVieReply> {
   /// 单条评论的内容
   Widget _commentItem(BBSReply e, int level) {
     Widget child;
-    // 如果当前是大师的评论，且是发帖人，则可以看到打赏按钮
+    // 如果当前是大师的评论，订单状态为已抢单，则发帖人可以看到打赏按钮
     if (e.is_master &&
         widget.data.uid == ApiBase.uid &&
-        widget.data.stat == bbs_paid) {
+        widget.data.stat == bbs_aim) {
       child = CupertinoLeftScroll(
         closeTag: LeftScrollCloseTag("vie_reply"),
         key: Key(e.create_date.toString()),
@@ -79,18 +79,20 @@ class _PostVieReplyState extends State<PostVieReply> {
   }
 
   /// 单条评论的数据
-  Widget _item(BBSReply e, int level) {
+  Widget _item(BBSReply reply, int level) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // 评论人头像、昵称、评论时间、楼层数
-        _commentInfo(e, level),
+        _commentInfo(reply, level),
         // 评论内容
-        Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-          child: Text(
-            e.text.first,
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ...reply.text.map(
+          (m) => Padding(
+            padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
+            child: Text(
+              m,
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
           ),
         ),
       ],
@@ -142,7 +144,8 @@ class _PostVieReplyState extends State<PostVieReply> {
   void _doReward(BBSReply reply) {
     CusDialog.normal(
       context,
-      title: "确定给大师【${reply.nick}】打赏${widget.data.amt}$yuan_bao吗",
+      // title: "确定给大师【${reply.nick}】打赏${widget.data.amt}$yuan_bao吗",
+      title: "问题已解决，现在打赏?",
       onApproval: () async {
         var m = {
           "id": widget.data.id,

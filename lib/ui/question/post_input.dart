@@ -18,7 +18,8 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostInput extends StatefulWidget {
   final Post post;
-  final BBSPrizeReply userSelectReply; // 用户选择大师进行回复，大师不需要这个
+  // 用户选择大师进行回复，大师不需要这个
+  final BBSPrizeReply userSelectReply;
   final VoidCallback onSend;
 
   PostInput({this.post, this.userSelectReply, this.onSend, Key key})
@@ -96,8 +97,11 @@ class _PostInputState extends State<PostInput> {
   String _hintTip(List l) {
     if (l.isEmpty) return "暂无评论，快抢沙发吧";
     if (CusRole.is_master) return "回复帖主";
-    if (widget.userSelectReply != null)
+    // 如果是悬赏帖
+    if (!widget.post.is_vie && widget.userSelectReply != null) {
       return "回复：${widget.userSelectReply.master_nick}";
+    }
+    if (widget.post.is_vie) return "回复大师";
     return "选择大师进行回复";
   }
 
@@ -107,10 +111,18 @@ class _PostInputState extends State<PostInput> {
       CusToast.toast(context, text: "请输入回复内容");
       return;
     }
+    int master_id = 0;
+    // 如果是大师回复，不需要区分帖子类别，回复的是自己
+    if (CusRole.is_master)
+      master_id = ApiBase.uid;
+    // 如果是用户回复悬赏帖，则回复的是选择的大师
+    else if (!widget.post.is_vie)
+      master_id = widget.userSelectReply?.master_id;
+    // 如果是用户回复闪断帖，则回复的是当前帖子的 master_id
+    else if (widget.post.is_vie) master_id = widget.post.data.master_id;
     var m = {
       "id": widget.post.data.id,
-      "to_master":
-          CusRole.is_master ? ApiBase.uid : widget.userSelectReply.master_id,
+      "to_master": master_id,
       "text": [_replyCtrl.text.trim()],
     };
     Log.info("回帖时要提交的数据：$m");

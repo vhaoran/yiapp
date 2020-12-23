@@ -58,6 +58,7 @@ class LoginVerify {
     // 游客，指的是指除了其它角色之外的身份
     CusRole.is_guest =
         !CusRole.is_vip && !CusRole.is_master && !CusRole.is_broker_admin;
+    CusRole.isVie = false;
   }
 
   /// 如果是大师，获取大师基本资料

@@ -104,7 +104,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
   List<Widget> _lv() {
     return <Widget>[
       SizedBox(height: Adapt.px(30)),
-      _tip("项目名称"),
+      _tip("选择项目名称"),
       InkWell(
         onTap: () => FnDialog(context, l: c_service, groupValue: _cate_id,
             fnPair: (int sex, int select, String name) {

@@ -191,9 +191,8 @@ class _PostContentState extends State<PostContent> {
   Widget _appBarAction() {
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
     String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
-    // 发帖人是本人,且已打赏
+    // 发帖人是本人,且已打赏，显示投诉功能
     if (_data.uid == ApiBase.uid && _data.stat == bbs_ok) {
-      // 订单已完成，显示投诉功能
       return FlatButton(
         child: Text("投诉", style: style),
         onPressed: () {
@@ -221,9 +220,9 @@ class _PostContentState extends State<PostContent> {
           onPressed: () {
             CusDialog.normal(context, title: "确定结束该订单吗?", onApproval: () async {
               try {
-                bool ok = await ApiBBSPrize.bbsPrizeDue((_data as BBSPrize).id);
+                bool ok = await ApiBBSPrize.bbsPrizeDue(_data.id);
                 if (ok) {
-                  CusToast.toast(context, text: "该帖已结单");
+                  CusToast.toast(context, text: "结单成功");
                   Navigator.of(context).pop("");
                 }
               } catch (e) {

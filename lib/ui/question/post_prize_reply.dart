@@ -164,7 +164,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
             ],
           ),
           SizedBox(height: S.h(5)),
-          Text(r.text.first, style: gray), // 回复的内容
+          ...r.text.map((e) => Text(e, style: gray)), // 回复的内容
           SizedBox(height: S.h(5)),
           Container(
             alignment: Alignment.centerRight,
@@ -201,7 +201,8 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
               Row(
                 children: <Widget>[
                   Text(e.reply.first.create_date, style: gray), // 大师第一条评论的时间
-                  if (!widget.overBtn) ...[
+                  // 如果是发帖人，且有大师评论，则显示打赏按钮
+                  if (widget.data.uid == ApiBase.uid && !widget.overBtn) ...[
                     Spacer(),
                     SizedBox(
                       height: S.h(20),

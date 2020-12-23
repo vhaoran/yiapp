@@ -17,6 +17,7 @@ import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_console/master_console.dart';
+import 'package:yiapp/ui/master/master_his_main.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
@@ -130,6 +131,10 @@ class _MinePageState extends State<MinePage>
           NormalBox(
             title: "大师信息",
             onTap: () => CusRoute.push(context, MasterInfoPage()),
+          ),
+          NormalBox(
+            title: "大师已完成订单",
+            onTap: () => CusRoute.push(context, MasterHisMain()),
           ),
         ],
         // 游客身份看不到的内容

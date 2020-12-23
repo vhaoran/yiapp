@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -42,7 +43,7 @@ class _PosterIngPageState extends State<PosterIngPage>
   _fetch() async {
     try {
       var m = {
-        "stat": 1,
+        "stat": bbs_paid,
         "uid": ApiBase.uid,
         "sort": {"last_updated": -1}
       };
@@ -51,10 +52,11 @@ class _PosterIngPageState extends State<PosterIngPage>
           : await ApiBBSPrize.bbsPrizePage(m);
       if (pb != null) {
         _l = pb.data.map((e) => e).toList();
-        // 如果帖子的 last_reply 不为空，说明有大师回复了
+        // 如果帖子的 last_reply 不为空，说明有大师回复了，为处理中
         _l.retainWhere((e) => e.last_reply != null);
       }
       Log.info("用户处理中的${logVie(widget.is_vie)}个数：${_l.length}");
+      setState(() {});
     } catch (e) {
       Log.error("获取用户处理中的${logVie(widget.is_vie)}出现异常：$e");
     }
@@ -110,8 +112,8 @@ class _PosterIngPageState extends State<PosterIngPage>
 
   Future<void> _refresh() async {
     _l.clear();
-    await _fetch();
     setState(() {});
+    await _fetch();
   }
 
   @override
