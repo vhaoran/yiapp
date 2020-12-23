@@ -66,7 +66,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
   /// 发帖人可点击事件（取消、支付）
   Widget _posterView() {
     // 悬赏帖回复评论是 master_reply ,闪断帖回复评论是 reply
-    List l = _p.is_vie ? _p.data.userSelectReply : _p.data.master_reply;
+    List l = _p.is_vie ? _p.data.reply : _p.data.master_reply;
     // 因为闪断帖没有 bbs_aim 已抢单的状态，所以这里区分下
     bool rep = _p.is_vie ? _p.data.stat == bbs_aim : _p.data.stat == bbs_paid;
     return Row(

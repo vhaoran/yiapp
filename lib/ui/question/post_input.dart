@@ -61,7 +61,7 @@ class _PostInputState extends State<PostInput> {
   /// 回复内容输入框
   Widget _input() {
     List l = widget.post.is_vie
-        ? widget.post.data.userSelectReply
+        ? widget.post.data.reply
         : widget.post.data.master_reply;
     return LayoutBuilder(
       builder: (context, size) {

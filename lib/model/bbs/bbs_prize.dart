@@ -58,6 +58,7 @@ class BBSPrize {
     // TODO 根据不同的 content-type,来决定解析 content 为不同的数据结构
     var content = null;
     int i = json['content_type'] as int;
+    print(">>>iiiiii:$i");
     if (i == 0) {}
     if (i == 1) {}
     if (i == 2) {}
@@ -65,6 +66,7 @@ class BBSPrize {
     content = json["content"] != null
         ? PostContentRes.fromJson(json['content'])
         : null;
+    print(">>>content:$content");
     return BBSPrize(
       amt: json['amt'],
       brief: json['brief'],

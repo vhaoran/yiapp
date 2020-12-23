@@ -7,7 +7,7 @@ import 'package:yiapp/model/bbs/bbs_reply.dart';
 // ------------------------------------------------------
 
 class BBSPrizeReply {
-  int amt;
+  num amt;
   String master_icon;
   int master_id;
   String master_nick;

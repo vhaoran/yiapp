@@ -141,7 +141,7 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _lv() {
-    List l = _p.is_vie ? _data.userSelectReply : _data.master_reply;
+    List l = _p.is_vie ? _data.reply : _data.master_reply;
     return ListView(
       controller: _scrollCtrl,
       physics: BouncingScrollPhysics(),
@@ -232,8 +232,8 @@ class _PostContentState extends State<PostContent> {
             });
           },
         );
-      return SizedBox.shrink();
     }
+    return SizedBox.shrink();
   }
 
   @override
