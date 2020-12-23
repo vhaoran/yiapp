@@ -4,10 +4,11 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/service/api/api_bo.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/master/cus_number_data.dart';
 import 'package:yiapp/widget/master/master_base_info.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -15,17 +16,17 @@ import 'package:yiapp/model/pagebean.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/14 17:17
-// usage ：运营商下面的大师榜单
+// usage ：运营商所属的全部大师
 // ------------------------------------------------------
 
-class MasterList extends StatefulWidget {
-  MasterList({Key key}) : super(key: key);
+class MastersPage extends StatefulWidget {
+  MastersPage({Key key}) : super(key: key);
 
   @override
-  _MasterListState createState() => _MasterListState();
+  _MastersPageState createState() => _MastersPageState();
 }
 
-class _MasterListState extends State<MasterList>
+class _MastersPageState extends State<MastersPage>
     with AutomaticKeepAliveClientMixin {
   List<BrokerMasterRes> _l = []; // 大师榜单，目前只有获取所有大师的信息，没有排行榜
   int _pageNo = 0;
@@ -46,7 +47,7 @@ class _MasterListState extends State<MasterList>
     var m = {"page_no": _pageNo, "rows_per_page": _rowsPerPage};
     try {
       PageBean pb = await ApiBo.bMasterPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BrokerMasterRes).toList();
       Log.info("总的大师个数：$_rowsCount");
       l.forEach((src) {
@@ -55,10 +56,10 @@ class _MasterListState extends State<MasterList>
             orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      Log.info("当前已查询多少条数据：${_l.length}");
+      Log.info("当前已查询多少个大师：${_l.length}");
       setState(() {});
     } catch (e) {
-      Log.error("分页查询大师信息出现异常：$e");
+      Log.error("分页查询运营商所属大师信息出现异常：$e");
     }
   }
 
@@ -68,14 +69,12 @@ class _MasterListState extends State<MasterList>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: CusAppBar(text: "大师信息", showLeading: false),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
-          }
-          if (_l.isEmpty) {
-            return Center(child: CusText("暂无大师入驻", t_gray, 32));
           }
           return _lv();
         },
@@ -93,18 +92,28 @@ class _MasterListState extends State<MasterList>
         onLoad: () async => await _fetch(),
         onRefresh: () async => await _refresh(),
         child: ListView(
-          children: List.generate(_l.length, (i) {
-            BrokerMasterRes e = _l[i];
-            return Column(
-              children: <Widget>[
-                MasterCover(info: e),
-                CusNumData(
-                  titles: ["12345", "100%", "12888"],
-                  subtitles: ["服务人数", "好评率", "粉丝数"],
-                ), // 详情数据
-              ],
-            );
-          }),
+          children: <Widget>[
+            if (_l.isEmpty)
+              Center(
+                child: Text(
+                  "暂无大师",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                ),
+              ),
+            ..._l.map((e) => null),
+            ...List.generate(_l.length, (i) {
+              BrokerMasterRes e = _l[i];
+              return Column(
+                children: <Widget>[
+                  MasterCover(info: e),
+                  CusNumData(
+                    titles: ["12345", "100%", "12888"],
+                    subtitles: ["服务人数", "好评率", "粉丝数"],
+                  ), // 详情数据
+                ],
+              );
+            })
+          ],
         ),
       ),
     );

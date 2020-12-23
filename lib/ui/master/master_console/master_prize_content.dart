@@ -171,7 +171,8 @@ class _MasterPrizeContentState extends State<MasterPrizeContent> {
 
   /// 大师头像、昵称、评论时间、所处楼层数
   Widget _masterInfo(BBSPrizeReply e, int level) {
-    var style = TextStyle(color: t_gray, fontSize: S.sp(15));
+    TextStyle gray = TextStyle(color: t_gray, fontSize: S.sp(15));
+    TextStyle primary = TextStyle(color: t_primary, fontSize: S.sp(15));
     return Row(
       children: <Widget>[
         CusAvatar(url: e.master_icon ?? "", circle: true, size: 45),
@@ -181,16 +182,15 @@ class _MasterPrizeContentState extends State<MasterPrizeContent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    e.master_nick, // 大师昵称
-                    style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-                  ),
-                  Spacer(),
-                  Text("$level楼", style: style), // 大师所处楼层数
+                  Text(e.master_nick, style: primary), // 大师昵称
+                  if (e.amt != 0)
+                    Text("被打赏${e.amt}元宝", style: primary),
+                  Text("$level楼", style: gray), // 大师所处楼层数
                 ],
               ),
-              Text(e.reply.first.create_date, style: style) // 大师第一条评论的时间
+              Text(e.reply.first.create_date, style: gray) // 大师第一条评论的时间
             ],
           ),
         ),
