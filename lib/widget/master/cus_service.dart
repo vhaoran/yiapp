@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -18,7 +19,7 @@ import 'package:yiapp/model/dicts/master-cate.dart';
 typedef FnMasterCate = Function(MasterCate m);
 
 class CusService extends StatefulWidget {
-  final data; // MasterCate 或者 BrokerMasterCate
+  final data; // [MasterCate] 或者 [BrokerMasterCate]
   final bool isSelf;
   final FnMasterCate onRm; // 移除服务事件
   final FnMasterCate onChange; // 修改服务事件
@@ -120,7 +121,7 @@ class _CusServiceState extends State<CusService> {
             CusRaisedButton(
               child: Text("立即测算"),
               onPressed: () {
-//                Log.info("前往");
+                Log.info("前往选择大师订单页面");
               },
               borderRadius: 50,
             ),
