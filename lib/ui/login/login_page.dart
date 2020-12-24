@@ -73,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
           errorText: _mobileErr,
 //          onlyNumber: true,
 //          maxLength: 11,
+          maxLength: 20,
           autofocus: true,
         ),
         SizedBox(height: Adapt.px(50)),
