@@ -96,4 +96,18 @@ class LoginResult {
       user_info: u,
     );
   }
+
+  bool isVip() {
+    return !is_admin &&
+        !is_broker_admin &&
+        !is_master &&
+        (user_info != null && user_info.broker_id > 0);
+  }
+
+  bool isGuest() {
+    return !is_admin &&
+        !is_broker_admin &&
+        !is_master &&
+        (user_info != null && user_info.broker_id <= 0);
+  }
 }

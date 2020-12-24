@@ -122,68 +122,96 @@ class _MinePageState extends State<MinePage>
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         _avatarAndMore(), // 用户头像、昵称、背景墙
-        // 如果是大师
-        if (CusRole.is_master) ...[
-          NormalBox(
-            title: "大师控制台",
-            onTap: () => CusRoute.push(context, MasterConsole()),
-          ),
-          NormalBox(
-            title: "大师信息",
-            onTap: () =>
-                CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
-          ),
-          NormalBox(
-            title: "大师已完成订单",
-            onTap: () => CusRoute.push(context, MasterHisMain()),
-          ),
-        ],
-        // 游客身份看不到的内容
-        if (!CusRole.is_guest && !CusRole.is_master) ...[
-          NormalBox(
-            title: "帖子订单",
-            onTap: () => CusRoute.push(context, PosterConsole()),
-          ),
-          NormalBox(
-            title: "其它订单",
-            onTap: () => CusRoute.push(context, OtherOrdersMain()),
-          ),
-          NormalBox(
-            title: "我的商品",
-            onTap: () => CusRoute.push(context, UserProductInfo()),
-          ),
-          NormalBox(
-            title: "个人资金账号",
-            onTap: () => CusRoute.push(context, FundMain()),
-          ),
-        ],
-        if (!CusRole.is_guest)
-          NormalBox(
-            title: "账户与安全",
-            onTap: () => CusRoute.push(context, AccountSafePage()),
-          ),
-        // 大师、运营商、运营商管理员不能申请的
-        if (!CusRole.is_master && !CusRole.is_broker_admin) ...[
-          NormalBox(
-            title: "申请大师",
-            onTap: () => CusRoute.push(context, ApplyMasterPage()),
-          ),
-          NormalBox(
-            title: "申请运营商",
-            onTap: () => CusRoute.push(context, ApplyBrokerPage()),
-          ),
-        ],
-        if (CusRole.is_guest)
-          NormalBox(
-            title: "绑定运营商",
-            onTap: () => CusRoute.push(context, BindSerCodePage()),
-          ),
+
+        ..._choice(),
+
         NormalBox(
           title: "demo 测试",
           onTap: () => CusRoute.push(context, CusDemoMain()),
         ),
       ],
     );
+  }
+
+  List<Widget> _choice() {
+    if (ApiBase.loginInfo.is_master) {
+      return [
+        NormalBox(
+          title: "大师控制台",
+          onTap: () => CusRoute.push(context, MasterConsole()),
+        ),
+        NormalBox(
+          title: "大师信息",
+          onTap: () =>
+              CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
+        ),
+        NormalBox(
+          title: "大师已完成订单",
+          onTap: () => CusRoute.push(context, MasterHisMain()),
+        ),
+        NormalBox(
+          title: "账户与安全",
+          onTap: () => CusRoute.push(context, AccountSafePage()),
+        )
+      ];
+    }
+
+    //------------------------------------------------
+    if (ApiBase.loginInfo.is_broker_admin) {
+      return [
+        NormalBox(
+          title: "账户与安全",
+          onTap: () => CusRoute.push(context, AccountSafePage()),
+        )
+      ];
+    }
+
+    //----common user--------------------------------------------
+    if (ApiBase.loginInfo.isVip()) {
+      return [
+        NormalBox(
+          title: "帖子订单",
+          onTap: () => CusRoute.push(context, PosterConsole()),
+        ),
+        NormalBox(
+          title: "其它订单",
+          onTap: () => CusRoute.push(context, OtherOrdersMain()),
+        ),
+        NormalBox(
+          title: "我的商品",
+          onTap: () => CusRoute.push(context, UserProductInfo()),
+        ),
+        NormalBox(
+            title: "个人资金账号", onTap: () => CusRoute.push(context, FundMain())),
+        NormalBox(
+          title: "账户与安全",
+          onTap: () => CusRoute.push(context, AccountSafePage()),
+        ),
+        NormalBox(
+          title: "申请大师",
+          onTap: () => CusRoute.push(context, ApplyMasterPage()),
+        ),
+        NormalBox(
+          title: "申请运营商",
+          onTap: () => CusRoute.push(context, ApplyBrokerPage()),
+        ),
+      ];
+    }
+    //-----------guest-------------------------------------
+    if (ApiBase.loginInfo.isGuest()) {
+      return [
+        NormalBox(
+          title: "绑定运营商",
+          onTap: () => CusRoute.push(context, BindSerCodePage()),
+        ),
+      ];
+    }
+
+    //------------------------------------------------
+    if (ApiBase.loginInfo.is_admin) {
+      return [];
+    }
+    return [];
   }
 
   /// 用户头像、昵称、背景墙
