@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.3 <3.0.0"
 
 dependencies:
   flutter:
@@ -56,8 +56,6 @@ dependencies:
   shake_animation_widget: ^1.0.1
   # 左滑工具栏
   left_scroll_actions: ^1.5.3
-  # 中国城市选择
-  city_pickers: ^0.2.0
   # 上拉加载、下拉刷新
   pull_to_refresh: ^1.6.2
   # 加载指示器
@@ -69,8 +67,7 @@ dependencies:
   # flutter 小部件UI库
   flui: ^0.9.2
   # flutter 屏幕适配
-  # flutter_screenutil: ^3.2.0
-  flutter_screenutil: ^4.0.0-beta
+  flutter_screenutil: ^4.0.2
   ###### suxing #####
   flutter_svg: 0.18.0
 

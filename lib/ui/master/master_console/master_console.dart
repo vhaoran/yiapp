@@ -23,9 +23,9 @@ class _MasterConsoleState extends State<MasterConsole> {
   int _curIndex = 0; // 当前导航栏索引
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
+    "大师订单": MasterAwaitMain(), // 在做大师订单，先把其放在首位
     "悬赏帖": MasterPrizeMain(),
     "闪断帖": MasterVieMain(),
-    "大师订单": MasterAwaitMain(),
   };
 
   @override

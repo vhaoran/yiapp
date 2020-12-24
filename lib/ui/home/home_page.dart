@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api_login.dart';
@@ -11,10 +10,10 @@ import 'package:yiapp/ui/home/cus_navigation.dart';
 import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/mall_main.dart';
-import 'package:yiapp/ui/master/master_list_page.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/que_main_page.dart';
 import 'package:yiapp/util/us_util.dart';
+import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> {
     }
     if (res.enable_master == 1) {
       Log.info("大师模块已开启");
-      _m.addAll({"大师": MasterListPage()});
+      _m.addAll({"大师": MastersPage()});
     }
     _m.addAll({"我的": MinePage()});
     setState(() {});

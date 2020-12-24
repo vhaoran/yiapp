@@ -4,12 +4,12 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import '../../widget/master/master_list.dart';
+import '../../widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/7 19:33
-// usage ：底部导航栏 - 大师页面
+// usage ：底部导航栏 - 大师榜单页面(目前没有榜单功能，先不用，先用MastersPage页面)
 // ------------------------------------------------------
 
 class MasterListPage extends StatefulWidget {
@@ -63,7 +63,7 @@ class _MasterListPageState extends State<MasterListPage>
             child: TabBarView(
               children: List.generate(
                 _tabs.length,
-                (index) => MasterList(),
+                (index) => MastersPage(),
               ),
             ),
           ),

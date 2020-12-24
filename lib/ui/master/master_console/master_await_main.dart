@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/master/master_order_cover.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -14,7 +14,7 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:13
-// usage ：大师控制台 -- 大师未完成订单查询
+// usage ：大师控制台 -- 大师(未完成)订单订单查询
 // ------------------------------------------------------
 
 class MasterAwaitMain extends StatefulWidget {
@@ -29,7 +29,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
-  final int _rows_per_page = 10; // 默认每页查询个数
+  final int _rowsPerPage = 10; // 默认每页查询个数
   List<YiOrder> _l = []; // 大师未完成列表
 
   @override
@@ -40,11 +40,11 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
 
   /// 分页查询大师未完成列表
   _fetch() async {
-    if (_pageNo * _rows_per_page > _rowsCount) return;
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
-      "rows_per_page": _rows_per_page,
+      "rows_per_page": _rowsPerPage,
       "sort": {"create_date": -1},
     };
     try {
@@ -66,8 +66,9 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "未完成订单"),
+      appBar: CusAppBar(text: "大师订单"),
       body: _buildFb(),
       backgroundColor: primary,
     );
@@ -80,9 +81,6 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        if (_l.isEmpty) {
-          return Center(child: CusText("您还没有相关订单", t_gray, 32));
-        }
         return ScrollConfiguration(
           behavior: CusBehavior(),
           child: EasyRefresh(
@@ -92,6 +90,15 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
             onRefresh: () async => await _refresh(),
             child: ListView(
               children: <Widget>[
+                if (_l.isEmpty)
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: S.screenH() / 4),
+                    child: Text(
+                      "暂无订单",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                    ),
+                  ),
                 ..._l.map((e) => MasterOrderCover(yiOrder: e)),
               ],
             ),
@@ -102,7 +109,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
   }
 
   /// 刷新数据
-  void _refresh() async {
+  Future<void> _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
     await _fetch();
