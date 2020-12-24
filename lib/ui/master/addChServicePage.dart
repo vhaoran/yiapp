@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_list.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
@@ -39,6 +41,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
 
   @override
   void initState() {
+    // 根据传入的
     _isAdd = widget.res == null ? true : false;
     _cate_name = _isAdd ? null : widget.res.yi_cate_name;
     super.initState();
@@ -62,6 +65,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
   /// 添加服务
   void _doAddService() async {
     var m = {
+      "uid": ApiBase.uid,
       "yi_cate_id": _cate_id,
       "yi_cate_name": _cate_name,
       "comment": _commentCtrl.text.trim(),
@@ -83,6 +87,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
     var m = {
       "id": widget.res.id,
       "M": {
+        "uid": ApiBase.uid,
         "yi_cate_id": _cate_id,
         "yi_cate_name": _cate_name,
         "comment": _commentCtrl.text.trim(),

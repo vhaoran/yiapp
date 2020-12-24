@@ -9,7 +9,7 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/master/cus_number_data.dart';
+import 'package:yiapp/widget/master/master_rate.dart';
 import 'package:yiapp/widget/master/master_base_info.dart';
 import 'package:yiapp/model/pagebean.dart';
 
@@ -100,19 +100,19 @@ class _MastersPageState extends State<MastersPage>
                   style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                 ),
               ),
-            ..._l.map((e) => null),
-            ...List.generate(_l.length, (i) {
-              BrokerMasterRes e = _l[i];
-              return Column(
+            ..._l.map(
+              (e) => Column(
                 children: <Widget>[
+                  // 大师列表中，每个大师的封面
                   MasterCover(info: e),
-                  CusNumData(
-                    titles: ["12345", "100%", "12888"],
-                    subtitles: ["服务人数", "好评率", "粉丝数"],
-                  ), // 详情数据
+                  // 大师好评、差评
+                  MasterRate(
+                    titles: ["${e.best_rate}", "${e.bad_rate}"],
+                    subtitles: ["好评率", "差评率"],
+                  ),
                 ],
-              );
-            })
+              ),
+            ),
           ],
         ),
       ),

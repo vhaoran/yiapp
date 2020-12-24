@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
@@ -37,7 +39,7 @@ class _CusServiceState extends State<CusService> {
   Widget build(BuildContext context) {
     return Card(
       shadowColor: Colors.white,
-      margin: EdgeInsets.all(Adapt.px(0.4)),
+      margin: EdgeInsets.symmetric(vertical: S.h(0.5)),
       child: CupertinoLeftScroll(
         closeTag: LeftScrollCloseTag("MasterCate"),
         key: Key(widget.m.id.toString()),
@@ -58,28 +60,27 @@ class _CusServiceState extends State<CusService> {
   Widget _item() {
     return Container(
       color: primary,
-      padding: EdgeInsets.all(Adapt.px(20)),
+      padding: EdgeInsets.symmetric(horizontal: S.w(5), vertical: S.h(5)),
+      constraints: BoxConstraints(maxHeight: S.h(110)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _leftIcon(), // 左侧图标
-          SizedBox(width: Adapt.px(20)),
+          SizedBox(width: S.w(10)),
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _nameAndCh(), // 服务名称和按钮
-                SizedBox(height: Adapt.px(5)),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: Adapt.px(5)),
-                  child: Text(
-                    widget.m.comment, // 项目介绍
-                    style: TextStyle(color: t_gray, fontSize: Adapt.px(28)),
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                _nameAndCh(), // 服务名称和修改服务按钮
+                SizedBox(height: S.h(5)),
+                Text(
+                  widget.m.comment, // 项目介绍
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                Spacer(),
                 Container(
                   alignment: Alignment.centerRight,
                   child:
@@ -96,11 +97,14 @@ class _CusServiceState extends State<CusService> {
   /// 服务名称和修改服务按钮
   Widget _nameAndCh() {
     return SizedBox(
-      height: Adapt.px(Adapt.px(80)),
+      height: S.h(25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CusText(widget.m.yi_cate_name, t_gray, 32), // 主标题
+          Text(
+            widget.m.yi_cate_name, // 服务名称
+            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+          ),
           Spacer(),
           CusRaisedButton(
             child: Text("修改服务"),

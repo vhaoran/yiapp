@@ -79,10 +79,8 @@ class _LoginPageState extends State<LoginPage> {
         CusUnderField(
           controller: _pwdCtrl,
           hintText: "请输入登录密码",
-          fromValue: "suxing", // 测试时的默认密码
           errorText: _pwdErr,
           maxLength: 20,
-          onlyLetter: true,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -153,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!RegexUtil.isMobile(_mobileCtrl.text)) {
         _err = "请输入正确的手机号";
       } else if (_pwdCtrl.text.length < 6) {
-        _err = "密码由6-20位大小写字母组成";
+        _err = "密码至少6位";
       }
     });
     if (_err != null) {

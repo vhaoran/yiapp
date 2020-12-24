@@ -3,6 +3,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
@@ -16,7 +17,6 @@ import 'package:yiapp/ui/master/look_master_homepage.dart';
 // ------------------------------------------------------
 
 class MasterCover extends StatelessWidget {
-//  final MasterInfo info;
   final BrokerMasterRes info;
   final VoidCallback onPressed;
 
@@ -31,7 +31,7 @@ class MasterCover extends StatelessWidget {
       ),
       child: Container(
         color: primary,
-        padding: EdgeInsets.all(Adapt.px(18)),
+        padding: EdgeInsets.all(S.w(9)),
         child: _row(context),
       ),
     );
@@ -43,7 +43,7 @@ class MasterCover extends StatelessWidget {
       children: <Widget>[
         // 大师头像
         CusAvatar(url: info.icon, size: 100, rate: 100),
-        SizedBox(width: Adapt.px(20)),
+        SizedBox(width: S.w(10)),
         Expanded(
           child: Container(
             child: Column(
@@ -52,15 +52,21 @@ class MasterCover extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    // 主标题
-                    CusText(info.nick, t_gray, 32),
+                    // 大师昵称
+                    Text(
+                      info.nick,
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
                     Spacer(),
                     // 按钮
-                    CusRaisedButton(
-                      child: Text("约聊大师"),
-                      borderRadius: 50,
-                      onPressed:
-                          onPressed ?? () => CusRoute.push(context, ChatMain()),
+                    SizedBox(
+                      height: S.h(22),
+                      child: CusRaisedButton(
+                        child: Text("一对一咨询"),
+                        borderRadius: 50,
+                        onPressed: onPressed ??
+                            () => CusRoute.push(context, ChatMain()),
+                      ),
                     ),
                   ],
                 ),

@@ -77,9 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
         // 登录密码
         CusUnderField(
           controller: _pwdCtrl,
-          hintText: "设置登录密码 (6-20位大小写字母)",
-          maxLength: 20,
-          onlyLetter: true,
+          hintText: "设置登录密码",
         ),
         SizedBox(height: 40),
         CusRaisedButton(
@@ -130,8 +128,6 @@ class _RegisterPageState extends State<RegisterPage> {
         _err = "请输入正确的手机号";
       } else if (_nickCtrl.text.isEmpty) {
         _err = "昵称不能为空";
-      } else if (_pwdCtrl.text.length < 6) {
-        _err = "密码最少6位";
       }
     });
     if (_err != null) {

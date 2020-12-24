@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/master/cus_fivestar.dart';
-import 'package:yiapp/widget/master/cus_number_data.dart';
+import 'package:yiapp/widget/master/master_rate.dart';
 import 'package:yiapp/widget/master/user_comment.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 
@@ -34,12 +34,11 @@ class _MasterInfoHomeState extends State<MasterInfoHome> {
         _comment(),
         Divider(thickness: 0, height: 0, color: Colors.black54),
         // 显示订单数
-        CusNumData(
+        MasterRate(
           titles: ["12345", "12345", "12345", "12345"],
           subtitles: ["订单数", "订单数", "订单数", "订单数"],
           subSize: 24,
           titleSize: 28,
-          paddingV: 10,
         ),
         Divider(thickness: 1, height: 0, color: Colors.black54),
         // 显示评论详情

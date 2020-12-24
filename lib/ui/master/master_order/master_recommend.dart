@@ -10,7 +10,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/master/cus_number_data.dart';
+import 'package:yiapp/widget/master/master_rate.dart';
 import 'package:yiapp/widget/master/master_base_info.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
@@ -131,7 +131,7 @@ class _MasterRecommendState extends State<MasterRecommend> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: CusNumData(
+                    child: MasterRate(
                       titles: ["12345", "100%", "12888"],
                       subtitles: ["服务人数", "好评率", "粉丝数"],
                     ),
