@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_list.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -41,7 +40,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
 
   @override
   void initState() {
-    // 根据传入的
+    // 传入的数据为空，代表是添加服务，反之为修改服务
     _isAdd = widget.res == null ? true : false;
     _cate_name = _isAdd ? null : widget.res.yi_cate_name;
     super.initState();
@@ -51,13 +50,7 @@ class _AddChServicePageState extends State<AddChServicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBarCtr(),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
-        children: <Widget>[
-          ..._lv(), // 输入框
-        ],
-      ),
+      body: _lv(),
       backgroundColor: primary,
     );
   }
@@ -87,13 +80,13 @@ class _AddChServicePageState extends State<AddChServicePage> {
     var m = {
       "id": widget.res.id,
       "M": {
-        "uid": ApiBase.uid,
         "yi_cate_id": _cate_id,
         "yi_cate_name": _cate_name,
         "comment": _commentCtrl.text.trim(),
         "price": num.parse(_priceCtrl.text),
       }
     };
+    Log.info("提交的大师项目修改的数据：$m");
     try {
       bool ok = await ApiMaster.masterItemCh(m);
       if (ok) {
@@ -106,44 +99,48 @@ class _AddChServicePageState extends State<AddChServicePage> {
   }
 
   /// 输入框
-  List<Widget> _lv() {
-    return <Widget>[
-      SizedBox(height: Adapt.px(30)),
-      _tip("选择项目名称"),
-      InkWell(
-        onTap: () => FnDialog(context, l: c_service, groupValue: _cate_id,
-            fnPair: (int sex, int select, String name) {
-          if (select != null) _cate_id = select;
-          if (name != null) _cate_name = name;
-          if (_nameErr != null) _nameErr = null;
-          setState(() {});
-          Navigator.pop(context);
-        }),
-        child: CusRectField(
-          enable: false,
-          hintText: _cate_name,
-          errorText: _nameErr,
+  Widget _lv() {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
+      children: [
+        SizedBox(height: Adapt.px(30)),
+        _tip("选择项目名称"),
+        InkWell(
+          onTap: () => FnDialog(context, l: c_service, groupValue: _cate_id,
+              fnPair: (int sex, int select, String name) {
+            if (select != null) _cate_id = select;
+            if (name != null) _cate_name = name;
+            if (_nameErr != null) _nameErr = null;
+            setState(() {});
+            Navigator.pop(context);
+          }),
+          child: CusRectField(
+            enable: false,
+            hintText: _cate_name,
+            errorText: _nameErr,
+          ),
         ),
-      ),
-      _tip("服务简介"),
-      CusRectField(
-        controller: _commentCtrl, // 服务简介
-        errorText: _commentErr,
-        autofocus: false,
-        pdHor: 0,
-        maxLines: 8,
-        fromValue: _isAdd ? null : widget.res.comment,
-      ),
-      _tip("服务价格"),
-      CusRectField(
-        controller: _priceCtrl, // 服务价格输入框
-        errorText: _priceErr,
-        autofocus: false,
-        maxLines: 1,
-        onlyNumber: true,
-        fromValue: _isAdd ? null : widget.res.price.toString(),
-      ),
-    ];
+        _tip("服务简介"),
+        CusRectField(
+          controller: _commentCtrl, // 服务简介
+          errorText: _commentErr,
+          autofocus: false,
+          pdHor: 0,
+          maxLines: 8,
+          fromValue: _isAdd ? null : widget.res.comment,
+        ),
+        _tip("服务价格"),
+        CusRectField(
+          controller: _priceCtrl, // 服务价格输入框
+          errorText: _priceErr,
+          autofocus: false,
+          maxLines: 1,
+          onlyNumber: true,
+          fromValue: _isAdd ? null : widget.res.price.toString(),
+        ),
+      ],
+    );
   }
 
   Widget _appBarCtr() {

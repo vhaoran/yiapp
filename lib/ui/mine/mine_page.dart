@@ -130,7 +130,8 @@ class _MinePageState extends State<MinePage>
           ),
           NormalBox(
             title: "大师信息",
-            onTap: () => CusRoute.push(context, MasterInfoPage()),
+            onTap: () =>
+                CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
           ),
           NormalBox(
             title: "大师已完成订单",

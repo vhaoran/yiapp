@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
@@ -23,9 +22,10 @@ import 'ch_master_nick.dart';
 // ------------------------------------------------------
 
 class MasterNickAvatar extends StatefulWidget {
+  final bool isSelf;
   final MasterInfo m; // 大师个人信息
 
-  MasterNickAvatar({this.m, Key key}) : super(key: key);
+  MasterNickAvatar({this.isSelf: false, this.m, Key key}) : super(key: key);
 
   @override
   _MasterNickAvatarState createState() => _MasterNickAvatarState();
@@ -40,7 +40,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
           alignment: Alignment(0, 0.2), // 头像
           child: InkWell(
             child: CusAvatar(url: widget.m.icon ?? "", circle: true),
-            onTap: CusRole.is_master
+            onTap: widget.isSelf
                 ? () => CusBottomSheet(context, OnFile: (file) {
                       if (file != null) _doChIcon(file);
                       setState(() => {});
@@ -59,7 +59,7 @@ class _MasterNickAvatarState extends State<MasterNickAvatar> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            onTap: CusRole.is_master
+            onTap: widget.isSelf
                 ? () => CusRoute.push(
                     context, ChMasterNick(nick: widget.m.nick, id: widget.m.id))
                 : null,

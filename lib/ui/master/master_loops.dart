@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
@@ -20,10 +21,12 @@ import 'package:yiapp/util/file_util.dart';
 // ------------------------------------------------------
 
 class MasterLoops extends StatefulWidget {
+  final bool isSelf;
   final List<MasterImages> l; // 大师轮播图
   final VoidCallback onChanged; // 轮播图更改
 
-  MasterLoops({this.l, this.onChanged, Key key}) : super(key: key);
+  MasterLoops({this.isSelf: false, this.l, this.onChanged, Key key})
+      : super(key: key);
 
   @override
   _MasterLoopsState createState() => _MasterLoopsState();
@@ -60,19 +63,21 @@ class _MasterLoopsState extends State<MasterLoops> {
             return BackgroundWall(
               url: e.image_path,
               boxFit: BoxFit.fitWidth,
-              onTap: () => CusBottomSheet(
-                context,
-                titles: ["替换", "删除", "取消"],
-                fnLists: [
-                  null, // 替换图片在 OnFile 回调
-                  () => _doRmImage(e.id), // 删除图片
-                  null, // 取消
-                ],
-                OnFile: (file) {
-                  setState(() => _file = file);
-                  if (_file != null) _doReplaceImage(_file, e);
-                },
-              ),
+              onTap: widget.isSelf
+                  ? () => CusBottomSheet(
+                        context,
+                        titles: ["替换", "删除", "取消"],
+                        fnLists: [
+                          null, // 替换图片在 OnFile 回调
+                          () => _doRmImage(e.id), // 删除图片
+                          null, // 取消
+                        ],
+                        OnFile: (file) {
+                          setState(() => _file = file);
+                          if (_file != null) _doReplaceImage(_file, e);
+                        },
+                      )
+                  : null,
             );
           },
 //          autoplay: widget.l.length == 1 ? false : true,
@@ -89,19 +94,22 @@ class _MasterLoopsState extends State<MasterLoops> {
           alignment: Alignment(1, -0.8),
           child: IconButton(
             icon: Icon(Icons.more_horiz, color: t_gray, size: Adapt.px(40)),
-            onPressed: () => CusBottomSheet(
-              context,
-              titles: ["从相册添加", "拍摄", "取消"],
-              fnLists: [
-                () {}, // 添加图片在 OnFile 回调
-                null,
-                null, // 取消
-              ],
-              OnFile: (file) {
-                setState(() => _file = file);
-                if (_file != null) _doAddImage(_file, widget.l.length + 1);
-              },
-            ),
+            onPressed: widget.isSelf
+                ? () => CusBottomSheet(
+                      context,
+                      titles: ["从相册添加", "拍摄", "取消"],
+                      fnLists: [
+                        () {}, // 添加图片在 OnFile 回调
+                        null,
+                        null, // 取消
+                      ],
+                      OnFile: (file) {
+                        setState(() => _file = file);
+                        if (_file != null)
+                          _doAddImage(_file, widget.l.length + 1);
+                      },
+                    )
+                : null,
           ),
         ),
       ],

@@ -7,10 +7,12 @@ import 'package:yiapp/model/dicts/master-images.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/master/master_home.dart';
 import 'package:yiapp/ui/master/master_nick_avatar.dart';
-import 'package:yiapp/ui/master/master_service.dart';
+import 'package:yiapp/ui/master/master_services.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/sticky_delegate.dart';
 import 'master_loops.dart';
 
@@ -21,7 +23,9 @@ import 'master_loops.dart';
 // ------------------------------------------------------
 
 class MasterInfoPage extends StatefulWidget {
-  MasterInfoPage({Key key}) : super(key: key);
+  final int master_id;
+
+  MasterInfoPage({this.master_id, Key key}) : super(key: key);
 
   @override
   _MasterInfoPageState createState() => _MasterInfoPageState();
@@ -30,18 +34,24 @@ class MasterInfoPage extends StatefulWidget {
 class _MasterInfoPageState extends State<MasterInfoPage>
     with SingleTickerProviderStateMixin {
   MasterInfo _m; // 大师个人信息
-  List<MasterImages> _l; // 大师图片列表
+  List<MasterImages> _l = []; // 大师轮播图列表
   List<String> _tabs = ["主页", "服务"];
   var _future;
+  bool _isSelf = false; //  是否大师本人
 
   /// 获取大师图片列表
   _fetch() async {
     try {
-      var res = await ApiMaster.masterImageList(ApiBase.uid);
-      if (res != null) _l = res;
+      List<MasterImages> l = await ApiMaster.masterImageList(widget.master_id);
+      if (l != null) _l = l;
+      MasterInfo masterInfo = await ApiMaster.masterInfoGet(widget.master_id);
+      if (masterInfo != null) {
+        if (masterInfo.uid == ApiBase.uid) _isSelf = true;
+        if (!_isSelf) _m = masterInfo;
+      }
+      setState(() {});
     } catch (e) {
-      _l = [];
-      Log.error("获取大师图片列表出现异常，是否暂未添加：$e");
+      Log.error("获取大师图片列表或者获取大师出现异常：$e");
     }
   }
 
@@ -53,7 +63,10 @@ class _MasterInfoPageState extends State<MasterInfoPage>
 
   @override
   Widget build(BuildContext context) {
-    _m = context.watch<MasterInfoState>()?.masterInfo ?? MasterInfo();
+    // 如果是大师，则从状态里读取数据
+    if (_isSelf) {
+      _m = context.watch<MasterInfoState>()?.masterInfo ?? MasterInfo();
+    }
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(body: _buildFb(), backgroundColor: primary),
@@ -67,16 +80,24 @@ class _MasterInfoPageState extends State<MasterInfoPage>
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
+        if (_m == null)
+          return Scaffold(
+            appBar: CusAppBar(text: "大师"),
+            body: Center(
+                child: Text(
+              "大师信息异常",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            )),
+            backgroundColor: primary,
+          );
         return NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (context, bool) => _buildHeader(),
           body: TabBarView(
             children: <Widget>[
-              // 大师主页
-              Text("这是大师主页",
-                  style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
-              // 大师服务
-              MasterServicePage(),
+              // 大师主页(目前显示的不需要区分用户还是大师)
+              MasterHome(m: _m),
+              MasterServices(master_id: widget.master_id),
               // 这里将服务放到后面，是因为放中间滑动时，红色的左滑删除按钮会在
               // 切换选项卡的时候显示出来，故临时先设置其位置到最后
             ],
@@ -101,8 +122,8 @@ class _MasterInfoPageState extends State<MasterInfoPage>
           collapseMode: CollapseMode.pin,
           background: Stack(
             children: <Widget>[
-              MasterLoops(l: _l, onChanged: _refresh), // 大师轮播图
-              MasterNickAvatar(m: _m), // 大师昵称、头像
+              MasterLoops(l: _l, onChanged: _refresh, isSelf: _isSelf), // 大师轮播图
+              MasterNickAvatar(m: _m, isSelf: _isSelf), // 大师昵称、头像
             ],
           ),
         ),
@@ -111,10 +132,8 @@ class _MasterInfoPageState extends State<MasterInfoPage>
         pinned: true,
         delegate: StickyTabBarDelegate(
           child: TabBar(
-            indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: t_primary,
-            labelPadding: EdgeInsets.only(bottom: 3),
             labelColor: Colors.white,
             tabs: List.generate(
               _tabs.length,
@@ -132,6 +151,5 @@ class _MasterInfoPageState extends State<MasterInfoPage>
   void _refresh() async {
     _l.clear();
     await _fetch();
-    setState(() {});
   }
 }

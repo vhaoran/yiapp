@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
+import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/ui/chat/chat_main.dart';
-import 'package:yiapp/ui/master/look_master_homepage.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/8/17 10:10
-// usage ：大师基本资料（含头像、名称、在/离线状态、个签）
+// usage ：大师封面，显示大师的基本资料（含头像、名称、在/离线状态、个签）
 // ------------------------------------------------------
 
 class MasterCover extends StatelessWidget {
@@ -25,10 +24,7 @@ class MasterCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoute.push(
-        context,
-        LookMasterHomePage(master_id: info.uid),
-      ),
+      onTap: () => CusRoute.push(context, MasterInfoPage(master_id: info.uid)),
       child: Container(
         color: primary,
         padding: EdgeInsets.all(S.w(9)),
@@ -64,24 +60,22 @@ class MasterCover extends StatelessWidget {
                       child: CusRaisedButton(
                         child: Text("一对一咨询"),
                         borderRadius: 50,
-                        onPressed: onPressed ??
-                            () => CusRoute.push(context, ChatMain()),
+                        onPressed: () => CusRoute.push(context, ChatMain()),
                       ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: Adapt.px(4)),
+                  padding: EdgeInsets.symmetric(vertical: S.h(2)),
                   child: Text(
-                    "状态",
-                    style:
-                        TextStyle(color: Colors.yellow, fontSize: Adapt.px(24)),
+                    "在线",
+                    style: TextStyle(color: Colors.green, fontSize: S.sp(13)),
                   ),
                 ),
                 // 副标题
                 SizedBox(
                   // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
-                  height: Adapt.px(110),
+                  height: S.h(55),
                   child: Text(
                     info.brief,
                     style: TextStyle(color: t_gray, fontSize: Adapt.px(26)),

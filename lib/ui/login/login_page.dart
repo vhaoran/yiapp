@@ -68,10 +68,11 @@ class _LoginPageState extends State<LoginPage> {
         // 手机号输入框
         CusUnderField(
           controller: _mobileCtrl,
-          hintText: "请输入手机号",
+//          hintText: "请输入手机号",
+          hintText: "请输入用户名",
           errorText: _mobileErr,
-          onlyNumber: true,
-          maxLength: 11,
+//          onlyNumber: true,
+//          maxLength: 11,
           autofocus: true,
         ),
         SizedBox(height: Adapt.px(50)),
@@ -146,18 +147,22 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 请求登录
   void _doLogin() async {
+    // 先解决限制 2020年12月24日16:52:02
+//    setState(() {
+//      _err = _mobileErr = _pwdErr = null;
+//      if (!RegexUtil.isMobile(_mobileCtrl.text)) {
+//        _err = "请输入正确的手机号";
+//      } else if (_pwdCtrl.text.length < 6) {
+//        _err = "密码至少6位";
+//      }
+//    });
+//    if (_err != null) {
+//      CusToast.toast(context, text: _err);
+//      return;
+//    }
     setState(() {
       _err = _mobileErr = _pwdErr = null;
-      if (!RegexUtil.isMobile(_mobileCtrl.text)) {
-        _err = "请输入正确的手机号";
-      } else if (_pwdCtrl.text.length < 6) {
-        _err = "密码至少6位";
-      }
     });
-    if (_err != null) {
-      CusToast.toast(context, text: _err);
-      return;
-    }
     SpinKit.threeBounce(context);
     LoginResult login; // 最终传递的登录结果
     // 在登录界面登录鸿运来，直接请求即可，不需要判断本地数据库是否已存在，否则无法保证数据最新

@@ -1,5 +1,6 @@
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/bo/broker_cate_res.dart';
+import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/model/bo/broker_product_res.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
@@ -51,5 +52,14 @@ class ApiBo {
     return await ApiBase.postPage(url, pb, (m) {
       return BrokerMasterRes.fromJson(m);
     }, enableJwt: true);
+  }
+
+  /// 用户获取运营商某个大师的服务项目列表
+  static Future<List<BrokerMasterCate>> bmiPriceUserList(
+      Map<String, dynamic> m) async {
+    var url = w_yi_user + "BMIPriceUserList";
+    return await ApiBase.postList(
+        url, m, (l) => l.map((x) => BrokerMasterCate.fromJson(x)).toList(),
+        enableJwt: true);
   }
 }
