@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/master/master_order_cover.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -14,7 +14,7 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:13
-// usage ：大师控制台 -- 大师(未完成)订单订单查询
+// usage ：大师控制台 -- 大师(处理中)订单查询
 // ------------------------------------------------------
 
 class MasterAwaitMain extends StatefulWidget {
@@ -45,22 +45,23 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
+      "where": {"stat": 1},
       "sort": {"create_date": -1},
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderPageOfMaster(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
-      Log.info("总的大师未完成列表个数：$_rowsCount");
+      Log.info("总的大师处理中订单个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       if (mounted) setState(() {});
-      Log.info("当前已查询大师未完成列表个数：${_l.length}");
+      Log.info("当前大师查询处理中的订单个数：${_l.length}");
     } catch (e) {
-      Log.error("分页查询大师未完成列表出现异常：$e");
+      Log.error("分页查询大师处理中订单出现异常：$e");
     }
   }
 
@@ -99,7 +100,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
                       style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                     ),
                   ),
-                ..._l.map((e) => MasterOrderCover(yiOrder: e)),
+                ..._l.map((e) => MasterAwaitCover(yiOrder: e)),
               ],
             ),
           ),

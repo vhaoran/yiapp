@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
+import 'package:yiapp/ui/mine/my_orders/select_master_item.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/ui/chat/chat_main.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -60,7 +60,10 @@ class MasterCover extends StatelessWidget {
                       child: CusRaisedButton(
                         child: Text("一对一咨询"),
                         borderRadius: 50,
-                        onPressed: () => CusRoute.push(context, ChatMain()),
+                        onPressed: () => CusRoute.push(
+                          context,
+                          SelectMasterItem(master_id: info.master_id),
+                        ),
                       ),
                     ),
                   ],

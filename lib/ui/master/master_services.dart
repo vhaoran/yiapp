@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/service/api/api_bo.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -39,12 +38,12 @@ class _MasterServicesState extends State<MasterServices>
 
   @override
   void initState() {
-    _future = _fetchMasterServices();
+    _future = _fetchServices();
     super.initState();
   }
 
-  /// 大师获取自己的项目列表
-  _fetchMasterServices() async {
+  /// 获取大师项目列表
+  _fetchServices() async {
     try {
       List l = [];
       if (widget.isSelf) {
@@ -52,7 +51,7 @@ class _MasterServicesState extends State<MasterServices>
         l = await ApiMaster.masterItemList(widget.master_id);
       } else {
         // 用户获取运营商大师项目列表
-        var m = {"broker_id": CusRole.broker_id, "master_id": widget.master_id};
+        var m = {"master_id": widget.master_id};
         l = await ApiBo.bmiPriceUserList(m);
       }
       if (l != null) _l = l;
@@ -99,7 +98,7 @@ class _MasterServicesState extends State<MasterServices>
             physics: BouncingScrollPhysics(),
             children: List.generate(
               _l.length,
-              (i) => CusService(
+              (i) => ServiceItem(
                 data: _l[i],
                 isSelf: widget.isSelf,
                 onRm: _doRm,
@@ -108,17 +107,18 @@ class _MasterServicesState extends State<MasterServices>
             ),
           ),
         ),
-        SizedBox(
-          width: S.screenW(),
-          child: CusRaisedButton(
-            child: Text(
-              "添加服务",
-              style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+        if (widget.isSelf)
+          SizedBox(
+            width: S.screenW(),
+            child: CusRaisedButton(
+              child: Text(
+                "添加服务",
+                style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+              ),
+              onPressed: _doFn,
+              colors: [Colors.grey, t_yi],
             ),
-            onPressed: _doFn,
-            colors: [Colors.grey, t_yi],
           ),
-        ),
       ],
     );
   }
@@ -153,7 +153,7 @@ class _MasterServicesState extends State<MasterServices>
 
   Future<void> _refresh() async {
     _l.clear();
-    await _fetchMasterServices();
+    await _fetchServices();
   }
 
   @override

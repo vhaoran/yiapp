@@ -129,8 +129,8 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
               CusRectField(hintText: _timeStr, hideBorder: true, enable: false),
         ),
         SizedBox(
-          height: S.h(30),
-          width: S.w(55),
+          height: S.h(20),
+          width: S.w(60),
           child: CusRaisedButton(
             backgroundColor: Colors.grey,
             child: Text("选择", style: TextStyle(color: Colors.black)),

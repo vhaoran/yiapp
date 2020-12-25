@@ -55,4 +55,9 @@ class YiOrderSiZhu {
     data['year'] = this.year;
     return data;
   }
+
+  /// 返回的时间数据转换为 DateTime
+  DateTime dateTime() {
+    return DateTime(this.year, this.month, this.day, this.hour, this.minute);
+  }
 }

@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/mine/my_orders/talk_about_master.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -18,14 +20,14 @@ import 'package:yiapp/model/dicts/master-cate.dart';
 
 typedef FnMasterCate = Function(MasterCate m);
 
-class CusService extends StatefulWidget {
+class ServiceItem extends StatefulWidget {
   final data; // [MasterCate] 或者 [BrokerMasterCate]
   final bool isSelf;
   final FnMasterCate onRm; // 移除服务事件
   final FnMasterCate onChange; // 修改服务事件
   final VoidCallback onTap; // 点击文章事件
 
-  const CusService({
+  const ServiceItem({
     this.data,
     this.isSelf: false,
     this.onRm,
@@ -34,10 +36,10 @@ class CusService extends StatefulWidget {
     Key key,
   }) : super(key: key);
 
-  _CusServiceState createState() => _CusServiceState();
+  _ServiceItemState createState() => _ServiceItemState();
 }
 
-class _CusServiceState extends State<CusService> {
+class _ServiceItemState extends State<ServiceItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -120,9 +122,10 @@ class _CusServiceState extends State<CusService> {
           if (!widget.isSelf)
             CusRaisedButton(
               child: Text("立即测算"),
-              onPressed: () {
-                Log.info("前往选择大师订单页面");
-              },
+              onPressed: () => CusRoute.push(
+                context,
+                TalkAboutMaster(data: widget.data),
+              ),
               borderRadius: 50,
             ),
         ],

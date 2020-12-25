@@ -1,4 +1,7 @@
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/model/orders/yiOrder-heHun.dart';
+import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
+import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -20,5 +23,29 @@ class SwitchUtil {
     if (code == lao_yin) return "X"; // 老阴
     if (code == lao_yang) return "O"; // 老阳
     return ""; // 少阴、少阳
+  }
+
+  /// 大师服务项目类型
+  static String serviceType(int type) {
+    if (type == ming_yun) return "性格命运分析";
+    if (type == shi_ye) return "事业";
+    if (type == hun_yin) return "婚姻";
+    if (type == cai_yun) return "财运";
+    if (type == jian_kang) return "健康";
+    if (type == shou_xiang) return "手相";
+    if (type == mian_xiang) return "面相";
+    if (type == mo_gu) return "摸骨";
+    if (type == qi_ming) return "起名";
+    if (type == hun_jia) return "婚丧嫁娶吉日";
+    if (type == he_hun) return "合婚";
+    return "";
+  }
+
+  /// 大师订单类型
+  static String orderType(m) {
+    if (m is YiOrderLiuYao) return "六爻订单";
+    if (m is YiOrderSiZhu) return "四柱订单";
+    if (m is YiOrderHeHun) return "合婚订单";
+    return "";
   }
 }

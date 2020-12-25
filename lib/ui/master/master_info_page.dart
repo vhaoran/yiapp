@@ -48,6 +48,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
       if (masterInfo != null) {
         if (masterInfo.uid == ApiBase.uid) _isSelf = true;
         if (!_isSelf) _m = masterInfo;
+        Log.info("是否大师本人查看大师主页:$_isSelf");
       }
       setState(() {});
     } catch (e) {
@@ -97,7 +98,7 @@ class _MasterInfoPageState extends State<MasterInfoPage>
             children: <Widget>[
               // 大师主页(目前显示的不需要区分用户还是大师)
               MasterHome(m: _m),
-              MasterServices(master_id: widget.master_id),
+              MasterServices(master_id: widget.master_id, isSelf: _isSelf),
               // 这里将服务放到后面，是因为放中间滑动时，红色的左滑删除按钮会在
               // 切换选项卡的时候显示出来，故临时先设置其位置到最后
             ],

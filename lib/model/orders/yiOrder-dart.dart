@@ -3,7 +3,7 @@ import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 
 class YiOrder {
-  String id;
+  String id; // 订单 id
 
   //用户id
   int uid;
@@ -41,25 +41,39 @@ class YiOrder {
   //// 订单状态	0:待付款 1：已付款 3 已处理  4 已退款
   int stat;
 
-  YiOrder(
-      {this.amt,
-      this.comment,
-      this.content,
-      this.create_date,
-      this.create_date_int,
-      this.icon_ref,
-      this.id,
-      this.master_icon_ref,
-      this.master_id,
-      this.master_nick_ref,
-      this.master_user_code_ref,
-      this.nick_ref,
-      this.order_type,
-      this.pay_type,
-      this.stat,
-      this.trade_no,
-      this.uid,
-      this.user_code});
+  int broker_id;
+  String broker_name;
+  String diagnose; // 诊断
+  String last_updated;
+  num pay_amt;
+  int yi_cate_id;
+
+  YiOrder({
+    this.amt,
+    this.comment,
+    this.content,
+    this.create_date,
+    this.create_date_int,
+    this.icon_ref,
+    this.id,
+    this.master_icon_ref,
+    this.master_id,
+    this.master_nick_ref,
+    this.master_user_code_ref,
+    this.nick_ref,
+    this.order_type,
+    this.pay_type,
+    this.stat,
+    this.trade_no,
+    this.uid,
+    this.user_code,
+    this.broker_id,
+    this.broker_name,
+    this.diagnose,
+    this.last_updated,
+    this.pay_amt,
+    this.yi_cate_id,
+  });
 
   factory YiOrder.fromJson(Map<String, dynamic> json) {
     ////订单类型	 0：四柱 1：六爻 3:合婚   20 其它
@@ -101,6 +115,12 @@ class YiOrder {
       trade_no: json['trade_no'],
       uid: json['uid'],
       user_code: json['user_code'],
+      broker_id: json['broker_id'],
+      broker_name: json['broker_name'],
+      diagnose: json['diagnose'],
+      last_updated: json['last_updated'],
+      pay_amt: json['pay_amt'],
+      yi_cate_id: json['yi_cate_id'],
     );
   }
 
@@ -123,6 +143,11 @@ class YiOrder {
     data['trade_no'] = this.trade_no;
     data['uid'] = this.uid;
     data['user_code'] = this.user_code;
+    data['broker_id'] = this.broker_id;
+    data['broker_name'] = this.broker_name;
+    data['diagnose'] = this.diagnose;
+    data['pay_amt'] = this.pay_amt;
+    data['yi_cate_id'] = this.yi_cate_id;
     if (this.content != null) {
       data['content'] = this.content.toJson();
     }

@@ -63,7 +63,7 @@ class YiDateTime {
       if (isLunar) {
         return "${t.year}年${t.monthStr}${t.dayStr} ${t.hourStr}";
       }
-      return "${t.year}-${t.month}-${t.day}- ${t.hourStr}";
+      return "${t.year}年${t.month}月${t.day}日 ${t.hourStr}";
     }
     return "转换YiDateTime为字符串出错";
   }
