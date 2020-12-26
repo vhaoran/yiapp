@@ -1,8 +1,5 @@
 import 'package:yiapp/model/msg/msg-notify-his.dart';
-import 'package:yiapp/model/msg/msg-notify.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
-import 'package:yiapp/model/msg/msg_body.dart';
-import 'package:yiapp/model/pagebean.dart';
 import 'api_base.dart';
 
 class ApiMsg {
@@ -14,14 +11,14 @@ class ApiMsg {
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
-  //---在师订单聊天内容-----分页查询---------------
-  static yiOrderMsgHisPage(Map<String, dynamic> pb) async {
+  /// 大师订单--消息分页查询
+  static yiOrderMsgHisPage(Map<String, dynamic> m) async {
     var url = pre + "YiOrderMsgHisPage";
-    return await ApiBase.postPage(url, pb, (m) => MsgYiOrder.fromJson(m));
+    var data = m;
+    return await ApiBase.postPage(url, data, (m) => MsgYiOrder.fromJson(m));
   }
 
-  //----大司订单发消息：适用于客刻和大师-----------------------
-  //必须有对应的订单号，且订单没有关闭。
+  /// 大师订单--发消息 适用于大师和用户，必须有对应的订单号，且订单没有关闭
   static Future<MsgYiOrder> yiOrderMsgSend(Map<String, dynamic> m) async {
     var url = pre + "YiOrderMsgSend";
     var data = m;

@@ -83,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     await initDB(); // 初始化数据库
     LoginResult login;
     bool hasToken = await UsUtil.hasToken();
+    Log.info("本地已存在token吗：$hasToken");
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
     try {
       if (hasToken) {

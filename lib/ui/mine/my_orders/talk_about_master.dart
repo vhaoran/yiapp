@@ -10,6 +10,7 @@ import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -158,7 +159,8 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
 
   /// 选择出生日期
   Widget _choseDate() {
-    _timeStr = _yi == null ? "请选择出生日期" : _yi.yiTimeShow(_yi, _isLunar);
+    _timeStr =
+        _yi == null ? "请选择出生日期" : TimeUtil.YMDHM(isSolar: !_isLunar, date: _yi);
     return _comBg(
       children: <Widget>[
         Text("出生日期", style: TextStyle(color: t_yi, fontSize: S.sp(15))),

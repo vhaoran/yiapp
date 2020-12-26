@@ -5,7 +5,6 @@ import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';

@@ -38,7 +38,7 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
     return InkWell(
       onTap: () => CusRoute.push(
         context,
-        MasterYiOrderPage(yiOrder: widget.yiOrder),
+        MasterYiOrderPage(id: widget.yiOrder.id),
       ),
       child: Card(
         color: fif_primary,
@@ -85,7 +85,10 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
                     constraints: BoxConstraints(maxHeight: S.h(30)),
                     child: CusRaisedButton(
                       child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
-                      onPressed: () {},
+                      onPressed: () => CusRoute.push(
+                        context,
+                        MasterYiOrderPage(id: widget.yiOrder.id),
+                      ),
                       borderRadius: 50,
                       backgroundColor: Colors.lightBlue,
                     ),

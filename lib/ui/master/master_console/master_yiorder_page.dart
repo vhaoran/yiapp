@@ -1,15 +1,28 @@
+import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/pagebean.dart';
+import 'package:yiapp/service/api/api-yi-order.dart';
+import 'package:yiapp/service/api/api_msg.dart';
+import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/master/master_console/yiorder_input.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
@@ -19,58 +32,239 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // ------------------------------------------------------
 
 class MasterYiOrderPage extends StatefulWidget {
-  final YiOrder yiOrder;
+  final String id;
 
-  MasterYiOrderPage({this.yiOrder, Key key}) : super(key: key);
+  MasterYiOrderPage({this.id, Key key}) : super(key: key);
 
   @override
   _MasterYiOrderPageState createState() => _MasterYiOrderPageState();
 }
 
 class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
-  YiOrderSiZhu _siZhu;
+  YiOrderSiZhu _siZhu; // 目前先只用四柱做测试
+  YiOrder _yiOrder;
+  var _future;
+  bool _needCh = false; // 是否需要修改测算结果
+  var _scrollCtrl = ScrollController();
+
+  int _pageNo = 0;
+  int _rowsCount = 0;
+  final int _rowsPerPage = 10; // 默认每页查询个数
+  List<MsgYiOrder> _l = []; // 大师订单聊天记录
+
+  TextStyle _tGray = TextStyle(color: t_gray, fontSize: S.sp(15));
+  TextStyle _tPrimary = TextStyle(color: t_primary, fontSize: S.sp(15));
 
   @override
   void initState() {
-    _siZhu = widget.yiOrder.content;
+    _future = _fetch();
     super.initState();
+  }
+
+  /// 获取大师订单
+  _fetch() async {
+    await _fetchOrder();
+    await _fetchReply();
+  }
+
+  /// 获取大师订单详情
+  _fetchOrder() async {
+    try {
+      YiOrder order = await ApiYiOrder.yiOrderGet(widget.id);
+      if (order != null) {
+        Log.info("当前大师订单详情：${order.toJson()}");
+        _yiOrder = order;
+        _siZhu = _yiOrder.content;
+        _needCh = false;
+        setState(() {});
+      }
+    } catch (e) {
+      Log.error("获取大师订单出现异常：$e");
+    }
+  }
+
+  /// 分页获取聊天内容
+  _fetchReply() async {
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
+    _pageNo++;
+    var m = {
+      "page_no": _pageNo,
+      "rows_per_page": _rowsPerPage,
+      "id": widget.id,
+    };
+    try {
+      PageBean pb = await ApiMsg.yiOrderMsgHisPage(m);
+      if (pb != null) {
+        if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
+        Log.info("总的大师订单回复聊天个数：$_rowsCount");
+        var l = pb.data.map((e) => e as MsgYiOrder).toList();
+        l.forEach((src) {
+          var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
+          if (dst == null) _l.add(src);
+        });
+        setState(() {});
+        Log.info("当前已显示回复聊天个数：${_l.length}");
+      }
+    } catch (e) {
+      Log.error("根据大师订单id查询聊天记录出现异常：$e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "大师订单"),
-      body: Column(
-        children: [
-          Expanded(child: _lv()),
-          YiOrderInput(),
-        ],
-      ),
+      appBar: _appBar(),
+      body: _buildFb(),
       backgroundColor: primary,
+    );
+  }
+
+  Widget _buildFb() {
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Column(
+          children: [
+            Expanded(child: _lv()),
+            // 回复大师订单输入框
+            YiOrderInput(
+                yiOrder: _yiOrder,
+                onSend: () async {
+                  await _refresh();
+                  Timer(
+                    Duration(milliseconds: 500),
+                    () => _scrollCtrl
+                        .jumpTo(_scrollCtrl.position.maxScrollExtent),
+                  );
+                },
+                needCh: _needCh),
+          ],
+        );
+      },
     );
   }
 
   Widget _lv() {
     return ScrollConfiguration(
       behavior: CusBehavior(),
-      child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: S.w(10)),
+      child: EasyRefresh(
+        header: CusHeader(),
+        footer: CusFooter(),
+        onRefresh: () async => _refresh(),
+        onLoad: () async => _fetchReply(),
+        child: ListView(
+          controller: _scrollCtrl,
+          padding: EdgeInsets.symmetric(horizontal: S.w(10)),
+          children: <Widget>[
+            _orderDataView(),
+            _diagnoseWid(_yiOrder.diagnose), // 测算结果
+            SizedBox(height: S.h(10)),
+            Center(child: Text(_l.isEmpty ? "暂无评论" : "评论区", style: _tPrimary)),
+            SizedBox(height: S.h(10)),
+            Divider(height: 0, thickness: 0.2, color: t_gray),
+            SizedBox(height: S.h(5)),
+            // 评论区域
+            ...List.generate(_l.length, (i) => _replyItem(_l[i], i + 1)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<Void> _refresh() async {
+    _l.clear();
+    _pageNo = _rowsCount = 0;
+    await _fetch();
+  }
+
+  /// 单个评论的内容
+  Widget _replyItem(MsgYiOrder e, int level) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: S.h(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: S.h(10)),
-            child: _baseInfo(),
+          Row(
+            children: <Widget>[
+              // 评论人头像
+              CusAvatar(url: e.from_icon ?? "", circle: true, size: 45),
+              SizedBox(width: S.w(10)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(e.from_nick, style: _tPrimary), // 评论人昵称
+                        Spacer(),
+                        Text("$level楼", style: _tGray), // 显示层数
+                      ],
+                    ),
+                    SizedBox(height: S.h(5)),
+                    Text(
+                      e.create_date,
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          CusText("问题描述", t_primary, 30),
-          CusText(widget.yiOrder.comment, t_gray, 30),
           SizedBox(height: S.h(10)),
-          CusText("所求名称", t_primary, 30),
-          CusText(
-            "${SwitchUtil.serviceType(widget.yiOrder.yi_cate_id)}",
-            t_gray,
-            30,
-          ),
+          Text(e.content, style: _tGray), // 评论的内容
+          SizedBox(height: S.h(10)),
+          Divider(height: 0, thickness: 0.2, color: t_gray),
         ],
       ),
+    );
+  }
+
+  /// 区域一显示
+  Widget _orderDataView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: S.h(10)),
+          child: _baseInfo(), // 用户基本信息
+        ),
+        Text("问题描述", style: _tPrimary),
+        Text(_yiOrder.comment, style: _tGray), // 问题描述
+        SizedBox(height: S.h(10)),
+        Text("所求类型 ", style: _tPrimary), // 所求类型
+        Text("${SwitchUtil.serviceType(_yiOrder.yi_cate_id)}", style: _tGray),
+        SizedBox(height: S.h(10)),
+      ],
+    );
+  }
+
+  /// 测算结果组件
+  Widget _diagnoseWid(String diagnose) {
+    Widget child1 = Text("请先对订单设置测算结果", style: _tPrimary);
+    Widget child2 = Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("当前测算结果", style: _tPrimary),
+            if (CusRole.is_master)
+              InkWell(
+                onTap: () => setState(() => _needCh = true),
+                child: Text(
+                  " 点击修改",
+                  style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(15)),
+                ),
+              ),
+          ],
+        ),
+        Text(_yiOrder.diagnose, style: _tGray),
+      ],
+    );
+    return Center(
+      child: diagnose.isEmpty ? child1 : child2,
     );
   }
 
@@ -79,30 +273,51 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        CusAvatar(url: widget.yiOrder.icon_ref, rate: 10, size: 70),
+        CusAvatar(url: _yiOrder.icon_ref, rate: 10, size: 70),
         SizedBox(width: S.w(10)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
               children: <Widget>[
-                CusText(_siZhu.name, t_primary, 30),
+                Text(_siZhu.name, style: _tPrimary),
                 SizedBox(width: S.w(10)),
-                CusText(_siZhu.is_male ? "男" : "女", t_primary, 30),
+                Text(_siZhu.is_male ? "男" : "女", style: _tPrimary),
               ],
             ),
             SizedBox(height: S.h(10)),
             Row(
               children: <Widget>[
-                CusText("出生日期：", t_gray, 30),
-                CusText(
-                    "${TimeUtil.YMDHM(isSolar: _siZhu.is_solar, date: _siZhu.dateTime())}",
-                    t_gray,
-                    30),
+                Text("出生日期：", style: _tGray),
+                Text(
+                  "${TimeUtil.YMDHM(isSolar: _siZhu.is_solar, date: _siZhu.dateTime())}",
+                  style: _tGray,
+                ),
               ],
             )
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _appBar() {
+    return CusAppBar(
+      text: "大师订单",
+      actions: [
+        if (CusRole.is_master)
+          FlatButton(
+            child: Text("结单", style: _tGray),
+            onPressed: () async {
+              CusDialog.normal(context, title: "是否现在结单", onApproval: () async {
+                bool ok = await ApiYiOrder.yiOrderComplete(widget.id);
+                if (ok) {
+                  CusToast.toast(context, text: "已结单");
+                  CusRoute.pushReplacement(context, HomePage());
+                }
+              });
+            },
+          )
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/master/master_console/master_await_main.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
@@ -17,7 +18,7 @@ class OtherOrdersMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "帖子订单"),
+      appBar: CusAppBar(text: "其它订单"),
       body: _lv(context),
       backgroundColor: primary,
     );
@@ -29,12 +30,16 @@ class OtherOrdersMain extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           NormalBox(
-            title: "大师待处理订单",
+            title: "大师待处理订单(之前做的)",
             onTap: () => CusRoute.push(context, MyMasterOrders()),
           ),
           NormalBox(
             title: "投诉",
             onTap: () => CusRoute.push(context, RefundMainPage()),
+          ),
+          NormalBox(
+            title: "大师处理中订单",
+            onTap: () => CusRoute.push(context, MasterAwaitMain()),
           ),
         ],
       ),

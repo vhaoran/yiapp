@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -49,7 +50,9 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await ApiYiOrder.yiOrderPageOfMaster(m);
+      PageBean pb = CusRole.is_master
+          ? await ApiYiOrder.yiOrderPageOfMaster(m)
+          : await ApiYiOrder.yiOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
       Log.info("总的大师处理中订单个数：$_rowsCount");
@@ -58,7 +61,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      if (mounted) setState(() {});
+      setState(() {});
       Log.info("当前大师查询处理中的订单个数：${_l.length}");
     } catch (e) {
       Log.error("分页查询大师处理中订单出现异常：$e");
@@ -113,8 +116,8 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
   Future<void> _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
-    await _fetch();
     setState(() {});
+    await _fetch();
   }
 
   @override
