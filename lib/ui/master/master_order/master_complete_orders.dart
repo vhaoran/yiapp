@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
-import 'package:yiapp/widget/master/master_order_cover.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -47,7 +48,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
       "page_no": _pageNo,
       "rows_per_page": _rows_per_page,
       "sort": {"create_date": -1},
-      "where": {"master_id": widget.master_id},
+      "where": {"master_id": widget.master_id, "stat": bbs_ok},
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderHisPage(m);
@@ -68,37 +69,37 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
 
   @override
   Widget build(BuildContext context) {
-    return _buildFb();
+    return Scaffold(
+      appBar: CusAppBar(text: "已完成订单"),
+      body: _buildFb(),
+      backgroundColor: primary,
+    );
   }
 
   Widget _buildFb() {
     return FutureBuilder(
-      future: _future,
-      builder: (context, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (_l.isEmpty) {
-          return Center(child: CusText("暂无订单", t_gray, 32));
-        }
-        return ScrollConfiguration(
-          behavior: CusBehavior(),
-          child: EasyRefresh(
-            header: CusHeader(),
-            footer: CusFooter(),
-            onLoad: () async => await _fetch(),
-            onRefresh: () async => await _refresh(),
-            child: ListView(
-              children: <Widget>[
-                ..._l.map(
-                  (e) => MasterOrderCover(yiOrder: e, showUser: true),
-                ),
-              ],
+        future: _future,
+        builder: (context, snap) {
+          if (snap.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return ScrollConfiguration(
+            behavior: CusBehavior(),
+            child: EasyRefresh(
+              header: CusHeader(),
+              footer: CusFooter(),
+              onLoad: () async => await _fetch(),
+              onRefresh: () async => await _refresh(),
+              child: ListView(
+                children: <Widget>[
+                  ..._l.map(
+                    (e) => MasterAwaitCover(yiOrder: e, is_his: true),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        });
   }
 
   /// 刷新数据

@@ -19,6 +19,7 @@ import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/master/master_console/master_console.dart';
 import 'package:yiapp/ui/master/master_his_main.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
+import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_main.dart';
@@ -146,8 +147,15 @@ class _MinePageState extends State<MinePage>
               CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
         ),
         NormalBox(
-          title: "大师已完成订单",
+          title: "大师已完成帖子订单",
           onTap: () => CusRoute.push(context, MasterHisMain()),
+        ),
+        NormalBox(
+          title: "大师已完成订单",
+          onTap: () => CusRoute.push(
+            context,
+            MasterCompletedOrders(master_id: ApiBase.uid),
+          ),
         ),
         NormalBox(
           title: "账户与安全",

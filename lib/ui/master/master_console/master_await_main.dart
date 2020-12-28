@@ -103,7 +103,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
                       style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                     ),
                   ),
-                ..._l.map((e) => MasterAwaitCover(yiOrder: e)),
+                ..._l.map((e) => MasterAwaitCover(yiOrder: e, is_his: false)),
               ],
             ),
           ),

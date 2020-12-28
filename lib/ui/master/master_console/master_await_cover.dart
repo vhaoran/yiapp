@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -16,9 +17,11 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 // ------------------------------------------------------
 
 class MasterAwaitCover extends StatefulWidget {
+  final bool is_his; // 是否历史查询
   final YiOrder yiOrder;
 
-  MasterAwaitCover({this.yiOrder, Key key}) : super(key: key);
+  MasterAwaitCover({this.is_his: false, this.yiOrder, Key key})
+      : super(key: key);
 
   @override
   _MasterAwaitCoverState createState() => _MasterAwaitCoverState();
@@ -36,10 +39,7 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoute.push(
-        context,
-        MasterYiOrderPage(id: widget.yiOrder.id),
-      ),
+      onTap: _pushPage,
       child: Card(
         color: fif_primary,
         child: Padding(
@@ -53,10 +53,13 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
   Widget _row() {
     TextStyle gray = TextStyle(color: t_gray, fontSize: S.sp(15));
     TextStyle tPrimary = TextStyle(color: t_primary, fontSize: S.sp(15));
+    bool isMaster = CusRole.is_master;
+    String url = isMaster ? _order.icon_ref : _order.master_icon_ref;
+    String nick = isMaster ? _order.nick_ref : _order.master_nick_ref;
     return Row(
       children: <Widget>[
-        // 用户头像
-        CusAvatar(url: _order.icon_ref, rate: 20),
+        // 用户或者大师头像
+        CusAvatar(url: url, rate: 20),
         SizedBox(width: 10),
         Expanded(
           child: Column(
@@ -65,7 +68,7 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(_order.nick_ref, style: tPrimary), // 用户昵称
+                  Text(nick, style: tPrimary), // 用户或者大师昵称
                   Spacer(),
                   Text("${_order.amt} 元宝", style: tPrimary), // 用户付款金额
                 ],
@@ -85,10 +88,7 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
                     constraints: BoxConstraints(maxHeight: S.h(30)),
                     child: CusRaisedButton(
                       child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
-                      onPressed: () => CusRoute.push(
-                        context,
-                        MasterYiOrderPage(id: widget.yiOrder.id),
-                      ),
+                      onPressed: _pushPage,
                       borderRadius: 50,
                       backgroundColor: Colors.lightBlue,
                     ),
@@ -99,6 +99,14 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
           ),
         ),
       ],
+    );
+  }
+
+  /// 点击封面或者回复按钮，都可以跳转到大师订单详情界面
+  void _pushPage() {
+    CusRoute.push(
+      context,
+      MasterYiOrderPage(id: widget.yiOrder.id, is_his: true),
     );
   }
 }

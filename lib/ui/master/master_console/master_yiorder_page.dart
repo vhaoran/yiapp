@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -32,9 +32,10 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // ------------------------------------------------------
 
 class MasterYiOrderPage extends StatefulWidget {
+  final bool is_his; // 是否历史查询
   final String id;
 
-  MasterYiOrderPage({this.id, Key key}) : super(key: key);
+  MasterYiOrderPage({this.id, this.is_his: false, Key key}) : super(key: key);
 
   @override
   _MasterYiOrderPageState createState() => _MasterYiOrderPageState();
@@ -70,7 +71,10 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
   /// 获取大师订单详情
   _fetchOrder() async {
     try {
-      YiOrder order = await ApiYiOrder.yiOrderGet(widget.id);
+      Log.info("id:${widget.id}");
+      YiOrder order = widget.is_his
+          ? await ApiYiOrder.yiOrderHisGet(widget.id)
+          : await ApiYiOrder.yiOrderGet(widget.id);
       if (order != null) {
         Log.info("当前大师订单详情：${order.toJson()}");
         _yiOrder = order;
@@ -112,42 +116,45 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _buildFb(),
-      backgroundColor: primary,
-    );
-  }
-
-  Widget _buildFb() {
     return FutureBuilder(
-      future: _future,
-      builder: (context, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return Column(
-          children: [
-            Expanded(child: _lv()),
-            // 回复大师订单输入框
-            YiOrderInput(
-                yiOrder: _yiOrder,
-                onSend: () async {
-                  await _refresh();
-                  Timer(
-                    Duration(milliseconds: 500),
-                    () => _scrollCtrl
-                        .jumpTo(_scrollCtrl.position.maxScrollExtent),
-                  );
-                },
-                needCh: _needCh),
-          ],
-        );
-      },
-    );
+        future: _future,
+        builder: (context, snap) {
+          if (snap.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Scaffold(
+            appBar: _appBar(),
+            body: Column(
+              children: [
+                Expanded(child: _lv()),
+                // 回复大师订单输入框
+                if (_yiOrder.stat == bbs_paid)
+                  YiOrderInput(
+                      yiOrder: _yiOrder,
+                      onSend: () async {
+                        await _refresh();
+                        Timer(
+                          Duration(milliseconds: 500),
+                          () => _scrollCtrl
+                              .jumpTo(_scrollCtrl.position.maxScrollExtent),
+                        );
+                      },
+                      needCh: _needCh),
+              ],
+            ),
+            backgroundColor: primary,
+          );
+        });
   }
 
   Widget _lv() {
+    if (_yiOrder == null)
+      return Center(
+        child: Text(
+          "订单找不到了~",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ),
+      );
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: EasyRefresh(
@@ -174,7 +181,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     );
   }
 
-  Future<Void> _refresh() async {
+  Future<void> _refresh() async {
     _l.clear();
     _pageNo = _rowsCount = 0;
     await _fetch();
@@ -243,14 +250,13 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   /// 测算结果组件
   Widget _diagnoseWid(String diagnose) {
-    Widget child1 = Text("请先对订单设置测算结果", style: _tPrimary);
-    Widget child2 = Column(
-      children: <Widget>[
+    return Column(
+      children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("当前测算结果", style: _tPrimary),
-            if (CusRole.is_master)
+            if (CusRole.is_master && _yiOrder.diagnose.isNotEmpty)
               InkWell(
                 onTap: () => setState(() => _needCh = true),
                 child: Text(
@@ -260,11 +266,11 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
               ),
           ],
         ),
-        Text(_yiOrder.diagnose, style: _tGray),
+        Text(
+          _yiOrder.diagnose.isEmpty ? "暂无测算结果" : _yiOrder.diagnose,
+          style: _tGray,
+        ), // 测算结果
       ],
-    );
-    return Center(
-      child: diagnose.isEmpty ? child1 : child2,
     );
   }
 
@@ -305,7 +311,8 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     return CusAppBar(
       text: "大师订单",
       actions: [
-        if (CusRole.is_master)
+        // 如果是大师且订单已支付，则显示结单按钮
+        if (CusRole.is_master && _yiOrder.stat == bbs_paid)
           FlatButton(
             child: Text("结单", style: _tGray),
             onPressed: () async {
@@ -317,7 +324,12 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
                 }
               });
             },
-          )
+          ),
+        if (CusRole.is_vip && _yiOrder.stat == bbs_ok)
+          FlatButton(
+            child: Text("投诉", style: _tGray),
+            onPressed: () {},
+          ),
       ],
     );
   }
