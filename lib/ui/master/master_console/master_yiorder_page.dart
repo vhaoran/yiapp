@@ -256,7 +256,9 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("当前测算结果", style: _tPrimary),
-            if (CusRole.is_master && _yiOrder.diagnose.isNotEmpty)
+            if (CusRole.is_master &&
+                _yiOrder.diagnose.isNotEmpty &&
+                _yiOrder.stat != bbs_ok)
               InkWell(
                 onTap: () => setState(() => _needCh = true),
                 child: Text(

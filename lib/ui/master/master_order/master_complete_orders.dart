@@ -93,7 +93,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
               child: ListView(
                 children: <Widget>[
                   ..._l.map(
-                    (e) => MasterAwaitCover(yiOrder: e, is_his: true),
+                    (e) => MasterYiOrderCover(yiOrder: e, is_his: true),
                   ),
                 ],
               ),

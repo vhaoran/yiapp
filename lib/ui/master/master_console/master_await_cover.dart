@@ -16,18 +16,18 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 // usage ：大师控制台 -- 大师处理中的订单
 // ------------------------------------------------------
 
-class MasterAwaitCover extends StatefulWidget {
+class MasterYiOrderCover extends StatefulWidget {
   final bool is_his; // 是否历史查询
   final YiOrder yiOrder;
 
-  MasterAwaitCover({this.is_his: false, this.yiOrder, Key key})
+  MasterYiOrderCover({this.is_his: false, this.yiOrder, Key key})
       : super(key: key);
 
   @override
-  _MasterAwaitCoverState createState() => _MasterAwaitCoverState();
+  _MasterYiOrderCoverState createState() => _MasterYiOrderCoverState();
 }
 
-class _MasterAwaitCoverState extends State<MasterAwaitCover> {
+class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
   YiOrder _order; // 单个订单详情
 
   @override
@@ -106,7 +106,7 @@ class _MasterAwaitCoverState extends State<MasterAwaitCover> {
   void _pushPage() {
     CusRoute.push(
       context,
-      MasterYiOrderPage(id: widget.yiOrder.id, is_his: true),
+      MasterYiOrderPage(id: widget.yiOrder.id, is_his: widget.is_his),
     );
   }
 }
