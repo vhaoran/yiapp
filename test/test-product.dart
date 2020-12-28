@@ -58,7 +58,7 @@ void main() {
     var r = await ApiProduct.productPage(m);
     print("-----result---$r---------");
     //print("-----result---${r.toJson()}---------");
-    r.data.forEach((e) {
+    r.cate.forEach((e) {
       print("-----result---${e.toJson()}---------");
     });
 

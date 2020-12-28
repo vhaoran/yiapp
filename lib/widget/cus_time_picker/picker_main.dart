@@ -108,10 +108,10 @@ class _PickerViewState extends State<PickerView> {
     YiDateTime yiDt = YiDateTime(
       year: year,
 // 不管阴阳历，直接返回month和day
-//      month: _isLunar ? lunar.month : month, // 根据阴阳历选择月
-//      day: _isLunar ? lunar.day : day, // 根据阴阳历选择日
-      month: month, // 根据阴阳历选择月
-      day: day, // 根据阴阳历选择日
+      month: _isLunar ? lunar.month : month, // 根据阴阳历选择月
+      day: _isLunar ? lunar.day : day, // 根据阴阳历选择日
+//      month: month, // 根据阴阳历选择月
+//      day: day, // 根据阴阳历选择日
       hour: _hourIndex,
       minute: _minuteIndex,
       monthStr: _fnSelectMonth(_monthIndex),
@@ -351,7 +351,9 @@ class _PickerViewState extends State<PickerView> {
           : DateTime(widget.end.year, widget.end.month, widget.end.day,
               widget.end.hour, widget.end.minute);
       String resMinute = CusTime.isRange(nowDate, start, end)
-          ? widget.padLeft ? "${index.toString().padLeft(2, "0")}分" : "$index分"
+          ? widget.padLeft
+              ? "${index.toString().padLeft(2, "0")}分"
+              : "$index分"
           : null;
       return resMinute;
     }

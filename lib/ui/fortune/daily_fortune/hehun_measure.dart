@@ -7,6 +7,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
@@ -169,10 +170,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
     bool isMale = sex == male;
     String timeStr = yi == null
         ? "请选择你的出生日期"
-        : yi.yiTimeShow(
-            yi,
-            isMale ? _isLunarMale : _isLunarFemale,
-          );
+        : TimeUtil.YMDHM(isSolar: isMale ? !_isLunarMale : !_isLunarFemale);
     isMale ? _maleTimeStr = timeStr : _femaleTimeStr = timeStr;
     return InkWell(
       child: Container(

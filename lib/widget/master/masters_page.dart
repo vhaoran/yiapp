@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
+import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/service/api/api_bo.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -20,7 +21,9 @@ import 'package:yiapp/model/pagebean.dart';
 // ------------------------------------------------------
 
 class MastersPage extends StatefulWidget {
-  MastersPage({Key key}) : super(key: key);
+  final bool showLeading;
+
+  MastersPage({this.showLeading: false, Key key}) : super(key: key);
 
   @override
   _MastersPageState createState() => _MastersPageState();
@@ -69,7 +72,7 @@ class _MastersPageState extends State<MastersPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "大师信息", showLeading: false),
+      appBar: CusAppBar(text: "大师信息", showLeading: widget.showLeading),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {

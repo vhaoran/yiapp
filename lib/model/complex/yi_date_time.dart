@@ -1,5 +1,5 @@
+import 'package:secret/tools/lunar.dart';
 import 'package:yiapp/model/complex/old_time.dart';
-import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -47,104 +47,18 @@ class YiDateTime {
     return data;
   }
 
-  // YiDateTime 转 DateTime
+  /// YiDateTime 转 DateTime
   DateTime toDateTime() {
-    int year = this.year;
-    int month = this.month;
-    int day = this.day;
-    int hour = this.hour;
-    int minute = this.minute;
-    DateTime dt = DateTime(year, month, day, hour, minute);
+    var dt = DateTime(this.year, this.month, this.day, this.hour, this.minute);
     return dt;
   }
 
-  String yiTimeShow(YiDateTime t, bool isLunar) {
-    if (t != null) {
-      if (isLunar) {
-        return "${t.year}年${t.monthStr}${t.dayStr} ${t.hourStr}";
-      }
-      return "${t.year}年${t.month}月${t.day}日 ${t.hourStr}";
-    }
-    return "转换YiDateTime为字符串出错";
-  }
-
-  /// 根据 PickMode 给不同的数据，方便看实际需求参数
-  /// 也可不用判断，只是看数据比较乱
-  YiDateTime fromPickMode(PickerMode mode) {
-    YiDateTime yiDate;
-    switch (mode) {
-      case PickerMode.year: // 年
-        yiDate = YiDateTime(year: this.year);
-        break;
-      case PickerMode.year_month: // 年月
-        yiDate = YiDateTime(
-          year: this.year,
-          month: this.month,
-          monthStr: this.monthStr,
-        );
-        break;
-      case PickerMode.month_day: // 月日
-        yiDate = YiDateTime(
-          month: this.month,
-          day: this.day,
-          monthStr: this.monthStr,
-          dayStr: this.dayStr,
-        );
-        break;
-      case PickerMode.date: // 年月日
-        yiDate = YiDateTime(
-          year: this.year,
-          month: this.month,
-          day: this.day,
-          monthStr: this.monthStr,
-          dayStr: this.dayStr,
-        );
-        break;
-      case PickerMode.hour_minute: // 时分
-        yiDate = YiDateTime(hour: this.hour, minute: this.minute);
-        break;
-      case PickerMode.full: // 年月日时分
-        yiDate = YiDateTime(
-          year: this.year,
-          month: this.month,
-          day: this.day,
-          hour: this.hour,
-          minute: this.minute,
-          monthStr: this.monthStr,
-          dayStr: this.dayStr,
-          hourStr: this.hourStr,
-        );
-        break;
-      case PickerMode.yi:
-        yiDate = YiDateTime(
-          year: this.year,
-          month: this.month,
-          day: this.day,
-          monthStr: this.monthStr,
-          dayStr: this.dayStr,
-          hourStr: this.hourStr,
-        );
-        break;
-      default:
-        break;
-    }
-    return yiDate;
-  }
-
-  /// 返回格式  公历:2020-09-10 午时
-  String gongLi({String text = "公历"}) {
-    String month = "${this.month}".padLeft(2, "0");
-    String day = "${this.day}".padLeft(2, "0");
-    return "$text:${this.year}-$month-$day ${this.hourStr}";
-  }
-
-  /// 返回格式  阴历:2020年四月廿九 午时
-  String nongLi({String text = "农历"}) {
-    String year = "${this.year}年"; // 2020
-    // 四月廿九
-    String monthDay = "${this.monthStr}${this.dayStr}";
-    String oldTime = "${this.hourStr}"; // 午时
-    String str = "$text:$year$monthDay $oldTime";
-    return str;
+  /// YiDateTime转阳历，选择阴历后得到阴历日期，调用TimeUtil后会判断其为阴历再次转换
+  /// 所以如果选择的是阴历，则先将阴历转为阳历显示
+  DateTime toSolar() {
+    Lunar lunar = Lunar.fromYmd(this.year, this.month, this.day);
+    var t = lunar.toSolar;
+    DateTime dt = DateTime(t.year, t.month, t.day, this.hour, this.minute);
+    return dt;
   }
 }

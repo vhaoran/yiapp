@@ -35,7 +35,7 @@ class TimeUtil {
     return res;
   }
 
-  /// 农历的年月日 2020年十月初十
+  /// 农历的年月日 2020年十月初十（阳历转阴历）
   static String lunarYMD(DateTime date, bool comment) {
     String start = comment ? "农历 " : "";
     if (date == null) date = DateTime.now();

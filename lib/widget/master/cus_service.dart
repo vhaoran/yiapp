@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/mine/my_orders/talk_about_master.dart';
+import 'package:yiapp/ui/mine/my_orders/meet_master_page.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -122,9 +121,13 @@ class _ServiceItemState extends State<ServiceItem> {
           if (!widget.isSelf)
             CusRaisedButton(
               child: Text("立即测算"),
+//              onPressed: () => CusRoute.push(
+//                context,
+//                TalkAboutMaster(data: widget.data),
+//              ),
               onPressed: () => CusRoute.push(
                 context,
-                TalkAboutMaster(data: widget.data),
+                MeetMasterPage(cate: widget.data),
               ),
               borderRadius: 50,
             ),

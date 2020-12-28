@@ -19,7 +19,8 @@ class MasterCover extends StatelessWidget {
   final BrokerMasterRes info;
   final VoidCallback onPressed;
 
-  const MasterCover({this.info, this.onPressed, Key key}) : super(key: key);
+  const MasterCover({this.info, this.onPressed, Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

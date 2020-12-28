@@ -47,9 +47,7 @@ class LuckCalculate extends StatelessWidget {
   /// 单个测算对象
   Widget _iconItem(BuildContext context, LuckIcon e) {
     return InkWell(
-      onTap: () {
-        CusRoute.pushNamed(context, e.route, arguments: e.text);
-      },
+      onTap: () => CusRoute.pushNamed(context, e.route, arguments: e.text),
       child: Column(
         children: <Widget>[
           // 裁剪图标为圆形
