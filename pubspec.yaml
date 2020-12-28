@@ -70,6 +70,8 @@ dependencies:
   flutter_screenutil: ^4.0.2
   ###### suxing #####
   flutter_svg: 0.18.0
+  #----- mobile push service-------
+  mobpush_plugin: ^1.1.6
 
 dev_dependencies:
   flutter_test:
