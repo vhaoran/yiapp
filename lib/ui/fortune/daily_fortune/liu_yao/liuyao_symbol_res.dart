@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 
 // ------------------------------------------------------
@@ -22,10 +21,7 @@ class LiuYaoSymRes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: TextStyle(
-        color: t_gray,
-        fontSize: Adapt.px(26),
-      ),
+      style: TextStyle(color: t_gray, fontSize: Adapt.px(26)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -91,7 +87,7 @@ class LiuYaoSymRes extends StatelessWidget {
               width: Adapt.px(20),
               child: Text(
                 SwitchUtil.xoSymbol(code),
-                 style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],

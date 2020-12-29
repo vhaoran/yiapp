@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
+import 'package:yiapp/ui/mine/my_orders/meet_master_show.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/temp/cus_time.dart';
+import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
@@ -18,10 +23,15 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 
 class MasterYiOrderCover extends StatefulWidget {
   final bool is_his; // 是否历史查询
+  final bool is_pay; // 是否准备支付订单
   final YiOrder yiOrder;
 
-  MasterYiOrderCover({this.is_his: false, this.yiOrder, Key key})
-      : super(key: key);
+  MasterYiOrderCover({
+    this.is_his: false,
+    this.is_pay: false,
+    this.yiOrder,
+    Key key,
+  }) : super(key: key);
 
   @override
   _MasterYiOrderCoverState createState() => _MasterYiOrderCoverState();
@@ -83,16 +93,35 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
                   // 2020-10-20T01:42:17.682Z 非标准的时间格式，故只转换为年月日
                   Text("${CusTime.ymd(_order.create_date)}", style: gray),
                   Spacer(),
-                  Container(
-                    width: S.w(70),
-                    constraints: BoxConstraints(maxHeight: S.h(30)),
-                    child: CusRaisedButton(
-                      child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
-                      onPressed: _pushPage,
-                      borderRadius: 50,
-                      backgroundColor: Colors.lightBlue,
+                  if (_order.stat == bbs_init)
+                    Container(
+                      width: S.w(70),
+                      constraints: BoxConstraints(maxHeight: S.h(30)),
+                      child: CusRaisedButton(
+                        child: Text("支付", style: TextStyle(fontSize: S.sp(14))),
+                        onPressed: () {
+                          PayData payData = PayData(
+                            amt: _order.amt,
+                            b_type: b_yi_order,
+                            id: _order.id,
+                          );
+                          BalancePay(context, data: payData);
+                        },
+                        borderRadius: 50,
+                        backgroundColor: Colors.black54,
+                      ),
                     ),
-                  ),
+                  if (_order.stat == bbs_paid)
+                    Container(
+                      width: S.w(70),
+                      constraints: BoxConstraints(maxHeight: S.h(30)),
+                      child: CusRaisedButton(
+                        child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
+                        onPressed: _pushPage,
+                        borderRadius: 50,
+                        backgroundColor: Colors.lightBlue,
+                      ),
+                    ),
                 ],
               ),
             ],
@@ -104,9 +133,14 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
 
   /// 点击封面或者回复按钮，都可以跳转到大师订单详情界面
   void _pushPage() {
-    CusRoute.push(
-      context,
-      MasterYiOrderPage(id: widget.yiOrder.id, is_his: widget.is_his),
-    );
+    if (_order.stat == bbs_init) {
+      CusRoute.push(context, MeetMasterShow(yiOrder: widget.yiOrder));
+    }
+    if (_order.stat == bbs_paid) {
+      CusRoute.push(
+        context,
+        MasterYiOrderPage(id: widget.yiOrder.id, is_his: widget.is_his),
+      );
+    }
   }
 }

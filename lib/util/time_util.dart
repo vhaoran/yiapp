@@ -77,4 +77,12 @@ class TimeUtil {
     String m = "${minute.toString().padLeft(2, "0")}";
     return "$h:$m";
   }
+
+  /// 阴历转阳历（确保传入的是阴历）
+  static DateTime toSolar(DateTime date) {
+    Lunar lunar = Lunar.fromYmd(date.year, date.month, date.day);
+    var t = lunar.toSolar;
+    DateTime dt = DateTime(t.year, t.month, t.day, date.hour, date.minute);
+    return dt;
+  }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -15,24 +14,24 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/15 上午10:13
-// usage ：大师控制台 -- 大师(处理中)订单查询
+// date  ：2020/12/29 下午2:48
+// usage ：用户查询待支付大师订单
 // ------------------------------------------------------
 
-class MasterAwaitMain extends StatefulWidget {
-  MasterAwaitMain({Key key}) : super(key: key);
+class AwaitYiorderPage extends StatefulWidget {
+  AwaitYiorderPage({Key key}) : super(key: key);
 
   @override
-  _MasterAwaitMainState createState() => _MasterAwaitMainState();
+  _AwaitYiorderPageState createState() => _AwaitYiorderPageState();
 }
 
-class _MasterAwaitMainState extends State<MasterAwaitMain>
+class _AwaitYiorderPageState extends State<AwaitYiorderPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List<YiOrder> _l = []; // 大师未完成列表
+  List<YiOrder> _l = []; // 待支付大师订单列表
 
   @override
   void initState() {
@@ -40,32 +39,30 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
     super.initState();
   }
 
-  /// 分页查询大师未完成列表
+  /// 分页查询待支付大师订单
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_paid},
+      "where": {"stat": bbs_init},
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = CusRole.is_master
-          ? await ApiYiOrder.yiOrderPageOfMaster(m)
-          : await ApiYiOrder.yiOrderPage(m);
+      PageBean pb = await ApiYiOrder.yiOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
-      Log.info("总的大师处理中订单个数：$_rowsCount");
+      Log.info("总的待支付大师订单个数：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
-      Log.info("当前大师查询处理中的订单个数：${_l.length}");
+      Log.info("当前已加载待支付大师订单个数：${_l.length}");
     } catch (e) {
-      Log.error("分页查询大师处理中订单出现异常：$e");
+      Log.error("分页查询待支付大师订单出现异常：$e");
     }
   }
 
@@ -73,7 +70,7 @@ class _MasterAwaitMainState extends State<MasterAwaitMain>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "大师订单"),
+      appBar: CusAppBar(text: "待支付"),
       body: _buildFb(),
       backgroundColor: primary,
     );

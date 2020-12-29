@@ -1,22 +1,27 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_snackbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
-import 'package:yiapp/ui/master/master_order/master_recommend.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
+import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -33,20 +38,17 @@ class HeHunMeasure extends StatefulWidget {
 
 class _HeHunMeasureState extends State<HeHunMeasure> {
   String _err; // 错误提示信息
-  String _maleTimeStr = ""; // 显示男生出生日期
-  String _femaleTimeStr = ""; // 显示女生出生日期
   bool _isLunarMale = false; // 男生是否选择了阴历
   bool _isLunarFemale = false; // 女生是否选择了阴历
   YiDateTime _maleYiDate; // 男生出生日期
   YiDateTime _femaleYiDate; // 女生出生日期
   var _maleNameCtrl = TextEditingController(); // 男生姓名
   var _femaleNameCtrl = TextEditingController(); // 女生姓名
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  var _commentCtrl = TextEditingController(); // 内容输入框
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: CusAppBar(text: "合婚测算"),
       body: _lv(),
       backgroundColor: primary,
@@ -65,71 +67,55 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
             child: CusText("找一个爱你懂你的人", t_primary, 32),
           ),
           _inputChild(_maleNameCtrl, "男方姓名"),
-          _dateChild(_maleYiDate, male),
-          SizedBox(height: Adapt.px(30)),
+          _dateChild(_maleYiDate, true),
+          SizedBox(height: S.h(15)),
           _inputChild(_femaleNameCtrl, "女方姓名"),
-          _dateChild(_femaleYiDate, female),
-          SizedBox(height: Adapt.px(50)),
-          CusBtn(
-            text: "立即测算",
-            onPressed: _pushPage,
-            backgroundColor: btn_red,
+          _dateChild(_femaleYiDate, false),
+          SizedBox(height: S.h(10)),
+          CusRectField(
+            controller: _commentCtrl,
+            hintText: "请详细描述你的问题",
+            maxLines: 10,
+            autofocus: false,
           ),
+          SizedBox(height: S.h(25)),
+          // 大师亲测
+          CusRaisedButton(child: Text("大师亲测"), onPressed: _doSelectMaster),
         ],
       ),
     );
   }
 
-  /// 跳转路由
-  void _pushPage() {
+  /// 跳往选择大师页面
+  void _doSelectMaster() async {
     setState(() {
       _err = null;
-      _err = _maleNameCtrl.text.isEmpty ? "未填写男方姓名" : null;
-      if (_err == null) {
-        _err = _maleYiDate == null ? "未选择男方出生日期" : null;
-      }
-      if (_err == null) {
-        _err = _femaleNameCtrl.text.isEmpty ? "未填写女方姓名" : null;
-      }
-      if (_err == null) {
-        _err = _femaleYiDate == null ? "未选择女方出生日期" : null;
+      if (_maleNameCtrl.text.isEmpty || _femaleNameCtrl.text.isEmpty) {
+        _err = "未完全填写姓名";
+      } else if (_maleYiDate == null || _femaleYiDate == null) {
+        _err = "未完全选择出生日期";
+      } else if (_commentCtrl.text.isEmpty) {
+        _err = "描述问题不能为空";
       }
     });
     if (_err != null) {
-      CusSnackBar(
-        context,
-        scaffoldKey: _scaffoldKey,
-        text: _err,
-        backgroundColor: fif_primary,
-      );
+      CusToast.toast(context, text: _err);
       return;
     }
-    Log.info("测算通过");
-    YiOrderHeHun heHun = YiOrderHeHun(
+    var heHun = YiOrderHeHun(
       name_male: _maleNameCtrl.text.trim(),
       is_solar_male: !_isLunarMale,
-      year_male: _maleYiDate.year,
-      month_male: _maleYiDate.month,
-      day_male: _maleYiDate.day,
-      hour_male: _maleYiDate.oldTime.hour,
-      minute_male: _maleYiDate.oldTime.minute,
       name_female: _femaleNameCtrl.text.trim(),
       is_solar_female: !_isLunarFemale,
-      year_female: _femaleYiDate.year,
-      month_female: _femaleYiDate.month,
-      day_female: _femaleYiDate.day,
-      hour_female: _femaleYiDate.oldTime.hour,
-      minute_female: _femaleYiDate.oldTime.minute,
     );
-    CusRoute.push(
-      context,
-      MasterRecommend(
-        type: post_hehun,
-        timeHunMale: _maleTimeStr,
-        timeHunFemale: _femaleTimeStr,
-        heHun: heHun,
-      ),
-    );
+    heHun.ymdhm(_maleYiDate.toDateTime(), _femaleYiDate.toDateTime());
+    var data = MasterOrderData(comment: _commentCtrl.text.trim(), heHun: heHun);
+    Log.info("当前提交合婚的信息：${data.toJson()}");
+    // 清除上次数据
+    if (await KV.getStr(kv_order) != null) await KV.remove(kv_order);
+    // 存储大师订单数据
+    bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
+    if (ok) CusRoute.push(context, MastersPage(showLeading: true));
   }
 
   /// 男/女 姓名输入框
@@ -166,12 +152,18 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
   }
 
   /// 男/女 选择出生日期组件
-  Widget _dateChild(YiDateTime yi, int sex) {
-    bool isMale = sex == male;
-    String timeStr = yi == null
-        ? "请选择你的出生日期"
-        : TimeUtil.YMDHM(isSolar: isMale ? !_isLunarMale : !_isLunarFemale);
-    isMale ? _maleTimeStr = timeStr : _femaleTimeStr = timeStr;
+  Widget _dateChild(YiDateTime yi, bool isMale) {
+    String time;
+    if (yi == null) {
+      time = "请选择出生日期";
+    } else {
+      bool isSolar = isMale ? !_isLunarMale : !_isLunarFemale;
+      YiDateTime date = isMale ? _maleYiDate : _femaleYiDate;
+      time = TimeUtil.YMDHM(
+        isSolar: isSolar,
+        date: isSolar ? date : date.toSolar(),
+      );
+    }
     return InkWell(
       child: Container(
         height: Adapt.px(90),
@@ -183,11 +175,8 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
         child: Row(
           children: <Widget>[
             CusText("出生日期", t_gray, 30),
-            SizedBox(width: Adapt.px(30)),
-            Text(
-              timeStr,
-              style: TextStyle(color: t_gray, fontSize: Adapt.px(30)),
-            ),
+            SizedBox(width: S.w(15)),
+            Text(time, style: TextStyle(color: t_gray, fontSize: S.sp(15))),
             Spacer(),
             Icon(FontAwesomeIcons.calendarAlt, color: Color(0xFFC85356)),
           ],
@@ -195,11 +184,10 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
       ),
       onTap: () => TimePicker(
         context,
-        pickMode: PickerMode.yi,
+        pickMode: PickerMode.full,
         showLunar: true,
         isLunar: (val) {
           isMale ? _isLunarMale = val : _isLunarFemale = val;
-          Log.info("男生阴历：$_isLunarMale、女生阴历：$_isLunarFemale");
           setState(() {});
         },
         onConfirm: (yiDate) {
@@ -208,5 +196,13 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _maleNameCtrl.dispose();
+    _femaleNameCtrl.dispose();
+    _commentCtrl.dispose();
+    super.dispose();
   }
 }
