@@ -12,7 +12,6 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
@@ -85,8 +84,7 @@ class _LiuYaoByShakeState extends State<LiuYaoByShake> {
         ),
         SizedBox(height: S.h(10)),
         // 剩余次数
-        if (!_hadShaken)
-          Text("剩余 ${6 - widget.l.length} 次", style: style),
+        if (!_hadShaken) Text("剩余 ${6 - widget.l.length} 次", style: style),
       ],
     );
   }

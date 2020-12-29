@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
+import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/model/login/userInfo.dart';
+import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -19,8 +23,8 @@ import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
-import 'package:yiapp/ui/master/master_order/master_recommend.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
+import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -44,17 +48,21 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
   _LiuYaoResPageState(this._res);
 
   List<int> _codes = []; // 六爻编码
-  String _userNick; // 卦主
+  UserInfo _user; // 卦主
+
+  DateTime _dt;
 
   @override
   void initState() {
     _codes = widget.l.reversed.toList();
+    LiuYaoRiqi riqi = _res.riqi;
+    _dt = DateTime(riqi.year, riqi.month, riqi.day, riqi.hour, riqi.minute);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _userNick = context.watch<UserInfoState>()?.userInfo?.nick ?? "";
+    _user = context.watch<UserInfoState>()?.userInfo;
     return Scaffold(
       appBar: CusAppBar(text: "六爻排盘", backData: ""),
       body: _lv(),
@@ -72,7 +80,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             padding: EdgeInsets.all(Adapt.px(30)),
             children: <Widget>[
               _show("占类", "在线起卦"),
-              _show("卦主", _userNick),
+              _show("卦主", _user.nick),
               _show(
                   "时间",
                   "${YiTool.fullDateGong(
@@ -130,18 +138,31 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
             borderRadius: 0,
             backgroundColor: Color(0xFFE8493E),
             height: 45,
-            onPressed: () async {
-              CusLiuYaoData data = CusLiuYaoData(res: _res, codes: _codes);
-              String str = json.encode(data.toJson());
-              bool ok = await KV.setStr(kv_liuyao, str);
-              if (ok) {
-                CusRoute.push(context, MasterRecommend(type: post_liuyao));
-              }
-            },
+            onPressed: _doSelectMaster,
           ),
         ),
       ],
     );
+  }
+
+  /// 跳往选择大师页面
+  void _doSelectMaster() async {
+    CusLiuYaoData yaoData = CusLiuYaoData(res: _res, codes: _codes);
+    String str = json.encode(yaoData.toJson());
+    bool ok = await KV.setStr(kv_liuyao, str);
+    if (ok) Log.info("已存储 kv_liuyao");
+    String code = "";
+    widget.l.forEach((e) => code += e.toString());
+    var liuYao =
+        YiOrderLiuYao(yao_code: code, is_male: _user.sex == 1 ? true : false);
+    liuYao.ymdhm(_dt);
+    var data = MasterOrderData(comment: "", liuYao: liuYao);
+    Log.info("当前提交六爻的信息：${data.toJson()}");
+    // 清除上次数据
+    if (await KV.getStr(kv_order) != null) await KV.remove(kv_order);
+    // 存储大师订单数据
+    bool success = await KV.setStr(kv_order, json.encode(data.toJson()));
+    if (success) CusRoute.push(context, MastersPage(showLeading: true));
   }
 
   /// 求测悬赏帖还是闪断帖
@@ -154,7 +175,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
         res: widget.res,
         l: widget.l,
         guaTime: widget.guaTime,
-        user_nick: _userNick,
+        user_nick: _user.nick,
       ),
     );
   }

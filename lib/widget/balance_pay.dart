@@ -111,6 +111,7 @@ class BalancePay {
         await Future.delayed(Duration(milliseconds: 1500));
         Navigator.pop(context);
         CusToast.toast(context, text: "支付成功");
+        // 目前设置为支付成功后统一跳转到首页
         CusRoute.pushReplacement(context, HomePage());
       }
     } catch (e) {

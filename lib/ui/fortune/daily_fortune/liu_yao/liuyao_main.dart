@@ -95,7 +95,7 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
     var style = TextStyle(color: t_gray, fontSize: S.sp(16));
     return InkWell(
       onTap: () {
-        if (_isLunar != false) _isLunar = false;
+        _isLunar = false;
         TimePicker(
           context,
           pickMode: PickerMode.full,
@@ -117,6 +117,10 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
 
   String get _time {
     if (_guaTime == null) return "选择起卦时间";
-    return TimeUtil.YMDHM(isSolar: !_isLunar, comment: true, date: _guaTime);
+    return TimeUtil.YMDHM(
+      isSolar: !_isLunar,
+      comment: true,
+      date: _isLunar ? _guaTime.toSolar() : _guaTime,
+    );
   }
 }

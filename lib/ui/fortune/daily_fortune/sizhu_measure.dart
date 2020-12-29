@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -98,7 +97,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
     siZhu.ymdhm(_yi.toDateTime());
     var data = MasterOrderData(comment: _commentCtrl.text.trim(), siZhu: siZhu);
     Log.info("当前提交四柱的信息：${data.toJson()}");
-    if (await KV.getStr(kv_order) != null) KV.remove(kv_order); // 清除上次数据
+    if (await KV.getStr(kv_order) != null) await KV.remove(kv_order); // 清除上次数据
     // 存储大师订单数据
     bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
     if (ok) CusRoute.push(context, MastersPage(showLeading: true));
@@ -181,13 +180,16 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
           child: CusRaisedButton(
             backgroundColor: Colors.grey,
             child: Text("选择", style: TextStyle(color: Colors.black)),
-            onPressed: () => TimePicker(
-              context,
-              pickMode: PickerMode.full,
-              showLunar: true,
-              isLunar: (val) => setState(() => _isLunar = val),
-              onConfirm: (val) => setState(() => _yi = val),
-            ),
+            onPressed: () {
+              _isLunar = false;
+              TimePicker(
+                context,
+                pickMode: PickerMode.full,
+                showLunar: true,
+                isLunar: (val) => setState(() => _isLunar = val),
+                onConfirm: (val) => setState(() => _yi = val),
+              );
+            },
           ),
         ),
         SizedBox(width: S.w(10)),

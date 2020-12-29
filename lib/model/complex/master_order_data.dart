@@ -46,7 +46,5 @@ class MasterOrderData {
     return data;
   }
 
-  bool type() {
-
-  }
+  bool type() {}
 }

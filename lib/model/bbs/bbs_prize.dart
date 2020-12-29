@@ -29,7 +29,6 @@ class BBSPrize {
   PostContentRes content;
   List<String> images;
   List<BBSPrizeReply> master_reply;
-  // TODO 这里还有一个 List rewards; 暂时不知道用法
 
   BBSPrize({
     this.amt,

@@ -30,7 +30,7 @@ class LuckList {
       "route": r_liu_yao,
     },
     {
-      "text": "姻缘测算",
+      "text": "合婚测算",
       "icon": 0xe606,
       "color": 0xFFE86E66,
       "route": r_he_hun,
