@@ -117,10 +117,10 @@ class ApiBase {
     }
 
     //
-    debug("-----$url--response-----\n ${r.cate.toString()} ");
+    debug("-----$url--response-----\n ${r.data.toString()} ");
     debug("------------------");
 
-    var m = jsonDecode(r.cate);
+    var m = jsonDecode(r.data);
     return m;
   }
 
@@ -146,10 +146,10 @@ class ApiBase {
     }
 
     //
-    debug("-----$fullUrl--response-----\n ${r.cate.toString()} ");
+    debug("-----$fullUrl--response-----\n ${r.data.toString()} ");
     debug("------------------");
 
-    var m = jsonDecode(r.cate);
+    var m = jsonDecode(r.data);
     return m;
   }
 

@@ -63,7 +63,7 @@ class _SelectMasterItemState extends State<SelectMasterItem> {
   Widget _lv() {
     return ListView(
       children: <Widget>[
-        ..._l.map((e) => ServiceItem(data: e, isSelf: false)),
+        ..._l.map((e) => ServiceItem(cate: e, isSelf: false)),
       ],
     );
   }

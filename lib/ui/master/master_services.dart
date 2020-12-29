@@ -99,7 +99,7 @@ class _MasterServicesState extends State<MasterServices>
             children: List.generate(
               _l.length,
               (i) => ServiceItem(
-                data: _l[i],
+                cate: _l[i],
                 isSelf: widget.isSelf,
                 onRm: _doRm,
                 onChange: (m) => _doFn(m: m),

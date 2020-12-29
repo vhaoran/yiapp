@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
-import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/service/api/api_bo.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -47,7 +46,11 @@ class _MastersPageState extends State<MastersPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    var m = {"page_no": _pageNo, "rows_per_page": _rowsPerPage};
+    var m = {
+      "page_no": _pageNo,
+      "rows_per_page": _rowsPerPage,
+      "where": {"enabled": 1},
+    };
     try {
       PageBean pb = await ApiBo.bMasterPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
@@ -97,7 +100,9 @@ class _MastersPageState extends State<MastersPage>
         child: ListView(
           children: <Widget>[
             if (_l.isEmpty)
-              Center(
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(bottom: S.screenH() / 4),
                 child: Text(
                   "暂无大师",
                   style: TextStyle(color: t_gray, fontSize: S.sp(16)),

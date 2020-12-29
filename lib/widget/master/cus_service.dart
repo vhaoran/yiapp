@@ -20,14 +20,14 @@ import 'package:yiapp/model/dicts/master-cate.dart';
 typedef FnMasterCate = Function(MasterCate m);
 
 class ServiceItem extends StatefulWidget {
-  final data; // [MasterCate] 或者 [BrokerMasterCate]
+  final cate; // [MasterCate] 或者 [BrokerMasterCate]
   final bool isSelf;
   final FnMasterCate onRm; // 移除服务事件
   final FnMasterCate onChange; // 修改服务事件
   final VoidCallback onTap; // 点击文章事件
 
   const ServiceItem({
-    this.data,
+    this.cate,
     this.isSelf: false,
     this.onRm,
     this.onChange,
@@ -47,7 +47,7 @@ class _ServiceItemState extends State<ServiceItem> {
       child: widget.isSelf
           ? CupertinoLeftScroll(
               closeTag: LeftScrollCloseTag("MasterCate"),
-              key: Key(widget.data.id.toString()),
+              key: Key(widget.cate.id.toString()),
               onTap: widget.onTap,
               child: _item(),
               buttons: <Widget>[
@@ -55,7 +55,7 @@ class _ServiceItemState extends State<ServiceItem> {
                   text: "删除",
                   textColor: Colors.white,
                   color: Colors.red,
-                  onTap: () => widget.onRm(widget.data),
+                  onTap: () => widget.onRm(widget.cate),
                 ),
               ],
             )
@@ -81,7 +81,7 @@ class _ServiceItemState extends State<ServiceItem> {
                 _nameAndCh(), // 服务名称和修改服务按钮
                 SizedBox(height: S.h(5)),
                 Text(
-                  widget.data.comment, // 项目介绍
+                  widget.cate.comment, // 项目介绍
                   style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -90,7 +90,7 @@ class _ServiceItemState extends State<ServiceItem> {
                 Container(
                   alignment: Alignment.centerRight,
                   child: CusText(
-                      "${widget.data.price}元宝/次", Color(0xFFD0662A), 26),
+                      "${widget.cate.price}元宝/次", Color(0xFFD0662A), 26),
                 ), // 服务价格
               ],
             ),
@@ -108,14 +108,14 @@ class _ServiceItemState extends State<ServiceItem> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            widget.data.yi_cate_name, // 服务名称
+            widget.cate.yi_cate_name, // 服务名称
             style: TextStyle(color: t_gray, fontSize: S.sp(16)),
           ),
           Spacer(),
           if (widget.isSelf)
             CusRaisedButton(
               child: Text("修改服务"),
-              onPressed: () => widget.onChange(widget.data),
+              onPressed: () => widget.onChange(widget.cate),
               borderRadius: 50,
             ),
           if (!widget.isSelf)
@@ -127,7 +127,7 @@ class _ServiceItemState extends State<ServiceItem> {
 //              ),
               onPressed: () => CusRoute.push(
                 context,
-                MeetMasterPage(cate: widget.data),
+                MeetMasterPage(cate: widget.cate),
               ),
               borderRadius: 50,
             ),

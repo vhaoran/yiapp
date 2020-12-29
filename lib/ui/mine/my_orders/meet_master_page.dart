@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -43,17 +42,21 @@ class _MeetMasterPageState extends State<MeetMasterPage> {
 
   @override
   void initState() {
-    Log.info("测算的项目：${widget.cate.toJson()}");
     _future = _loadData();
     super.initState();
   }
 
   /// 加载本地大师订单数据
   _loadData() async {
-    String str = await KV.getStr(kv_order);
-    if (str != null) {
-      var data = MasterOrderData.fromJson(json.decode(str));
-      if (data != null) _data = data;
+    try {
+      String str = await KV.getStr(kv_order);
+      if (str != null) {
+        var data = MasterOrderData.fromJson(json.decode(str));
+        if (data != null) _data = data;
+        Log.info("本地大师订单数据：${_data.toJson()}");
+      }
+    } catch (e) {
+      Log.error("加载本地大师订单数据出现异常：$e");
     }
   }
 
