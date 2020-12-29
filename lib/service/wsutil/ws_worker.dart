@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:mobpush_plugin/mobpush_plugin.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/model/msg/msg-notify.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/msg/msg_body.dart';
+import 'package:yiapp/service/api/api-push.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
@@ -178,4 +181,13 @@ bool _isPong(String text) {
 
 _ping(IOWebSocketChannel c) {
   c.sink.add("ping");
+
+  //
+  MobpushPlugin.getRegistrationId().then((data) {
+    String regID = data["res"].toString();
+    print("  mod push id is $regID  ###########  ${ApiBase.uid}");
+    ApiPush.pushRegist(regID).then((ok) {
+      print("  mod push id  <$regID>  ------  reg ok----0");
+    });
+  });
 }

@@ -24,6 +24,19 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+
+//apply plugin: 'com.android.application'
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//----- for mod push begin--------------
+// 导入MobSDK
+apply plugin: 'com.mob.sdk'
+//-----end for mob push end--------------
+
+MobSDK {
+    appKey "315355cca7606"
+    appSecret "71f4eb7fcb688d1ae8778e619d44349f"
+}
+
 android {
     compileSdkVersion 29
 
