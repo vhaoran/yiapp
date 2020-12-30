@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiapp/global/main_routes.dart';
+import 'package:yiapp/service/api/api-push.dart';
 import 'home/home_page.dart';
 
 // ------------------------------------------------------
@@ -11,9 +12,12 @@ import 'home/home_page.dart';
 // ------------------------------------------------------
 
 class HongYunApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    //for mob push start
+    ApiPush.preparePush();
+    //for mob push end
+
     return LayoutBuilder(
       builder: (context, constraints) {
         _systemPrepare(context, constraints);

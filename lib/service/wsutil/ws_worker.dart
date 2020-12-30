@@ -69,6 +69,15 @@ initWSChanSingle() {
     }
   });
 
+  Timer.periodic(Duration(seconds: 60), (timer) {
+    try {
+      _pushReg(_chan);
+    } catch (e) {
+      timer.cancel();
+      _delayInit();
+    }
+  });
+
   glbWSChan = _chan;
 }
 
@@ -181,13 +190,15 @@ bool _isPong(String text) {
 
 _ping(IOWebSocketChannel c) {
   c.sink.add("ping");
+}
 
-  //
+_pushReg(IOWebSocketChannel c) {
   MobpushPlugin.getRegistrationId().then((data) {
     String regID = data["res"].toString();
-    print("  mod push id is $regID  ###########  ${ApiBase.uid}");
+    // print("  mod push id is $regID  ########### uid:  ${ApiBase.uid}");
     ApiPush.pushRegist(regID).then((ok) {
-      print("  mod push id  <$regID>  ------  reg ok----0");
+      print(
+          "  mod push id  <$regID>  ------  reg ok-of -${ApiBase.uid}-(uid)-");
     });
   });
 }

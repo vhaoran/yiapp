@@ -1,4 +1,6 @@
 //
+import 'package:mobpush_plugin/mobpush_plugin.dart';
+
 import 'api_base.dart';
 
 class ApiPush {
@@ -9,6 +11,25 @@ class ApiPush {
     var url = pre + "PushRegist";
     var data = {"reg_id": regID};
 
+    setPushReceiver();
+
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  static preparePush() {
+    setPushReceiver();
+    setPushIcon();
+  }
+
+  static setPushReceiver() {
+    MobpushPlugin.addPushReceiver((data) {
+      print(" =================push on receive: ${data.toString()}");
+    }, (e) {
+      print(" ================= ****** push on receive error: $e");
+    });
+  }
+
+  static setPushIcon() {
+    MobpushPlugin.setNotifyIcon("assets/images/b.png");
   }
 }
