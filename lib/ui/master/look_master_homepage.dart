@@ -95,7 +95,7 @@ class _LookMasterHomePageState extends State<LookMasterHomePage> {
               children: [
                 MasterInfoHome(), // 主页
                 CusText("服务", t_gray, 28),
-                MasterCompletedOrders(master_id: widget.master_id), // 大师已完成订单
+                MasterCompletedOrders(), // 大师已完成订单
 //                CusText("订单", t_gray, 28),
               ],
             ),

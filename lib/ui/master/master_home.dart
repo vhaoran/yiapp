@@ -43,8 +43,12 @@ class _MasterHomeState extends State<MasterHome> {
           SizedBox(height: S.h(5)),
           // 大师好评差评率
           MasterRate(
-            titles: ["好评率", "差评率"],
-            subtitles: ["${widget.m.best_rate}", "${widget.m.bad_rate}"],
+            titles: ["好评率", "中评率", "差评率"],
+            subtitles: [
+              "${widget.m.best_rate}",
+              "${widget.m.mid_rate}",
+              "${widget.m.bad_rate}"
+            ],
           ),
         ],
       ),

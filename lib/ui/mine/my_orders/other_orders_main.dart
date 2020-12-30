@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/master/master_console/master_await_main.dart';
+import 'package:yiapp/ui/master/master_console/ing_yiorder_page.dart';
+import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/my_orders/await_yiorder_page.dart';
 import 'package:yiapp/ui/mine/my_orders/refund_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -36,11 +37,15 @@ class OtherOrdersMain extends StatelessWidget {
           ),
           NormalBox(
             title: "处理中大师订单",
-            onTap: () => CusRoute.push(context, MasterAwaitMain()),
+            onTap: () => CusRoute.push(context, IngYiorderPage()),
           ),
           NormalBox(
             title: "待支付大师订单",
             onTap: () => CusRoute.push(context, AwaitYiorderPage()),
+          ),
+          NormalBox(
+            title: "已完成大师订单",
+            onTap: () => CusRoute.push(context, MasterCompletedOrders()),
           ),
           NormalBox(
             title: "大师待处理订单(之前做的)",

@@ -3,7 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
-import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
+import 'package:yiapp/ui/master/master_console/master_yiorder_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -16,17 +16,17 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/15 上午10:13
-// usage ：大师控制台 -- 大师(处理中)订单查询
+// usage ：处理中订单查询（用户大师通用）
 // ------------------------------------------------------
 
-class MasterAwaitMain extends StatefulWidget {
-  MasterAwaitMain({Key key}) : super(key: key);
+class IngYiorderPage extends StatefulWidget {
+  IngYiorderPage({Key key}) : super(key: key);
 
   @override
-  _MasterAwaitMainState createState() => _MasterAwaitMainState();
+  _IngYiorderPageState createState() => _IngYiorderPageState();
 }
 
-class _MasterAwaitMainState extends State<MasterAwaitMain>
+class _IngYiorderPageState extends State<IngYiorderPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;

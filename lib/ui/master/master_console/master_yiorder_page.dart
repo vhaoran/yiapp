@@ -9,15 +9,19 @@ import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
+import 'package:yiapp/model/orders/yiOrder-heHun.dart';
+import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/master/master_console/yiorder_input.dart';
+import 'package:yiapp/ui/mine/my_orders/hehun_order.dart';
+import 'package:yiapp/ui/mine/my_orders/master_order.dart';
+import 'package:yiapp/ui/mine/my_orders/sizhu_order.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
-import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -42,7 +46,6 @@ class MasterYiOrderPage extends StatefulWidget {
 }
 
 class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
-  YiOrderSiZhu _siZhu; // 目前先只用四柱做测试
   YiOrder _yiOrder;
   var _future;
   bool _needCh = false; // 是否需要修改测算结果
@@ -58,6 +61,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   @override
   void initState() {
+    Log.info("是否历史查询：${widget.is_his}");
     _future = _fetch();
     super.initState();
   }
@@ -78,7 +82,6 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
       if (order != null) {
         Log.info("当前大师订单详情：${order.toJson()}");
         _yiOrder = order;
-        _siZhu = _yiOrder.content;
         _needCh = false;
         setState(() {});
       }
@@ -229,17 +232,19 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     );
   }
 
-  /// 区域一显示
+  /// 订单区域显示
   Widget _orderDataView() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: S.h(10)),
-          child: _baseInfo(), // 用户基本信息
+          child: _dynamicTypeView(), // 用户基本信息
         ),
-        Text("问题描述", style: _tPrimary),
-        Text(_yiOrder.comment, style: _tGray), // 问题描述
+        if (!(_yiOrder.content is YiOrderLiuYao)) ...[
+          Text("问题描述", style: _tPrimary),
+          Text(_yiOrder.comment, style: _tGray), // 问题描述
+        ],
         SizedBox(height: S.h(10)),
         Text("所求类型 ", style: _tPrimary), // 所求类型
         Text("${SwitchUtil.serviceType(_yiOrder.yi_cate_id)}", style: _tGray),
@@ -276,37 +281,19 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     );
   }
 
-  /// 用户基本信息
-  Widget _baseInfo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        CusAvatar(url: _yiOrder.icon_ref, rate: 10, size: 70),
-        SizedBox(width: S.w(10)),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(_siZhu.name, style: _tPrimary),
-                SizedBox(width: S.w(10)),
-                Text(_siZhu.is_male ? "男" : "女", style: _tPrimary),
-              ],
-            ),
-            SizedBox(height: S.h(10)),
-            Row(
-              children: <Widget>[
-                Text("出生日期：", style: _tGray),
-                Text(
-                  "${TimeUtil.YMDHM(isSolar: _siZhu.is_solar, date: _siZhu.dateTime())}",
-                  style: _tGray,
-                ),
-              ],
-            )
-          ],
-        ),
-      ],
-    );
+  /// 根据服务类型，动态显示结果
+  Widget _dynamicTypeView() {
+    if (_yiOrder.content is YiOrderSiZhu) {
+      Log.info("这是测算四柱");
+      return SiZhuOrder(siZhu: _yiOrder.content);
+    } else if (_yiOrder.content is YiOrderHeHun) {
+      Log.info("这是测算合婚");
+      return HeHunOrder(heHun: _yiOrder.content);
+    } else if (_yiOrder.content is YiOrderLiuYao) {
+      Log.info("这是测算六爻");
+      return MasterOrder(liuYao: _yiOrder.content);
+    }
+    return Container();
   }
 
   Widget _appBar() {

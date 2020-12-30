@@ -190,16 +190,17 @@ class _PostContentState extends State<PostContent> {
 
   Widget _appBarAction() {
     var style = TextStyle(color: t_gray, fontSize: S.sp(15));
-    String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
-    // 发帖人是本人,且已打赏，显示投诉功能
-    if (_data.uid == ApiBase.uid && _data.stat == bbs_ok) {
-      return FlatButton(
-        child: Text("投诉", style: style),
-        onPressed: () {
-          CusRoute.push(context, RefundOrderAdd(data: _data, b_type: bType));
-        },
-      );
-    }
+    // 帖子暂时没有投诉功能
+//    String bType = _p.is_vie ? b_bbs_vie : b_bbs_prize;
+//    // 发帖人是本人,且已打赏，显示投诉功能
+//    if (_data.uid == ApiBase.uid && _data.stat == bbs_ok) {
+//      return FlatButton(
+//        child: Text("投诉", style: style),
+//        onPressed: () {
+//          CusRoute.push(context, RefundOrderAdd(data: _data, b_type: bType));
+//        },
+//      );
+//    }
     // 悬赏帖要显示的
     if (!_p.is_vie) {
       // 大师处理中的，且帖子已经有评论，显示查看详情按钮

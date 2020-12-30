@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
+import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
+import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -28,6 +31,9 @@ class MasterOrder extends StatefulWidget {
 class _MasterOrderState extends State<MasterOrder> {
   var _future;
   var _data = CusLiuYaoData();
+  var _yaoData = LiuYaoResult();
+  List<int> _codes = []; // 六爻编码
+  String _res;
 
   @override
   void initState() {
@@ -37,12 +43,47 @@ class _MasterOrderState extends State<MasterOrder> {
 
   _fetch() async {
     try {
-      String res = await KV.getStr(kv_liuyao);
-      if (res != null) {
-        _data = CusLiuYaoData.fromJson(json.decode(res));
+      _res = await KV.getStr(kv_liuyao);
+      // 本地获取到的六爻数据
+      if (_res != null) {
+        Log.info("读取本地数据");
+        _data = CusLiuYaoData.fromJson(json.decode(_res));
+        Log.info("——dta:${_data.toJson()}");
+      }
+      // 有六爻数据，重新起卦
+      else {
+        Log.info("读取后台数据");
+        await _fetchLiuYao();
       }
     } catch (e) {
       Log.error("获取本地存储的六爻数据出现异常：$e");
+    }
+  }
+
+  /// 获取六爻数据
+  _fetchLiuYao() async {
+    var r = widget.liuYao;
+    var m = {
+      "year": r.year,
+      "month": r.month,
+      "day": r.day,
+      "hour": r.hour,
+      "minute": r.minute,
+      "code": r.yao_code,
+      "male": r.is_male ? male : female,
+    };
+    Log.info("大师订单提交六爻起卦数据:$m");
+    try {
+      var res = await ApiYi.liuYaoQiGua(m);
+      if (res != null) {
+        _yaoData = res;
+        // 六爻编码转换，显示的话应该倒序
+        var l = r.yao_code.split("").reversed.toList();
+        _codes = l.map((e) => int.parse(e)).toList();
+        Log.info("转换后的六爻编码：$_codes");
+      }
+    } catch (e) {
+      Log.error("大师订单六爻起卦出现异常：$e");
     }
   }
 
@@ -59,11 +100,20 @@ class _MasterOrderState extends State<MasterOrder> {
             _comRow("性别：", widget.liuYao.is_male ? "男" : "女"),
             _comRow("摇卦时间：", _birthDate()),
             SizedBox(height: S.h(10)),
-            LiuYaoSymRes(res: _data.res, codes: _data.codes),
+            _liuYaoSymRes(), //  显示六爻符号
           ],
         );
       },
     );
+  }
+
+  /// 显示六爻符号
+  Widget _liuYaoSymRes() {
+    if (_res == null) {
+      return LiuYaoSymRes(res: _yaoData, codes: _codes);
+    } else {
+      return LiuYaoSymRes(res: _data.res, codes: _data.codes);
+    }
   }
 
   /// 出生日期

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
+import 'package:yiapp/ui/master/master_console/master_yiorder_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';

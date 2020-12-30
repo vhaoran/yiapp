@@ -154,7 +154,7 @@ class _MinePageState extends State<MinePage>
           title: "大师已完成订单",
           onTap: () => CusRoute.push(
             context,
-            MasterCompletedOrders(master_id: ApiBase.uid),
+            MasterCompletedOrders(),
           ),
         ),
         NormalBox(

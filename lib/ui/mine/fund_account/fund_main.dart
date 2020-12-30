@@ -3,6 +3,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
+import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
@@ -55,22 +56,25 @@ class _FundMainState extends State<FundMain> {
   }
 
   Widget _lv(context) {
-    return ListView(
-      children: <Widget>[
-        NormalBox(title: "余额", subtitle: "$_balance 元", showBtn: false),
-        NormalBox(
-          title: "个人支付账号",
-          onTap: () => CusRoute.push(context, FundListPage()),
-        ),
-        NormalBox(
-          title: "对账单记录",
-          onTap: () => CusRoute.push(context, BillHistoryPage()),
-        ),
-        NormalBox(
-          title: "充值",
-          onTap: () => CusRoute.push(context, RechargePage(auto: false)),
-        ),
-      ],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        children: <Widget>[
+          NormalBox(title: "余额", subtitle: "$_balance 元", showBtn: false),
+          NormalBox(
+            title: "个人支付账号",
+            onTap: () => CusRoute.push(context, FundListPage()),
+          ),
+          NormalBox(
+            title: "对账单记录",
+            onTap: () => CusRoute.push(context, BillHistoryPage()),
+          ),
+          NormalBox(
+            title: "充值",
+            onTap: () => CusRoute.push(context, RechargePage(auto: false)),
+          ),
+        ],
+      ),
     );
   }
 }
