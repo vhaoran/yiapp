@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
@@ -62,19 +63,27 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
             style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
           SizedBox(height: S.h(40)),
-          CusRaisedButton(
-              child: Text("支付"),
-              onPressed: () {
-                PayData payData = PayData(
-                  amt: widget.yiOrder.amt,
-                  b_type: b_yi_order,
-                  id: widget.yiOrder.id,
-                );
-                BalancePay(context, data: payData);
-              }),
+          _showBtn(stat: widget.yiOrder.stat),
         ],
       ),
     );
+  }
+
+  /// 根据订单状态显示
+  Widget _showBtn({int stat}) {
+    if (stat == bbs_init)
+      return CusRaisedButton(
+        child: Text("支付"),
+        onPressed: () {
+          PayData payData = PayData(
+            amt: widget.yiOrder.amt,
+            b_type: b_yi_order,
+            id: widget.yiOrder.id,
+          );
+          BalancePay(context, data: payData);
+        },
+      );
+    return SizedBox.shrink();
   }
 
   /// 约聊大师的信息

@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/mine/my_orders/meet_master_page.dart';
+import 'package:yiapp/ui/mine/my_orders/talk_about_master.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -121,14 +124,23 @@ class _ServiceItemState extends State<ServiceItem> {
           if (!widget.isSelf)
             CusRaisedButton(
               child: Text("立即测算"),
-//              onPressed: () => CusRoute.push(
-//                context,
-//                TalkAboutMaster(data: widget.data),
-//              ),
-              onPressed: () => CusRoute.push(
-                context,
-                MeetMasterPage(cate: widget.cate),
-              ),
+              onPressed: () async {
+                String str = await KV.getStr(kv_order);
+                // 直接点的一对一咨询
+                if (str == null) {
+                  CusRoute.push(
+                    context,
+                    TalkAboutMaster(data: widget.cate),
+                  );
+                }
+                // 点击四柱六爻合婚后，选择大师一对一咨询
+                else {
+                  CusRoute.push(
+                    context,
+                    MeetMasterPage(cate: widget.cate),
+                  );
+                }
+              },
               borderRadius: 50,
             ),
         ],

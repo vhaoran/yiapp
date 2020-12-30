@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/ui/master/master_console/master_await_cover.dart';
+import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/master/master_console/master_yiorder_cover.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
@@ -18,9 +20,7 @@ import 'package:yiapp/service/api/api-yi-order.dart';
 // ------------------------------------------------------
 
 class MasterCompletedOrders extends StatefulWidget {
-  final int master_id;
-
-  MasterCompletedOrders({this.master_id, Key key}) : super(key: key);
+  MasterCompletedOrders({Key key}) : super(key: key);
 
   @override
   _MasterCompletedOrdersState createState() => _MasterCompletedOrdersState();
@@ -48,8 +48,12 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
       "page_no": _pageNo,
       "rows_per_page": _rows_per_page,
       "sort": {"create_date": -1},
-      "where": {"master_id": widget.master_id, "stat": bbs_ok},
+      "where": {
+        CusRole.is_master ? "master_id" : "uid": ApiBase.uid,
+        "stat": bbs_ok,
+      },
     };
+
     try {
       PageBean pb = await ApiYiOrder.yiOrderHisPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;

@@ -12,8 +12,6 @@ import 'package:yiapp/util/temp/yi_tool.dart';
 // usage ：生成六爻符号
 // ------------------------------------------------------
 
-const double _width = 60; // 阴爻中单个符号的宽度
-
 class LiuYaoSymbol extends StatelessWidget {
   final int code; // 当前爻码 0 1 2 3
   final int num; // 第几爻
