@@ -1,4 +1,5 @@
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
+import 'package:yiapp/model/orders/yiorder_exp_res.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------
@@ -75,5 +76,13 @@ class ApiYiOrder {
   static Future<bool> yiOrderSetDiagnose(Map<String, dynamic> m) async {
     var url = pre + "YiOrderSetDiagnose";
     return await ApiBase.postValue<bool>(url, m, enableJwt: true);
+  }
+
+  /// 用户操作--订单点评
+  static Future<YiOrderExpRes> yiOrderExpAdd(Map<String, dynamic> data) async {
+    var url = pre + "YiOrderExpAdd";
+    return await ApiBase.postObj(url, data, (m) {
+      return YiOrderExpRes.fromJson(m);
+    }, enableJwt: true);
   }
 }

@@ -14,6 +14,7 @@ import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/master/master_console/yiorder_input.dart';
@@ -297,6 +298,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
   }
 
   Widget _appBar() {
+    Log.info("++++++${_yiOrder.uid == ApiBase.uid}");
     return CusAppBar(
       text: "大师订单",
       actions: [

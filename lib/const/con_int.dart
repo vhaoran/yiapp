@@ -65,3 +65,8 @@ const int you_shi = 9; // 酉时
 const int xu_shi = 10; // 戌时
 const int hai_shi = 11; // 亥时
 const int wan_zi = 12; // 晚子
+
+// ------------------------- 评价类型 ------------------------
+const int rate_best = 1; // 好评
+const int rate_mid = 2; // 中评
+const int rate_bad = 3; // 差评

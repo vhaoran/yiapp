@@ -7,6 +7,7 @@ import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
+import 'package:yiapp/ui/mine/exp_add_page.dart';
 import 'package:yiapp/ui/mine/my_orders/meet_master_show.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
@@ -25,9 +26,14 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 class MasterYiOrderCover extends StatefulWidget {
   final bool is_his; // 是否历史查询
   final YiOrder yiOrder;
+  final VoidCallback onChanged;
 
-  MasterYiOrderCover({this.is_his: false, this.yiOrder, Key key})
-      : super(key: key);
+  MasterYiOrderCover({
+    this.is_his: false,
+    this.yiOrder,
+    this.onChanged,
+    Key key,
+  }) : super(key: key);
 
   @override
   _MasterYiOrderCoverState createState() => _MasterYiOrderCoverState();
@@ -129,30 +135,20 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
         ),
       );
     } else if (stat == bbs_ok) {
-      return Row(
-        children: <Widget>[
-          Container(
-            width: S.w(70),
-            constraints: BoxConstraints(maxHeight: S.h(30)),
-            child: CusRaisedButton(
-              child: Text("评价", style: TextStyle(fontSize: S.sp(14))),
-              onPressed: () {},
-              borderRadius: 50,
-              backgroundColor: Colors.lightBlue,
-            ),
-          ),
-          SizedBox(width: S.w(5)),
-          Container(
-            width: S.w(70),
-            constraints: BoxConstraints(maxHeight: S.h(30)),
-            child: CusRaisedButton(
-              child: Text("投诉", style: TextStyle(fontSize: S.sp(14))),
-              onPressed: () {},
-              borderRadius: 50,
-              backgroundColor: t_yi,
-            ),
-          ),
-        ],
+      return Container(
+        width: S.w(70),
+        constraints: BoxConstraints(maxHeight: S.h(30)),
+        child: CusRaisedButton(
+          child: Text("评价", style: TextStyle(fontSize: S.sp(14))),
+          onPressed: () => CusRoute.push(
+            context,
+            ExpAddPage(yiOrder: widget.yiOrder),
+          ).then((value) {
+            if (value != null && widget.onChanged != null) widget.onChanged();
+          }),
+          borderRadius: 50,
+          backgroundColor: Colors.lightBlue,
+        ),
       );
     }
     return SizedBox.shrink();
