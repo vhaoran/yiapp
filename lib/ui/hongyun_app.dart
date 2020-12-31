@@ -15,7 +15,7 @@ class HongYunApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //for mob push start
-    ApiPush.preparePush();
+    // ApiPush.preparePush();
     //for mob push end
 
     return LayoutBuilder(

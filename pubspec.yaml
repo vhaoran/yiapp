@@ -19,7 +19,11 @@ dependencies:
   # 生成 uuid
   uuid: ^2.2.0
   # 简单数据持久化存储
-  shared_preferences: ^0.5.8
+  #  shared_preferences: ^0.5.8
+  shared_preferences: 0.5.7+2
+  #---sql-lite------------
+  sqflite: 1.1.8
+
   # 获取系统权限
   permission_handler: ^5.0.1+1
   # 从浏览器中打开一个url
@@ -72,6 +76,7 @@ dependencies:
   flutter_svg: 0.18.0
   #----- mobile push service-------
   mobpush_plugin: ^1.1.6
+
 
 dev_dependencies:
   flutter_test:
