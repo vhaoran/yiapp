@@ -31,6 +31,12 @@ class _ExpAddPageState extends State<ExpAddPage> {
   int _stat = rate_best; // 评价类别，默认好评
 
   @override
+  void initState() {
+    Log.info("当前评价的订单id：${widget.yiOrder.id}");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CusAppBar(text: "评价大师订单"),
@@ -103,6 +109,7 @@ class _ExpAddPageState extends State<ExpAddPage> {
     } catch (e) {
       if (e.toString().contains("订单已评价")) {
         CusToast.toast(context, text: "~该订单已评价过了");
+        Navigator.of(context).pop(); // 已评价返回上一界面并刷新
       }
       Log.error("用户提交大师订单评价出现异常：$e");
     }

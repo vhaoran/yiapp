@@ -4,7 +4,6 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/master/master_console/ing_yiorder_page.dart';
 import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/my_orders/await_yiorder_page.dart';
-import 'package:yiapp/ui/mine/my_orders/refund_main.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -31,10 +30,6 @@ class OtherOrdersMain extends StatelessWidget {
       behavior: CusBehavior(),
       child: ListView(
         children: <Widget>[
-          NormalBox(
-            title: "投诉",
-            onTap: () => CusRoute.push(context, RefundMainPage()),
-          ),
           NormalBox(
             title: "处理中大师订单",
             onTap: () => CusRoute.push(context, IngYiorderPage()),

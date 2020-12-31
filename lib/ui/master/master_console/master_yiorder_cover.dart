@@ -62,12 +62,13 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
   Widget _row() {
     TextStyle gray = TextStyle(color: t_gray, fontSize: S.sp(15));
     TextStyle tPrimary = TextStyle(color: t_primary, fontSize: S.sp(15));
+    // 动态显示大师、用户头像
     bool isMaster = CusRole.is_master;
     String url = isMaster ? _order.icon_ref : _order.master_icon_ref;
     String nick = isMaster ? _order.nick_ref : _order.master_nick_ref;
     return Row(
       children: <Widget>[
-        // 用户或者大师头像
+        // 头像
         CusAvatar(url: url, rate: 20),
         SizedBox(width: 10),
         Expanded(
@@ -77,7 +78,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(nick, style: tPrimary), // 用户或者大师昵称
+                  Text(nick, style: tPrimary), // 昵称
                   Spacer(),
                   Text("${_order.amt} 元宝", style: tPrimary), // 用户付款金额
                 ],
