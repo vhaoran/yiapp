@@ -10,14 +10,6 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 // ------------------------------------------------------
 
 class UsUtil {
-  /// token
-  static Future<bool> hasToken() async {
-    if (await KV.getStr(kv_jwt) != null) {
-      return true;
-    }
-    return false;
-  }
-
   /// bool 转 num
   static num toInt(bool val) {
     return val ? 1 : 0;

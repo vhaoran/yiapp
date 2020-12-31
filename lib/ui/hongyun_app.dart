@@ -39,7 +39,7 @@ class HongYunApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     // 获取权限
-    // Permissions.requestAll();
+    Permissions.requestAll();
     // 设计稿以 iPhone6 尺寸设计(750*1334)
     ScreenUtil.init(constraints, designSize: Size(750, 1334));
   }

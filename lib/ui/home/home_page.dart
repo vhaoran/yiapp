@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/model/login/login_result.dart';
 import 'package:yiapp/service/api/api-push.dart';
 import 'package:yiapp/service/api/api_login.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/ui/home/cus_navigation.dart';
@@ -13,7 +15,6 @@ import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/que_main_page.dart';
-import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
@@ -47,6 +48,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _future,
+        builder: (context, snap) {
+          if (snap.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return _buildScaffold();
+        });
+  }
+
+  Widget _buildScaffold() {
     return Scaffold(
       body: PageView.builder(
         controller: _pc,
@@ -54,32 +66,19 @@ class _HomePageState extends State<HomePage> {
         itemCount: _m.length,
         itemBuilder: (context, index) => _m.values.toList()[index],
       ),
-      bottomNavigationBar: _cusNavigationBar(),
+      bottomNavigationBar: CusBottomNavigationBar(
+        curIndex: _curIndex,
+        barNames: _m.keys.toList(),
+        onChanged: (val) {
+          if (val == null) return;
+          if (_curIndex != val) {
+            _curIndex = val;
+            _pc.jumpToPage(_curIndex);
+            setState(() {});
+          }
+        },
+      ),
       backgroundColor: Colors.black26,
-    );
-  }
-
-  /// 底部导航栏
-  Widget _cusNavigationBar() {
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snap) {
-        if (!(snap.connectionState == ConnectionState.done)) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return CusBottomNavigationBar(
-          curIndex: _curIndex,
-          barNames: _m.keys.toList(),
-          onChanged: (val) {
-            if (val == null) return;
-            if (_curIndex != val) {
-              _curIndex = val;
-              _pc.jumpToPage(_curIndex);
-              setState(() {});
-            }
-          },
-        );
-      },
     );
   }
 
@@ -87,7 +86,7 @@ class _HomePageState extends State<HomePage> {
   _initLogin() async {
     await initDB(); // 初始化数据库
     LoginResult login;
-    bool hasToken = await UsUtil.hasToken();
+    bool hasToken = await KV.getStr(kv_jwt) != null;
     Log.info("本地已存在token吗：$hasToken");
     // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
     try {
@@ -111,19 +110,12 @@ class _HomePageState extends State<HomePage> {
     _m = {"运势": LuckMainPage()};
     // 大师添加控制台导航
     CusLoginRes res = await LoginDao(glbDB).readUserByUid();
-    if (res.enable_mall == 1) {
-      Log.info("商城模块已开启");
-      _m.addAll({"商城": MallPage()});
-    }
+    _printModules(res); // 仅打印运营商开启的模块
+    if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
     if (res.enable_prize == 1 || res.enable_vie == 1) {
-      if (res.enable_prize == 1) Log.info("悬赏帖模块已开启");
-      if (res.enable_vie == 1) Log.info("闪断帖模块已开启");
       _m.addAll({"问命": QueMainPage()});
     }
-    if (res.enable_master == 1) {
-      Log.info("大师模块已开启");
-      _m.addAll({"大师": MastersPage()});
-    }
+    if (res.enable_master == 1) _m.addAll({"大师": MastersPage()});
     _m.addAll({"我的": MinePage()});
     setState(() {});
   }
@@ -132,5 +124,13 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _pc.dispose();
     super.dispose();
+  }
+
+  /// 仅用来打印运营商开启了哪些服务模块
+  void _printModules(CusLoginRes res) {
+    if (res.enable_mall == 1) Log.info("商城模块已开启");
+    if (res.enable_prize == 1) Log.info("悬赏帖模块已开启");
+    if (res.enable_vie == 1) Log.info("闪断帖模块已开启");
+    if (res.enable_master == 1) Log.info("大师模块已开启");
   }
 }
