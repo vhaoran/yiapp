@@ -14,9 +14,6 @@ import 'home/home_page.dart';
 class HongYunApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //for mob push start
-    // ApiPush.preparePush();
-    //for mob push end
 
     return LayoutBuilder(
       builder: (context, constraints) {
