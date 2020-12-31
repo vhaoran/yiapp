@@ -63,10 +63,7 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
             padding: EdgeInsets.only(top: 20, bottom: 40),
             child: CusRectField(
               controller: _pwdCtrl,
-              hintText: "设置登录密码 (6-20位大小写字母)",
-              onlyLetter: true,
-              isClear: true,
-              maxLength: 20,
+              hintText: "设置登录密码",
             ),
           ),
           CusBtn(

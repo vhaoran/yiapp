@@ -12,7 +12,7 @@ class SuBadge extends StatefulWidget {
   final String text;
   final Color color;
   final TextStyle textStyle;
-  final bool hidden;
+  final bool hidden; // 是否隐藏通知红点
   final double radius; // 每个形状都有默认半径，如果设置radius，则shape属性无效
   final Widget child;
   final SuBadgeShape shape;

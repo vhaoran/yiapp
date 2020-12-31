@@ -11,6 +11,9 @@ class CusRole {
   // 是否大师
   static bool is_master = false;
 
+  // 是否系统管理员
+  static bool is_admin = false;
+
   // 是否运营商管理员
   static bool is_broker_admin = false;
 

@@ -62,7 +62,7 @@ class _CusBottomNavigationBarState extends State<CusBottomNavigationBar> {
           text: "99+", // 未读消息个数
         ),
       ),
-      title: Text(name),
+      label: name,
     );
   }
 }

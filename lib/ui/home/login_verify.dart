@@ -49,6 +49,8 @@ class LoginVerify {
   static void initGlobal(LoginResult r) {
     // 大师
     CusRole.is_master = r.is_master;
+    // 管理员
+    CusRole.is_admin = r.is_admin;
     // 运营商管理员
     CusRole.is_broker_admin = r.is_broker_admin;
     // 邀请码
