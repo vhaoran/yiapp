@@ -51,34 +51,31 @@ class _RefundOrderAddState extends State<RefundOrderAdd> {
   /// 投诉大师
   _doRefund() async {
     if (_briefCtrl.text.trim().isEmpty || _detailCtrl.text.trim().isEmpty) {
-      CusToast.toast(context, text: "投诉摘要或详情都不能为空");
+      CusToast.toast(context, text: "投诉的摘要或详情都不能为空");
       return;
     }
-//    if (_assets.isEmpty) {
-//      CusToast.toast(context, text: "未选择图片");
-//      return;
-//    }
+    if (_assets.isEmpty) {
+      CusToast.toast(context, text: "未选择图片");
+      return;
+    }
     // 上传图片到七牛云
-//    SpinKit.threeBounce(context);
-//    List<Map> l = await FileUtil.multipleFiles(_assets);
-//    Navigator.pop(context);
-//    // 选择的图片地址
-//    List<String> images = [];
-//    l.forEach((e) => images.add(e['path']));
-//    print(">>>images:${images.length}");
+    SpinKit.threeBounce(context);
+    List<Map> l = await FileUtil.multipleFiles(_assets);
+    Navigator.pop(context);
+    // 选择的图片地址
+    List<String> images = [];
+    l.forEach((e) => images.add(e['path']));
     try {
       var m = {
         "master_id": widget.yiOrder.master_id,
         "brief": _briefCtrl.text.trim(),
         "detail": _detailCtrl.text.trim(),
-//        "images": images,
-        "images": ["a", "b"],
+        "images": images,
         "draw_back": _drawBack,
         "b_type": b_yi_order,
         "order_id": widget.yiOrder.id,
       };
       var res = await ApiYiOrder.refundOrderAdd(m);
-      print(">>>res:${res.toJson()}");
       if (res != null) {
         CusDialog.tip(
           context,
@@ -104,7 +101,7 @@ class _RefundOrderAddState extends State<RefundOrderAdd> {
           Text("投诉摘要", style: TextStyle(color: t_primary, fontSize: S.sp(16))),
           SizedBox(height: S.h(5)),
           CusRectField(
-            controller: _detailCtrl,
+            controller: _briefCtrl,
             hintText: "请填写投诉摘要...",
             autofocus: false,
           ),
@@ -126,7 +123,7 @@ class _RefundOrderAddState extends State<RefundOrderAdd> {
             height: S.h(22),
             padding: EdgeInsets.only(right: S.screenW() - 170),
             child: CusRaisedButton(
-              child: Text("添加照片(必选)", style: TextStyle(color: Colors.black)),
+              child: Text("可选添加图片", style: TextStyle(color: Colors.black)),
               borderRadius: 50,
               backgroundColor: t_primary,
               onPressed: () async {
