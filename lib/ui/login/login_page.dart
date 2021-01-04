@@ -164,7 +164,6 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _err = _mobileErr = _pwdErr = null;
     });
-    SpinKit.threeBounce(context);
     LoginResult login; // 最终传递的登录结果
     // 在登录界面登录鸿运来，直接请求即可，不需要判断本地数据库是否已存在，否则无法保证数据最新
     try {
@@ -178,7 +177,6 @@ class _LoginPageState extends State<LoginPage> {
         try {
           login = await ApiLogin.login(m);
           if (login != null) {
-            Navigator.pop(context);
             await LoginVerify.init(login, context);
             SpinKit.threeBounce(context, text: "正在登录，请稍等...");
             await Future.delayed(Duration(milliseconds: 1000));

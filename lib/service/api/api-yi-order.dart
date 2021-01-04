@@ -1,3 +1,4 @@
+import 'package:yiapp/model/orders/refund_res.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiorder_exp_res.dart';
 import 'api_base.dart';
@@ -90,5 +91,13 @@ class ApiYiOrder {
   static yiOrderExpPage(Map<String, dynamic> pb) async {
     var url = pre + "YiOrderExpPage";
     return await ApiBase.postPage(url, pb, (m) => YiOrderExpRes.fromJson(m));
+  }
+
+  /// 用户操作--投诉大师订单
+  static Future<RefundRes> refundOrderAdd(Map<String, dynamic> data) async {
+    var url = pre + "RefundOrderAdd";
+    return await ApiBase.postObj(url, data, (m) {
+      return RefundRes.fromJson(m);
+    }, enableJwt: true);
   }
 }

@@ -270,7 +270,10 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
       actions: [
         if (widget.yiOrder.uid == ApiBase.uid)
           FlatButton(
-            onPressed: () => CusRoute.push(context, RefundOrderAdd()),
+            onPressed: () => CusRoute.push(
+              context,
+              RefundOrderAdd(yiOrder: widget.yiOrder),
+            ),
             child: Text(
               "投诉",
               style: TextStyle(color: t_gray, fontSize: S.sp(15)),

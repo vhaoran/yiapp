@@ -66,7 +66,7 @@ Future<List<Asset>> multiImages() async {
       ),
     );
   } catch (e) {
-    Log.info("设置图片异常：$e");
+    Log.error("设置图片异常：$e");
   }
   if (l != null && l.isNotEmpty) {
     return l;
