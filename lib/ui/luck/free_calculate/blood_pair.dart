@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
@@ -39,6 +40,8 @@ class _BloodPairPageState extends State<BloodPairPage> {
   int _femaleBlood = -1;
   String _femaleStr = "";
 
+  static const IconData _iconData = IconData(0xe656, fontFamily: ali_font);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +58,7 @@ class _BloodPairPageState extends State<BloodPairPage> {
       children: <Widget>[
         // 顶部描述信息
         PairDescription(
-          iconValue: 0xe656,
+          iconData: _iconData,
           name: "血型配对",
           desc: "，指根据自己的血型和恋人的血型来大致分析下双方的性格特征，"
               "并给出两人的速配指数，以及性格方面的相关建议和提醒",

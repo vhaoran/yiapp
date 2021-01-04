@@ -34,6 +34,9 @@ class RechargePage extends StatefulWidget {
 class _RechargePageState extends State<RechargePage> {
   var _amtCtrl = TextEditingController(); // 充值金额输入框
   int _account_type = pay_alipay; // 0:支付宝 1:微信
+  static const IconData _iconData0 = IconData(0xe6c0, fontFamily: ali_font);
+  static const IconData _iconData1 = IconData(0xe638, fontFamily: ali_font);
+  static const IconData _iconData2 = IconData(0xe607, fontFamily: ali_font);
 
   /// 添加资金账号
   void _doRecharge() async {
@@ -79,8 +82,7 @@ class _RechargePageState extends State<RechargePage> {
         children: <Widget>[
           SizedBox(height: 10),
           // 自动充值
-          if (widget.auto)
-            _autoView(),
+          if (widget.auto) _autoView(),
           // 手动输入充值
           if (!widget.auto) ...[
             Padding(
@@ -129,11 +131,7 @@ class _RechargePageState extends State<RechargePage> {
       child: Row(
         children: <Widget>[
           SizedBox(width: 5),
-          Icon(
-            IconData(0xe6c0, fontFamily: ali_font),
-            color: t_red,
-            size: 44,
-          ),
+          Icon(_iconData0, color: t_red, size: 44),
           SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,11 +172,7 @@ class _RechargePageState extends State<RechargePage> {
             ),
             CusText("支付宝", t_gray, 30),
             Spacer(),
-            Icon(
-              IconData(0xe638, fontFamily: ali_font),
-              color: Color(0xFF4C9FE3),
-              size: Adapt.px(100),
-            ),
+            Icon(_iconData1, color: Color(0xFF4C9FE3), size: Adapt.px(100)),
           ],
         ),
       ),
@@ -204,11 +198,7 @@ class _RechargePageState extends State<RechargePage> {
             ),
             CusText("微信", t_gray, 30),
             Spacer(),
-            Icon(
-              IconData(0xe607, fontFamily: ali_font),
-              color: Color(0xFF5AB535),
-              size: Adapt.px(100),
-            ),
+            Icon(_iconData2, color: Color(0xFF5AB535), size: Adapt.px(100)),
           ],
         ),
       ),

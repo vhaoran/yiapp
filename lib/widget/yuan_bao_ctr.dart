@@ -9,23 +9,16 @@ import 'package:yiapp/util/adapt.dart';
 // ------------------------------------------------------
 
 class YuanBao extends StatelessWidget {
-  final int iconData;
   final Color color;
   final double size;
 
-  const YuanBao({
-    this.iconData: 0xe602,
-    this.color: const Color(0xFFFAE74c),
-    this.size: 40,
-    Key key,
-  }) : super(key: key);
+  const YuanBao({this.color: const Color(0xFFFAE74c), this.size: 40, Key key})
+      : super(key: key);
+
+  static const IconData _iconData0 = IconData(0xe602, fontFamily: ali_font);
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      IconData(iconData, fontFamily: ali_font),
-      color: color,
-      size: Adapt.px(size),
-    );
+    return Icon(_iconData0, color: color, size: Adapt.px(size));
   }
 }

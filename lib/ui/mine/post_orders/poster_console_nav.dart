@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/badge/badge_data.dart';
@@ -25,7 +26,10 @@ class PosterConsoleNav extends StatefulWidget {
 
 class _PosterConsoleNavState extends State<PosterConsoleNav> {
   // 底部导航栏图标
-  final List<int> _codesInt = [0xe60c, 0xe624, 0xe6b2, 0xeba9];
+  static const IconData _iconData0 = IconData(0xe60c, fontFamily: ali_font);
+  static const IconData _iconData1 = IconData(0xe624, fontFamily: ali_font);
+  static const IconData _iconData2 = IconData(0xe6b2, fontFamily: ali_font);
+  static const IconData _iconData3 = IconData(0xeba9, fontFamily: ali_font);
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +54,34 @@ class _PosterConsoleNavState extends State<PosterConsoleNav> {
       icon: InkWell(
         onTap: () => widget.onChanged(i),
         child: SuBadge(
-          child: Icon(
-            IconData(_codesInt[i], fontFamily: "AliIcon"),
-            size: S.w(24),
-          ),
+          child: Icon(_iconData(i), size: S.w(24)),
           hidden: true, // 是否隐藏未读消息个数组件
           shape: SuBadgeShape.spot,
           text: "99+", // 未读消息个数
         ),
       ),
-      title: Text(name),
+      label: name,
     );
+  }
+
+  /// 动态显示底部导航栏图标，因为Release下要求IconData必须为静态的
+  IconData _iconData(int i) {
+    switch (i) {
+      case 0:
+        return _iconData0;
+        break;
+      case 1:
+        return _iconData1;
+        break;
+      case 2:
+        return _iconData2;
+        break;
+      case 3:
+        return _iconData3;
+        break;
+      default:
+        return _iconData0;
+        break;
+    }
   }
 }

@@ -35,6 +35,9 @@ class _FundListPageState extends State<FundListPage> {
   var _future;
   List<Account> _l = []; // 个人支付账号列表
 
+  static const IconData _iconData0 = IconData(0xe638, fontFamily: ali_font);
+  static const IconData _iconData1 = IconData(0xe607, fontFamily: ali_font);
+
   @override
   void initState() {
     _future = _fetch();
@@ -141,15 +144,14 @@ class _FundListPageState extends State<FundListPage> {
               // 支付类型标识（该段代码先注释掉，用Icon先代替）
 //              CusAvatar(url: src.icon_ref),
               Icon(
-                IconData(isAliPay ? 0xe638 : 0xe607, fontFamily: ali_font),
+                isAliPay ? _iconData0 : _iconData1,
                 color: Color(isAliPay ? 0xFF4C9FE3 : 0xFF5AB535),
                 size: Adapt.px(140),
               ),
               SizedBox(width: Adapt.px(30)),
               CusText(src.account_code, t_gray, 30), // 账号名称
               Spacer(),
-              if (def)
-                CusText("默认", t_gray, 30), // 是否默认账号
+              if (def) CusText("默认", t_gray, 30), // 是否默认账号
               SizedBox(width: Adapt.px(30)),
             ],
           ),

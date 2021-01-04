@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
@@ -38,6 +39,8 @@ class _ConPairPageState extends State<ConPairPage> {
   int _femaleCon = -1;
   String _femaleStr = "";
 
+  static const IconData _iconData = IconData(0xe69e, fontFamily: ali_font);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +60,7 @@ class _ConPairPageState extends State<ConPairPage> {
           name: "星座配对",
           desc: "，根据十二星座配对，测试你的爱情，"
               "来分析你和另一半在基本性格上的适配度，谨供大家相处时的参考",
-          iconValue: 0xe69e,
+          iconData: _iconData,
         ),
         SizedBox(height: S.h(40)),
         // 选择星座

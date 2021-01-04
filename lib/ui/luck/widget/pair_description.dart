@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
@@ -10,23 +9,22 @@ import 'package:yiapp/util/screen_util.dart';
 // ------------------------------------------------------
 
 class PairDescription extends StatelessWidget {
-  final int iconValue; // 配对图标
+  final IconData iconData; // 配对图标
   final String name; // 配对名称
   final String desc; // 描述信息
 
-  const PairDescription(
-      {this.iconValue: 0, this.name: "", this.desc: "", Key key})
-      : super(key: key);
+  const PairDescription({
+    this.iconData,
+    this.name: "",
+    this.desc: "",
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Icon(
-          IconData(iconValue, fontFamily: ali_font),
-          size: S.w(50),
-          color: t_yi,
-        ),
+        Icon(iconData, size: S.w(50), color: t_yi),
         SizedBox(width: S.w(10)),
         _desc(), // 描述文字
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
@@ -38,6 +39,8 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
   int _femaleZodiac = -1;
   String _femaleStr = "";
 
+  static const IconData _iconData = IconData(0xee26, fontFamily: ali_font);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +60,7 @@ class _ZodiacPairPageState extends State<ZodiacPairPage> {
           name: "生肖配对",
           desc: "，是根据十二属相之间相合、相冲、相克、相害、相生、相刑的规律而产生的一种婚姻配对法，流行于民间。"
               "在命理学中，十二地支具有五行相生、相克及刑冲会合的关系",
-          iconValue: 0xee26,
+          iconData: _iconData,
         ),
         SizedBox(height: S.h(40)),
         // 选择生肖

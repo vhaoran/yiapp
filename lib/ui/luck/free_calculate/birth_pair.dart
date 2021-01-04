@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -35,6 +36,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
   int _female_day = 0; // 女生-日
   String _maleStr = ""; // 显示男生生日
   String _femaleStr = ""; // 显示女生生日
+  static const IconData _iconData = IconData(0xe728, fontFamily: ali_font);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class _BirthPairPageState extends State<BirthPairPage> {
       children: <Widget>[
         // 顶部描述信息
         PairDescription(
-          iconValue: 0xe728,
+          iconData: _iconData,
           name: "生日配对",
           desc: "是用你和他(她)的生日测测情愫，看看你们之间的情缘究竟如何，"
               "是完美情人、最佳拍档、还是普通关系，或者一对欢喜冤家？",
