@@ -90,7 +90,7 @@ android {
     }
 
     buildTypes {
-        debug {
+        release {
             signingConfig signingConfigs.release
 
             //删除无用代码
