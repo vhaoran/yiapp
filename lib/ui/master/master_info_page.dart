@@ -39,11 +39,18 @@ class _MasterInfoPageState extends State<MasterInfoPage>
   var _future;
   bool _isSelf = false; //  是否大师本人
 
+  @override
+  void initState() {
+    _future = _fetch();
+    super.initState();
+  }
+
   /// 获取大师图片列表
   _fetch() async {
     try {
       List<MasterImages> l = await ApiMaster.masterImageList(widget.master_id);
       if (l != null) _l = l;
+      // 这里是为了用户查看大师信息
       MasterInfo masterInfo = await ApiMaster.masterInfoGet(widget.master_id);
       if (masterInfo != null) {
         if (masterInfo.uid == ApiBase.uid) _isSelf = true;
@@ -54,12 +61,6 @@ class _MasterInfoPageState extends State<MasterInfoPage>
     } catch (e) {
       Log.error("获取大师图片列表或者获取大师出现异常：$e");
     }
-  }
-
-  @override
-  void initState() {
-    _future = _fetch();
-    super.initState();
   }
 
   @override

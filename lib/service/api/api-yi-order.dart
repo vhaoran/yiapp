@@ -85,4 +85,10 @@ class ApiYiOrder {
       return YiOrderExpRes.fromJson(m);
     }, enableJwt: true);
   }
+
+  /// 获取大师订单点评
+  static yiOrderExpPage(Map<String, dynamic> pb) async {
+    var url = pre + "YiOrderExpPage";
+    return await ApiBase.postPage(url, pb, (m) => YiOrderExpRes.fromJson(m));
+  }
 }
