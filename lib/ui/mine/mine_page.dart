@@ -23,6 +23,7 @@ import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
 import 'package:yiapp/ui/mine/bind_service_code.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_main.dart';
+import 'package:yiapp/ui/mine/my_orders/complaints_record.dart';
 import 'package:yiapp/ui/mine/my_orders/other_orders_main.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
@@ -156,6 +157,10 @@ class _MinePageState extends State<MinePage>
             context,
             MasterCompletedOrders(),
           ),
+        ),
+        NormalBox(
+          title: "被投诉订单",
+          onTap: () => CusRoute.push(context, ComplaintsRecord()),
         ),
         NormalBox(
           title: "账户与安全",

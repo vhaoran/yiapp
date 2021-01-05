@@ -11,7 +11,7 @@ import 'package:yiapp/util/screen_util.dart';
 // ------------------------------------------------------
 
 class NetPhotoView extends StatefulWidget {
-  final List imageList; // List格式为{'url的key':xxx}的格式
+  final List imageList; // List格式必须为{'path':"url"}，其中path可自定义
   final int index;
   final String path;
 
