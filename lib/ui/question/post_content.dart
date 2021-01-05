@@ -10,7 +10,7 @@ import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/master/master_console/master_prize_content.dart';
-import 'package:yiapp/ui/mine/my_orders/refund_add.dart';
+import 'package:yiapp/ui/mine/my_orders/complaints_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
 import 'package:yiapp/ui/question/post_prize_reply.dart';

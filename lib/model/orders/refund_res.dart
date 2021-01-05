@@ -4,7 +4,7 @@
 // usage ：投诉大师结果
 // ------------------------------------------------------
 
-class RefundRes {
+class ComplaintsRes {
   String create_date;
   int amt;
   String audit_date;
@@ -30,11 +30,11 @@ class RefundRes {
   String master_nick;
   String nick;
   String order_id;
-  int stat;
+  int stat; // 0 待审批、1 运营商已审批、4 平台已审批 -1 已驳回
   int uid;
   List<String> images;
 
-  RefundRes({
+  ComplaintsRes({
     this.create_date,
     this.amt,
     this.audit_date,
@@ -65,8 +65,8 @@ class RefundRes {
     this.images,
   });
 
-  factory RefundRes.fromJson(Map<String, dynamic> json) {
-    return RefundRes(
+  factory ComplaintsRes.fromJson(Map<String, dynamic> json) {
+    return ComplaintsRes(
       create_date: json['CreateDate'],
       amt: json['amt'],
       audit_date: json['audit_date'],

@@ -94,10 +94,22 @@ class ApiYiOrder {
   }
 
   /// 用户操作--投诉大师订单
-  static Future<RefundRes> refundOrderAdd(Map<String, dynamic> data) async {
+  static Future<ComplaintsRes> refundOrderAdd(Map<String, dynamic> data) async {
     var url = pre + "RefundOrderAdd";
     return await ApiBase.postObj(url, data, (m) {
-      return RefundRes.fromJson(m);
+      return ComplaintsRes.fromJson(m);
     }, enableJwt: true);
+  }
+
+  /// 投诉单page-适用于状态为0数据
+  static refundOrderPage(Map<String, dynamic> pb) async {
+    var url = pre + "RefundOrderPage";
+    return await ApiBase.postPage(url, pb, (m) => ComplaintsRes.fromJson(m));
+  }
+
+  /// 投诉单历史page-适用于已完成数据(包含已审批和已驳回)
+  static refundOrderHisPage(Map<String, dynamic> pb) async {
+    var url = pre + "RefundOrderHisPage";
+    return await ApiBase.postPage(url, pb, (m) => ComplaintsRes.fromJson(m));
   }
 }

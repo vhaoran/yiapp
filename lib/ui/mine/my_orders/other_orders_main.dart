@@ -4,10 +4,10 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/master/master_console/ing_yiorder_page.dart';
 import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/my_orders/await_yiorder_page.dart';
+import 'package:yiapp/ui/mine/my_orders/complaints_record.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/ui/mine/my_orders/my_master_orders.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -43,8 +43,8 @@ class OtherOrdersMain extends StatelessWidget {
             onTap: () => CusRoute.push(context, MasterCompletedOrders()),
           ),
           NormalBox(
-            title: "大师待处理订单(之前做的)",
-            onTap: () => CusRoute.push(context, MyMasterOrders()),
+            title: "投诉记录",
+            onTap: () => CusRoute.push(context, ComplaintsRecord()),
           ),
         ],
       ),
