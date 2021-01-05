@@ -112,4 +112,18 @@ class ApiYiOrder {
     var url = pre + "RefundOrderHisPage";
     return await ApiBase.postPage(url, pb, (m) => ComplaintsRes.fromJson(m));
   }
+
+  /// 投诉单get-适用于状态为0的数据
+  static Future<ComplaintsRes> refundOrderGet(String id) async {
+    var url = pre + "RefundOrderGet";
+    var data = {"id": id};
+    return await ApiBase.postObj(url, data, (m) => ComplaintsRes.fromJson(m));
+  }
+
+  /// 投诉单历史get-适用于已完成数据
+  static Future<ComplaintsRes> refundOrderHisGet(String id) async {
+    var url = pre + "RefundOrderHisGet";
+    var data = {"id": id};
+    return await ApiBase.postObj(url, data, (m) => ComplaintsRes.fromJson(m));
+  }
 }

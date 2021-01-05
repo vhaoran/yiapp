@@ -6,7 +6,7 @@
 
 class ComplaintsRes {
   String create_date;
-  int amt;
+  int amt; // 不需要退款，默认为0，需要退款，则显示退款金额
   String audit_date;
   String auditor_icon;
   int auditor_id;
@@ -23,13 +23,13 @@ class ComplaintsRes {
   String detail;
   bool draw_back;
   String icon;
-  String id;
+  String id; // 投诉单的id
   String last_updated;
   String master_icon;
   int master_id;
   String master_nick;
   String nick;
-  String order_id;
+  String order_id; // 投诉的大师订单的id
   int stat; // 0 待审批、1 运营商已审批、4 平台已审批 -1 已驳回
   int uid;
   List<String> images;

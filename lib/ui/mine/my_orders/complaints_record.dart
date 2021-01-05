@@ -62,10 +62,4 @@ class _ComplaintsRecordState extends State<ComplaintsRecord> {
       ],
     );
   }
-
-  Widget _lv() {
-    return ListView(
-      children: <Widget>[],
-    );
-  }
 }
