@@ -153,10 +153,11 @@ class _MinePageState extends State<MinePage>
         ),
         NormalBox(
           title: "大师已完成订单",
-          onTap: () => CusRoute.push(
-            context,
-            MasterCompletedOrders(),
-          ),
+          onTap: () => CusRoute.push(context, MasterCompletedOrders()),
+        ),
+        NormalBox(
+          title: "个人资金账号",
+          onTap: () => CusRoute.push(context, FundMain()),
         ),
         NormalBox(
           title: "被投诉订单",
@@ -195,7 +196,9 @@ class _MinePageState extends State<MinePage>
           onTap: () => CusRoute.push(context, UserProductInfo()),
         ),
         NormalBox(
-            title: "个人资金账号", onTap: () => CusRoute.push(context, FundMain())),
+          title: "个人资金账号",
+          onTap: () => CusRoute.push(context, FundMain()),
+        ),
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoute.push(context, AccountSafePage()),

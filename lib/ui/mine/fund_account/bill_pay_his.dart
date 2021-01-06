@@ -51,7 +51,7 @@ class _BillPayHisPageState extends State<BillPayHisPage>
     };
     try {
       PageBean pb = await ApiAccount.businessPage(m);
-      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as Business).toList();
       Log.info("总的已支付账单个数：$_rowsCount");
       l.forEach((src) {
@@ -79,7 +79,7 @@ class _BillPayHisPageState extends State<BillPayHisPage>
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: CusText("您还没有支付记录", t_gray, 28));
+          return Center(child: CusText("你还没有支付记录", t_gray, 28));
         }
         return ScrollConfiguration(
           behavior: CusBehavior(),

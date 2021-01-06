@@ -3,6 +3,9 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
+import 'package:yiapp/ui/master/master_fund/bankcard_page.dart';
+import 'package:yiapp/ui/master/master_fund/master_draw_money_add.dart';
+import 'package:yiapp/ui/master/master_fund/master_draw_money_page.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
@@ -72,6 +75,18 @@ class _FundMainState extends State<FundMain> {
           NormalBox(
             title: "充值",
             onTap: () => CusRoute.push(context, RechargePage(auto: false)),
+          ),
+          NormalBox(
+            title: "银行卡",
+            onTap: () => CusRoute.push(context, BankCardPage()),
+          ),
+          NormalBox(
+            title: "提现申请",
+            onTap: () => CusRoute.push(context, MasterDrawMoneyAdd()),
+          ),
+          NormalBox(
+            title: "提现记录查询",
+            onTap: () => CusRoute.push(context, MasterDrawMoneyPage()),
           ),
         ],
       ),
