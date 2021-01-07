@@ -11,6 +11,7 @@ import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/model/dicts/master_balance_res.dart';
 import 'package:yiapp/model/pays/bankcard_res.dart';
 import 'package:yiapp/model/pays/business.dart';
+import 'package:yiapp/model/pays/master_business_month.dart';
 import 'package:yiapp/model/pays/master_business_res.dart';
 import 'api_base.dart';
 
@@ -99,10 +100,16 @@ class ApiAccount {
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
-  // 大师对帐单-page
+  /// 大师对帐单-page
   static businessMasterPage(Map<String, dynamic> pb) async {
     var url = w_yi_trade + "BusinessMasterPage";
     return await ApiBase.postPage(
         url, pb, (m) => MasterBusinessRes.fromJson(m));
+  }
+
+  /// 大师月度对帐单-page
+  static businessMasterMonthPage(Map<String, dynamic> pb) async {
+    var url = w_yi_trade + "BusinessMasterMonthPage";
+    return await ApiBase.postPage(url, pb, (m) => MasterMonthRes.fromJson(m));
   }
 }

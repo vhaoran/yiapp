@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/pays/master_business_res.dart';
-import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/util/temp/cus_time.dart';
-import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -14,63 +13,58 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 
 class MasterBillItem extends StatefulWidget {
   final MasterBusinessRes business;
-  final bool isEarnings; // 是否为收益
 
-  MasterBillItem({this.business, this.isEarnings: false, Key key})
-      : super(key: key);
+  MasterBillItem({this.business, Key key}) : super(key: key);
 
   @override
   _MasterBillItemState createState() => _MasterBillItemState();
 }
 
 class _MasterBillItemState extends State<MasterBillItem> {
-  MasterBusinessRes _b; // 单个账单详情
-
-  @override
-  void initState() {
-    _b = widget.business;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
       color: fif_primary,
+      margin: EdgeInsets.all(2),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: _buildPayment(),
+        child: _buildItem(),
       ),
     );
   }
 
-  /// 收益退款布局
-  Widget _buildPayment() {
-    Color color = widget.isEarnings ? btn_red : t_ji; // 收益为红，退款为绿
+  /// 单个交易对象
+  Widget _buildItem() {
+    // 收益为红，退款为绿
+    Color color = widget.business.amt >= 0 ? btn_red : t_ji;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            CusText(_billType(_b.b_type), t_gray, 28),
-            Spacer(), // 时间
-            CusText("${CusTime.ymd(_b.created_at)}", Colors.grey, 30),
-          ],
+        Text(
+          _billType(widget.business.b_type), // 交易类型
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Row(
             children: <Widget>[
-              CusText("${_b.amt}", color, 50), // 金额
-              CusText(" 元", color, 30),
+              Text(
+                "${widget.business.amt}", // 交易金额
+                style: TextStyle(color: color, fontSize: S.sp(25)),
+              ),
+              Text(
+                " 元",
+                style: TextStyle(color: color, fontSize: S.sp(15)),
+              ),
             ],
           ),
         ),
-        Row(
-          children: <Widget>[
-            CusText("交易对象:", Colors.grey, 30),
-            SizedBox(width: Adapt.px(30)),
-            CusText("${_b.summary}", t_gray, 30),
-          ],
+        Container(
+          alignment: Alignment.centerRight,
+          child: Text(
+            widget.business.created_at, // 交易时间
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
         ),
       ],
     );
@@ -78,13 +72,32 @@ class _MasterBillItemState extends State<MasterBillItem> {
 
   /// 交易类型
   String _billType(String bType) {
-    // 收益
-    if (bType == b_yi_order) return "大师订单";
-    if (bType == b_mall) return "商城订单";
-    if (bType == b_bbs_prize) return "悬赏帖订单";
-    if (bType == b_bbs_vie) return "闪断帖订单";
-    // 支出
-    if (bType == b_master_draw_money) return "提现";
-    return "未知交易类型：$bType";
+    switch (bType) {
+      // 收益
+      case b_yi_order:
+        return "大师订单";
+        break;
+      case b_mall:
+        return "商城订单";
+        break;
+      case b_bbs_prize:
+        return "悬赏帖订单";
+        break;
+      case b_bbs_vie:
+        return "闪断帖订单";
+        break;
+      // 支出
+      case b_master_draw_money:
+        return "提现";
+        break;
+      // 其它
+      case b_adjust:
+        return "账务调整";
+        break;
+      default:
+        "其它交易";
+        Log.info("当前交易类型：$bType"); // 未知交易类型
+        break;
+    }
   }
 }

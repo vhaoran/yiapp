@@ -8,13 +8,13 @@ class MasterBusinessRes {
   int amt;
   int amt_start;
   String b_type;
-  String bill_no;
+  String bill_no; // 订单号
   String created_at;
   String icon;
   int id;
   String nick;
-  String remark;
-  String summary;
+  String remark; // 备注
+  String summary; // 业务摘要
   int uid;
   String update_at;
   int ver;

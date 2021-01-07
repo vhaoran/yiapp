@@ -3,10 +3,11 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/master_balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
-import 'package:yiapp/ui/master/master_bill_history.dart';
+import 'package:yiapp/ui/master/master_month_page.dart';
 import 'package:yiapp/ui/master/master_fund/bankcard_page.dart';
 import 'package:yiapp/ui/master/master_fund/master_draw_money_add.dart';
 import 'package:yiapp/ui/master/master_fund/master_draw_money_page.dart';
+import 'package:yiapp/ui/master/master_bill_his.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
@@ -72,6 +73,10 @@ class _MasterFundMainState extends State<MasterFundMain> {
           NormalBox(
             title: "对账单记录",
             onTap: () => CusRoute.push(context, MasterBillHisPage()),
+          ),
+          NormalBox(
+            title: "月度对账单",
+            onTap: () => CusRoute.push(context, MasterMonthPage()),
           ),
           NormalBox(
             title: "充值",
