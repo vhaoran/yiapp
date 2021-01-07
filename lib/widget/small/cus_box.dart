@@ -76,7 +76,7 @@ class _NormalBoxState extends State<NormalBox> {
             ),
           ),
         if (widget.showBtn) ...[
-          Spacer(),
+          if (subtitle == null) Spacer(),
           Icon(Icons.keyboard_arrow_right, size: S.w(22), color: t_gray),
         ],
       ],
