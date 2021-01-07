@@ -10,7 +10,7 @@ class BankCardRes {
   String branch_band_id;
   String branch_bank_addr;
   String card_code;
-  String full_name;
+  String full_name; // 提现账号用户名称，无法更改
   int id;
   int m_or_b_id;
   String name;

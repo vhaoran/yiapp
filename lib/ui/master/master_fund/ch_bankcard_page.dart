@@ -11,18 +11,22 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 
-class AddAndChBankCard extends StatefulWidget {
+// ------------------------------------------------------
+// author：suxing
+// date  ：2021/1/7 上午9:36
+// usage ：修改提现账号
+// ------------------------------------------------------
+
+class ChBankCardPage extends StatefulWidget {
   final BankCardRes card;
 
-  AddAndChBankCard({this.card, Key key}) : super(key: key);
+  ChBankCardPage({this.card, Key key}) : super(key: key);
 
   @override
-  _AddAndChBankCardState createState() => _AddAndChBankCardState();
+  _ChBankCardPageState createState() => _ChBankCardPageState();
 }
 
-class _AddAndChBankCardState extends State<AddAndChBankCard> {
-  bool _isAdd = false; // 是否为添加提现账号
-  var _fullNameCtrl = TextEditingController(); // 姓名
+class _ChBankCardPageState extends State<ChBankCardPage> {
   var _bankNameCtrl = TextEditingController(); // 银行名称
   var _cardCodeCtrl = TextEditingController(); // 银行卡号
   var _bankAddrCtrl = TextEditingController(); // 开户行地址
@@ -30,15 +34,9 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
   String _err; // 不满足表单要求时的提示信息
 
   @override
-  void initState() {
-    _isAdd = widget.card == null;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: _isAdd ? "添加" : "修改" + "提现账号"),
+      appBar: CusAppBar(text: "修改提现账号"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -51,11 +49,6 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         children: <Widget>[
           SizedBox(height: S.h(10)),
-          _comTextField(
-            controller: _fullNameCtrl,
-            title: "姓名",
-            fromValue: widget.card.full_name,
-          ),
           _comTextField(
             controller: _bankNameCtrl,
             title: "开户行",
@@ -95,9 +88,7 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
   void _doVerify() {
     setState(() {
       _err = null;
-      if (_fullNameCtrl.text.trim().isEmpty)
-        _err = "请填写姓名";
-      else if (_bankNameCtrl.text.trim().isEmpty)
+      if (_bankNameCtrl.text.trim().isEmpty)
         _err = "请填写开户行名称";
       else if (_cardCodeCtrl.text.trim().isEmpty)
         _err = "请填写卡号";
@@ -109,16 +100,12 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
       CusToast.toast(context, text: _err);
       return;
     }
-    Log.info("姓名：${_fullNameCtrl.text}");
     Log.info("开户行：${_bankNameCtrl.text}");
     Log.info("卡号：${_cardCodeCtrl.text}");
     Log.info("开户行地址：${_bankAddrCtrl.text}");
     Log.info("开户行id：${_bankIdCtrl.text}");
-    _isAdd ? _doAddBankCard() : _doChBankCard();
+    _doChBankCard();
   }
-
-  /// 添加提现账号
-  void _doAddBankCard() async {}
 
   /// 修改提现账号
   void _doChBankCard() async {
@@ -126,7 +113,6 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
       "acc_type": "master",
       "m_or_b_id": ApiBase.uid,
       "m": {
-        "full_name": _fullNameCtrl.text.trim(),
         "bank_name": _bankNameCtrl.text.trim(),
         "card_code": _cardCodeCtrl.text.trim(),
         "branch_bank_addr": _bankAddrCtrl.text.trim(),
@@ -140,7 +126,7 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
         Navigator.of(context).pop("");
       }
     } catch (e) {
-      Log.error("修改提现账号出现异常：$e");
+      Log.error("大师修改提现账号出现异常：$e");
     }
   }
 
@@ -158,8 +144,7 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
           Expanded(
             child: CusRectField(
               controller: controller,
-              fromValue: _isAdd ? null : fromValue,
-              hintText: _isAdd ? "请输入$title" : null,
+              fromValue: fromValue,
               autofocus: false,
               hideBorder: true,
             ),
@@ -171,7 +156,6 @@ class _AddAndChBankCardState extends State<AddAndChBankCard> {
 
   @override
   void dispose() {
-    _fullNameCtrl.dispose();
     _bankNameCtrl.dispose();
     _cardCodeCtrl.dispose();
     _bankAddrCtrl.dispose();

@@ -4,7 +4,8 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pays/bankcard_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
-import 'package:yiapp/ui/master/master_fund/add_and_ch_bankcard.dart';
+import 'package:yiapp/ui/master/master_fund/add_bankcard_page.dart';
+import 'package:yiapp/ui/master/master_fund/ch_bankcard_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -45,59 +46,59 @@ class _BankCardPageState extends State<BankCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "提现账号", actions: [
-        FlatButton(
-          child: Text(
-            "修改",
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-          ),
-          onPressed: () => CusRoute.push(
-            context,
-            AddAndChBankCard(card: _card),
-          ).then((value) {
-            if (value != null) Navigator.pop(context);
-          }),
-        ),
-      ]),
-      body: _buildFb(),
-      backgroundColor: primary,
-    );
-  }
-
-  Widget _buildFb() {
     return FutureBuilder(
       future: _future,
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
-        if (_card == null) return _addBankCard();
-        return ScrollConfiguration(
-          behavior: CusBehavior(),
-          child: _lv(),
-        );
+        return _buildScaffold(context);
       },
     );
   }
 
+  Widget _buildScaffold(BuildContext context) {
+    return Scaffold(
+      appBar: CusAppBar(text: "提现账号", actions: [
+        if (_card != null)
+          FlatButton(
+            child: Text(
+              "修改",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+            onPressed: () => CusRoute.push(
+              context,
+              ChBankCardPage(card: _card),
+            ).then((value) {
+              if (value != null) Navigator.pop(context);
+            }),
+          ),
+      ]),
+      body: _card == null ? _addBankCard() : _lv(),
+      backgroundColor: primary,
+    );
+  }
+
   Widget _lv() {
-    return ListView(
-      children: <Widget>[
-        NormalBox(title: "姓名", subtitle: _card.full_name, showBtn: false),
-        NormalBox(title: "开户行", subtitle: _card.bank_name, showBtn: false),
-        NormalBox(title: "卡号", subtitle: _card.card_code, showBtn: false),
-        NormalBox(
-          title: "开户行地址",
-          subtitle: _card.branch_bank_addr,
-          showBtn: false,
-        ),
-        NormalBox(
-          title: "开户行id",
-          subtitle: _card.branch_band_id,
-          showBtn: false,
-        ),
-      ],
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        children: <Widget>[
+          NormalBox(title: "姓名", subtitle: _card.full_name, showBtn: false),
+          NormalBox(title: "开户行", subtitle: _card.bank_name, showBtn: false),
+          NormalBox(title: "卡号", subtitle: _card.card_code, showBtn: false),
+          NormalBox(
+            title: "开户行地址",
+            subtitle: _card.branch_bank_addr,
+            showBtn: false,
+          ),
+          NormalBox(
+            title: "开户行id",
+            subtitle: _card.branch_band_id,
+            showBtn: false,
+          ),
+        ],
+      ),
     );
   }
 
@@ -105,6 +106,7 @@ class _BankCardPageState extends State<BankCardPage> {
   Widget _addBankCard() {
     return Center(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "没有提现账号，",
@@ -112,7 +114,7 @@ class _BankCardPageState extends State<BankCardPage> {
           ),
           InkWell(
             onTap: () =>
-                CusRoute.push(context, AddAndChBankCard()).then((value) {
+                CusRoute.push(context, AddBankCardPage()).then((value) {
               if (value != null) Navigator.pop(context);
             }),
             child: Text(
