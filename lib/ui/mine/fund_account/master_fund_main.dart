@@ -6,7 +6,7 @@ import 'package:yiapp/model/dicts/master_balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
 import 'package:yiapp/ui/master/master_fund/bankcard_page.dart';
 import 'package:yiapp/ui/master/master_fund/master_draw_money_add.dart';
-import 'package:yiapp/ui/master/master_fund/master_draw_money_page.dart';
+import 'package:yiapp/ui/master/master_fund/master_draw_money_main.dart';
 import 'package:yiapp/ui/master/master_bill_his.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -79,20 +79,20 @@ class _MasterFundMainState extends State<MasterFundMain> {
             onTap: () => CusRoute.push(context, MasterBillHisPage()),
           ),
           NormalBox(
-            title: "充值",
-            onTap: () => CusRoute.push(context, RechargePage(auto: false)),
-          ),
-          NormalBox(
             title: "银行卡",
             onTap: () => CusRoute.push(context, BankCardPage()),
           ),
           NormalBox(
-            title: "提现申请",
+            title: "充值",
+            onTap: () => CusRoute.push(context, RechargePage(auto: false)),
+          ),
+          NormalBox(
+            title: "提现",
             onTap: () => CusRoute.push(context, MasterDrawMoneyAdd()),
           ),
           NormalBox(
             title: "提现记录查询",
-            onTap: () => CusRoute.push(context, MasterDrawMoneyPage()),
+            onTap: () => CusRoute.push(context, MasterDrawMoneyMain()),
           ),
         ],
       ),

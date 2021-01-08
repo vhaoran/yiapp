@@ -11,6 +11,7 @@ import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/model/dicts/master_balance_res.dart';
 import 'package:yiapp/model/pays/bankcard_res.dart';
 import 'package:yiapp/model/pays/business.dart';
+import 'package:yiapp/model/pays/draw_money_res.dart';
 import 'package:yiapp/model/pays/master_business_month.dart';
 import 'package:yiapp/model/pays/master_business_res.dart';
 import 'api_base.dart';
@@ -111,5 +112,45 @@ class ApiAccount {
   static businessMasterMonthPage(Map<String, dynamic> pb) async {
     var url = w_yi_trade + "BusinessMasterMonthPage";
     return await ApiBase.postPage(url, pb, (m) => MasterMonthRes.fromJson(m));
+  }
+
+  /// 大师添加提现单
+  static Future<DrawMoneyRes> masterDrawMoneyAdd(num amt) async {
+    var url = w_yi_trade + "MasterDrawMoneyAdd";
+    var data = {"amt": amt};
+    return await ApiBase.postObj(url, data, (m) => DrawMoneyRes.fromJson(m));
+  }
+
+  /// 大师待处理提现单据分页查询--page
+  static masterDrawMoneyPage(Map<String, dynamic> pb) async {
+    var url = w_yi_trade + "MasterDrawMoneyPage";
+    return await ApiBase.postPage(url, pb, (m) => DrawMoneyRes.fromJson(m));
+  }
+
+  /// 大师查看某一状态为0的提现单据--get
+  static Future<DrawMoneyRes> masterDrawMoneyGet(String id) async {
+    var url = w_yi_trade + "MasterDrawMoneyGet";
+    var data = {"id": id};
+    return await ApiBase.postObj(url, data, (m) => DrawMoneyRes.fromJson(m));
+  }
+
+  /// 大师历史提现单据分页查询--page
+  static masterDrawMoneyHisPage(Map<String, dynamic> pb) async {
+    var url = w_yi_trade + "MasterDrawMoneyHisPage";
+    return await ApiBase.postPage(url, pb, (m) => DrawMoneyRes.fromJson(m));
+  }
+
+  /// 大师历史提现单据查询--get
+  static Future<DrawMoneyRes> masterDrawMoneyHisGet(String id) async {
+    var url = w_yi_trade + "MasterDrawMoneyHisGet";
+    var data = {"id": id};
+    return await ApiBase.postObj(url, data, (m) => DrawMoneyRes.fromJson(m));
+  }
+
+  /// 大师取消提现单据
+  static Future<bool> masterDrawMoneyCancel(String id) async {
+    var url = w_yi_trade + "MasterDrawMoneyCancel";
+    var data = {"id": id};
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 }

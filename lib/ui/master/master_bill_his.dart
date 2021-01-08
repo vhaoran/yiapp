@@ -143,38 +143,40 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
 
   /// 更换时间以及查看月账单
   Widget _chTime() {
-    return InkWell(
-      onTap: () {
-        TimePicker(
-          context,
-          pickMode: PickerMode.year_month,
-          onConfirm: (val) async {
-            DateTime dt = val.toDateTime();
-            setState(() => _time = dt);
-            await _refresh();
-          },
-        );
-      },
-      child: Row(
-        children: [
-          SizedBox(width: S.w(10)),
-          Text(
-            "${_time.year}年${_time.month}月",
-            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+    return Row(
+      children: [
+        InkWell(
+          onTap: () => TimePicker(
+            context,
+            pickMode: PickerMode.year_month,
+            onConfirm: (val) async {
+              DateTime dt = val.toDateTime();
+              setState(() => _time = dt);
+              await _refresh();
+            },
           ),
-          Icon(FontAwesomeIcons.caretDown, color: t_gray),
-          Spacer(),
-          InkWell(
-            onTap: () => CusRoute.push(context, MasterMonthPage(time: _time)),
-            child: Text(
-              "月账单",
-              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-            ),
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: S.w(10)),
+              Text(
+                "${_time.year}年${_time.month}月",
+                style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+              ),
+              Icon(FontAwesomeIcons.caretDown, color: t_gray),
+            ],
           ),
-          Icon(Icons.arrow_forward_ios, color: t_gray, size: S.sp(17)),
-          SizedBox(width: S.w(10)),
-        ],
-      ),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () => CusRoute.push(context, MasterMonthPage(time: _time)),
+          child: Text(
+            "月账单",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
+        ),
+        Icon(Icons.arrow_forward_ios, color: t_gray, size: S.sp(17)),
+        SizedBox(width: S.w(10)),
+      ],
     );
   }
 

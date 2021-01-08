@@ -158,11 +158,17 @@ class _CusRectFieldState extends State<CusRectField> {
       },
       inputFormatters: widget.inputFormatters == null
           ? [
-              if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
+              if (widget.onlyNumber) FilteringTextInputFormatter.digitsOnly,
               if (widget.onlyChinese)
-                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]")),
+                FilteringTextInputFormatter(
+                  RegExp(r"[\u4e00-\u9fa5]"),
+                  allow: true,
+                ),
               if (widget.onlyLetter)
-                WhitelistingTextInputFormatter(RegExp(r"^[A-Za-z]+$")),
+                FilteringTextInputFormatter(
+                  RegExp(r"^[A-Za-z]+$"),
+                  allow: true,
+                ),
             ]
           : widget.inputFormatters,
     );

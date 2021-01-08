@@ -88,7 +88,7 @@ class _MasterMonthPageState extends State<MasterMonthPage> {
     );
   }
 
-  Widget  _lv() {
+  Widget _lv() {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: S.w(10)),
       children: <Widget>[
@@ -123,6 +123,8 @@ class _MasterMonthPageState extends State<MasterMonthPage> {
   }
 
   /// 账单详情
+  /// [amt]订单总额 [profit]订单利润 [qty]订单数量
+  /// [refund]退款金额 [qtyRefund]退款订单数量
   Widget _detailItem({String title, num amt, profit, qty, refund, qtyRefund}) {
     var tGray = TextStyle(color: t_gray, fontSize: S.sp(15));
     var space = 80;
