@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
@@ -35,8 +36,12 @@ class _FundMainState extends State<FundMain> {
 
   /// 获取个人余额
   _fetch() async {
-    BalanceRes res = await ApiAccount.remainderGet();
-    if (res != null) _balance = res.remainder;
+    try {
+      BalanceRes res = await ApiAccount.remainderGet();
+      if (res != null) _balance = res.remainder;
+    } catch (e) {
+      Log.error("获取个人余额出现异常：$e");
+    }
   }
 
   @override

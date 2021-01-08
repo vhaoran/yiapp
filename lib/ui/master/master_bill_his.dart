@@ -5,6 +5,7 @@ import 'package:secret/secret.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pays/master_business_res.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/master/master_month_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
@@ -59,6 +60,7 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
       "rows_per_page": _rowsPerPage,
       "sort": {"created_at": -1},
       "where": {
+        "uid": ApiBase.uid,
         "\$and": [
           {
             "created_at": {"\$gte": "$start 00:00:00"},
@@ -88,10 +90,6 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _buildFb();
-  }
-
-  Widget _buildFb() {
     return Scaffold(
       appBar: CusAppBar(text: "对账单记录"),
       body: FutureBuilder(
@@ -100,43 +98,46 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
           if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
-          return ScrollConfiguration(
-            behavior: CusBehavior(),
-            child: Column(
-              children: [
-                SizedBox(height: S.h(7)),
-                _chTime(),
-                SizedBox(height: S.h(7)),
-                Expanded(
-                  child: EasyRefresh(
-                    header: CusHeader(),
-                    footer: CusFooter(),
-                    onLoad: () async => await _fetch(),
-                    onRefresh: () async => await _refresh(),
-                    child: ListView(
-                      children: <Widget>[
-                        if (_l.isEmpty)
-                          Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(top: 200),
-                            child: Text(
-                              "当月暂无账单",
-                              style:
-                                  TextStyle(color: t_gray, fontSize: S.sp(15)),
-                            ),
-                          ),
-                        if (_l.isNotEmpty)
-                          ..._l.map((e) => MasterBillItem(business: e)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return _lv();
         },
       ),
       backgroundColor: primary,
+    );
+  }
+
+  Widget _lv() {
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: Column(
+        children: [
+          SizedBox(height: S.h(7)),
+          _chTime(),
+          SizedBox(height: S.h(7)),
+          Expanded(
+            child: EasyRefresh(
+              header: CusHeader(),
+              footer: CusFooter(),
+              onLoad: () async => await _fetch(),
+              onRefresh: () async => await _refresh(),
+              child: ListView(
+                children: <Widget>[
+                  if (_l.isEmpty)
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(top: 200),
+                      child: Text(
+                        "当月暂无账单",
+                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      ),
+                    ),
+                  if (_l.isNotEmpty)
+                    ..._l.map((e) => MasterBillItem(business: e)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -164,7 +165,7 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
           Icon(FontAwesomeIcons.caretDown, color: t_gray),
           Spacer(),
           InkWell(
-            onTap: () => CusRoute.push(context, MasterMonthPage()),
+            onTap: () => CusRoute.push(context, MasterMonthPage(time: _time)),
             child: Text(
               "月账单",
               style: TextStyle(color: t_gray, fontSize: S.sp(15)),
@@ -181,8 +182,8 @@ class _MasterBillHisPageState extends State<MasterBillHisPage>
   _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
-    await _fetch();
     setState(() {});
+    await _fetch();
   }
 
   @override

@@ -10,20 +10,20 @@ class MasterMonthRes {
   int amt_draw_money; // 总提现
   int amt_yi_order; // 大师订单总额
   int amt_yi_order_r; // 大师订单总退款额，带 r 的代表退款
-  int id;
+  int id; // 对账单所处的ID，诸如 1 2 3等
   String icon;
-  int month;
+  int month; // 查询哪一月
   String nick;
-  int profit_bbs_prize; // 大师订单纯利润
-  int profit_bbs_vie;
-  int profit_yi_order;
+  int profit_bbs_prize; // 悬赏帖订单利润
+  int profit_bbs_vie; // 闪断帖订单利润
+  int profit_yi_order; // 大师订单利润
   int qty_bbs_prize; // 悬赏帖总订单数量
-  int qty_bbs_vie;
-  int qty_draw_money;
-  int qty_yi_order;
-  int qty_yi_order_r;
+  int qty_bbs_vie; // 闪断帖总个数
+  int qty_draw_money; // 提现总个数
+  int qty_yi_order; // 大师订单总个数
+  int qty_yi_order_r; // 大师订单退款总个数
   int uid;
-  int year;
+  int year; // 查询哪一年
 
   MasterMonthRes({
     this.amt_bbs_prize,

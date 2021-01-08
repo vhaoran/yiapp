@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/master_balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
-import 'package:yiapp/ui/master/master_month_page.dart';
 import 'package:yiapp/ui/master/master_fund/bankcard_page.dart';
 import 'package:yiapp/ui/master/master_fund/master_draw_money_add.dart';
 import 'package:yiapp/ui/master/master_fund/master_draw_money_page.dart';
@@ -39,8 +39,12 @@ class _MasterFundMainState extends State<MasterFundMain> {
 
   /// 获取大师余额
   _fetch() async {
-    MasterBalanceRes res = await ApiAccount.remainderMasterGet();
-    if (res != null) _balance = res.remainder;
+    try {
+      MasterBalanceRes res = await ApiAccount.remainderMasterGet();
+      if (res != null) _balance = res.remainder;
+    } catch (e) {
+      Log.error("获取大师余额出现异常：$e");
+    }
   }
 
   @override
@@ -71,12 +75,8 @@ class _MasterFundMainState extends State<MasterFundMain> {
             onTap: () => CusRoute.push(context, FundListPage()),
           ),
           NormalBox(
-            title: "对账单记录",
+            title: "对账单",
             onTap: () => CusRoute.push(context, MasterBillHisPage()),
-          ),
-          NormalBox(
-            title: "月度对账单",
-            onTap: () => CusRoute.push(context, MasterMonthPage()),
           ),
           NormalBox(
             title: "充值",
