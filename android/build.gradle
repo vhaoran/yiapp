@@ -1,18 +1,40 @@
 buildscript {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        // maven { url 'https://maven.aliyun.com/repository/spring/'}
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+
+        mavenLocal()
+        mavenCentral()
+
+
         google()
         jcenter()
     }
 
     dependencies {
+        // flutter build successful start
+        // classpath 'com.android.tools.build:gradle:3.5.0'
+        //
+        // //for mod push
+        // classpath 'com.android.tools.build:gradle:3.2.1'
+        // classpath 'com.mob.sdk:MobSDK:+'
+        // flutter build successful end
+
         classpath 'com.android.tools.build:gradle:3.5.0'
 
         //for mod push
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.mob.sdk:MobSDK:+'
-        classpath 'com.google.gms:google-services:4.0.1'
-        //不需要FCM厂商推送无需配置
+
+
+        classpath 'com.google.gms:google-services:4.0.1'        //不需要FCM厂商推送无需配置
         //end for mob push
+
+//        compile 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
+//        compile 'com.github.ctiao:ndkbitmap-x86:0.9.21'
     }
 }
 

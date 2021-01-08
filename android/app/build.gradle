@@ -57,15 +57,14 @@ android {
         disable 'InvalidPackage'
     }
 
-//    defaultConfig {
-//        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-//        applicationId "com.wl.yiapp"
-//        minSdkVersion 17
-//        targetSdkVersion 29
-//        versionCode flutterVersionCode.toInteger()
-//        versionName flutterVersionName
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'arm64-v8a'
+//            universalApk true
+//        }
 //    }
-
 
     signingConfigs {
         //签名配置
@@ -80,15 +79,16 @@ android {
 
     defaultConfig {
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', "x86_64"
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
         }
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.wl.yiapp"
-        minSdkVersion 17
-        targetSdkVersion 24
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
