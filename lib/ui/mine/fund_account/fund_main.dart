@@ -7,13 +7,13 @@ import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
-import 'package:yiapp/ui/mine/fund_account/bill_history.dart';
+import 'package:yiapp/ui/mine/fund_account/bill_his_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/23 18:24
-// usage ：资金账号主页
+// usage ：个人资金账号主页
 // ------------------------------------------------------
 
 class FundMain extends StatefulWidget {
@@ -67,7 +67,7 @@ class _FundMainState extends State<FundMain> {
           ),
           NormalBox(
             title: "对账单记录",
-            onTap: () => CusRoute.push(context, BillHistoryPage()),
+            onTap: () => CusRoute.push(context, BillHisPage()),
           ),
           NormalBox(
             title: "充值",

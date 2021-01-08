@@ -28,7 +28,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
-  final int _rows_per_page = 10; // 默认每页查询个数
+  final int _rowsPerPage = 10; // 默认每页查询个数
   List<YiOrder> _l = []; // 大师未完成列表
 
   @override
@@ -39,11 +39,11 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
 
   /// 分页查询大师未完成列表
   _fetch() async {
-    if (_pageNo * _rows_per_page > _rowsCount) return;
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
-      "rows_per_page": _rows_per_page,
+      "rows_per_page": _rowsPerPage,
       "sort": {"create_date": -1},
     };
     try {
@@ -65,6 +65,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return _buildFb();
   }
 
@@ -76,7 +77,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
           return Center(child: CircularProgressIndicator());
         }
         if (_l.isEmpty) {
-          return Center(child: CusText("您还没有相关订单", t_gray, 32));
+          return Center(child: CusText("你还没有相关订单", t_gray, 32));
         }
         return ScrollConfiguration(
           behavior: CusBehavior(),
@@ -97,7 +98,7 @@ class _MasterAwaitOrdersState extends State<MasterAwaitOrders>
   }
 
   /// 刷新数据
-  void _refresh() async {
+  _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
     await _fetch();

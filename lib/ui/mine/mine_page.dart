@@ -35,6 +35,7 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
+import 'fund_account/master_fund_main.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -153,10 +154,11 @@ class _MinePageState extends State<MinePage>
         ),
         NormalBox(
           title: "大师已完成订单",
-          onTap: () => CusRoute.push(
-            context,
-            MasterCompletedOrders(),
-          ),
+          onTap: () => CusRoute.push(context, MasterCompletedOrders()),
+        ),
+        NormalBox(
+          title: "大师资金账号",
+          onTap: () => CusRoute.push(context, MasterFundMain()),
         ),
         NormalBox(
           title: "被投诉订单",
@@ -165,7 +167,7 @@ class _MinePageState extends State<MinePage>
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoute.push(context, AccountSafePage()),
-        )
+        ),
       ];
     }
 
@@ -195,7 +197,9 @@ class _MinePageState extends State<MinePage>
           onTap: () => CusRoute.push(context, UserProductInfo()),
         ),
         NormalBox(
-            title: "个人资金账号", onTap: () => CusRoute.push(context, FundMain())),
+          title: "个人资金账号",
+          onTap: () => CusRoute.push(context, FundMain()),
+        ),
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoute.push(context, AccountSafePage()),

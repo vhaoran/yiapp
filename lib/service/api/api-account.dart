@@ -5,10 +5,14 @@
 //
 // ------------------------------------------------------
 
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/model/dicts/account.dart';
 import 'package:yiapp/model/dicts/balance_res.dart';
+import 'package:yiapp/model/dicts/master_balance_res.dart';
+import 'package:yiapp/model/pays/bankcard_res.dart';
 import 'package:yiapp/model/pays/business.dart';
-
+import 'package:yiapp/model/pays/master_business_month.dart';
+import 'package:yiapp/model/pays/master_business_res.dart';
 import 'api_base.dart';
 
 // ------------------------------------------------------
@@ -53,7 +57,6 @@ class ApiAccount {
     }, enableJwt: true);
   }
 
-//------------------------------------------------
   // 对账单历史--------分页查询
   static businessPage(Map<String, dynamic> pb) async {
     var url = "/yi/trade/BusinessPage";
@@ -67,5 +70,46 @@ class ApiAccount {
     return await ApiBase.postObj(url, data, (m) {
       return BalanceRes.fromJson(m);
     }, enableJwt: true);
+  }
+
+  /// 获取大师余额
+  static Future<MasterBalanceRes> remainderMasterGet() async {
+    var url = "/yi/trade/RemainderMasterGet";
+    var data = {"master_id": ApiBase.uid};
+    return await ApiBase.postObj(url, data, (m) {
+      return MasterBalanceRes.fromJson(m);
+    }, enableJwt: true);
+  }
+
+  /// x获取提现帐号get
+  static Future<BankCardRes> bankCardInfoGet() async {
+    var url = w_yi_trade + "BankCardInfoGet";
+    var data = {"acc_type": "master", "m_or_b_id": ApiBase.uid};
+    return await ApiBase.postObj(url, data, (m) => BankCardRes.fromJson(m));
+  }
+
+  /// x提现帐号设置（适用于运营商及大师）add
+  static Future<bool> bankCardInfoAdd(Map<String, dynamic> data) async {
+    var url = w_yi_trade + "BankCardInfoAdd";
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  /// x修改提现帐号，适用于管理员或平台、大师
+  static Future<bool> bankCardInfoCh(Map<String, dynamic> data) async {
+    var url = w_yi_trade + "BankCardInfoCh";
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+
+  /// 大师对帐单-page
+  static businessMasterPage(Map<String, dynamic> pb) async {
+    var url = w_yi_trade + "BusinessMasterPage";
+    return await ApiBase.postPage(
+        url, pb, (m) => MasterBusinessRes.fromJson(m));
+  }
+
+  /// 大师月度对帐单-page
+  static businessMasterMonthPage(Map<String, dynamic> pb) async {
+    var url = w_yi_trade + "BusinessMasterMonthPage";
+    return await ApiBase.postPage(url, pb, (m) => MasterMonthRes.fromJson(m));
   }
 }

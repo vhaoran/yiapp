@@ -40,7 +40,7 @@ class TimePicker {
     this.itemCount: 5,
     this.itemHeight: 38,
     this.minYear: 1900,
-    this.maxYear: 2020,
+    this.maxYear: 2100,
     this.factor: 1.2,
     this.offset: 0,
     this.squeeze: 1,

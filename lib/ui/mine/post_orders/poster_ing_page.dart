@@ -43,8 +43,7 @@ class _PosterIngPageState extends State<PosterIngPage>
   _fetch() async {
     try {
       var m = {
-        "stat": bbs_paid,
-        "uid": ApiBase.uid,
+        "where": {"uid": ApiBase.uid, "stat": bbs_paid},
         "sort": {"last_updated": -1}
       };
       PageBean pb = widget.is_vie

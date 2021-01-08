@@ -9,17 +9,17 @@ import 'package:yiapp/ui/mine/fund_account/bill_payget_his.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/24 15:30
-// usage ：对账单历史（含支付和收款）
+// usage ：个人对账单历史（含支付和收款）
 // ------------------------------------------------------
 
-class BillHistoryPage extends StatefulWidget {
-  BillHistoryPage({Key key}) : super(key: key);
+class BillHisPage extends StatefulWidget {
+  BillHisPage({Key key}) : super(key: key);
 
   @override
-  _BillHistoryPageState createState() => _BillHistoryPageState();
+  _BillHisPageState createState() => _BillHisPageState();
 }
 
-class _BillHistoryPageState extends State<BillHistoryPage> {
+class _BillHisPageState extends State<BillHisPage> {
   List<String> _tabs = ["支付助手", "收款助手"];
 
   @override

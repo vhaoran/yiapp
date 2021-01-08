@@ -27,6 +27,7 @@ const String b_mall = "mall"; // 商城订单付款
 const String b_yi_order = "yi-order"; // 大师订单付款
 const String b_bbs_prize = "bbs-prize"; // 悬赏帖付款
 const String b_bbs_vie = "bbs-vie"; // 闪断帖付款
+const String b_adjust = "acc-adjust"; // 账务调整
 const String b_master_draw_money = "master-draw-money"; // 大师提现
 
 /// 命名路由名称 r 是 route 的缩写

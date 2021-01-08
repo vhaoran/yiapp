@@ -58,21 +58,27 @@ class _NormalBoxState extends State<NormalBox> {
     return Row(
       children: <Widget>[
         Text(title, style: TextStyle(fontSize: S.sp(15), color: t_gray)),
-        Spacer(flex: 1),
+        SizedBox(width: S.w(15)),
         if (subtitle != null)
-          Container(
-            padding: EdgeInsets.only(right: widget.showBtn ? S.w(5) : 0),
-            child: InkWell(
-              onTap: subFn,
-              child: Text(
-                subtitle,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: widget.showBtn ? S.w(5) : 0),
+              child: InkWell(
+                onTap: subFn,
+                child: Text(
+                  subtitle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
               ),
             ),
           ),
-        if (widget.showBtn)
+        if (widget.showBtn) ...[
+          if (subtitle == null) Spacer(),
           Icon(Icons.keyboard_arrow_right, size: S.w(22), color: t_gray),
+        ],
       ],
     );
   }

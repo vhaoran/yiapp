@@ -192,7 +192,6 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Text("谁投诉的：${res.uid}", style: TextStyle(color: Colors.red)),
               Row(
                 children: <Widget>[
                   Text(_statView(res), style: tPrimary), // 投诉状态
