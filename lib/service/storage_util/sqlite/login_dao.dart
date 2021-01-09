@@ -18,7 +18,7 @@ class LoginDao {
 
   // ----------------------------- 增 -----------------------------
   /// 存储登录信息
-  Future<bool> insert(CusLoginRes login) async {
+  Future<bool> insert(SqliteLoginRes login) async {
     int val = await db.insert(tb_login, login.toJson());
     Log.info("保存用户数据${val > 0 ? '成功' : "失败"}");
     return val > 0 ? true : false;
@@ -38,7 +38,7 @@ class LoginDao {
 
   // ----------------------------- 改 -----------------------------
   /// 根据 uid，整体更新用户数据
-  Future<bool> update(CusLoginRes login) async {
+  Future<bool> update(SqliteLoginRes login) async {
     int val = await db.update(tb_login, login.toJson(),
         where: 'uid = ?', whereArgs: [login.uid]);
     return val > 0 ? true : false;
@@ -92,35 +92,35 @@ class LoginDao {
 
   // ----------------------------- 查 -----------------------------
   /// 游客登录(本地数据库的第一条信息)
-  Future<CusLoginRes> readGuest() async {
+  Future<SqliteLoginRes> readGuest() async {
     List<Map<String, dynamic>> l = await db.query(tb_login, limit: 1);
-    if (l.isEmpty) return CusLoginRes();
-    return CusLoginRes.fromJson(l.first);
+    if (l.isEmpty) return SqliteLoginRes();
+    return SqliteLoginRes.fromJson(l.first);
   }
 
   /// 根据 token 选择账号
-  Future<CusLoginRes> readUserByJwt() async {
+  Future<SqliteLoginRes> readUserByJwt() async {
     String jwt = await KV.getStr(kv_jwt);
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: "jwt=?", whereArgs: [jwt], limit: 1);
-    if (l.isEmpty) return CusLoginRes();
-    return CusLoginRes.fromJson(l.first);
+    if (l.isEmpty) return SqliteLoginRes();
+    return SqliteLoginRes.fromJson(l.first);
   }
 
   /// 根据 uid 查找用户
-  Future<CusLoginRes> readUserByUid() async {
+  Future<SqliteLoginRes> readUserByUid() async {
     List<Map<String, dynamic>> l = await db.query(tb_login,
         where: 'uid=?', whereArgs: [ApiBase.uid], limit: 1);
-    if (l.isEmpty) return CusLoginRes();
-    return CusLoginRes.fromJson(l.first);
+    if (l.isEmpty) return SqliteLoginRes();
+    return SqliteLoginRes.fromJson(l.first);
   }
 
   /// 根据 user_code 查找用户
-  Future<CusLoginRes> readUserByCode(String user_code) async {
+  Future<SqliteLoginRes> readUserByCode(String user_code) async {
     List<Map<String, dynamic>> l = await db.query(tb_login,
         where: 'user_code=?', whereArgs: [user_code], limit: 1);
-    if (l.isEmpty) return CusLoginRes();
-    return CusLoginRes.fromJson(l.first);
+    if (l.isEmpty) return SqliteLoginRes();
+    return SqliteLoginRes.fromJson(l.first);
   }
 
   /// 用户存在性
@@ -132,10 +132,10 @@ class LoginDao {
   }
 
   /// 获取所有登录信息
-  Future<List<CusLoginRes>> readAll() async {
+  Future<List<SqliteLoginRes>> readAll() async {
     List<Map<String, dynamic>> l = await db.query(tb_login);
     Log.info("数据库长度：${l.length}");
     if (l.isEmpty) return [];
-    return l.map((e) => CusLoginRes.fromJson(e)).toList();
+    return l.map((e) => SqliteLoginRes.fromJson(e)).toList();
   }
 }

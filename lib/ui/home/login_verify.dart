@@ -35,12 +35,12 @@ class LoginVerify {
     // 如果本地数据库有，则更新登录结果
     if ((await LoginDao(glbDB).exists(login.user_info.id))) {
       Log.info("更新本地用户信息：${login.user_info.id}");
-      await LoginDao(glbDB).update(CusLoginRes.from(login));
+      await LoginDao(glbDB).update(SqliteLoginRes.from(login));
     }
     // 如果本地数据库没有，则存储登录结果
     else {
       Log.info("存储新的用户信息：${login.user_info.id}");
-      await LoginDao(glbDB).insert(CusLoginRes.from(login));
+      await LoginDao(glbDB).insert(SqliteLoginRes.from(login));
     }
     if (CusRole.is_master) await _fetchMaster(context);
   }

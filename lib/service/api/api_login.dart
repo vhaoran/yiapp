@@ -23,8 +23,9 @@ class ApiLogin {
   }
 
   /// 游客登录
-  static Future<LoginResult> guestLogin(Map<String, dynamic> data) async {
+  static Future<LoginResult> guestLogin() async {
     var url = "/yi/user/GuestLogin";
+    var data = {};
     return await ApiBase.postObj(url, data, (m) => LoginResult.fromJson(m),
         enableJwt: false);
   }

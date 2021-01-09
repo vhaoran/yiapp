@@ -31,7 +31,7 @@ class _QueMainPageState extends State<QueMainPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   // 提问类型
   final List<String> _selectTypes = ["六爻", "四柱", "合婚", "其他"];
-  var _user = CusLoginRes(); // 本地用户信息
+  var _user = SqliteLoginRes(); // 本地用户信息
   Map<String, Widget> _tabW = {};
   var _future;
 

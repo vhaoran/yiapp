@@ -75,32 +75,33 @@ class _HomePageState extends State<HomePage> {
 
   /// 初始化登录信息
   _initLogin() async {
-    await initDB(); // 初始化数据库
-    LoginResult login;
-    bool hasToken = await KV.getStr(kv_jwt) != null;
-    Log.info("本地已存在token吗：$hasToken");
-    // TODO 如果服务器发送登录信息已被改变的通知，则需重新登录，目前先定为不管是否更改都去请求
-    try {
-      if (hasToken) {
-        Log.info("用户已登录过，验证当前 token");
-        CusLoginRes res = await LoginDao(glbDB).readUserByJwt();
-        login = LoginResult.from(res);
-      } else {
-        Log.info("用户第一次进入鸿运来，请求注册为游客身份");
-        login = await ApiLogin.guestLogin({});
+    bool ok = await initDB(); // 初始化数据库
+    if (ok) {
+      SqliteLoginRes res = await LoginDao(glbDB).readUserByJwt();
+      LoginResult login; // 登录结果
+      try {
+        if (res.jwt != null) {
+          Log.info("用户已登录过，验证当前 token");
+          login = LoginResult.from(res);
+        } else {
+          Log.info("用户第一次进入鸿运来，请求注册为游客身份");
+          login = await ApiLogin.guestLogin();
+        }
+      } catch (e) {
+        Log.error("用户登录出现异常：$e");
       }
-    } catch (e) {
-      Log.error("用户登录出现异常：$e");
+      await LoginVerify.init(login, context);
+      await _dynamicModules(); // 动态的运营商模块
+    } else {
+      Log.error("初始化数据库出现异常");
     }
-    await LoginVerify.init(login, context);
-    await _dynamicModules(); // 动态的运营商模块
   }
 
   /// 动态设置运营商模块
   Future<void> _dynamicModules() async {
     _m = {"运势": LuckMainPage()};
     // 大师添加控制台导航
-    CusLoginRes res = await LoginDao(glbDB).readUserByUid();
+    SqliteLoginRes res = await LoginDao(glbDB).readUserByUid();
     _printModules(res); // 仅打印运营商开启的模块
     if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
     if (res.enable_prize == 1 || res.enable_vie == 1) {
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 仅用来打印运营商开启了哪些服务模块
-  void _printModules(CusLoginRes res) {
+  void _printModules(SqliteLoginRes res) {
     if (res.enable_mall == 1) Log.info("商城模块已开启");
     if (res.enable_prize == 1) Log.info("悬赏帖模块已开启");
     if (res.enable_vie == 1) Log.info("闪断帖模块已开启");

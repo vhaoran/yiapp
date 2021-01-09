@@ -12,7 +12,8 @@ import 'userInfo.dart';
 // 注：这里的 is_admin、is_broker_admin、is_master、enabled 原来都为 bool 类型
 // 因为在 sqlite 中，会自动将 BLOB 类型转换为 INTEGER 类型，所以这里直接用 int 处理
 // id 改成了 uid
-class CusLoginRes {
+
+class SqliteLoginRes {
   int id;
   num uid;
   int is_admin;
@@ -45,7 +46,7 @@ class CusLoginRes {
   String user_name;
   num ver;
 
-  CusLoginRes({
+  SqliteLoginRes({
     this.id,
     this.uid,
     this.is_admin,
@@ -79,8 +80,8 @@ class CusLoginRes {
     this.ver,
   });
 
-  factory CusLoginRes.fromJson(Map<String, dynamic> json) {
-    return CusLoginRes(
+  factory SqliteLoginRes.fromJson(Map<String, dynamic> json) {
+    return SqliteLoginRes(
       uid: json['uid'],
       is_admin: json['is_admin'],
       is_broker_admin: json['is_broker_admin'],
@@ -150,7 +151,7 @@ class CusLoginRes {
   }
 
   /// 将从服务器获取到的数据 LoginResult 转换为本地数据库 LoginTable
-  static CusLoginRes from(LoginResult r) {
+  static SqliteLoginRes from(LoginResult r) {
     Modules m = r.modules ??
         Modules(
           enable_mall: 0,
@@ -159,7 +160,7 @@ class CusLoginRes {
           enable_vie: 0,
         );
     UserInfo u = r.user_info;
-    return CusLoginRes(
+    return SqliteLoginRes(
       is_admin: UsUtil.toInt(r.is_admin),
       is_broker_admin: UsUtil.toInt(r.is_broker_admin),
       is_master: UsUtil.toInt(r.is_master),

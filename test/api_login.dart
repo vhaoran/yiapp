@@ -42,7 +42,7 @@ void main() {
   test("游客登录", () async {
     ApiBase.jwt = jwt_134;
     try {
-      var res = await ApiLogin.guestLogin({});
+      var res = await ApiLogin.guestLogin();
       print(">>>测试---游客登录结果：${res.toJson()}");
     } catch (e) {
       print("<<<测试---游客登录异常：$e");

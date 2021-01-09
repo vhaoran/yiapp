@@ -58,7 +58,7 @@ class LoginResult {
   }
 
   /// 将本地数据库 LoginTable 转换为服务器接收的格式 LoginResult
-  static LoginResult from(CusLoginRes t) {
+  static LoginResult from(SqliteLoginRes t) {
     Modules m = Modules(
       enable_mall: t.enable_mall,
       enable_master: t.enable_master,

@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       textAgree: "登录",
       fnDataApproval: "",
       onThen: () async {
-        CusLoginRes res = await LoginDao(glbDB).readGuest();
+        SqliteLoginRes res = await LoginDao(glbDB).readGuest();
         if (ApiBase.jwt == res.jwt) {
           // 直接跳转到首页即可，无须更换账号
           Log.info("目前登录的就是游客账号");
