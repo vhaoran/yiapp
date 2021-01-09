@@ -32,7 +32,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Map<String, Widget> _m = {}; // 底部导航名称、组件
-  int _curIndex = 0; // 当前导航栏索引
   var _pc = PageController();
   var _future;
 
@@ -67,16 +66,8 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) => _m.values.toList()[index],
       ),
       bottomNavigationBar: CusBottomNavigationBar(
-        curIndex: _curIndex,
         barNames: _m.keys.toList(),
-        onChanged: (val) {
-          if (val == null) return;
-          if (_curIndex != val) {
-            _curIndex = val;
-            _pc.jumpToPage(_curIndex);
-            setState(() {});
-          }
-        },
+        onChanged: (curIndex) => _pc.jumpToPage(curIndex),
       ),
       backgroundColor: Colors.black26,
     );

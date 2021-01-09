@@ -86,8 +86,43 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
-    - assets/images/loop/
+    - assets/icons/iconfont.ttf
+    - assets/images/avatar.jpg
+    - assets/images/b.png
+    - assets/images/bei_mian.png
+    - assets/images/bg.jpg
+    - assets/images/bg_blue.png
+    - assets/images/boy.png
+    - assets/images/fan.png
+    - assets/images/girl.png
+    - assets/images/girl_master.png
+    - assets/images/god_of_wealth.png
+    - assets/images/icon_selected_20x20.png
+    - assets/images/ji.png
+    - assets/images/l.png
+    - assets/images/loop/loop_1.jpg
+    - assets/images/loop/loop_2.png
+    - assets/images/loop/loop_3.jpg
+    - assets/images/loop/loop_4.jpg
+    - assets/images/master.png
+    - assets/images/plate.png
+    - assets/images/plate_bg.png
+    - assets/images/qian.png
+    - assets/images/s.png
+    - assets/images/shake_sign.png
+    - assets/images/shopping_cart.png
+    - assets/images/tai_chi.png
+    - assets/images/temp_bg.png
+    - assets/images/temp_boy.jpg
+    - assets/images/temp_girl.jpg
+    - assets/images/temp_wrong.jpg
+    - assets/images/tlp.png
+    - assets/images/w.png
+    - assets/images/woman.png
+    - assets/images/yi.png
+    - assets/images/z.png
+    - assets/images/zi_mian.png
+    - assets/images/zodiac_plate.png
   fonts:
     - family: AliIcon
       fonts:
