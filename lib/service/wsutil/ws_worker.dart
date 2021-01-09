@@ -18,6 +18,15 @@ const String _url = "ws://hy3699.com:8083/ws";
 IOWebSocketChannel glbWSChan;
 bool _init_doing = false;
 
+// clostWSChan() async {
+//   try {
+//     _ = await glbWSChan.sink.close();
+//   } catch (e) {
+//     print("***error,file: ${e.toString()}");
+//     return false;
+//   }
+// }
+
 initWSChan() async {
   if (_init_doing) {
     return;
@@ -46,9 +55,6 @@ initWSChanSingle() {
   _notifyOnline();
 
   _chan.stream.listen((message) {
-    print("-----------------------------------");
-    print("-----------------------------------");
-    print("-----------------------------------");
     print("-----------------------------------");
     print("--------------raw received: $message -----------");
     _pump(message);
