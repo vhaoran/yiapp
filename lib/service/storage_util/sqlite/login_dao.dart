@@ -101,6 +101,8 @@ class LoginDao {
   /// 根据 token 选择账号
   Future<SqliteLoginRes> readUserByJwt() async {
     String jwt = await KV.getStr(kv_jwt);
+    if (jwt == null) {}
+    Log.info("jwt:${jwt}");
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: "jwt=?", whereArgs: [jwt], limit: 1);
     if (l.isEmpty) return SqliteLoginRes();

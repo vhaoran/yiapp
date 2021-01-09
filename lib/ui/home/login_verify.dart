@@ -18,12 +18,13 @@ import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/11/11 14:25
-// usage ：获取到登录信息后，统一要执行的
+// usage ：登录后需要处理的
 // ------------------------------------------------------
 
 class LoginVerify {
   static Future<void> init(LoginResult login, BuildContext context) async {
-    await KV.remove(kv_shop); // 清除本地购物车数据
+    // 清除上次的本地购物车数据
+    await KV.remove(kv_shop);
     Log.info("用户登录结果：${login.toJson()}");
     // 初始化全局信息和网络
     await setLoginInfo(login);
@@ -60,6 +61,7 @@ class LoginVerify {
     // 游客，指的是指除了其它角色之外的身份
     CusRole.is_guest =
         !CusRole.is_vip && !CusRole.is_master && !CusRole.is_broker_admin;
+    // 重置是否闪断帖
     CusRole.isVie = false;
   }
 

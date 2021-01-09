@@ -77,11 +77,12 @@ class _HomePageState extends State<HomePage> {
   _initLogin() async {
     bool ok = await initDB(); // 初始化数据库
     if (ok) {
-      SqliteLoginRes res = await LoginDao(glbDB).readUserByJwt();
+      bool hasToken = await KV.getStr(kv_jwt) != null;
       LoginResult login; // 登录结果
       try {
-        if (res.jwt != null) {
+        if (hasToken) {
           Log.info("用户已登录过，验证当前 token");
+          SqliteLoginRes res = await LoginDao(glbDB).readUserByJwt();
           login = LoginResult.from(res);
         } else {
           Log.info("用户第一次进入鸿运来，请求注册为游客身份");
