@@ -13,7 +13,8 @@ import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
 
 //const String _url = "ws://192.168.0.99:8889/ws";
-const String _url = "ws://0755yicai.com:8083/ws";
+//const String _url = "ws://0755yicai.com:8083/ws";
+const String _url = "ws://hy3699.com:8083/ws";
 IOWebSocketChannel glbWSChan;
 bool _init_doing = false;
 
