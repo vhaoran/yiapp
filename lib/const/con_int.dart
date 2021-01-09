@@ -70,3 +70,8 @@ const int wan_zi = 12; // 晚子
 const int rate_best = 1; // 好评
 const int rate_mid = 2; // 中评
 const int rate_bad = 3; // 差评
+
+// ------------------------- 提现类型 ------------------------
+const int draw_await = 0; // 待审批
+const int draw_cancel = 1; // 取消或驳回
+const int draw_pass = 4; // 审批通过

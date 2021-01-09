@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -132,7 +133,7 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
           (e) => InkWell(
             onTap: () => CusRoute.push(
               context,
-              MasterDrawMoneyContent(id: e.id),
+              MasterDrawMoneyContent(hadDraw: widget.hadDraw, id: e.id),
             ),
             child: _itemCover(e),
           ),
@@ -159,20 +160,8 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
                   "提现",
                   style: TextStyle(color: t_primary, fontSize: S.sp(15)),
                 ),
-                // 如果审批中的，则显示取消申请提现按钮
-                if (!widget.hadDraw) ...[
-                  Spacer(),
-                  SizedBox(
-                    height: S.h(25),
-                    width: S.w(60),
-                    child: CusRaisedButton(
-                      child: Text("取消"),
-                      backgroundColor: Colors.lightBlue,
-                      borderRadius: 100,
-                      onPressed: () => _doCancelDrawMoney(res.id),
-                    ),
-                  ),
-                ],
+                Spacer(),
+                _dynamicView(res), // 动态显示提现状态
               ],
             ),
             SizedBox(height: S.h(20)),
@@ -193,6 +182,43 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
         ),
       ),
     );
+  }
+
+  /// 动态显示提现状态
+  Widget _dynamicView(DrawMoneyRes res) {
+    // 如果审批中的，则显示取消申请提现按钮
+    if (!widget.hadDraw) {
+      return SizedBox(
+        height: S.h(25),
+        width: S.w(60),
+        child: CusRaisedButton(
+          child: Text("取消"),
+          backgroundColor: Colors.lightBlue,
+          borderRadius: 100,
+          onPressed: () => _doCancelDrawMoney(res.id),
+        ),
+      );
+    }
+    // 如果是已审批的，分为自己取消的、审核不通过的、审核通过的
+    else {
+      if (res.stat == draw_cancel) {
+        bool canceled = res.reject_reason == "个人原因";
+        Color color = canceled ? t_gray : btn_red;
+        // 自己取消的或者被驳回的
+        return Text(
+          canceled ? "已取消" : "已驳回",
+          style: TextStyle(color: color, fontSize: S.sp(15)),
+        );
+      }
+      // 审核通过的
+      else if (res.stat == draw_pass) {
+        return Text(
+          "审核通过",
+          style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(15)),
+        );
+      }
+      return SizedBox.shrink();
+    }
   }
 
   /// 取消提现申请

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/pays/draw_money_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
@@ -25,7 +27,7 @@ class MasterDrawMoneyContent extends StatefulWidget {
 
 class _MasterDrawMoneyContentState extends State<MasterDrawMoneyContent> {
   var _future;
-  DrawMoneyRes _res;
+  DrawMoneyRes _res; // 提现单据
 
   @override
   void initState() {
@@ -57,7 +59,7 @@ class _MasterDrawMoneyContentState extends State<MasterDrawMoneyContent> {
           if (_res == null) {
             return Center(
               child: Text(
-                "",
+                "~单据找不到了",
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             );
@@ -70,8 +72,73 @@ class _MasterDrawMoneyContentState extends State<MasterDrawMoneyContent> {
   }
 
   Widget _lv() {
-    return ListView(
-      children: <Widget>[],
+    var tGray = TextStyle(color: t_gray, fontSize: S.sp(15));
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: S.w(15)),
+        children: <Widget>[
+          SizedBox(height: S.h(10)),
+          Text("提现信息", style: TextStyle(color: t_primary, fontSize: S.sp(16))),
+          SizedBox(height: S.h(5)),
+          Text("提现人：${_res.master_nick}", style: tGray),
+          Text("金额：${_res.amt} 元", style: tGray),
+          Text("税金：${_res.tax} 元", style: tGray),
+          Text("时间：${_res.create_date}", style: tGray),
+          Divider(height: 20, thickness: 0.2, color: t_gray),
+          Text("账户信息", style: TextStyle(color: t_primary, fontSize: S.sp(16))),
+          SizedBox(height: S.h(5)),
+          Text("账户持有者：${_res.card.full_name}", style: tGray),
+          Text("开户行名称：${_res.card.bank_name}", style: tGray),
+          Text("银行卡号：${_res.card.card_code}", style: tGray),
+          Divider(height: 20, thickness: 0.2, color: t_gray),
+          Text("订单状态", style: TextStyle(color: t_primary, fontSize: S.sp(16))),
+          SizedBox(height: S.h(5)),
+          // 动态显示订单状态
+          _drawStat(),
+        ],
+      ),
     );
+  }
+
+  /// 动态显示订单状态
+  Widget _drawStat() {
+    if (_res.stat == draw_await) {
+      return Text(
+        "审批中",
+        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+      );
+    } else if (_res.stat == draw_cancel) {
+      bool canceled = _res.reject_reason == "个人原因";
+      // 自己取消的或者被驳回的
+      if (canceled) {
+        return Text(
+          "已取消",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "已被驳回，原因如下",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+            Text(
+              _res.reject_reason,
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+          ],
+        );
+      }
+    }
+    // 审核通过的
+    else if (_res.stat == draw_pass) {
+      return Text(
+        "当前提现单已审核通过",
+        style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(15)),
+      );
+    }
+    return SizedBox.shrink();
   }
 }

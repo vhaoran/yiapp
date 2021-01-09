@@ -76,6 +76,7 @@ class _MasterDrawMoneyAddState extends State<MasterDrawMoneyAdd> {
     try {
       var res = await ApiAccount.masterDrawMoneyAdd(amt);
       if (res != null) {
+        Log.info("提现单id: ${res.id}");
         CusDialog.tip(
           context,
           title: "提现申请已提交",
