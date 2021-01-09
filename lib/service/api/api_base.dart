@@ -26,7 +26,8 @@ class ApiBase {
   static int uid = 0;
 
   //用户访问的主机
-  static String host = "0755yicai.com";
+//  static String host = "0755yicai.com";
+  static String host = "hy3699.com/api";
 
   //对于基本返回值是一个结构的类型
   static Future<PageBean> postPage<T>(
@@ -93,7 +94,8 @@ class ApiBase {
   //最基本的post类型，返回结果是response中的map<string,dynamic>
   static post(String url, dynamic postData, {bool enableJwt = true}) async {
     dynamic r;
-    var host = "http://${ApiBase.host}";
+//    var host = "http://${ApiBase.host}";
+    var host = "https://${ApiBase.host}";
     debug("---visit: ${host + url}-----");
     debug("---args: $postData-----");
 

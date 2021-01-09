@@ -126,7 +126,8 @@ class _CusRaisedButton extends MaterialButton {
     );
     final ShapeBorder shape = button.borderRadius != 0
         ? RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(button.borderRadius)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(button.borderRadius)),
           )
         : button.shape;
     return _CusRaisedButton(

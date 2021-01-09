@@ -32,7 +32,7 @@ class _CusBottomNavigationBarState extends State<CusBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Container(
       color: ter_primary,
-      padding: EdgeInsets.symmetric(vertical: S.h(4)),
+      padding: EdgeInsets.symmetric(vertical: S.h(5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -57,7 +57,7 @@ class _CusBottomNavigationBarState extends State<CusBottomNavigationBar> {
         }
       },
       child: SizedBox(
-        width: S.screenW() / widget.barNames.length,
+        width: S.w(50),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
