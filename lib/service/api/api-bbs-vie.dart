@@ -17,6 +17,12 @@ class ApiBBSVie {
     return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
   }
 
+  //-----------w闪断帖分页查询v 可同时查询已打赏和已付款的-------------------------------------
+  static bbsViePage2(Map<String, dynamic> pb) async {
+    var url = pre + "BBSViePage2";
+    return await ApiBase.postPage(url, pb, (m) => BBSVie.fromJson(m));
+  }
+
   //-----------闪断帖   历史 ---分页查询v-------------------------------------
   static bbsVieHisPage(Map<String, dynamic> pb) async {
     var url = pre + "BBSVieHisPage";

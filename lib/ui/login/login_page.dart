@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
         // 密码输入框
         CusUnderField(
           controller: _pwdCtrl,
+          fromValue: "123456",
           hintText: "请输入登录密码",
           errorText: _pwdErr,
           isClear: false,

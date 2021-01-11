@@ -18,6 +18,12 @@ class ApiBBSPrize {
     return await ApiBase.postPage(url, pb, (m) => BBSPrize.fromJson(m));
   }
 
+  //-----------w悬赏贴分页查询 可同时查询已打赏和已付款的-------------------------------------
+  static bbsPrizePage2(Map<String, dynamic> pb) async {
+    var url = pre + "BBSPrizePage2";
+    return await ApiBase.postPage(url, pb, (m) => BBSPrize.fromJson(m));
+  }
+
   //-----------悬赏贴   历史 ---分页查询v-------------------------------------
   static bbsPrizeHisPage(Map<String, dynamic> pb) async {
     var url = pre + "BBSPrizeHisPage";

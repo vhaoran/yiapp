@@ -115,15 +115,6 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
 
   /// 申请运营商前的验证
   void _verify() async {
-    // 如果已经是运营商，不能再次申请
-    if (CusRole.is_broker_admin) {
-      CusDialog.tip(
-        context,
-        title: "你已经是运营商",
-        onApproval: () => Navigator.pop(context),
-      );
-      return;
-    }
     // 申请前先查看手机号是否已绑定，密码是否已修改
     var user = await LoginDao(glbDB).readUserByUid();
     bool isMobile = RegexUtil.isMobile(user.user_code);
@@ -166,25 +157,29 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
       "brief": _briefCtrl.text.trim(),
     };
     try {
+      SpinKit.threeBounce(context);
       BrokerApply res = await ApiBroker.brokerApplyHandIn(m);
       Log.info("申请成为运营商结果详情：${res.toJson()}");
       if (res != null) {
-        SpinKit.threeBounce(context);
-        await Future.delayed(Duration(milliseconds: 1000));
         Navigator.pop(context);
-        CusDialog.tip(context, title: "申请已提交，请等待审核结果", onApproval: () {
-          Navigator.pop(context);
-        });
+        CusDialog.tip(
+          context,
+          title: "申请已提交，请等待审核结果",
+          onApproval: () => Navigator.pop(context),
+        );
       }
     } catch (e) {
+      Navigator.pop(context);
       Log.error("申请运营商出现异常：$e");
       setState(() {
-        if (e.toString().contains("已存在对代理名称的申请")) {
+        if (e.toString().contains("运营商已存在")) {
           _err = "运营商名称已被占用";
-        } else if (e.toString().contains("已存在对服务代码申请")) {
+        } else if (e.toString().contains("服务码已存在")) {
           _err = "邀请码已被占用";
+        } else if (e.toString().contains("不可二次提交")) {
+          _err = "你已经申请过了，请等待审核结果";
         }
-        CusToast.toast(context, text: _err);
+        CusDialog.normal(context, title: _err);
         return;
       });
     }

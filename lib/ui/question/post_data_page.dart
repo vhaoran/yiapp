@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
@@ -48,23 +48,25 @@ class _PostDataPageState extends State<PostDataPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
+    Log.info("第$_pageNo次加载");
     // 如果是闪断帖，则不显示 master_id 不为0的帖子
-    Map<String, dynamic> where = {"stat": bbs_paid};
-    if (widget.is_vie) where.addAll({"master_id": 0});
+//    Map<String, dynamic> where = {"stat": bbs_paid};
+//    if (widget.is_vie) where.addAll({"master_id": 0});
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": where,
-      "sort": {"create_date": -1}, // 按时间倒序排列
+      "where": {"broker_id": CusRole.broker_id},
+//      "where": where,
+      "sort": {"create_date_int": -1}, // 按时间倒序排列
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
-    setState(() {});
+//    setState(() {});
   }
 
   /// 获取悬赏帖
   _fetchPrize(Map<String, dynamic> m) async {
     try {
-      PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
+      PageBean pb = await ApiBBSPrize.bbsPrizePage2(m);
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
         Log.info("悬赏帖总条数：$_rowsCount");
@@ -74,6 +76,7 @@ class _PostDataPageState extends State<PostDataPage>
           if (dst == null) _l.add(src);
         });
         Log.info("当前已查询多少条悬赏帖：${_l.length}");
+        setState(() {});
       }
     } catch (e) {
       Log.error("分页查询悬赏帖出现异常：$e");
@@ -83,7 +86,7 @@ class _PostDataPageState extends State<PostDataPage>
   /// 获取闪断帖
   _fetchVie(Map<String, dynamic> m) async {
     try {
-      PageBean pb = await ApiBBSVie.bbsViePage(m);
+      PageBean pb = await ApiBBSVie.bbsViePage2(m);
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
         Log.info("闪断帖总条数：$_rowsCount");
@@ -93,6 +96,7 @@ class _PostDataPageState extends State<PostDataPage>
           if (dst == null) _l.add(src);
         });
         Log.info("当前已查询多少条闪断帖：${_l.length}");
+        setState(() {});
       }
     } catch (e) {
       Log.error("分页查询闪断帖出现异常：$e");

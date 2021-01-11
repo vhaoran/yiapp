@@ -64,7 +64,10 @@ class _DemoShowUserPageState extends State<DemoShowUserPage> {
         if (user.is_admin == 1) _commonShow(desc: "身份", data: "系统管理员"),
         if (user.is_broker_admin == 1) _commonShow(desc: "身份", data: "运营商管理员"),
         if (user.is_master == 1) _commonShow(desc: "身份", data: "大师"),
-        if (_isVip(user)) _commonShow(desc: "身份", data: "会员"),
+        if (_isVip(user)) ...[
+          _commonShow(desc: "身份", data: "会员"),
+          _commonShow(desc: "broker_id", data: "${user.broker_id}"),
+        ],
         if (_isGuest(user)) _commonShow(desc: "身份", data: "游客"),
         _commonShow(
           desc: "商城",
