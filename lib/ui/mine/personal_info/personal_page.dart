@@ -72,6 +72,12 @@ class _PersonalPageState extends State<PersonalPage> {
             },
           ),
         ),
+
+        NormalBox(
+          title: "账号", // 账号
+          subtitle: _u.user_code,
+          showBtn: false,
+        ),
         NormalBox(
           title: "昵称", // 昵称
           subtitle: _u.nick,
@@ -92,6 +98,7 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         NormalBox(
           title: "手机号码", // 手机号码
+          chSubColor: !RegexUtil.isMobile(_u.user_code),
           showBtn: RegexUtil.isMobile(_u.user_code) ? false : true,
           subtitle: RegexUtil.isMobile(_u.user_code) ? _u.user_code : "绑定手机",
           subFn: RegexUtil.isMobile(_u.user_code)

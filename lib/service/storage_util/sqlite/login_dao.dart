@@ -101,8 +101,6 @@ class LoginDao {
   /// 根据 token 选择账号
   Future<SqliteLoginRes> readUserByJwt() async {
     String jwt = await KV.getStr(kv_jwt);
-    if (jwt == null) {}
-    Log.info("jwt:${jwt}");
     List<Map<String, dynamic>> l =
         await db.query(tb_login, where: "jwt=?", whereArgs: [jwt], limit: 1);
     if (l.isEmpty) return SqliteLoginRes();
@@ -136,7 +134,6 @@ class LoginDao {
   /// 获取所有登录信息
   Future<List<SqliteLoginRes>> readAll() async {
     List<Map<String, dynamic>> l = await db.query(tb_login);
-    Log.info("数据库长度：${l.length}");
     if (l.isEmpty) return [];
     return l.map((e) => SqliteLoginRes.fromJson(e)).toList();
   }

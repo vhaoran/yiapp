@@ -40,7 +40,7 @@ class SqliteLoginRes {
   String nick;
   String province;
   String pwd;
-  num sex;
+  num sex; // 0:女性 1:男性
   String update_at;
   String user_code;
   String user_name;

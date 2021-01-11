@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/demo/other/demo_show_user_page.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -31,16 +33,14 @@ class DemoGetData extends StatelessWidget {
           title: "01 数据库中所有用户信息",
           onTap: () async {
             var l = await LoginDao(glbDB).readAll();
-            for (var i = 0; i < l.length; i++) {
-              Log.info("第 ${i + 1} 个用户：${l[i].toJson()}");
-            }
+            CusRoute.push(context, DemoShowUserPage(l: l));
           },
         ),
         NormalBox(
           title: "02 当前登录用户",
           onTap: () async {
             var user = await LoginDao(glbDB).readUserByUid();
-            Log.info("当前登录用户详情: ${user.toJson()}");
+            CusRoute.push(context, DemoShowUserPage(l: [user]));
           },
         ),
       ],

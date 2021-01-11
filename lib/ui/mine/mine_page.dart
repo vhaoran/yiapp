@@ -13,29 +13,17 @@ import 'package:yiapp/model/msg/msg-notify-his.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
-import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/login/login_page.dart';
-import 'package:yiapp/ui/master/master_apply.dart';
-import 'package:yiapp/ui/master/master_console/master_console.dart';
-import 'package:yiapp/ui/master/master_his_main.dart';
-import 'package:yiapp/ui/master/master_info_page.dart';
-import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
-import 'package:yiapp/ui/mine/account_safe/account_safe_page.dart';
-import 'package:yiapp/ui/mine/bind_service_code.dart';
-import 'package:yiapp/ui/mine/fund_account/fund_main.dart';
-import 'package:yiapp/ui/mine/my_orders/complaints_record.dart';
-import 'package:yiapp/ui/mine/my_orders/other_orders_main.dart';
+import 'package:yiapp/ui/mine/mine_view.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
-import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
-import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_bg_wall.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
-import 'fund_account/master_fund_main.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -71,8 +59,44 @@ class _MinePageState extends State<MinePage>
     _u = context.watch<UserInfoState>().userInfo ?? defaultUser;
     super.build(context);
     return Scaffold(
-      body: _bodyCtr(),
+      body: _lv(),
       backgroundColor: sec_primary,
+    );
+  }
+
+  Widget _lv() {
+    return ScrollConfiguration(
+      behavior: CusBehavior(),
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        children: <Widget>[
+          // 用户头像、昵称、背景墙
+          Container(
+            height: S.h(180),
+            child: Stack(
+              children: <Widget>[
+                BackgroundWall(url: ""), // 背景墙
+                Align(
+                  alignment: Alignment(0, 0), // 头像
+                  child: InkWell(
+                    child: CusAvatar(url: _u.icon ?? "", circle: true),
+                    onTap: () => CusRoute.push(context, PersonalPage()),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment(0, CusRole.is_guest ? 0.8 : 0.75),
+                  child: CusText(_u.nick ?? "游客", t_gray, 30),
+                ),
+              ],
+            ),
+          ),
+          MineIdentityView(), // 根据身份显示个人主页
+          NormalBox(
+            title: "demo 测试",
+            onTap: () => CusRoute.push(context, CusDemoMain()),
+          ),
+        ],
+      ),
     );
   }
 
@@ -118,140 +142,6 @@ class _MinePageState extends State<MinePage>
         }
       });
     }
-  }
-
-  Widget _bodyCtr() {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      children: <Widget>[
-        _avatarAndMore(), // 用户头像、昵称、背景墙
-
-        ..._choice(),
-
-        NormalBox(
-          title: "demo 测试",
-          onTap: () => CusRoute.push(context, CusDemoMain()),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> _choice() {
-    if (ApiBase.loginInfo.is_master) {
-      return [
-        NormalBox(
-          title: "大师控制台",
-          onTap: () => CusRoute.push(context, MasterConsole()),
-        ),
-        NormalBox(
-          title: "大师信息",
-          onTap: () =>
-              CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
-        ),
-        NormalBox(
-          title: "大师已完成帖子订单",
-          onTap: () => CusRoute.push(context, MasterHisMain()),
-        ),
-        NormalBox(
-          title: "大师已完成订单",
-          onTap: () => CusRoute.push(context, MasterCompletedOrders()),
-        ),
-        NormalBox(
-          title: "大师资金账号",
-          onTap: () => CusRoute.push(context, MasterFundMain()),
-        ),
-        NormalBox(
-          title: "被投诉订单",
-          onTap: () => CusRoute.push(context, ComplaintsRecord()),
-        ),
-        NormalBox(
-          title: "账户与安全",
-          onTap: () => CusRoute.push(context, AccountSafePage()),
-        ),
-      ];
-    }
-
-    //------------------------------------------------
-    if (ApiBase.loginInfo.is_broker_admin) {
-      return [
-        NormalBox(
-          title: "账户与安全",
-          onTap: () => CusRoute.push(context, AccountSafePage()),
-        )
-      ];
-    }
-
-    //----common user--------------------------------------------
-    if (ApiBase.loginInfo.isVip()) {
-      return [
-        NormalBox(
-          title: "帖子订单",
-          onTap: () => CusRoute.push(context, PosterConsole()),
-        ),
-        NormalBox(
-          title: "其它订单",
-          onTap: () => CusRoute.push(context, OtherOrdersMain()),
-        ),
-        NormalBox(
-          title: "我的商品",
-          onTap: () => CusRoute.push(context, UserProductInfo()),
-        ),
-        NormalBox(
-          title: "个人资金账号",
-          onTap: () => CusRoute.push(context, FundMain()),
-        ),
-        NormalBox(
-          title: "账户与安全",
-          onTap: () => CusRoute.push(context, AccountSafePage()),
-        ),
-        NormalBox(
-          title: "申请大师",
-          onTap: () => CusRoute.push(context, ApplyMasterPage()),
-        ),
-        NormalBox(
-          title: "申请运营商",
-          onTap: () => CusRoute.push(context, ApplyBrokerPage()),
-        ),
-      ];
-    }
-    //-----------guest-------------------------------------
-    if (ApiBase.loginInfo.isGuest()) {
-      return [
-        NormalBox(
-          title: "绑定运营商",
-          onTap: () => CusRoute.push(context, BindSerCodePage()),
-        ),
-      ];
-    }
-
-    //------------------------------------------------
-    if (ApiBase.loginInfo.is_admin) {
-      return [];
-    }
-    return [];
-  }
-
-  /// 用户头像、昵称、背景墙
-  Widget _avatarAndMore() {
-    return Container(
-      height: Adapt.px(360),
-      child: Stack(
-        children: <Widget>[
-          BackgroundWall(url: ""), // 背景墙
-          Align(
-            alignment: Alignment(0, 0), // 头像
-            child: InkWell(
-              child: CusAvatar(url: _u.icon ?? "", circle: true),
-              onTap: () => CusRoute.push(context, PersonalPage()),
-            ),
-          ),
-          Align(
-            alignment: Alignment(0, CusRole.is_guest ? 0.8 : 0.75),
-            child: CusText(_u.nick ?? "游客", t_gray, 30),
-          ),
-        ],
-      ),
-    );
   }
 
   @override

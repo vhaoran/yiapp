@@ -37,6 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
   var _mobileCtrl = TextEditingController(); // 手机号输入框
   var _nickCtrl = TextEditingController(); // 昵称输入框
   var _pwdCtrl = TextEditingController(); // 密码输入框
+  bool _hidePwd = true; // 是否隐藏密码，默认隐藏
   String _err; // 弹框提示错误信息
   String _mobileErr; // 手机号错误提示
   bool _agree = true; // 是否同意用户协议
@@ -69,15 +70,24 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: EdgeInsets.symmetric(vertical: Adapt.px(40)),
           child: CusUnderField(
             controller: _nickCtrl,
-            hintText: "输入汉字昵称",
-            onlyChinese: true,
-            maxLength: 6,
+            hintText: "输入昵称",
+            maxLength: 8,
           ),
         ),
         // 登录密码
         CusUnderField(
           controller: _pwdCtrl,
           hintText: "设置登录密码",
+          isClear: false,
+          maxLength: 20,
+          obscureText: _hidePwd,
+          suffixIcon: InkWell(
+            onTap: () => setState(() => _hidePwd = !_hidePwd),
+            child: Icon(
+              Icons.remove_red_eye,
+              color: _hidePwd ? Colors.grey : Colors.lightBlue,
+            ),
+          ),
         ),
         SizedBox(height: 40),
         CusRaisedButton(

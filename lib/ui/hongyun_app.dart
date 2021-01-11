@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yiapp/func/permissions.dart';
 import 'package:yiapp/global/main_routes.dart';
-
 import 'home/home_page.dart';
 
 // ------------------------------------------------------

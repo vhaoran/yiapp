@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
-import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/under_field.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
@@ -40,8 +38,8 @@ class _LoginPageState extends State<LoginPage> {
   var _pwdCtrl = TextEditingController(); // 鸿运密码
   String _mobileErr; // 非手机号错误提示
   String _pwdErr; // 密码错误提示
-  String _err; // 错误提示信息
   var _future;
+  bool _hidePwd = true; // 是否隐藏密码，默认隐藏
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +80,16 @@ class _LoginPageState extends State<LoginPage> {
           controller: _pwdCtrl,
           hintText: "请输入登录密码",
           errorText: _pwdErr,
+          isClear: false,
           maxLength: 20,
+          obscureText: _hidePwd,
+          suffixIcon: InkWell(
+            onTap: () => setState(() => _hidePwd = !_hidePwd),
+            child: Icon(
+              Icons.remove_red_eye,
+              color: _hidePwd ? Colors.grey : Colors.lightBlue,
+            ),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -162,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
 //      return;
 //    }
     setState(() {
-      _err = _mobileErr = _pwdErr = null;
+      _mobileErr = _pwdErr = null;
     });
     LoginResult login; // 最终传递的登录结果
     // 在登录界面登录鸿运来，直接请求即可，不需要判断本地数据库是否已存在，否则无法保证数据最新

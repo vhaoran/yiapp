@@ -25,7 +25,7 @@ class DemoPlugin extends StatelessWidget {
     return ListView(
       children: <Widget>[
         NormalBox(
-          title: "01",
+          title: "01 暂无",
           onTap: () {},
         ),
       ],

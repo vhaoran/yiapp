@@ -16,13 +16,15 @@ class NormalBox extends StatefulWidget {
   final String title;
   final String subtitle;
   final bool showBtn; // 默认显示右箭头按钮
+  final bool chSubColor; // 改变 subtitle 的文字颜色
   final VoidCallback onTap;
   final VoidCallback subFn; // 点击 subtitle 后执行的事件
 
   NormalBox({
     @required this.title,
     this.subtitle,
-    this.showBtn = true,
+    this.showBtn: true,
+    this.chSubColor: false,
     this.onTap,
     this.subFn,
   });
@@ -70,7 +72,10 @@ class _NormalBoxState extends State<NormalBox> {
                   subtitle,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  style: TextStyle(
+                    color: widget.chSubColor ? Colors.lightBlue : t_gray,
+                    fontSize: S.sp(15),
+                  ),
                 ),
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -32,14 +32,16 @@ class DemoClearData extends StatelessWidget {
           title: "01 删除本地 kv 数据",
           onTap: () async {
             bool ok = await KV.clear();
-            Log.info("删除本地 kv 数据：${ok ? '成功' : '失败'}");
+            String tip = "删除本地 kv 数据：${ok ? '成功' : '失败'}";
+            CusDialog.tip(context, title: tip);
           },
         ),
         NormalBox(
           title: "02 删除 sqlite 全部用户信息",
           onTap: () async {
             bool ok = await LoginDao(glbDB).deleteAll();
-            Log.info("删除本地数据库用户信息：${ok ? '成功' : '失败'}");
+            String tip = "删除本地数据库用户信息：${ok ? '成功' : '失败'}";
+            CusDialog.tip(context, title: tip);
           },
         ),
       ],

@@ -25,6 +25,7 @@ class CusUnderField extends StatefulWidget {
   final bool autofocus;
   final bool enable;
   final bool isClear; // 为true代表suffixIcon是清空内容组件，false为自定义组件
+  final bool obscureText;
   final TextInputType keyboardType; // 键盘输入类型
   final TextStyle style; // 输入时的文字风格
   final TextStyle hintStyle;
@@ -45,6 +46,7 @@ class CusUnderField extends StatefulWidget {
     this.autofocus: false,
     this.enable,
     this.isClear: true,
+    this.obscureText: false,
     this.keyboardType: TextInputType.text,
     this.style,
     this.hintStyle,
@@ -95,6 +97,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
       controller: widget.controller,
       autofocus: widget.autofocus,
       enabled: widget.enable,
+      obscureText: widget.obscureText,
       focusNode: _focusNode,
       keyboardType:
           widget.onlyNumber ? TextInputType.number : widget.keyboardType,
@@ -117,11 +120,17 @@ class _CusUnderFieldState extends State<CusUnderField> {
       ),
       inputFormatters: widget.inputFormatters == null
           ? [
-              if (widget.onlyNumber) WhitelistingTextInputFormatter.digitsOnly,
+              if (widget.onlyNumber) FilteringTextInputFormatter.digitsOnly,
               if (widget.onlyChinese)
-                WhitelistingTextInputFormatter(RegExp(r"[\u4e00-\u9fa5]")),
+                FilteringTextInputFormatter(
+                  RegExp(r"[\u4e00-\u9fa5]"),
+                  allow: true,
+                ),
               if (widget.onlyLetter)
-                WhitelistingTextInputFormatter(RegExp(r"^[A-Za-z]+$")),
+                FilteringTextInputFormatter(
+                  RegExp(r"^[A-Za-z]+$"),
+                  allow: true,
+                ),
             ]
           : widget.inputFormatters,
       onChanged: (value) {

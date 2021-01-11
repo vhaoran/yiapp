@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -89,7 +88,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           onlyChinese: true,
           autofocus: false,
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         CusRectField(
           controller: _codeCtrl,
           hintText: "输入邀请码",
@@ -97,12 +96,11 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           maxLength: 6,
           autofocus: false,
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         CusRectField(
           controller: _briefCtrl,
-          hintText: "请如实填写您的个人简介，以便我们尽快审核你的资料，限制300字以内",
+          hintText: "请如实填写您的个人简介，以便我们尽快审核你的资料",
           maxLines: 8,
-          maxLength: 300,
           autofocus: false,
         ),
         SizedBox(height: 20),
@@ -119,8 +117,11 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
   void _verify() async {
     // 如果已经是运营商，不能再次申请
     if (CusRole.is_broker_admin) {
-      CusDialog.tip(context,
-          title: "您已经是运营商", onApproval: () => Navigator.pop(context));
+      CusDialog.tip(
+        context,
+        title: "你已经是运营商",
+        onApproval: () => Navigator.pop(context),
+      );
       return;
     }
     // 申请前先查看手机号是否已绑定，密码是否已修改
@@ -128,10 +129,9 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
     bool isMobile = RegexUtil.isMobile(user.user_code);
     // 没有设置手机号和密码
     if (!isMobile) {
-      Log.info("未绑定手机号和密码");
       CusDialog.normal(
         context,
-        title: "您暂未设置手机号和密码",
+        title: "暂未设置手机号和密码",
         textAgree: "现在绑定",
         fnDataApproval: "",
         onThen: () => CusRoute.push(context, BindUserCodePwd()),
@@ -143,10 +143,10 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
         _err = null;
         // 验证输入内容
         if (_nameCtrl.text.isEmpty)
-          _err = "运营商名称不能为空";
+          _err = "请输入运营商名称";
         else if (_codeCtrl.text.length < 6)
           _err = "邀请码必须为 6 位数字";
-        else if (_briefCtrl.text.isEmpty) _err = "自我简介不能为空";
+        else if (_briefCtrl.text.isEmpty) _err = "请输入自我简介";
       });
       // 不符合要求
       if (_err != null) {
