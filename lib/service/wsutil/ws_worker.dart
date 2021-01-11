@@ -16,21 +16,45 @@ import 'package:yiapp/service/bus/im-bus.dart';
 //const String _url = "ws://0755yicai.com:8083/ws";
 const String _url = "ws://hy3699.com:8083/ws";
 IOWebSocketChannel glbWSChan;
+Timer glbTimerPing;
+Timer glbTimerPushReg;
+
 bool _init_doing = false;
 
-// clostWSChan() async {
-//   try {
-//     _ = await glbWSChan.sink.close();
-//   } catch (e) {
-//     print("***error,file: ${e.toString()}");
-//     return false;
-//   }
-// }
+/* 每次重新登录后调用，避免websocker原来的连接 working */
+closeWSChan() async {
+  //-----------chan-------------------------------------
+  try {
+    if (glbWSChan != null) {
+      await glbWSChan.sink.close();
+    }
+  } catch (e) {
+    print("***error,file: ${e.toString()}");
+  }
+  //-----------ping-------------------------------------
+  try {
+    if (glbTimerPing != null) {
+      glbTimerPing.cancel();
+    }
+  } catch (e) {
+    print("***error,file: ${e.toString()}");
+  }
+  //-----------push reg-------------------------------------
+  try {
+    if (glbTimerPushReg != null) {
+      glbTimerPushReg.cancel();
+    }
+  } catch (e) {
+    print("***error,file: ${e.toString()}");
+  }
+}
 
 initWSChan() async {
   if (_init_doing) {
     return;
   }
+
+  // await closeWSChan();
 
   try {
     initWSChanSingle();
@@ -67,7 +91,7 @@ initWSChanSingle() {
     _delayInit();
   }, cancelOnError: true);
 
-  Timer.periodic(Duration(seconds: 10), (timer) {
+  glbTimerPing = Timer.periodic(Duration(seconds: 10), (timer) {
     try {
       _ping(_chan);
     } catch (e) {
@@ -76,7 +100,7 @@ initWSChanSingle() {
     }
   });
 
-  Timer.periodic(Duration(seconds: 60), (timer) {
+  glbTimerPushReg = Timer.periodic(Duration(seconds: 60), (timer) {
     try {
       _pushReg(_chan);
     } catch (e) {
