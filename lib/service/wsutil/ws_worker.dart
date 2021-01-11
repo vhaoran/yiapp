@@ -66,7 +66,7 @@ initWSChan() async {
 }
 
 initWSChanSingle() {
-  print("-------initWSChan web socket ---------------");
+  // print("-------initWSChan web socket ---------------");
 
   String jwt = ApiBase.jwt;
   //String jwt = "test/1";
@@ -79,8 +79,7 @@ initWSChanSingle() {
   _notifyOnline();
 
   _chan.stream.listen((message) {
-    print("-----------------------------------");
-    print("--------------raw received: $message -----------");
+    print("-------${DateTime.now()}--raw received: $message -----------");
     _pump(message);
   }, onError: (err) {
     print("-------error-----------");
@@ -88,7 +87,7 @@ initWSChanSingle() {
     _delayInit();
   }, onDone: () {
     print("---websocket----done-----------");
-    _delayInit();
+    // _delayInit();
   }, cancelOnError: true);
 
   glbTimerPing = Timer.periodic(Duration(seconds: 10), (timer) {
