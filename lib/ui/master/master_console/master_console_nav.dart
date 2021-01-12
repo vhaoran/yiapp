@@ -13,12 +13,10 @@ import 'package:yiapp/widget/badge/su_badge.dart';
 // ------------------------------------------------------
 
 class MasterConsoleNav extends StatefulWidget {
-  final int curIndex;
   final List<String> barNames;
   final FnInt onChanged;
 
-  MasterConsoleNav({this.curIndex: 0, this.barNames, this.onChanged, Key key})
-      : super(key: key);
+  MasterConsoleNav({this.barNames, this.onChanged, Key key}) : super(key: key);
 
   @override
   _MasterConsoleNavState createState() => _MasterConsoleNavState();
@@ -29,36 +27,51 @@ class _MasterConsoleNavState extends State<MasterConsoleNav> {
   static const IconData _iconData0 = IconData(0xe676, fontFamily: ali_font);
   static const IconData _iconData1 = IconData(0xe675, fontFamily: ali_font);
   static const IconData _iconData2 = IconData(0xe609, fontFamily: ali_font);
+  int _curIndex = 0; // 当前索引
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: List.generate(
-        widget.barNames.length,
-        (i) => _barItem(widget.barNames[i], i),
+    return Container(
+      color: ter_primary,
+      padding: EdgeInsets.symmetric(vertical: S.h(5)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          ...List.generate(
+            widget.barNames.length,
+            (i) => _item(widget.barNames[i], i),
+          ),
+        ],
       ),
-      currentIndex: widget.curIndex,
-      selectedFontSize: S.sp(14),
-      unselectedFontSize: S.sp(14),
-      selectedItemColor: t_primary,
-      unselectedItemColor: t_gray,
-      backgroundColor: ter_primary,
-      type: BottomNavigationBarType.fixed,
     );
   }
 
-  BottomNavigationBarItem _barItem(String name, int i) {
-    return BottomNavigationBarItem(
-      icon: InkWell(
-        onTap: () => widget.onChanged(i),
-        child: SuBadge(
-          child: Icon(_iconData(i), size: S.w(24)),
-          hidden: true, // 是否隐藏未读消息个数组件
-          shape: SuBadgeShape.spot,
-          text: "99+", // 未读消息个数
+  Widget _item(String name, int i) {
+    Color color = _curIndex == i ? t_primary : t_gray;
+    return InkWell(
+      onTap: () {
+        if (_curIndex != i) {
+          _curIndex = i;
+          widget.onChanged(_curIndex);
+          setState(() {});
+        }
+      },
+      child: SizedBox(
+        width: S.w(60),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SuBadge(
+              child: Icon(_iconData(i), size: S.w(24), color: color),
+              hidden: true, // 是否隐藏未读消息个数组件
+              shape: SuBadgeShape.spot,
+              text: "99+", // 未读消息个数
+            ),
+            SizedBox(height: S.h(3)),
+            Text(name, style: TextStyle(color: color)),
+          ],
         ),
       ),
-      label: name,
     );
   }
 

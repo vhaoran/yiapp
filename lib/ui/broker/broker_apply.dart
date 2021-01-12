@@ -184,6 +184,8 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           _err = "你有未处理完的悬赏贴，暂无法申请";
         } else if (e.toString().contains("存在闪断贴订单")) {
           _err = "你有未处理完的闪断贴，暂无法申请";
+        } else if (e.toString().contains("存在商城订单")) {
+          _err = "你有未处理完的商城订单，暂无法申请";
         }
         if (_err != null) {
           CusDialog.normal(context, title: _err);

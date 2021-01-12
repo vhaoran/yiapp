@@ -45,7 +45,6 @@ class _MasterConsoleState extends State<MasterConsole> {
   /// 大师控制天底部导航栏
   Widget _cusNavigationBar() {
     return MasterConsoleNav(
-      curIndex: _curIndex,
       barNames: _mc.keys.toList(),
       onChanged: (int val) {
         if (val == null) return;

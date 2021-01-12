@@ -48,7 +48,6 @@ class _PosterConsoleState extends State<PosterConsole> {
   /// 大师控制天底部导航栏
   Widget _cusNavigationBar() {
     return PosterConsoleNav(
-      curIndex: _curIndex,
       barNames: _mc.keys.toList(),
       onChanged: (int val) {
         if (val == null) return;

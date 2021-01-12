@@ -118,15 +118,23 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
         String res = await ApiMaster.masterInfoApplyHandIn(m);
         if (res != null && res.isNotEmpty) {
           Navigator.pop(context);
-          CusDialog.tip(context, title: "申请已提交，请等待审核结果", onApproval: () {
-            Navigator.pop(context);
-          });
+          CusDialog.tip(context, title: "申请已提交，请等待审核结果");
         }
       } catch (e) {
+        String tip;
         if (e.toString().contains("不能再第二次提交")) {
-          CusDialog.tip(context, title: "您已经提交过申请，请等待审核结果", onApproval: () {
-            Navigator.pop(context);
-          });
+          tip = "你已经提交过申请，请等待审核结果";
+        } else if (e.toString().contains("存在大师订单")) {
+          tip = "你有未处理完的大师订单，暂无法申请";
+        } else if (e.toString().contains("存在悬赏贴订单")) {
+          tip = "你有未处理完的悬赏贴，暂无法申请";
+        } else if (e.toString().contains("存在闪断贴订单")) {
+          tip = "你有未处理完的闪断贴，暂无法申请";
+        } else if (e.toString().contains("存在商城订单")) {
+          tip = "你有未处理完的商城订单，暂无法申请";
+        }
+        if (tip != null) {
+          CusDialog.tip(context, title: tip);
         }
         Log.error("uid为 ${ApiBase.uid} 申请大师出现异常：$e");
       }
