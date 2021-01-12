@@ -116,8 +116,12 @@ class _PostInputState extends State<PostInput> {
     if (CusRole.is_master)
       master_id = ApiBase.uid;
     // 如果是用户回复悬赏帖，则回复的是选择的大师
-    else if (!widget.post.is_vie)
+    else if (!widget.post.is_vie) {
       master_id = widget.userSelectReply?.master_id;
+      if (master_id == null) {
+        CusToast.toast(context, text: "请先选择一位大师，再进行回复");
+      }
+    }
     // 如果是用户回复闪断帖，则回复的是当前帖子的 master_id
     else if (widget.post.is_vie) master_id = widget.post.data.master_id;
     var m = {
@@ -126,6 +130,7 @@ class _PostInputState extends State<PostInput> {
       "text": [_replyCtrl.text.trim()],
     };
     Log.info("回帖时要提交的数据：$m");
+
     try {
       bool ok = widget.post.is_vie
           ? await ApiBBSVie.bbsVieReply(m)

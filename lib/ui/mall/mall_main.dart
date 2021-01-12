@@ -97,7 +97,7 @@ class _MallPageState extends State<MallPage>
             child: TabBarView(
               children: List.generate(
                 _tabs.length,
-                (i) => ProductCatePage(cate_id: _tabs[i].cate_id),
+                (i) => ProductCatePage(cateId: _tabs[i].cate_id),
               ),
             ),
           ),

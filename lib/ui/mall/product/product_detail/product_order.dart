@@ -62,7 +62,7 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
     try {
       var res = await ApiProductOrder.productOrderAdd(m);
       if (res != null) {
-        Log.info("商城订单已生成");
+        Log.info("商城订单已生成,详情：${res.toJson()}");
         Navigator.pop(context);
         if (widget.isShop) {
           // 如果是购物车，则清空数据

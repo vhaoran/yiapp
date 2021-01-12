@@ -19,9 +19,9 @@ import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 // ------------------------------------------------------
 
 class ProductCatePage extends StatefulWidget {
-  final int cate_id;
+  final int cateId;
 
-  ProductCatePage({this.cate_id, Key key}) : super(key: key);
+  ProductCatePage({this.cateId, Key key}) : super(key: key);
 
   @override
   _ProductCatePageState createState() => _ProductCatePageState();
@@ -30,9 +30,9 @@ class ProductCatePage extends StatefulWidget {
 class _ProductCatePageState extends State<ProductCatePage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  int _page_no = 0;
-  int _rows_count = 0;
-  final int _rows_per_page = 10; // 默认每页查询个数
+  int _pageNo = 0;
+  int _rowsCount = 0;
+  final int _rowsPerPage = 10; // 默认每页查询个数
   List<BrokerProductRes> _l = []; // 商品列表
 
   @override
@@ -43,19 +43,19 @@ class _ProductCatePageState extends State<ProductCatePage>
 
   /// 分页查询运营商商品分类中的商品
   _fetch() async {
-    String str = "商品分类id为 ${widget.cate_id} 的商品总个数";
-    if (_page_no * _rows_per_page > _rows_count) return;
-    _page_no++;
+    String str = "商品分类id为 ${widget.cateId} 的商品总个数";
+    if (_pageNo * _rowsPerPage > _rowsCount) return;
+    _pageNo++;
     var m = {
-      "cate_id": widget.cate_id,
-      "page_no": _page_no,
-      "rows_per_page": _rows_per_page
+      "cate_id": widget.cateId,
+      "page_no": _pageNo,
+      "rows_per_page": _rowsPerPage
     };
     try {
       PageBean pb = await ApiBo.brokerProductUserPage(m);
-      if (_rows_count == 0) _rows_count = pb.rowsCount;
+      if (_rowsCount == 0) _rowsCount = pb.rowsCount;
       var l = pb.data.map((e) => e as BrokerProductRes).toList();
-      Log.info("$str：$_rows_count");
+      Log.info("$str：$_rowsCount");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
@@ -129,9 +129,17 @@ class _ProductCatePageState extends State<ProductCatePage>
             width: S.screenW() / 2,
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(vertical: S.w(5)),
-            child: Text(
-              "${e.name}  ￥${e.colors.first.price}", // 商品名称,价格
-              style: TextStyle(color: Colors.black, fontSize: S.sp(16)),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  e.name, // 商品名称,价格
+                  style: TextStyle(color: Colors.black, fontSize: S.sp(16)),
+                ),
+                Text(
+                  "￥ ${e.colors.first.price}", // 商品名称,价格
+                  style: TextStyle(color: Colors.black, fontSize: S.sp(16)),
+                ),
+              ],
             ),
           )
         ],
@@ -141,7 +149,7 @@ class _ProductCatePageState extends State<ProductCatePage>
 
   /// 刷新数据
   Future<void> _refresh() async {
-    _page_no = _rows_count = 0;
+    _pageNo = _rowsCount = 0;
     _l.clear();
     await _fetch();
     setState(() {});

@@ -25,6 +25,7 @@ class BalancePay {
   final VoidCallback onCancel;
 
   BalancePay(BuildContext context, {@required this.data, this.onCancel}) {
+    Log.info("订单详情：${data.toJson()}");
     _showBottomSheet(context);
   }
 

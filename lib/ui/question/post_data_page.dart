@@ -52,9 +52,10 @@ class _PostDataPageState extends State<PostDataPage>
     // 如果是闪断帖，则不显示 master_id 不为0的帖子
 //    Map<String, dynamic> where = {"stat": bbs_paid};
     Map<String, dynamic> where = {
-      "broker_id": CusRole.broker_id,
       "stat": {"\$gte": bbs_paid},
     };
+    // 大师查看所有的帖子，会员只查看运营商下大师的帖子
+    if (CusRole.is_vip) where.addAll({"broker_id": CusRole.broker_id});
 //    if (widget.is_vie) where.addAll({"master_id": 0});
     var m = {
       "page_no": _pageNo,

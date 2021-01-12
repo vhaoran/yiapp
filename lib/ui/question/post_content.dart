@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
@@ -10,7 +8,6 @@ import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/ui/master/master_console/master_prize_content.dart';
-import 'package:yiapp/ui/mine/my_orders/complaints_add.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
 import 'package:yiapp/ui/question/post_prize_reply.dart';
@@ -48,7 +45,8 @@ class _PostContentState extends State<PostContent> {
   var _easyCtrl = EasyRefreshController();
   BBSPrizeReply _userSelectReply; // 用户当前点击的哪个大师的评论
   Post _p;
-  bool _overBtn = false; // 是否隐藏结单按钮，赏金发完显示结单按钮，隐藏打赏大师按钮
+  // 是否隐藏结单按钮，赏金发完显示结单按钮，隐藏打赏大师按钮
+  bool _overBtn = false;
 
   @override
   void initState() {
@@ -80,7 +78,7 @@ class _PostContentState extends State<PostContent> {
           BBSPrize res = _data as BBSPrize;
           num money = 0;
           res.master_reply.forEach((e) => {money += e.amt});
-          _overBtn = res.amt == money ? true : false;
+          _overBtn = res.amt == money;
         }
         setState(() {});
         Log.info("当前$tip的详情：${_data.toJson()}");

@@ -63,26 +63,32 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
 
   /// 如果是大师，且状态为处理中，则看到的处理中的悬赏帖评论是只有他自己和帖主的回复
   Widget _selfMasterComment() {
-    BBSPrizeReply r =
-        widget.data.master_reply.singleWhere((e) => e.master_id == ApiBase.uid);
-    int level = widget.data.master_reply.indexOf(r);
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
-      decoration: BoxDecoration(
-        color: fif_primary,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only(bottom: S.h(10)), // 评论间隔
-      child: Column(
-        children: <Widget>[
-          _masterInfo(r, level), // 大师头像、昵称、评论时间、所处楼层数
-          ...List.generate(
-            r.reply.length,
-            (index) => _commentDetail(r.reply[index], r),
-          ),
-        ],
-      ),
+    BBSPrizeReply r = widget.data.master_reply.singleWhere(
+      (e) => e.master_id == ApiBase.uid,
+      orElse: () => null,
     );
+    // 说明自己还未给当前帖子回复
+    if (r != null) {
+      int level = widget.data.master_reply.indexOf(r);
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
+        decoration: BoxDecoration(
+          color: fif_primary,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: EdgeInsets.only(bottom: S.h(10)), // 评论间隔
+        child: Column(
+          children: <Widget>[
+            _masterInfo(r, level), // 大师头像、昵称、评论时间、所处楼层数
+            ...List.generate(
+              r.reply.length,
+              (index) => _commentDetail(r.reply[index], r),
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox.shrink();
   }
 
   /// 单条评论的内容
@@ -155,8 +161,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
                 Text("${widget.data.nick}", style: blue), // 帖主昵称
               ],
               // 帖主的回复
-              if (!r.is_master)
-                Text("${r.nick}", style: blue), // 帖主昵称
+              if (!r.is_master) Text("${r.nick}", style: blue), // 帖主昵称
               Text(
                 "（帖主）",
                 style: TextStyle(color: t_gray, fontSize: S.sp(13)),
@@ -192,8 +197,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
                 children: <Widget>[
                   Text(e.master_nick, style: primary), // 大师昵称
                   // 大师获得的悬赏金，没被打赏时不显示
-                  if (e.amt != 0)
-                    Text("被打赏${e.amt}元宝", style: primary),
+                  if (e.amt != 0) Text("被打赏${e.amt}元宝", style: primary),
                   Text("$level楼", style: gray), // 大师所处楼层数
                 ],
               ),
@@ -201,8 +205,10 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
               Row(
                 children: <Widget>[
                   Text(e.reply.first.create_date, style: gray), // 大师第一条评论的时间
-                  // 如果是发帖人，且有大师评论，则显示打赏按钮
-                  if (widget.data.uid == ApiBase.uid && !widget.overBtn) ...[
+                  // 如果是发帖人，且有大师评论，大师还未被打赏时，则显示打赏按钮
+                  if (widget.data.uid == ApiBase.uid &&
+                      !widget.overBtn &&
+                      e.amt == 0) ...[
                     Spacer(),
                     SizedBox(
                       height: S.h(20),
