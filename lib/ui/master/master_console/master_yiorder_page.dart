@@ -98,7 +98,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "id": widget.id,
+      "id_of_yi_order": widget.id,
     };
     try {
       PageBean pb = await ApiMsg.yiOrderMsgHisPage(m);

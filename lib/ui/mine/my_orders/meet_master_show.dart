@@ -62,7 +62,7 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "id": widget.yiOrder.id,
+      "id_of_yi_order": widget.yiOrder.id,
     };
     try {
       PageBean pb = await ApiMsg.yiOrderMsgHisPage(m);
@@ -256,6 +256,7 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
       Log.info("这是测算六爻");
       return MasterOrder(liuYao: widget.yiOrder.content);
     }
+    return SizedBox.shrink();
   }
 
   Future<void> _refresh() async {

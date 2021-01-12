@@ -4,9 +4,11 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/under_field.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
@@ -40,10 +42,38 @@ class _LoginPageState extends State<LoginPage> {
   String _pwdErr; // 密码错误提示
   var _future;
   bool _hidePwd = true; // 是否隐藏密码，默认隐藏
+  bool _expand = false; // 是否展示历史账号
+  GlobalKey _globalKey = new GlobalKey(); //用来标记控件
+  // 所有登录用户(不包括游客，默认游客账户可用游客登录功能)，用于切换账号
+  List<SqliteLoginRes> _l = [];
+  SqliteLoginRes _curLogin; // 当前登录用户
+
+  @override
+  void initState() {
+    _future = _loadData();
+    super.initState();
+  }
+
+  _loadData() async {
+    try {
+      /// 获取所有用户信息
+      var l = await LoginDao(glbDB).readAll();
+      if (l != null && l.isNotEmpty) {
+        // 去掉游客账号
+        _l = l.where((e) => !e.user_code.contains("guest")).toList();
+        // 默认加载上次登录的账号
+        var res = await LoginDao(glbDB).readUserByUid();
+        if (res != null) _curLogin = res;
+      }
+    } catch (e) {
+      Log.error("登录页面获取用户信息出现异常：$e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: CusAppBar(
         showLeading: false,
         backGroundColor: fif_primary,
@@ -51,63 +81,81 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: FutureBuilder(
         future: _future,
-        builder: (context, snap) => _lv(),
+        builder: (context, snap) {
+          if (snap.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return _lv();
+        },
       ),
       backgroundColor: fif_primary,
     );
   }
 
   Widget _lv() {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(50)),
-      physics: NeverScrollableScrollPhysics(),
+    final double space = S.w(25);
+    return Stack(
       children: <Widget>[
-        SizedBox(height: Adapt.px(100)),
-        // 手机号输入框
-        CusUnderField(
-          controller: _mobileCtrl,
-//          hintText: "请输入手机号",
-          hintText: "请输入用户名",
-          errorText: _mobileErr,
-//          onlyNumber: true,
-//          maxLength: 11,
-          maxLength: 20,
-          autofocus: true,
-        ),
-        SizedBox(height: Adapt.px(50)),
-        // 密码输入框
-        CusUnderField(
-          controller: _pwdCtrl,
-          fromValue: "123456",
-          hintText: "请输入登录密码",
-          errorText: _pwdErr,
-          isClear: false,
-          maxLength: 20,
-          obscureText: _hidePwd,
-          suffixIcon: InkWell(
-            onTap: () => setState(() => _hidePwd = !_hidePwd),
-            child: Icon(
-              Icons.remove_red_eye,
-              color: _hidePwd ? Colors.grey : Colors.lightBlue,
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            // 游客登录
-            InkWell(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  '游客登录',
-                  style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+        Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: space),
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
+              SizedBox(height: S.h(60)),
+              // 手机号输入框
+              CusUnderField(
+                controller: _mobileCtrl,
+                hintText: "请输入用户名",
+                fromValue: _curLogin == null ? null : _curLogin.user_code,
+                errorText: _mobileErr,
+                maxLength: 20,
+//                autofocus: true,
+                isClear: false,
+                key: _globalKey,
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (_l.isNotEmpty) setState(() => _expand = !_expand);
+                  },
+                  child: _expand
+                      ? Icon(Icons.arrow_drop_up, color: Colors.red)
+                      : Icon(Icons.arrow_drop_down, color: Colors.grey),
                 ),
               ),
-              onTap: _guestLogin,
-            ),
-            SizedBox(width: Adapt.px(30)),
-            // 忘记密码
+              SizedBox(height: Adapt.px(50)),
+              // 密码输入框
+              CusUnderField(
+                controller: _pwdCtrl,
+                hintText: "请输入登录密码",
+                errorText: _pwdErr,
+                fromValue: "123456",
+                isClear: false,
+                maxLength: 20,
+                obscureText: _hidePwd,
+                suffixIcon: InkWell(
+                  onTap: () => setState(() => _hidePwd = !_hidePwd),
+                  child: Icon(
+                    Icons.remove_red_eye,
+                    color: _hidePwd ? Colors.grey : Colors.lightBlue,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  // 游客登录
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        '游客登录',
+                        style: TextStyle(fontSize: Adapt.px(24), color: t_gray),
+                      ),
+                    ),
+                    onTap: _guestLogin,
+                  ),
+                  SizedBox(width: Adapt.px(30)),
+                  // 忘记密码
 //            InkWell(
 //              child: Text(
 //                '忘记密码',
@@ -116,14 +164,24 @@ class _LoginPageState extends State<LoginPage> {
 //              onTap: () =>
 //                  CusToast.toast(context, text: '忘记密码待做', showChild: false),
 //            ),
-          ],
+                ],
+              ),
+              SizedBox(height: Adapt.px(60)),
+              Container(
+                width: S.screenW() - 2 * space,
+                child: CusRaisedButton(
+                  child: Text("登录"),
+                  onPressed: _doLogin,
+                  borderRadius: 50,
+                  backgroundColor: Color(0xFFEE9972),
+                ),
+              ),
+            ],
+          ),
         ),
-        SizedBox(height: Adapt.px(60)),
-        CusRaisedButton(
-          child: Text("登录"),
-          onPressed: _doLogin,
-          borderRadius: 50,
-          backgroundColor: Color(0xFFEE9972),
+        Offstage(
+          child: _buildListView(),
+          offstage: !_expand,
         ),
       ],
     );
@@ -156,19 +214,11 @@ class _LoginPageState extends State<LoginPage> {
 
   /// 请求登录
   void _doLogin() async {
-    // 先解决限制 2020年12月24日16:52:02
-//    setState(() {
-//      _err = _mobileErr = _pwdErr = null;
-//      if (!RegexUtil.isMobile(_mobileCtrl.text)) {
-//        _err = "请输入正确的手机号";
-//      } else if (_pwdCtrl.text.length < 6) {
-//        _err = "密码至少6位";
-//      }
-//    });
-//    if (_err != null) {
-//      CusToast.toast(context, text: _err);
-//      return;
-//    }
+    Log.info("当前登录信息：账号：${_mobileCtrl.text} 密码：${_pwdCtrl.text}");
+    if (_mobileCtrl.text.trim().isEmpty || _pwdCtrl.text.trim().isEmpty) {
+      CusToast.toast(context, text: "账号或者密码不能为空");
+      return;
+    }
     setState(() {
       _mobileErr = _pwdErr = null;
     });
@@ -218,6 +268,68 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  ///构建历史账号ListView
+  Widget _buildListView() {
+    if (_expand) {
+      List<Widget> children = _buildItems();
+      if (children.length > 0) {
+        RenderBox renderObject = _globalKey.currentContext.findRenderObject();
+        final position = renderObject.localToGlobal(Offset.zero);
+        double screenW = MediaQuery.of(context).size.width;
+        double currentW = renderObject.paintBounds.size.width;
+//        double currentH = renderObject.paintBounds.size.height;
+        double margin = (screenW - currentW) / 2;
+        double offsetY = position.dy;
+        double itemHeight = 25;
+        double dividerHeight = 2;
+        return Container(
+          decoration: BoxDecoration(
+            color: tip_bg,
+            borderRadius: BorderRadius.circular(5.0),
+            border: Border.all(color: Colors.lightBlue, width: 2),
+          ),
+          child: ListView(
+            itemExtent: itemHeight,
+            padding: EdgeInsets.all(0),
+            children: children,
+          ),
+          width: currentW,
+          height: (children.length * itemHeight +
+              (children.length - 1) * dividerHeight),
+          margin: EdgeInsets.fromLTRB(margin, offsetY - itemHeight, margin, 0),
+        );
+      }
+    }
+    return null;
+  }
+
+  /// 构建历史记录items
+  List<Widget> _buildItems() {
+    List<Widget> list = List();
+    for (int i = 0; i < _l.length; i++) {
+      // 增加账号记录
+      list.add(InkWell(
+        onTap: () {
+          setState(() {
+            _mobileCtrl.text = _l[i].user_code;
+            _expand = false;
+          });
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: 10),
+          alignment: Alignment.centerLeft,
+          child: Text(_l[i].nick),
+        ),
+      ));
+      // 增加分割线
+      list.add(Divider(color: Colors.grey, height: 0, thickness: 1));
+    }
+    if (list.length > 0) {
+      list.removeLast(); // 删掉最后一个分割线
+    }
+    return list;
   }
 
   @override

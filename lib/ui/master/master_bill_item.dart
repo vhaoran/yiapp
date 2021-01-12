@@ -76,28 +76,23 @@ class _MasterBillItemState extends State<MasterBillItem> {
       // 收益
       case b_yi_order:
         return "大师订单";
-        break;
       case b_mall:
         return "商城订单";
-        break;
       case b_bbs_prize:
         return "悬赏帖订单";
-        break;
       case b_bbs_vie:
         return "闪断帖订单";
-        break;
       // 支出
       case b_master_draw_money:
         return "提现";
-        break;
       // 其它
       case b_adjust:
         return "账务调整";
-        break;
+      case b_yi_order_r:
+        return "大师订单退款";
       default:
-        "其它交易";
         Log.info("当前交易类型：$bType"); // 未知交易类型
-        break;
+        return "其它交易";
     }
   }
 }
