@@ -4,11 +4,11 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/dicts/balance_res.dart';
 import 'package:yiapp/service/api/api-account.dart';
+import 'package:yiapp/ui/mine/fund_account/user_bill_his.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/ui/mine/fund_account/fund_list.dart';
-import 'package:yiapp/ui/mine/fund_account/bill_his_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 
 // ------------------------------------------------------
@@ -72,7 +72,7 @@ class _FundMainState extends State<FundMain> {
           ),
           NormalBox(
             title: "对账单记录",
-            onTap: () => CusRoute.push(context, BillHisPage()),
+            onTap: () => CusRoute.push(context, UserBillHisPage()),
           ),
           NormalBox(
             title: "充值",

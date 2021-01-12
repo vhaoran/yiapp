@@ -24,9 +24,8 @@ import 'package:yiapp/model/pays/business.dart';
 
 class BillItem extends StatefulWidget {
   final Business business;
-  final bool isPay; // 是否支付助手
 
-  BillItem({this.business, this.isPay, Key key}) : super(key: key);
+  BillItem({this.business, Key key}) : super(key: key);
 
   @override
   _BillItemState createState() => _BillItemState();
@@ -54,16 +53,15 @@ class _BillItemState extends State<BillItem> {
 
   /// 收付款布局
   Widget _buildPayment() {
-    String tip = widget.isPay ? "付款成功" : "收款成功";
-    Color color = widget.isPay ? btn_red : t_ji; // 余额中支付为红，收款为绿
+    Color color = _b.amt > 0 ? btn_red : t_ji; // 余额中支付为红，收款为绿
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           children: <Widget>[
-            CusText(tip, t_gray, 28),
-            Spacer(), // 时间
-            CusText("${CusTime.ymd(_b.created_at)}", Colors.grey, 30),
+            CusText("交易对象:", Colors.grey, 30),
+            SizedBox(width: Adapt.px(30)),
+            CusText("${_b.summary}", t_gray, 30),
           ],
         ),
         Padding(
@@ -72,15 +70,14 @@ class _BillItemState extends State<BillItem> {
             children: <Widget>[
               CusText("${_b.amt}", color, 50), // 金额
               CusText(" 元", color, 30),
+              Spacer(),
+              CusText("期初: ${_b.amtStart} 元", t_gray, 30),
             ],
           ),
         ),
-        Row(
-          children: <Widget>[
-            CusText("交易对象:", Colors.grey, 30),
-            SizedBox(width: Adapt.px(30)),
-            CusText("${_b.summary}", t_gray, 30),
-          ],
+        Container(
+          alignment: Alignment.centerRight,
+          child: CusText("${CusTime.ymd(_b.created_at)}", Colors.grey, 30),
         ),
       ],
     );

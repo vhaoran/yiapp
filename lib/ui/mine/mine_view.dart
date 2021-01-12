@@ -56,7 +56,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
 
   /// 大师视图
   Widget _masterView() {
-    Log.info("身份：大师");
+    Log.info("身份：大师 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
         NormalBox(
@@ -94,7 +94,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
 
   /// 如果是普通会员
   Widget _vipView() {
-    Log.info("身份：普通会员");
+    Log.info("身份：普通会员 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
         NormalBox(
@@ -131,7 +131,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
 
   /// 运营商管理员
   Widget _brokerAdminView() {
-    Log.info("身份：运营商管理员");
+    Log.info("身份：运营商管理员 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
         NormalBox(
@@ -143,7 +143,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
   }
 
   Widget _guestView() {
-    Log.info("身份：游客");
+    Log.info("身份：游客 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
         NormalBox(

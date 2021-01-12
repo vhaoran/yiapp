@@ -178,8 +178,16 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           _err = "邀请码已被占用";
         } else if (e.toString().contains("不可二次提交")) {
           _err = "你已经申请过了，请等待审核结果";
+        } else if (e.toString().contains("存在大师订单")) {
+          _err = "你有未处理完的大师订单，暂无法申请";
+        } else if (e.toString().contains("存在悬赏贴订单")) {
+          _err = "你有未处理完的悬赏贴，暂无法申请";
+        } else if (e.toString().contains("存在闪断贴订单")) {
+          _err = "你有未处理完的闪断贴，暂无法申请";
         }
-        CusDialog.normal(context, title: _err);
+        if (_err != null) {
+          CusDialog.normal(context, title: _err);
+        }
         return;
       });
     }

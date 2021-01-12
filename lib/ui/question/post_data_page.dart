@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
@@ -48,19 +49,20 @@ class _PostDataPageState extends State<PostDataPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    Log.info("第$_pageNo次加载");
     // 如果是闪断帖，则不显示 master_id 不为0的帖子
 //    Map<String, dynamic> where = {"stat": bbs_paid};
+    Map<String, dynamic> where = {
+      "broker_id": CusRole.broker_id,
+      "stat": {"\$gte": bbs_paid},
+    };
 //    if (widget.is_vie) where.addAll({"master_id": 0});
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"broker_id": CusRole.broker_id},
-//      "where": where,
+      "where": where,
       "sort": {"create_date_int": -1}, // 按时间倒序排列
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
-//    setState(() {});
   }
 
   /// 获取悬赏帖

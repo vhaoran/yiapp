@@ -86,6 +86,7 @@ class _PostContentState extends State<PostContent> {
         Log.info("当前$tip的详情：${_data.toJson()}");
       }
     } catch (e) {
+      Log.info("data:++++$data");
       Log.error("查询单条$tip出现异常：$e");
     }
   }
@@ -105,29 +106,6 @@ class _PostContentState extends State<PostContent> {
   }
 
   Widget _scaffold() {
-    // 帖子不存在
-    var noData = Center(
-      child: Text(
-        "帖子已被删除",
-        style: TextStyle(color: t_yi, fontSize: S.sp(16)),
-      ),
-    );
-    // 帖子存在
-    var child = Column(
-      children: <Widget>[
-        Expanded(
-          child: EasyRefresh(
-            header: CusHeader(),
-            footer: CusFooter(),
-            controller: _easyCtrl,
-            child: _lv(),
-            onRefresh: () async => await _fetch(),
-          ),
-        ),
-        if (_p.is_ing) // 只有状态为处理中的帖子，才会显示输入框
-          _postInput(),
-      ],
-    );
     return Scaffold(
       appBar: CusAppBar(
         text: "问题详情",
@@ -135,7 +113,28 @@ class _PostContentState extends State<PostContent> {
           if (_data != null) _appBarAction(),
         ],
       ),
-      body: _data == null ? noData : child,
+      body: _data == null
+          ? Center(
+              child: Text(
+                "帖子已被删除",
+                style: TextStyle(color: t_yi, fontSize: S.sp(16)),
+              ),
+            )
+          : Column(
+              children: <Widget>[
+                Expanded(
+                  child: EasyRefresh(
+                    header: CusHeader(),
+                    footer: CusFooter(),
+                    controller: _easyCtrl,
+                    child: _lv(),
+                    onRefresh: () async => await _fetch(),
+                  ),
+                ),
+                if (_p.is_ing) // 只有状态为处理中的帖子，才会显示输入框
+                  _postInput(),
+              ],
+            ),
       backgroundColor: primary,
     );
   }
