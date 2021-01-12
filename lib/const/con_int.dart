@@ -23,6 +23,12 @@ const int bbs_paid = 1; // 已付款
 const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
 const int bbs_ok = 3; // 已打赏
 
+// ------------------------- 大师订单状态 ------------------------
+const int yiorder_init = 0; // 待付款
+const int yiorder_paid = 1; // 已付款
+const int yiorder_ok = 3; // 已处理
+const int yiorder_refund = 4; // 已退款
+
 // ------------------------- 悬赏帖类型 ------------------------
 const int post_liuyao = 1; // 六爻类型
 const int post_sizhu = 2; // 四柱类型

@@ -268,7 +268,8 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
     return CusAppBar(
       text: "约聊大师",
       actions: [
-        if (widget.yiOrder.uid == ApiBase.uid)
+        if (widget.yiOrder.uid == ApiBase.uid &&
+            widget.yiOrder.stat == yiorder_ok)
           FlatButton(
             onPressed: () => CusRoute.push(
               context,
