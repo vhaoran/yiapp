@@ -327,7 +327,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           padding: EdgeInsets.only(left: S.w(10)),
           alignment: Alignment.centerLeft,
-          child: Text(_l[i].nick, style: TextStyle(fontSize: S.sp(16))),
+          child: Text(_l[i].user_code, style: TextStyle(fontSize: S.sp(16))),
         ),
       ));
     }
