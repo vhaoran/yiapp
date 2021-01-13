@@ -188,7 +188,7 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           _err = "你有未处理完的商城订单，暂无法申请";
         }
         if (_err != null) {
-          CusDialog.normal(context, title: _err);
+          CusDialog.tip(context, title: _err);
         }
         return;
       });

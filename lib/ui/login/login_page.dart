@@ -61,9 +61,11 @@ class _LoginPageState extends State<LoginPage> {
       if (l != null && l.isNotEmpty) {
         // 去掉游客账号
         _l = l.where((e) => !e.user_code.contains("guest")).toList();
-        // 默认加载上次登录的账号
+        // 默认加载上次登录的账号（不算游客）
         var res = await LoginDao(glbDB).readUserByUid();
-        if (res != null) _curLogin = res;
+        if (!res.user_code.contains("guest") && res != null) {
+          _curLogin = res;
+        }
       }
     } catch (e) {
       Log.error("登录页面获取用户信息出现异常：$e");
@@ -109,13 +111,18 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "请输入用户名",
                 fromValue: _curLogin == null ? null : _curLogin.user_code,
                 errorText: _mobileErr,
-                maxLength: 20,
 //                autofocus: true,
+                maxLength: 60,
                 isClear: false,
                 key: _globalKey,
                 suffixIcon: InkWell(
                   onTap: () {
-                    if (_l.isNotEmpty) setState(() => _expand = !_expand);
+                    // 如果账号个数大于1或者唯一一个账号跟当前账号不一样才弹出历史账号
+                    if (_l.length > 1 ||
+                        (_l.length == 1 && _l.first.uid != _curLogin.uid)) {
+                      _expand = !_expand;
+                      setState(() {});
+                    }
                   },
                   child: _expand
                       ? Icon(Icons.arrow_drop_up, color: Colors.red)
@@ -279,26 +286,23 @@ class _LoginPageState extends State<LoginPage> {
         final position = renderObject.localToGlobal(Offset.zero);
         double screenW = MediaQuery.of(context).size.width;
         double currentW = renderObject.paintBounds.size.width;
-//        double currentH = renderObject.paintBounds.size.height;
+        double currentH = renderObject.paintBounds.size.height;
         double margin = (screenW - currentW) / 2;
         double offsetY = position.dy;
-        double itemHeight = 25;
-        double dividerHeight = 2;
+        double itemHeight = 40;
+        double dividerHeight = 0;
         return Container(
           decoration: BoxDecoration(
             color: tip_bg,
             borderRadius: BorderRadius.circular(5.0),
             border: Border.all(color: Colors.lightBlue, width: 2),
           ),
-          child: ListView(
-            itemExtent: itemHeight,
-            padding: EdgeInsets.all(0),
-            children: children,
-          ),
+          child: ListView(itemExtent: itemHeight, children: children),
           width: currentW,
           height: (children.length * itemHeight +
               (children.length - 1) * dividerHeight),
-          margin: EdgeInsets.fromLTRB(margin, offsetY - itemHeight, margin, 0),
+          margin: EdgeInsets.fromLTRB(
+              margin, offsetY - itemHeight + S.h(10), margin, 0),
         );
       }
     }
@@ -318,16 +322,12 @@ class _LoginPageState extends State<LoginPage> {
           });
         },
         child: Container(
-          padding: EdgeInsets.only(left: 10),
+          color: i.isOdd ? Colors.grey[400] : Colors.grey[410],
+          padding: EdgeInsets.only(left: S.w(10)),
           alignment: Alignment.centerLeft,
-          child: Text(_l[i].nick),
+          child: Text(_l[i].nick, style: TextStyle(fontSize: S.sp(16))),
         ),
       ));
-      // 增加分割线
-      list.add(Divider(color: Colors.grey, height: 0, thickness: 1));
-    }
-    if (list.length > 0) {
-      list.removeLast(); // 删掉最后一个分割线
     }
     return list;
   }

@@ -121,6 +121,7 @@ class _ApplyMasterPageState extends State<ApplyMasterPage> {
           CusDialog.tip(context, title: "申请已提交，请等待审核结果");
         }
       } catch (e) {
+        Navigator.pop(context);
         String tip;
         if (e.toString().contains("不能再第二次提交")) {
           tip = "你已经提交过申请，请等待审核结果";
