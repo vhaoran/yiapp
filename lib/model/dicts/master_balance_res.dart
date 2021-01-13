@@ -6,7 +6,7 @@
 
 class MasterBalanceRes {
   int master_id;
-  int remainder;
+  num remainder;
 
   MasterBalanceRes({this.master_id, this.remainder});
 

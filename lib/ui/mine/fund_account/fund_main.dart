@@ -49,13 +49,14 @@ class _FundMainState extends State<FundMain> {
     return Scaffold(
       appBar: CusAppBar(text: "资金账号管理"),
       body: FutureBuilder(
-          future: _future,
-          builder: (context, snap) {
-            if (snap.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return _lv(context);
-          }),
+        future: _future,
+        builder: (context, snap) {
+          if (snap.connectionState != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return _lv(context);
+        },
+      ),
       backgroundColor: primary,
     );
   }

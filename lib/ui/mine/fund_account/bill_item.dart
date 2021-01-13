@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
-import 'package:yiapp/util/temp/cus_time.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/pays/business.dart';
 
@@ -68,7 +67,7 @@ class _BillItemState extends State<BillItem> {
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Row(
             children: <Widget>[
-              CusText("${_b.amt}", color, 50), // 金额
+              CusText(_b.amt.toStringAsFixed(2), color, 50), // 金额
               CusText(" 元", color, 30),
               Spacer(),
               CusText("期初: ${_b.amtStart} 元", t_gray, 30),
@@ -77,7 +76,7 @@ class _BillItemState extends State<BillItem> {
         ),
         Container(
           alignment: Alignment.centerRight,
-          child: CusText("${CusTime.ymd(_b.created_at)}", Colors.grey, 30),
+          child: CusText(_b.created_at, Colors.grey, 30),
         ),
       ],
     );

@@ -5,18 +5,18 @@
 // ------------------------------------------------------
 
 class MasterMonthRes {
-  int amt_bbs_prize; // 悬赏帖总额
-  int amt_bbs_vie; // 闪断帖总额
-  int amt_draw_money; // 总提现
-  int amt_yi_order; // 大师订单总额
-  int amt_yi_order_r; // 大师订单总退款额，带 r 的代表退款
+  num amt_bbs_prize; // 悬赏帖总额
+  num amt_bbs_vie; // 闪断帖总额
+  num amt_draw_money; // 总提现
+  num amt_yi_order; // 大师订单总额
+  num amt_yi_order_r; // 大师订单总退款额，带 r 的代表退款
   int id; // 对账单所处的ID，诸如 1 2 3等
   String icon;
   int month; // 查询哪一月
   String nick;
-  int profit_bbs_prize; // 悬赏帖订单利润
-  int profit_bbs_vie; // 闪断帖订单利润
-  int profit_yi_order; // 大师订单利润
+  num profit_bbs_prize; // 悬赏帖订单利润
+  num profit_bbs_vie; // 闪断帖订单利润
+  num profit_yi_order; // 大师订单利润
   int qty_bbs_prize; // 悬赏帖总订单数量
   int qty_bbs_vie; // 闪断帖总个数
   int qty_draw_money; // 提现总个数

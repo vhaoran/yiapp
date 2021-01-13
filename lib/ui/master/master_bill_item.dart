@@ -49,7 +49,7 @@ class _MasterBillItemState extends State<MasterBillItem> {
           child: Row(
             children: <Widget>[
               Text(
-                "${widget.business.amt}", // 交易金额
+                widget.business.amt.toStringAsFixed(2), // 交易金额
                 style: TextStyle(color: color, fontSize: S.sp(25)),
               ),
               Text(

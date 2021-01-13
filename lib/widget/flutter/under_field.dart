@@ -134,12 +134,18 @@ class _CusUnderFieldState extends State<CusUnderField> {
             ]
           : widget.inputFormatters,
       onChanged: (value) {
+        // 该行代码可以在输入后直接光标到最后
+//        widget.controller.selection = TextSelection.fromPosition(
+//          TextPosition(offset: widget.controller.text.length),
+//        );
         if (widget.errorText != null) {
           widget.errorText = null;
         }
-        if (widget.controller.text.length >= widget.maxLength) {
+        if (widget.controller.text.length >= widget.maxLength &&
+            widget.maxLength != -1) {
           _focusNode.unfocus();
         }
+
         setState(() {});
       },
     );
@@ -153,7 +159,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
     } else {
       // 到最大输入长度时，隐藏清空组件
       b = widget.controller.text.isNotEmpty &&
-          widget.controller.text.length < widget.maxLength;
+          widget.controller.text.length <= widget.maxLength;
     }
     if (b) {
       return IconButton(

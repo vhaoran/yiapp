@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   var _future;
   bool _hidePwd = true; // 是否隐藏密码，默认隐藏
   bool _expand = false; // 是否展示历史账号
-  GlobalKey _globalKey = new GlobalKey(); //用来标记控件
+  GlobalKey _globalKey = GlobalKey(); //用来标记控件
   // 所有登录用户(不包括游客，默认游客账户可用游客登录功能)，用于切换账号
   List<SqliteLoginRes> _l = [];
   SqliteLoginRes _curLogin; // 当前登录用户
@@ -111,8 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "请输入用户名",
                 fromValue: _curLogin == null ? null : _curLogin.user_code,
                 errorText: _mobileErr,
-//                autofocus: true,
-                maxLength: 60,
                 isClear: false,
                 key: _globalKey,
                 suffixIcon: InkWell(
@@ -137,7 +135,6 @@ class _LoginPageState extends State<LoginPage> {
                 errorText: _pwdErr,
                 fromValue: "123456",
                 isClear: false,
-                maxLength: 20,
                 obscureText: _hidePwd,
                 suffixIcon: InkWell(
                   onTap: () => setState(() => _hidePwd = !_hidePwd),
@@ -286,10 +283,10 @@ class _LoginPageState extends State<LoginPage> {
         final position = renderObject.localToGlobal(Offset.zero);
         double screenW = MediaQuery.of(context).size.width;
         double currentW = renderObject.paintBounds.size.width;
-        double currentH = renderObject.paintBounds.size.height;
+        // double currentH = renderObject.paintBounds.size.height;
         double margin = (screenW - currentW) / 2;
         double offsetY = position.dy;
-        double itemHeight = 40;
+        double itemHeight = 45;
         double dividerHeight = 0;
         return Container(
           decoration: BoxDecoration(
@@ -302,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
           height: (children.length * itemHeight +
               (children.length - 1) * dividerHeight),
           margin: EdgeInsets.fromLTRB(
-              margin, offsetY - itemHeight + S.h(10), margin, 0),
+              margin, offsetY - itemHeight + S.h(20), margin, 0),
         );
       }
     }
@@ -313,16 +310,21 @@ class _LoginPageState extends State<LoginPage> {
   List<Widget> _buildItems() {
     List<Widget> list = List();
     for (int i = 0; i < _l.length; i++) {
-      // 增加账号记录
       list.add(InkWell(
         onTap: () {
           setState(() {
             _mobileCtrl.text = _l[i].user_code;
             _expand = false;
+            // 选择完账号后，光标移动到最后
+            _mobileCtrl.selection = TextSelection.fromPosition(
+              TextPosition(offset: _mobileCtrl.text.length),
+            );
           });
         },
         child: Container(
-          color: i.isOdd ? Colors.grey[400] : Colors.grey[410],
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: Color(0XFF302F4F), width: 0)),
+          ),
           padding: EdgeInsets.only(left: S.w(10)),
           alignment: Alignment.centerLeft,
           child: Text(_l[i].nick, style: TextStyle(fontSize: S.sp(16))),

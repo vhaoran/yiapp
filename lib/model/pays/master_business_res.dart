@@ -5,8 +5,8 @@
 // ------------------------------------------------------
 
 class MasterBusinessRes {
-  int amt;
-  int amt_start;
+  num amt;
+  num amt_start;
   String b_type;
   String bill_no; // 订单号
   String created_at;
