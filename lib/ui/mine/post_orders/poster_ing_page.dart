@@ -52,7 +52,7 @@ class _PosterIngPageState extends State<PosterIngPage>
       if (pb != null) {
         _l = pb.data.map((e) => e).toList();
         // 如果帖子的 last_reply 不为空，说明有大师回复了，为处理中
-        _l.retainWhere((e) => e.last_reply != null);
+//        _l.retainWhere((e) => e.last_reply != null);
       }
       Log.info("用户处理中的${logVie(widget.is_vie)}个数：${_l.length}");
       setState(() {});

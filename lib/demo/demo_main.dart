@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/demo/demo_clear_data/clear_data_main.dart';
 import 'package:yiapp/demo/demo_effect/effect_main.dart';
 import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
@@ -50,7 +52,24 @@ class CusDemoMain extends StatelessWidget {
           title: "05 第三方插件",
           onTap: () => CusRoute.push(context, DemoPlugin()),
         ),
+        NormalBox(
+          title: "浏览器下载app",
+          onTap: _doDownload,
+        ),
       ],
     );
+  }
+
+  void _doDownload() async {
+    try {
+      final url = "https://hy3699.com/download/hy.apk";
+      if (await canLaunch(url)) {
+        Log.info("可以链接");
+        bool ok = await launch(url, forceSafariVC: false);
+        Log.info("ok:$ok");
+      }
+    } catch (e) {
+      Log.error("下载apk出现异常：$e");
+    }
   }
 }

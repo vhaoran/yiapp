@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
@@ -48,6 +49,14 @@ class _LoginPageState extends State<LoginPage> {
   List<SqliteLoginRes> _l = [];
   SqliteLoginRes _curLogin; // 当前登录用户
 
+  // 版本信息
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+
   @override
   void initState() {
     _future = _loadData();
@@ -67,8 +76,18 @@ class _LoginPageState extends State<LoginPage> {
           _curLogin = res;
         }
       }
+      await _initPackageInfo();
     } catch (e) {
       Log.error("登录页面获取用户信息出现异常：$e");
+    }
+  }
+
+  /// 获取版本信息
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    if (info != null) {
+      _packageInfo = info;
+      setState(() {});
     }
   }
 
@@ -104,7 +123,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Flex(
             direction: Axis.vertical,
             children: [
-              SizedBox(height: S.h(60)),
+              SizedBox(height: S.h(35)),
+              // _globalKey 在手机号输入框位置会报全局键重复，所以定义一个空盒子
+              Container(key: _globalKey),
               // 手机号输入框
               CusUnderField(
                 controller: _mobileCtrl,
@@ -112,7 +133,6 @@ class _LoginPageState extends State<LoginPage> {
                 fromValue: _curLogin == null ? null : _curLogin.user_code,
                 errorText: _mobileErr,
                 isClear: false,
-                key: _globalKey,
                 suffixIcon: InkWell(
                   onTap: () {
                     // 如果账号个数大于1或者唯一一个账号跟当前账号不一样才弹出历史账号
@@ -170,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
 //            ),
                 ],
               ),
-              SizedBox(height: Adapt.px(60)),
+              SizedBox(height: S.h(20)),
               Container(
                 width: S.screenW() - 2 * space,
                 child: CusRaisedButton(
@@ -179,6 +199,11 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: 50,
                   backgroundColor: Color(0xFFEE9972),
                 ),
+              ),
+              SizedBox(height: S.h(10)),
+              Text(
+                "版本号：${_packageInfo.version}",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ],
           ),
@@ -283,7 +308,7 @@ class _LoginPageState extends State<LoginPage> {
         final position = renderObject.localToGlobal(Offset.zero);
         double screenW = MediaQuery.of(context).size.width;
         double currentW = renderObject.paintBounds.size.width;
-        // double currentH = renderObject.paintBounds.size.height;
+        double currentH = renderObject.paintBounds.size.height;
         double margin = (screenW - currentW) / 2;
         double offsetY = position.dy;
         double itemHeight = 45;
@@ -299,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
           height: (children.length * itemHeight +
               (children.length - 1) * dividerHeight),
           margin: EdgeInsets.fromLTRB(
-              margin, offsetY - itemHeight + S.h(20), margin, 0),
+              margin, offsetY + currentH - itemHeight / 2, margin, 0),
         );
       }
     }
@@ -325,9 +350,15 @@ class _LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
             border: Border(top: BorderSide(color: Color(0XFF302F4F), width: 0)),
           ),
-          padding: EdgeInsets.only(left: S.w(10)),
+          padding: EdgeInsets.symmetric(horizontal: S.w(10)),
           alignment: Alignment.centerLeft,
-          child: Text(_l[i].user_code, style: TextStyle(fontSize: S.sp(16))),
+          child: Row(
+            children: <Widget>[
+              Text(_l[i].user_code, style: TextStyle(fontSize: S.sp(16))),
+              Spacer(),
+              Text("${_l[i].uid}", style: TextStyle(fontSize: S.sp(16))),
+            ],
+          ),
         ),
       ));
     }

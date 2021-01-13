@@ -32,6 +32,7 @@ class CusUnderField extends StatefulWidget {
   final TextStyle errorStyle;
   final Widget suffixIcon;
   String errorText; // 错误提示
+  Key key;
 
   CusUnderField({
     @required this.controller,
@@ -53,7 +54,7 @@ class CusUnderField extends StatefulWidget {
     this.errorStyle,
     this.suffixIcon,
     this.errorText,
-    Key key,
+    this.key,
   }) : super(key: key);
 
   @override
@@ -99,6 +100,7 @@ class _CusUnderFieldState extends State<CusUnderField> {
       enabled: widget.enable,
       obscureText: widget.obscureText,
       focusNode: _focusNode,
+      key: widget.key,
       keyboardType:
           widget.onlyNumber ? TextInputType.number : widget.keyboardType,
       maxLength: widget.maxLength,
