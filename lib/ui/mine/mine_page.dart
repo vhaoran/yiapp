@@ -14,6 +14,7 @@ import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/bus/im-bus.dart';
 import 'package:yiapp/ui/login/login_page.dart';
+import 'package:yiapp/ui/mine/about_hongyun.dart';
 import 'package:yiapp/ui/mine/mine_view.dart';
 import 'package:yiapp/ui/mine/personal_info/personal_page.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
@@ -91,6 +92,10 @@ class _MinePageState extends State<MinePage>
             ),
           ),
           MineIdentityView(), // 根据身份显示个人主页
+          NormalBox(
+            title: "关于我们",
+            onTap: () => CusRoute.push(context, AboutHongYunApp()),
+          ),
           NormalBox(
             title: "demo 测试",
             onTap: () => CusRoute.push(context, CusDemoMain()),

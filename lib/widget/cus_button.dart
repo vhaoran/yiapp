@@ -21,7 +21,7 @@ class CusRaisedButton extends StatelessWidget {
 
   CusRaisedButton({
     @required this.child,
-    this.padding,
+    this.padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     this.shape,
     this.backgroundColor,
     this.textColor: Colors.white,
@@ -90,7 +90,8 @@ class _CusRaisedButton extends MaterialButton {
     final double currentElevation = (enabled ? elevation : disabledElevation) ??
         buttonTheme.getElevation(this);
     return ConstrainedBox(
-      constraints: buttonTheme.getConstraints(this),
+//      constraints: buttonTheme.getConstraints(this),
+      constraints: BoxConstraints(minWidth: 0, minHeight: 0),
       child: Material(
         elevation: currentElevation,
         textStyle: textStyle,

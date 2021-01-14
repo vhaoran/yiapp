@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/dicts/master-info.dart';
 import 'package:yiapp/model/orders/yiorder_exp_res.dart';
@@ -100,14 +101,16 @@ class _MasterHomeState extends State<MasterHome> {
             SizedBox(height: S.h(5)),
             // 大师好评差评率
             MasterRate(
-              titles: ["好评率", "中评率", "差评率"],
+              titles: ["好评数", "中评数", "差评数"],
               subtitles: [
                 "${widget.m.best_rate}",
                 "${widget.m.mid_rate}",
                 "${widget.m.bad_rate}"
               ],
             ),
-            Center(
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: S.h(3)),
               child: Text(
                 "评论区",
                 style: TextStyle(color: t_primary, fontSize: S.sp(16)),
@@ -141,9 +144,15 @@ class _MasterHomeState extends State<MasterHome> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    r.nick, // 评论人昵称
-                    style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        r.nick, // 评论人昵称
+                        style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                      ),
+                      Spacer(),
+                      _expView(r.exp_result), // 评价类型
+                    ],
                   ),
                   SizedBox(height: S.h(3)),
                   Text(
@@ -165,6 +174,21 @@ class _MasterHomeState extends State<MasterHome> {
         ),
       ),
     );
+  }
+
+  /// 动态显示评价
+  Widget _expView(int expResult) {
+    if (expResult == rate_best) {
+      return Text("好评", style: TextStyle(color: t_green, fontSize: S.sp(15)));
+    } else if (expResult == rate_mid) {
+      return Text(
+        "中评",
+        style: TextStyle(color: Colors.blue, fontSize: S.sp(15)),
+      );
+    } else if (expResult == rate_bad) {
+      return Text("差评", style: TextStyle(color: t_yi, fontSize: S.sp(15)));
+    }
+    return SizedBox.shrink();
   }
 
   _refresh() async {

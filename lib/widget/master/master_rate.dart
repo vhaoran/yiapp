@@ -42,15 +42,18 @@ class MasterRate extends StatelessWidget {
             width: S.screenW() / titles.length,
             child: Column(
               children: <Widget>[
+                SizedBox(height: S.h(5)),
                 Text(
                   titles[i],
                   style:
                       TextStyle(color: titleColor, fontSize: S.sp(titleSize)),
                 ),
+                SizedBox(height: S.h(5)),
                 Text(
                   subtitles[i],
                   style: TextStyle(color: subColor, fontSize: S.sp(subSize)),
-                )
+                ),
+                SizedBox(height: S.h(5)),
               ],
             ),
           ),

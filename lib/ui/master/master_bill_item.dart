@@ -56,6 +56,11 @@ class _MasterBillItemState extends State<MasterBillItem> {
                 " 元",
                 style: TextStyle(color: color, fontSize: S.sp(15)),
               ),
+              Spacer(),
+              Text(
+                "期初: ${widget.business.amt_start.toStringAsFixed(2)} 元",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+              ),
             ],
           ),
         ),

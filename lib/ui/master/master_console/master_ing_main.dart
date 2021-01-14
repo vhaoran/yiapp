@@ -8,6 +8,7 @@ import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -45,7 +46,7 @@ class _MasterIngMainState extends State<MasterIngMain>
       // 如果是闪断帖
       if (widget.is_vie) {
         var m1 = {
-          "where": {"stat": bbs_aim},
+          "where": {"stat": bbs_aim, "master_id": ApiBase.uid},
           "sort": {"last_updated": -1}
         };
         PageBean pb = await ApiBBSVie.bbsViePage(m1);
@@ -54,6 +55,7 @@ class _MasterIngMainState extends State<MasterIngMain>
         }
       } else {
         var m2 = {
+          "where": {"master_id": ApiBase.uid},
           "sort": {"last_updated": -1}
         };
         List<BBSPrize> l = await ApiBBSPrize.bbsPrizeMasterList(m2);

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -181,11 +180,6 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: 50,
                   backgroundColor: Color(0xFFEE9972),
                 ),
-              ),
-              SizedBox(height: S.h(10)),
-              Text(
-                "版本号：${CusRole.packageInfo.version}",
-                style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ],
           ),

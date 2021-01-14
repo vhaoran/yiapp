@@ -19,8 +19,7 @@ class MasterCover extends StatelessWidget {
   final BrokerMasterRes info;
   final VoidCallback onPressed;
 
-  const MasterCover({this.info, this.onPressed, Key key})
-      : super(key: key);
+  const MasterCover({this.info, this.onPressed, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +55,17 @@ class MasterCover extends StatelessWidget {
                     ),
                     Spacer(),
                     // 按钮
-                    SizedBox(
-                      height: S.h(22),
-                      child: CusRaisedButton(
-                        child: Text("一对一咨询"),
-                        borderRadius: 50,
-                        onPressed: () => CusRoute.push(
-                          context,
-                          SelectMasterItem(master_id: info.master_id),
-                        ),
+                    CusRaisedButton(
+                      padding: EdgeInsets.symmetric(
+                          vertical: S.h(5), horizontal: S.w(10)),
+                      child: Text(
+                        "一对一咨询",
+                        style: TextStyle(fontSize: S.sp(14)),
+                      ),
+                      borderRadius: 50,
+                      onPressed: () => CusRoute.push(
+                        context,
+                        SelectMasterItem(master_id: info.master_id),
                       ),
                     ),
                   ],

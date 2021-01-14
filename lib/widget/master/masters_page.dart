@@ -120,7 +120,7 @@ class _MastersPageState extends State<MastersPage>
                       "${e.mid_rate}",
                       "${e.bad_rate}"
                     ],
-                    subtitles: ["好评率", "中评率", "差评率"],
+                    subtitles: ["好评数", "中评数", "差评数"],
                   ),
                 ],
               ),

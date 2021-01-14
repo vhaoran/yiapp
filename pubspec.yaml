@@ -129,6 +129,7 @@ flutter:
     - assets/images/zodiac_plate.png
     - assets/images/bg_update_top.png
     - assets/update_ic_close.png
+    - assets/images/ic_launcher.png
   fonts:
     - family: AliIcon
       fonts:
