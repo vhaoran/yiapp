@@ -48,6 +48,9 @@ class YiOrder {
   num pay_amt;
   int yi_cate_id;
 
+  //是滞已评价
+  bool has_exp;
+
   YiOrder({
     this.amt,
     this.comment,
@@ -73,6 +76,7 @@ class YiOrder {
     this.last_updated,
     this.pay_amt,
     this.yi_cate_id,
+    this.has_exp,
   });
 
   factory YiOrder.fromJson(Map<String, dynamic> json) {
@@ -121,6 +125,7 @@ class YiOrder {
       last_updated: json['last_updated'],
       pay_amt: json['pay_amt'],
       yi_cate_id: json['yi_cate_id'],
+      has_exp: json["has_exp"],
     );
   }
 
