@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/global/cus_fn.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/dicts/product.dart';
@@ -44,12 +45,11 @@ class _ProductColorPriceState extends State<ProductColorPrice> {
           child: Row(
             children: <Widget>[
               Expanded(child: Column(children: _inputs())),
-              CusBtn(
-                text: "添加",
-                pdVer: 0,
-                pdHor: 10,
-                fontSize: 28,
-                textColor: Colors.black,
+              CusRaisedButton(
+                child: Text(
+                  "添加",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
                 backgroundColor: t_gray,
                 onPressed: _doAdd,
               ),
