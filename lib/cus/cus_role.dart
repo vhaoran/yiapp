@@ -4,6 +4,8 @@
 // usage ：用户身份状态
 // ------------------------------------------------------
 
+import 'package:package_info/package_info.dart';
+
 class CusRole {
   // 是否游客登录(非会员、大师、运营商、系统管理员)
   static bool is_guest = true;
@@ -25,4 +27,12 @@ class CusRole {
 
   // 是否闪断帖
   static bool isVie = false;
+
+  // app 信息
+  static PackageInfo packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
 }

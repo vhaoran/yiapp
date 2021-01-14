@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
@@ -44,6 +45,7 @@ class LoginVerify {
       await LoginDao(glbDB).insert(SqliteLoginRes.from(login));
     }
     if (CusRole.is_master) await _fetchMaster(context);
+    await _initPackageInfo(); // 获取版本信息
   }
 
   /// 初始化全局信息
@@ -75,6 +77,18 @@ class LoginVerify {
       }
     } catch (e) {
       Log.error("获取大师个人信息出现异常：$e");
+    }
+  }
+
+  /// 获取版本信息
+  static Future<void> _initPackageInfo() async {
+    try {
+      final PackageInfo info = await PackageInfo.fromPlatform();
+      if (info != null) {
+        CusRole.packageInfo = info;
+      }
+    } catch (e) {
+      Log.error("获取app包信息出现异常：$e");
     }
   }
 }

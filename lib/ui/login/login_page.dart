@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -49,14 +49,6 @@ class _LoginPageState extends State<LoginPage> {
   List<SqliteLoginRes> _l = [];
   SqliteLoginRes _curLogin; // 当前登录用户
 
-  // 版本信息
-  PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-  );
-
   @override
   void initState() {
     _future = _loadData();
@@ -76,18 +68,8 @@ class _LoginPageState extends State<LoginPage> {
           _curLogin = res;
         }
       }
-      await _initPackageInfo();
     } catch (e) {
       Log.error("登录页面获取用户信息出现异常：$e");
-    }
-  }
-
-  /// 获取版本信息
-  Future<void> _initPackageInfo() async {
-    final PackageInfo info = await PackageInfo.fromPlatform();
-    if (info != null) {
-      _packageInfo = info;
-      setState(() {});
     }
   }
 
@@ -202,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: S.h(10)),
               Text(
-                "版本号：${_packageInfo.version}",
+                "版本号：${CusRole.packageInfo.version}",
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ],
