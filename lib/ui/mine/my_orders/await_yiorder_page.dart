@@ -101,7 +101,10 @@ class _AwaitYiorderPageState extends State<AwaitYiorderPage>
                       style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                     ),
                   ),
-                ..._l.map((e) => MasterYiOrderCover(yiOrder: e, is_his: false)),
+                ..._l.map(
+                  (e) => MasterYiOrderCover(
+                      yiOrder: e, isHis: false, onChanged: _refresh),
+                ),
               ],
             ),
           ),

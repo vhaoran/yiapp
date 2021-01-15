@@ -204,7 +204,11 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
             b_type: b_yi_order,
             id: widget.yiOrder.id,
           );
-          BalancePay(context, data: payData);
+          BalancePay(
+            context,
+            data: payData,
+            onSuccess: () => Navigator.of(context).pop(""),
+          );
         },
       );
     return SizedBox.shrink();

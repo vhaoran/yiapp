@@ -78,7 +78,9 @@ class _PostCoverEventState extends State<PostCoverEvent> {
               String b_type = _p.is_vie ? b_bbs_vie : b_bbs_prize;
               var payData =
                   PayData(amt: _p.data.amt, b_type: b_type, id: _p.data.id);
-              BalancePay(context, data: payData);
+              BalancePay(context, data: payData, onSuccess: () {
+                if (widget.onChanged != null) widget.onChanged();
+              });
             },
           ),
         ],

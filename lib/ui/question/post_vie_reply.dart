@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
-import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/model/bbs/bbs_reply.dart';
+import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -35,45 +32,23 @@ class PostVieReply extends StatefulWidget {
 class _PostVieReplyState extends State<PostVieReply> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ...List.generate(
-          widget.data.reply.length,
-          (i) => _commentItem(widget.data.reply[i], i + 1),
-        ),
-      ],
-    );
+    return _replyView();
   }
 
-  /// 单条评论的内容
-  Widget _commentItem(BBSReply e, int level) {
-    Widget child;
-    // 如果当前是大师的评论，订单状态为已抢单，则发帖人可以看到打赏按钮
-    if (e.is_master &&
-        widget.data.uid == ApiBase.uid &&
-        widget.data.stat == bbs_aim) {
-      child = CupertinoLeftScroll(
-        closeTag: LeftScrollCloseTag("vie_reply"),
-        key: Key(e.create_date.toString()),
-        child: _item(e, level),
-        buttons: [
-          LeftScrollItem(
-            text: "打赏",
-            onTap: () => _doReward(e),
-            color: t_red,
+  /// 闪断帖评论区域
+  Widget _replyView() {
+    return Column(
+      children: List.generate(
+        widget.data.reply.length,
+        (i) => Container(
+          child: _item(widget.data.reply[i], i + 1),
+          decoration: BoxDecoration(
+            color: fif_primary,
+            borderRadius: BorderRadius.circular(10),
           ),
-        ],
-      );
-    } else {
-      child = _item(e, level);
-    }
-    return Container(
-      child: child,
-      decoration: BoxDecoration(
-        color: fif_primary,
-        borderRadius: BorderRadius.circular(10),
+          margin: EdgeInsets.only(bottom: S.h(5)), // 评论间隔
+        ),
       ),
-      margin: EdgeInsets.only(bottom: S.h(5)), // 评论间隔
     );
   }
 

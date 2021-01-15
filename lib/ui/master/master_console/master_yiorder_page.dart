@@ -6,7 +6,6 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
-import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
@@ -16,7 +15,6 @@ import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
-import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/master/master_console/yiorder_input.dart';
 import 'package:yiapp/ui/mine/my_orders/hehun_order.dart';
 import 'package:yiapp/ui/mine/my_orders/master_order.dart';
@@ -37,10 +35,10 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // ------------------------------------------------------
 
 class MasterYiOrderPage extends StatefulWidget {
-  final bool is_his; // 是否历史查询
+  final bool isHis; // 是否历史查询
   final String id;
 
-  MasterYiOrderPage({this.id, this.is_his: false, Key key}) : super(key: key);
+  MasterYiOrderPage({this.id, this.isHis: false, Key key}) : super(key: key);
 
   @override
   _MasterYiOrderPageState createState() => _MasterYiOrderPageState();
@@ -62,7 +60,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   @override
   void initState() {
-    Log.info("是否历史查询：${widget.is_his}");
+    Log.info("是否历史查询：${widget.isHis}");
     _future = _fetch();
     super.initState();
   }
@@ -77,7 +75,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
   _fetchOrder() async {
     try {
       Log.info("id:${widget.id}");
-      YiOrder order = widget.is_his
+      YiOrder order = widget.isHis
           ? await ApiYiOrder.yiOrderHisGet(widget.id)
           : await ApiYiOrder.yiOrderGet(widget.id);
       if (order != null) {
@@ -298,12 +296,13 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
   }
 
   Widget _appBar() {
-    Log.info("++++++${_yiOrder.uid == ApiBase.uid}");
     return CusAppBar(
       text: "大师订单",
       actions: [
-        // 如果是大师且订单已支付，则显示结单按钮
-        if (CusRole.is_master && _yiOrder.stat == bbs_paid)
+        // 如果是大师本人查看订单，订单已支付，且有测算结果时，则显示结单按钮
+        if (_yiOrder.master_id == ApiBase.uid &&
+            _yiOrder.stat == bbs_paid &&
+            _yiOrder.diagnose.isNotEmpty)
           FlatButton(
             child: Text("结单", style: _tGray),
             onPressed: () async {
@@ -311,7 +310,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
                 bool ok = await ApiYiOrder.yiOrderComplete(widget.id);
                 if (ok) {
                   CusToast.toast(context, text: "已结单");
-                  CusRoute.pushReplacement(context, HomePage());
+                  Navigator.of(context).pop("");
                 }
               });
             },

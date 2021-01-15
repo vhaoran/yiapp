@@ -31,7 +31,7 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "六爻排盘"),
+      appBar: CusAppBar(text: "六爻排盘", backData: "清理kv_yiorder"),
       body: _lv(),
       backgroundColor: primary,
     );

@@ -111,7 +111,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
                     ..._l.map(
                       (e) => MasterYiOrderCover(
                         yiOrder: e,
-                        is_his: true,
+                        isHis: true,
                         onChanged: _refresh,
                       ),
                     ),

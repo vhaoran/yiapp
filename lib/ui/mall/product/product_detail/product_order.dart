@@ -168,7 +168,8 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
                 "提交订单",
                 style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
               ),
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              padding:
+                  EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.h(15)),
               margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               decoration: BoxDecoration(
                 color: Color(0xFFEA6A2C),

@@ -132,17 +132,11 @@ class _ServiceItemState extends State<ServiceItem> {
               String str = await KV.getStr(kv_order);
               // 直接点的一对一咨询
               if (str == null) {
-                CusRoute.push(
-                  context,
-                  TalkAboutMaster(data: widget.cate),
-                );
+                CusRoute.push(context, TalkAboutMaster(data: widget.cate));
               }
               // 点击四柱六爻合婚后，选择大师一对一咨询
               else {
-                CusRoute.push(
-                  context,
-                  MeetMasterPage(cate: widget.cate),
-                );
+                CusRoute.push(context, MeetMasterPage(cate: widget.cate));
               }
             },
             borderRadius: 50,

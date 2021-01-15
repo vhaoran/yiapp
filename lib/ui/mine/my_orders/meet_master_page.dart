@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
 import 'package:yiapp/ui/mine/my_orders/hehun_order.dart';
 import 'package:yiapp/ui/mine/my_orders/master_order.dart';
 import 'package:yiapp/ui/mine/my_orders/sizhu_order.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -155,12 +158,14 @@ class _MeetMasterPageState extends State<MeetMasterPage> {
       if (res != null) {
         Navigator.pop(context);
         Log.info("约聊大师后返回的订单id：${res.id}");
-        await KV.remove(kv_order); // 清除本地下单数据
+        await UsUtil.checkLocalY(); // 清除本地下单数据
         if (_data.liuYao != null) await KV.remove(kv_liuyao);
         CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);
         var payData =
             PayData(amt: widget.cate.price, b_type: b_yi_order, id: res.id);
-        BalancePay(context, data: payData);
+        BalancePay(context, data: payData, onSuccess: () {
+          CusRoute.pushReplacement(context, MasterYiOrderPage(id: res.id));
+        });
       }
     } catch (e) {
       Log.error("约聊大师下单出现异常：$e");

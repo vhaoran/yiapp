@@ -24,12 +24,12 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 // ------------------------------------------------------
 
 class MasterYiOrderCover extends StatefulWidget {
-  final bool is_his; // 是否历史查询
+  final bool isHis; // 是否历史查询
   final YiOrder yiOrder;
   final VoidCallback onChanged;
 
   MasterYiOrderCover({
-    this.is_his: false,
+    this.isHis: false,
     this.yiOrder,
     this.onChanged,
     Key key,
@@ -115,7 +115,9 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
             b_type: b_yi_order,
             id: _order.id,
           );
-          BalancePay(context, data: payData);
+          BalancePay(context, data: payData, onSuccess: () {
+            if (widget.onChanged != null) widget.onChanged();
+          });
         },
         borderRadius: 50,
         backgroundColor: Colors.black54,
@@ -150,14 +152,21 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
 
   /// 根据情况跳转页面
   void _pushPage() {
+    // 查看已打赏和待付款的大师订单
     if (_order.stat == bbs_init || _order.stat == bbs_ok) {
-      CusRoute.push(context, MeetMasterShow(yiOrder: widget.yiOrder));
+      CusRoute.push(context, MeetMasterShow(yiOrder: widget.yiOrder))
+          .then((value) {
+        if (value != null && widget.onChanged != null) widget.onChanged();
+      });
     }
+    // 查看处理中的单个大师订单
     if (_order.stat == bbs_paid) {
       CusRoute.push(
         context,
-        MasterYiOrderPage(id: widget.yiOrder.id, is_his: widget.is_his),
-      );
+        MasterYiOrderPage(id: widget.yiOrder.id, isHis: widget.isHis),
+      ).then((value) {
+        if (value != null && widget.onChanged != null) widget.onChanged();
+      });
     }
   }
 }

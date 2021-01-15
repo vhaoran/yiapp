@@ -3,12 +3,14 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
+import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
@@ -150,7 +152,9 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
         CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);
         var payData =
             PayData(amt: widget.data.price, b_type: b_yi_order, id: order.id);
-        BalancePay(context, data: payData);
+        BalancePay(context, data: payData, onSuccess: () {
+          CusRoute.pushReplacement(context, MasterYiOrderPage(id: order.id));
+        });
       }
     } catch (e) {
       Log.error("出现异常：$e");

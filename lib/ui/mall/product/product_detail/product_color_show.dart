@@ -184,7 +184,8 @@ class _ProductColorShowState extends State<ProductColorShow> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: CusRaisedButton(
         child: Text(text, style: TextStyle(fontSize: S.sp(14))),
-        padding: EdgeInsets.symmetric(horizontal: S.screenW() / 4),
+        padding:
+            EdgeInsets.symmetric(horizontal: S.screenW() / 4, vertical: S.h(5)),
         borderRadius: 50,
         onPressed: () {
           // 购买的数量不用判断，因为至少为1

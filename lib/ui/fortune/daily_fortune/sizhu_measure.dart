@@ -42,7 +42,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "四柱测算"),
+      appBar: CusAppBar(text: "四柱测算", backData: "清理kv_yiorder"),
       body: _lv(),
       backgroundColor: primary,
     );

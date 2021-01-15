@@ -49,7 +49,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "合婚测算"),
+      appBar: CusAppBar(text: "合婚测算", backData: "清理kv_yiorder"),
       body: _lv(),
       backgroundColor: primary,
     );

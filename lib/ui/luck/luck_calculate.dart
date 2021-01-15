@@ -4,6 +4,7 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'luck_list.dart';
 
 // ------------------------------------------------------
@@ -50,7 +51,12 @@ class LuckCalculate extends StatelessWidget {
   /// 单个测算对象
   Widget _iconItem(BuildContext context, LuckIcon e, int index, bool isPay) {
     return InkWell(
-      onTap: () => CusRoute.pushNamed(context, e.route, arguments: e.text),
+      onTap: () => CusRoute.pushNamed(context, e.route, arguments: e.text)
+          .then((value) async {
+        if (value != null) {
+          await UsUtil.checkLocalY();
+        }
+      }),
       child: Column(
         children: <Widget>[
           // 裁剪图标为圆形

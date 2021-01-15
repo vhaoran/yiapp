@@ -15,6 +15,7 @@ import 'package:yiapp/service/login/login_utils.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/util/us_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -26,6 +27,7 @@ class LoginVerify {
   static Future<void> init(LoginResult login, BuildContext context) async {
     // 清除上次的本地购物车数据
     await KV.remove(kv_shop);
+    await UsUtil.checkLocalY(); // 为避免意外退出未清理本地求测大师数据
     Log.info("用户登录结果：${login.toJson()}");
     // 初始化全局信息和网络
     await setLoginInfo(login);

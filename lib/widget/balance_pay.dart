@@ -22,10 +22,16 @@ import 'small/cus_loading.dart';
 
 class BalancePay {
   final PayData data;
-  final VoidCallback onCancel;
+  final VoidCallback onCancel; // 取消支付后的回调
+  final VoidCallback onSuccess; // 支付成功后的回调
 
-  BalancePay(BuildContext context, {@required this.data, this.onCancel}) {
-    Log.info("订单详情：${data.toJson()}");
+  BalancePay(
+    BuildContext context, {
+    @required this.data,
+    this.onCancel,
+    this.onSuccess,
+  }) {
+    Log.info("BalancePay 订单详情：${data.toJson()}");
     _showBottomSheet(context);
   }
 
@@ -81,7 +87,7 @@ class BalancePay {
           child: CusRaisedButton(
             child: Text("立即付款"),
             backgroundColor: Color(0xFF3D77F1),
-            onPressed: () => _orderPay(context, data),
+            onPressed: () => _doOrderPay(context, data),
           ),
         ),
         Container(
@@ -101,7 +107,7 @@ class BalancePay {
   }
 
   /// 订单付款
-  void _orderPay(BuildContext context, PayData payData) async {
+  void _doOrderPay(BuildContext context, PayData payData) async {
     var m = {"amt": payData.amt, "b_type": payData.b_type, "id": payData.id};
     Log.info("订单详情：$m");
     try {
@@ -110,10 +116,11 @@ class BalancePay {
       bool ok = await ApiBase.postValue(url, m);
       if (ok != null) {
         await Future.delayed(Duration(milliseconds: 1500));
-        Navigator.pop(context);
+        Navigator.pop(context); // 关闭支付框
         CusToast.toast(context, text: "支付成功");
-        // 目前设置为支付成功后统一跳转到首页
+        Navigator.pop(context); // 可能是因为同时出现了支付款和支付成功弹框，需要再退回
         CusRoute.pushReplacement(context, HomePage());
+//        if (onSuccess != null) onSuccess();
       }
     } catch (e) {
       if (e.toString().contains("余额不足")) {
