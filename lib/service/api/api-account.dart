@@ -90,15 +90,15 @@ class ApiAccount {
   }
 
   /// x提现帐号设置（适用于运营商及大师）add
-  static Future<bool> bankCardInfoAdd(Map<String, dynamic> data) async {
+  static Future<BankCardRes> bankCardInfoAdd(Map<String, dynamic> data) async {
     var url = w_yi_trade + "BankCardInfoAdd";
-    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+    return await ApiBase.postObj(url, data, (m) => BankCardRes.fromJson(m));
   }
 
   /// x修改提现帐号，适用于管理员或平台、大师
-  static Future<bool> bankCardInfoCh(Map<String, dynamic> data) async {
+  static Future<BankCardRes> bankCardInfoCh(Map<String, dynamic> data) async {
     var url = w_yi_trade + "BankCardInfoCh";
-    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+    return await ApiBase.postObj(url, data, (m) => BankCardRes.fromJson(m));
   }
 
   /// 大师对帐单-page

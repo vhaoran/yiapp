@@ -3,9 +3,10 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -89,8 +90,9 @@ class _AddFundAccountState extends State<AddFundAccount> {
               ],
             ),
           ),
-          CusBtn(
-            text: "确定",
+          CusRaisedButton(
+            child: Text("确定修改",
+                style: TextStyle(color: t_gray, fontSize: S.sp(15))),
             backgroundColor: Colors.blueGrey,
             onPressed: _doAdd,
           ),

@@ -4,8 +4,9 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:provider/provider.dart';
@@ -67,8 +68,12 @@ class _ChMasterNickState extends State<ChMasterNick> {
             child: Text("限制2-8666个字"),
           ),
           // 修改昵称
-          CusBtn(
-            text: "修改",
+          CusRaisedButton(
+            child: Text(
+              "修改",
+              style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+            ),
+            backgroundColor: t_yi,
             onPressed: _doChNick,
           ),
         ],

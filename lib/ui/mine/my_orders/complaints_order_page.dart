@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -51,13 +52,51 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
       "rows_per_page": _rowsPerPage,
       "sort": {"create_time_int": -1},
     };
-    var m1 = {
-      "where": {"master_id": ApiBase.uid} // 大师查看
+    // 大师处理中的投诉订单
+    var mIng = {
+      "where": {
+        "stat": {
+          "\$in": [refund_await, refund_b_pass] // 运营商已审批核待审批的
+        },
+        "master_id": ApiBase.uid
+      }
     };
-    var m2 = {
-      "where": {"uid": ApiBase.uid} // 投诉人查看
+    // 大师已处理中的投诉订单
+    var mHis = {
+      "where": {
+        "stat": {
+          "\$in": [refund_p_pass, refund_r] // 平台已审批的和已驳回的
+        },
+        "uid": ApiBase.uid
+      }
     };
-    m.addAll(CusRole.is_master ? m1 : m2);
+
+    // 用户处理中的投诉订单
+    var uIng = {
+      "where": {
+        "stat": {
+          "\$in": [refund_await, refund_b_pass] // 运营商已审批核待审批的
+        },
+        "uid": ApiBase.uid
+      }
+    };
+    // 用户已处理中的投诉订单
+    var uHis = {
+      "where": {
+        "stat": {
+          "\$in": [refund_p_pass, refund_r] // 平台已审批的和已驳回的
+        },
+        "uid": ApiBase.uid
+      }
+    };
+    var where;
+    if (widget.isHis) {
+      where = CusRole.is_master ? mHis : uHis;
+    } else {
+      where = CusRole.is_master ? mIng : uIng;
+    }
+    m.addAll(where);
+    Log.info("m:$m");
     widget.isHis ? await _fetchHis(m) : await _fetchIng(m);
   }
 
@@ -178,7 +217,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
                   Spacer(),
                   Text(
                     res.draw_back ? "退款 ${res.amt} 元宝" : "", // 退款金额
-                    style: tPrimary,
+                    style: tGray,
                   ),
                 ],
               ),
@@ -193,8 +232,9 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(_statView(res), style: tPrimary), // 投诉状态
+                  _statView(res), // 投诉状态
                   Spacer(),
                   Text(res.create_date, style: tGray), // 投诉时间
                 ],
@@ -207,14 +247,27 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
   }
 
   /// 显示投诉状态
-  String _statView(ComplaintsRes res) {
-    if (res.stat == 1 || res.stat == 4) {
-      return res.draw_back ? "已退款" : "已审批";
+  Widget _statView(ComplaintsRes res) {
+    if (res.stat == refund_await) {
+      return Text("待审核",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
     }
-    if (res.stat == -1) {
-      return "已驳回";
+    if (res.stat == refund_b_pass) {
+      return Text("待平台审核",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
     }
-    return "";
+    if (res.stat == refund_r) {
+      return Text("已驳回", style: TextStyle(color: t_red, fontSize: S.sp(15)));
+    }
+    if (res.stat == refund_p_pass) {
+      if (res.draw_back) {
+        return Text("已退款",
+            style: TextStyle(color: Colors.green, fontSize: S.sp(15)));
+      }
+      return Text("平台审核通过",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
+    }
+    return SizedBox.shrink();
   }
 
   _refresh() async {

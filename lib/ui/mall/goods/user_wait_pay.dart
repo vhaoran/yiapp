@@ -133,7 +133,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
                   ), // 商品名称
                   Flexible(
                     flex: 1,
-                    child: CusText("颜色：${e.color_code}", t_gray, 30),
+                    child: CusText("规格：${e.color_code}", t_gray, 30),
                   ), // 商品颜色
                   Flexible(
                     flex: 1,
@@ -151,16 +151,14 @@ class _AwaitPaymentState extends State<AwaitPayment> {
               ],
             ),
             SizedBox(height: S.h(10)),
-            SizedBox(
-              width: S.w(60),
-              height: S.h(25),
-              child: CusRaisedButton(
-                child: Text("付款"),
-                borderRadius: 50,
-                onPressed: () => BalancePay(
-                  context,
-                  data: PayData(amt: order.amt, b_type: b_mall, id: order.id),
-                ),
+            CusRaisedButton(
+              child: Text("付款"),
+              padding:
+                  EdgeInsets.symmetric(vertical: S.h(3), horizontal: S.w(15)),
+              borderRadius: 50,
+              onPressed: () => BalancePay(
+                context,
+                data: PayData(amt: order.amt, b_type: b_mall, id: order.id),
               ),
             ),
             SizedBox(height: S.h(5)),

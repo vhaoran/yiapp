@@ -15,6 +15,7 @@ import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
@@ -77,8 +78,9 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
         Expanded(
           child: ListView(
             physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.all(Adapt.px(30)),
+            padding: EdgeInsets.symmetric(horizontal: S.w(15)),
             children: <Widget>[
+              SizedBox(height: S.h(10)),
               _show("占类", "在线起卦"),
               _show("卦主", _user.nick),
               _show(

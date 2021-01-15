@@ -68,8 +68,8 @@ class _PosterConsoleNavState extends State<PosterConsoleNav> {
               shape: SuBadgeShape.spot,
               text: "99+", // 未读消息个数
             ),
-            SizedBox(height: S.h(3)),
-            Text(name, style: TextStyle(color: color)),
+            SizedBox(height: S.h(6)),
+            Text(name, style: TextStyle(color: color, fontSize: S.sp(15))),
           ],
         ),
       ),

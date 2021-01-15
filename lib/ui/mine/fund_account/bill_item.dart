@@ -70,7 +70,7 @@ class _BillItemState extends State<BillItem> {
               CusText(_b.amt.toStringAsFixed(2), color, 50), // 金额
               CusText(" 元", color, 30),
               Spacer(),
-              CusText("期初: ${_b.amtStart} 元", t_gray, 30),
+              CusText("期初: ${_b.amt_start.toStringAsFixed(2)} 元", t_gray, 30),
             ],
           ),
         ),

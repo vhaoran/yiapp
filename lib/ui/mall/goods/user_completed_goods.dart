@@ -137,14 +137,14 @@ class _CompletedGoodsState extends State<CompletedGoods> {
                     Flexible(
                       flex: 1,
                       child: Text(
-                        "颜色：${e.color_code}",
+                        "规格：${e.color_code}",
                         style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                       ),
                     ), // 商品颜色
                     Flexible(
                       flex: 1,
                       child: Text(
-                        "颜色：${e.color_code}",
+                        "价格：${e.price}",
                         style: TextStyle(color: t_yi, fontSize: S.sp(15)),
                       ),
                     ), // 商品价格

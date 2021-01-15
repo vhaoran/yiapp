@@ -81,3 +81,9 @@ const int rate_bad = 3; // 差评
 const int draw_await = 0; // 待审批
 const int draw_cancel = 1; // 取消或驳回
 const int draw_pass = 4; // 审批通过
+
+// ------------------------- 投诉状态 ------------------------
+const int refund_await = 0; // 待审批
+const int refund_b_pass = 1; // 运营商已审批
+const int refund_p_pass = 4; // 平台已审批
+const int refund_r = -1; // 平台已审批

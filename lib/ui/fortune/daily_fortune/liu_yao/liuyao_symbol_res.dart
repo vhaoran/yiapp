@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
@@ -66,9 +68,9 @@ class LiuYaoSymRes extends StatelessWidget {
           children: <Widget>[
             // 六神
             Text(liushen),
-            SizedBox(width: Adapt.px(15)),
+            SizedBox(width: Adapt.px(10)),
             // 本卦内容
-            SizedBox(width: Adapt.px(150), child: Text(benGua)),
+            SizedBox(width: Adapt.px(170), child: _shiYingView(benGua)),
             // 本卦爻符号
             Padding(
               padding: EdgeInsets.only(right: Adapt.px(15)),
@@ -96,6 +98,33 @@ class LiuYaoSymRes extends StatelessWidget {
           fushen.isEmpty ? "" : "↑伏神 $fushen",
           style: TextStyle(color: t_red, fontSize: Adapt.px(26)),
         ),
+      ],
+    );
+  }
+
+  /// 区分本卦中的世爻和应爻
+  Widget _shiYingView(String benGua) {
+    return Row(
+      children: <Widget>[
+        Text(benGua),
+        if (benGua.contains("世")) // 世爻显示红色
+          Text(
+            "*",
+            style: TextStyle(
+              color: t_yi,
+              fontSize: S.sp(18),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        if (benGua.contains("应")) // 应爻显示绿色
+          Text(
+            "*",
+            style: TextStyle(
+              color: t_ji,
+              fontSize: S.sp(18),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
       ],
     );
   }

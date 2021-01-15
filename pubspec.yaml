@@ -1,7 +1,7 @@
 name: yiapp
 description: A new Flutter project.
 
-version: 1.0.0
+version: 1.1.0
 
 environment:
   sdk: ">=2.10.3 <3.0.0"
@@ -129,6 +129,7 @@ flutter:
     - assets/images/zodiac_plate.png
     - assets/images/bg_update_top.png
     - assets/update_ic_close.png
+    - assets/images/ic_launcher.png
   fonts:
     - family: AliIcon
       fonts:

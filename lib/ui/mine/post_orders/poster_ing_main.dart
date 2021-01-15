@@ -49,7 +49,7 @@ class _PosterIngMainState extends State<PosterIngMain> {
           tabs: List.generate(
             _tabs.length,
             (i) => Text(_tabs[i],
-                style: TextStyle(color: t_gray, fontSize: S.sp(15))),
+                style: TextStyle(color: t_gray, fontSize: S.sp(16))),
           ),
         ),
         SizedBox(height: S.h(5)),

@@ -54,11 +54,9 @@ class _PostCoverEventState extends State<PostCoverEvent> {
         // 查看帖子详情按钮，所有角色可见
         _eventBtn(text: "详情", onPressed: _comJump),
         // 如果是发帖人
-        if (_p.data.uid == ApiBase.uid)
-          _posterView(),
+        if (_p.data.uid == ApiBase.uid) _posterView(),
         // 如果是大师
-        if (CusRole.is_master)
-          _masterView(),
+        if (CusRole.is_master) _masterView(),
       ],
     );
   }
@@ -107,8 +105,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
         if (!_p.is_ing && _p.data.stat == bbs_paid)
           _eventBtn(text: "抢单", onPressed: _doAim),
         // 闪断帖已抢帖子
-        if (_p.is_ing)
-          _eventBtn(text: "回复", onPressed: _comJump)
+        if (_p.is_ing) _eventBtn(text: "回复", onPressed: _comJump)
       ],
     );
   }
@@ -165,15 +162,12 @@ class _PostCoverEventState extends State<PostCoverEvent> {
 
   /// 通用的事件按钮
   Widget _eventBtn({String text, VoidCallback onPressed}) {
-    return Container(
-      width: S.w(70),
-      constraints: BoxConstraints(maxHeight: S.h(30)),
-      child: CusRaisedButton(
-        child: Text(text, style: TextStyle(fontSize: S.sp(14))),
-        onPressed: onPressed,
-        borderRadius: 50,
-        backgroundColor: primary,
-      ),
+    return CusRaisedButton(
+      child: Text(text, style: TextStyle(fontSize: S.sp(14))),
+      padding: EdgeInsets.symmetric(vertical: S.h(6), horizontal: S.w(15)),
+      onPressed: onPressed,
+      borderRadius: 50,
+      backgroundColor: primary,
     );
   }
 }

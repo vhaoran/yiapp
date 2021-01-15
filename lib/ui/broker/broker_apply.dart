@@ -6,6 +6,7 @@ import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
@@ -104,8 +105,11 @@ class _ApplyBrokerPageState extends State<ApplyBrokerPage> {
           autofocus: false,
         ),
         SizedBox(height: 20),
-        CusBtn(
-          text: "我要申请",
+        CusRaisedButton(
+          child: Text(
+            "我要申请",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
           backgroundColor: Colors.blueGrey,
           onPressed: _verify,
         ),

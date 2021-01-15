@@ -120,8 +120,8 @@ class _ChBankCardPageState extends State<ChBankCardPage> {
       },
     };
     try {
-      bool ok = await ApiAccount.bankCardInfoCh(m);
-      if (ok) {
+      var res = await ApiAccount.bankCardInfoCh(m);
+      if (res != null) {
         CusToast.toast(context, text: "修改成功");
         Navigator.of(context).pop("");
       }

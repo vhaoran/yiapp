@@ -210,21 +210,21 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
                       !widget.overBtn &&
                       e.amt == 0) ...[
                     Spacer(),
-                    SizedBox(
-                      height: S.h(20),
-                      width: S.w(60),
-                      child: CusRaisedButton(
-                        child: Text("打赏"),
-                        onPressed: () => CusRoute.push(
-                          context,
-                          RewardInput(data: widget.data, reply: e),
-                        ).then((value) {
-                          if (value != null) widget.onReward();
-                        }),
-                        borderRadius: 50,
-                        textColor: Colors.black,
-                        backgroundColor: t_primary,
+                    CusRaisedButton(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: S.w(10),
+                        vertical: S.h(3),
                       ),
+                      child: Text("打赏"),
+                      onPressed: () => CusRoute.push(
+                        context,
+                        RewardInput(data: widget.data, reply: e),
+                      ).then((value) {
+                        if (value != null) widget.onReward();
+                      }),
+                      borderRadius: 50,
+                      textColor: Colors.black,
+                      backgroundColor: t_primary,
                     ),
                   ],
                 ],

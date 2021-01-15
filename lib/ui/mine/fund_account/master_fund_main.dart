@@ -69,7 +69,11 @@ class _MasterFundMainState extends State<MasterFundMain> {
       behavior: CusBehavior(),
       child: ListView(
         children: <Widget>[
-          NormalBox(title: "余额", subtitle: "$_balance 元", showBtn: false),
+          NormalBox(
+            title: "余额",
+            subtitle: "${_balance.toStringAsFixed(2)} 元",
+            showBtn: false,
+          ),
           NormalBox(
             title: "个人支付账号",
             onTap: () => CusRoute.push(context, FundListPage()),

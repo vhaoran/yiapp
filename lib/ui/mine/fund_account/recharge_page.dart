@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/func/cus_browser.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_dot_format.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
@@ -56,12 +59,19 @@ class _RechargePageState extends State<RechargePage> {
         }
       }
     }
-    Log.info("amt:$amt");
+    Log.info("当前充值金额:$amt");
     SpinKit.threeBounce(context);
-    await Future.delayed(Duration(milliseconds: 1000));
-    String url = ApiPay.PayReqURL(b_recharge, _account_type, "充值", amt);
-    if (url != null) CusBrowser.launchIn(url);
-    Navigator.pop(context);
+    await Future.delayed(Duration(milliseconds: 1500)); // 等待1.5秒
+    String url = ApiPay.PayReqURL(
+      b_recharge,
+      _account_type,
+      "${ApiBase.uid}:${DateTime.now()}", // 订单号先用充值时间+uid
+      amt,
+    );
+    if (url != null) {
+      await CusBrowser.launchIn(url);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -112,11 +122,13 @@ class _RechargePageState extends State<RechargePage> {
           SizedBox(height: Adapt.px(5)),
           _typeWeChat(),
           SizedBox(height: Adapt.px(100)),
-          CusBtn(
-            text: "确定",
-            textColor: t_gray,
-            backgroundColor: Colors.blueGrey,
+          CusRaisedButton(
+            child: Text(
+              "确定",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
             onPressed: _doRecharge,
+            backgroundColor: Colors.blueGrey,
           ),
         ],
       ),

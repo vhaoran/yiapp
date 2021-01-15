@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_bottom_sheet.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -86,8 +87,12 @@ class _AddProductTypeState extends State<AddProductType> {
             errorText: _err,
           ),
         ),
-        CusBtn(
-          text: "${_file == null ? '选择' : '更换'}商品图片",
+        CusRaisedButton(
+          child: Text(
+            "${_file == null ? '选择' : '更换'}商品图片",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
+          backgroundColor: t_gray,
           onPressed: () => CusBottomSheet(
             context,
             OnFile: (val) => setState(() {
@@ -97,8 +102,6 @@ class _AddProductTypeState extends State<AddProductType> {
               }
             }),
           ),
-          textColor: Colors.black,
-          backgroundColor: t_gray,
         ),
         SizedBox(height: Adapt.px(20)),
         if (_file != null)

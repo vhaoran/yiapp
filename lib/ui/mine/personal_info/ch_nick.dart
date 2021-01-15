@@ -5,8 +5,9 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
@@ -63,7 +64,14 @@ class _ChUserNickState extends State<ChUserNick> {
             child: Text("最多8个字"),
           ),
           // 修改昵称
-          CusBtn(text: "修改", onPressed: _chNick),
+          CusRaisedButton(
+            child: Text(
+              "修改",
+              style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+            ),
+            onPressed: _chNick,
+            backgroundColor: t_yi,
+          ),
         ],
       ),
     );

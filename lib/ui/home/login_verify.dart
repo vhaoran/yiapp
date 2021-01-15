@@ -61,8 +61,10 @@ class LoginVerify {
     // 会员
     CusRole.is_vip = r.user_info.broker_id > 0 ? true : false;
     // 游客，指的是指除了其它角色之外的身份
-    CusRole.is_guest =
-        !CusRole.is_vip && !CusRole.is_master && !CusRole.is_broker_admin;
+    CusRole.is_guest = !CusRole.is_vip &&
+        !CusRole.is_master &&
+        !CusRole.is_broker_admin &&
+        !CusRole.is_admin;
     // 重置是否闪断帖
     CusRole.isVie = false;
   }

@@ -4,6 +4,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/post_cover.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -47,10 +48,17 @@ class _MasterHisPageState extends State<MasterHisPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
+    var where = {"stat": bbs_ok};
+    if (!widget.is_vie) {
+      where.addAll({"master_reply.master_id": ApiBase.uid});
+    }
+    if (widget.is_vie) {
+      where.addAll({"reply.master_id": ApiBase.uid});
+    }
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_ok},
+      "where": where,
       "sort": {"create_date": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);

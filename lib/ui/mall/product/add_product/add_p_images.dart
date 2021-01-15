@@ -4,7 +4,8 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/global/cus_fn.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/widget/fn/fn_multi_files.dart';
@@ -59,12 +60,11 @@ class _AddProductImagesState extends State<AddProductImages> {
             enable: false,
           ),
         ),
-        CusBtn(
-          text: "选择",
-          pdVer: 0,
-          pdHor: 10,
-          fontSize: 28,
-          textColor: Colors.black,
+        CusRaisedButton(
+          child: Text(
+            "选择",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
           backgroundColor: t_gray,
           onPressed: () async {
             if (!mounted) return;

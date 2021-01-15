@@ -174,23 +174,20 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
         Expanded(
           child: CusRectField(hintText: time, hideBorder: true, enable: false),
         ),
-        SizedBox(
-          height: S.h(20),
-          width: S.w(60),
-          child: CusRaisedButton(
-            backgroundColor: Colors.grey,
-            child: Text("选择", style: TextStyle(color: Colors.black)),
-            onPressed: () {
-              _isLunar = false;
-              TimePicker(
-                context,
-                pickMode: PickerMode.full,
-                showLunar: true,
-                isLunar: (val) => setState(() => _isLunar = val),
-                onConfirm: (val) => setState(() => _yi = val),
-              );
-            },
-          ),
+        CusRaisedButton(
+          padding: EdgeInsets.symmetric(vertical: S.h(4), horizontal: S.w(12)),
+          backgroundColor: Colors.grey,
+          child: Text("选择", style: TextStyle(color: Colors.black)),
+          onPressed: () {
+            _isLunar = false;
+            TimePicker(
+              context,
+              pickMode: PickerMode.full,
+              showLunar: true,
+              isLunar: (val) => setState(() => _isLunar = val),
+              onConfirm: (val) => setState(() => _yi = val),
+            );
+          },
         ),
         SizedBox(width: S.w(10)),
       ]),

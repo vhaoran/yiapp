@@ -4,9 +4,12 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
+import 'package:yiapp/model/bbs/bbs_reply.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/master/master_console/master_prize_content.dart';
 import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/ui/question/post_input.dart';
@@ -211,8 +214,8 @@ class _PostContentState extends State<PostContent> {
             );
           },
         );
-      // 本人帖子，且悬赏金已经发完，显示结单按钮
-      if (_data.uid == ApiBase.uid && _overBtn)
+      // 本人处理中的帖子，且悬赏金已经发完，显示结单按钮
+      if (_data.uid == ApiBase.uid && _overBtn && _p.is_ing)
         return FlatButton(
           child: Text("结单", style: style),
           onPressed: () {
@@ -230,7 +233,43 @@ class _PostContentState extends State<PostContent> {
           },
         );
     }
+    // 如果是本人的处理中的闪断帖，且有大师回复了，显示打赏按钮
+    if (_p.is_vie &&
+        _p.is_ing &&
+        _data.uid == ApiBase.uid &&
+        _data.last_reply != null) {
+      return FlatButton(
+        child: Text("打赏", style: style),
+        onPressed: _doReward,
+      );
+    }
     return SizedBox.shrink();
+  }
+
+  /// 闪断帖打赏大师
+  void _doReward() {
+    var vie = _data as BBSVie;
+    CusDialog.normal(
+      context,
+      title: "问题已解决，现在打赏?",
+      onApproval: () async {
+        var m = {
+          "id": vie.id,
+          "score": vie.amt,
+          "master_id": vie.master_id,
+        };
+        try {
+          bool ok = await ApiBBSVie.bbsVieDue(m);
+          if (ok) {
+            Log.info("给大师 ${vie.master_id} 打赏的结果:$ok");
+            CusToast.toast(context, text: "打赏成功");
+            CusRoute.pushReplacement(context, HomePage());
+          }
+        } catch (e) {
+          Log.error("打赏id为${vie.master_id}大师出现异常：$e");
+        }
+      },
+    );
   }
 
   @override

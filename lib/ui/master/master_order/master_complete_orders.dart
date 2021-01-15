@@ -5,6 +5,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_cover.dart';
+import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
@@ -73,6 +74,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: CusAppBar(text: "已完成订单"),
       body: _buildFb(),
@@ -96,13 +98,23 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
               onRefresh: () async => await _refresh(),
               child: ListView(
                 children: <Widget>[
-                  ..._l.map(
-                    (e) => MasterYiOrderCover(
-                      yiOrder: e,
-                      is_his: true,
-                      onChanged: _refresh,
+                  if (_l.isEmpty)
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(top: S.screenH() / 3),
+                      child: Text(
+                        "暂无订单",
+                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      ),
                     ),
-                  ),
+                  if (_l.isNotEmpty)
+                    ..._l.map(
+                      (e) => MasterYiOrderCover(
+                        yiOrder: e,
+                        is_his: true,
+                        onChanged: _refresh,
+                      ),
+                    ),
                 ],
               ),
             ),

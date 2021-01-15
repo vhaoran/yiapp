@@ -7,7 +7,7 @@ class Business {
   String nick_ref;
 
   int action;
-  num amtStart;
+  num amt_start;
   num amt;
   String summary;
   String tradeNo;
@@ -19,7 +19,7 @@ class Business {
   Business(
       {this.action,
       this.amt,
-      this.amtStart,
+      this.amt_start,
       this.created_at,
       this.icon_ref,
       this.id,
@@ -35,7 +35,7 @@ class Business {
     return Business(
       action: json['Action'],
       amt: json['Amt'],
-      amtStart: json['AmtStart'],
+      amt_start: json['AmtStart'],
       created_at: json['created_at'],
       icon_ref: json['icon_ref'],
       id: json['id'],
@@ -53,7 +53,7 @@ class Business {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Action'] = this.action;
     data['Amt'] = this.amt;
-    data['AmtStart'] = this.amtStart;
+    data['AmtStart'] = this.amt_start;
     data['created_at'] = this.created_at;
     data['icon_ref'] = this.icon_ref;
     data['id'] = this.id;

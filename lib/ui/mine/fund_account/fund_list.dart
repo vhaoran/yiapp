@@ -8,9 +8,10 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -113,12 +114,16 @@ class _FundListPageState extends State<FundListPage> {
             ),
           ),
           if (_l.isNotEmpty)
-            CusBtn(
-              text: "添加账号",
-              minWidth: double.infinity,
-              backgroundColor: Colors.blueGrey,
-              pdVer: 15,
-              onPressed: _pushPage,
+            SizedBox(
+              width: S.screenW(),
+              child: CusRaisedButton(
+                child: Text(
+                  "添加账号",
+                  style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+                ),
+                onPressed: _pushPage,
+                backgroundColor: Colors.blueGrey,
+              ),
             ),
         ],
       ),

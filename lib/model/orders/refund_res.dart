@@ -30,7 +30,7 @@ class ComplaintsRes {
   String master_nick;
   String nick;
   String order_id; // 投诉的大师订单的id
-  int stat; // 0 待审批、1 运营商已审批、4 平台已审批 -1 已驳回
+  int stat; // 处理中的 0 待审批、1 运营商已审批 --- 已完成的 4 平台已审批 -1 已驳回
   int uid;
   List<String> images;
 

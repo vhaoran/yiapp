@@ -4,9 +4,10 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/regex/regex_func.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -66,8 +67,11 @@ class _BindUserCodePwdState extends State<BindUserCodePwd> {
               hintText: "设置登录密码",
             ),
           ),
-          CusBtn(
-            text: "确定",
+          CusRaisedButton(
+            child: Text(
+              "确定",
+              style: TextStyle(color: Colors.white, fontSize: S.sp(15)),
+            ),
             onPressed: _verify,
             backgroundColor: Colors.blueGrey,
           ),

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/widget/flutter/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/article/article_type.dart';
 import 'package:yiapp/service/api/api_article.dart';
@@ -79,19 +80,24 @@ class _ArticleMainState extends State<ArticleMain> {
             spacing: 40,
             children: <Widget>[
               ..._l.map(
-                (e) => CusBtn(
-                  text: e.name,
-                  textColor: Colors.black,
-                  pdHor: 25,
-                  pdVer: 5,
-                  borderRadius: 30,
-                  backgroundColor: Colors.grey,
-                  onPressed: () => CusRoute.push(
-                    context,
-                    ArticleTypePage(article: e),
+                (e) => Padding(
+                  padding: EdgeInsets.only(bottom: S.h(10)),
+                  child: CusRaisedButton(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: S.w(15), vertical: S.h(6)),
+                    child: Text(
+                      e.name,
+                      style: TextStyle(color: Colors.black, fontSize: S.sp(15)),
+                    ),
+                    borderRadius: 30,
+                    backgroundColor: Colors.grey,
+                    onPressed: () => CusRoute.push(
+                      context,
+                      ArticleTypePage(article: e),
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           )
         ],
