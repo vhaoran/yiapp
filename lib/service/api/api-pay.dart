@@ -28,13 +28,15 @@ class ApiPay {
       String b_type, int acc_type, String trade_no, num amt) {
     var jwt = ApiBase.jwt;
     var host = ApiBase.host;
+    num timeStamp = DateTime.now().millisecondsSinceEpoch;
 
     String url = "http://$host/yi/trade/PayReq?"
         "Jwt=$jwt&"
         "b_type=$b_type&"
         "acc_type=$acc_type&"
         "trade_no=$trade_no&"
-        "amt=$amt";
+        "amt=$amt&"
+        "ts=$timeStamp";
     return url;
   }
 }
