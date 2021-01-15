@@ -56,8 +56,8 @@ class _MasterConsoleNavState extends State<MasterConsoleNav> {
           setState(() {});
         }
       },
-      child: SizedBox(
-        width: S.w(60),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: S.w(15)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

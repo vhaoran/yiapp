@@ -147,7 +147,7 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
       if (order != null) {
         Navigator.pop(context);
         Log.info("用户下单后返回的订单id：${order.id}");
-        CusToast.toast(context, text: "下单成功");
+        CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);
         var payData =
             PayData(amt: widget.data.price, b_type: b_yi_order, id: order.id);
         BalancePay(context, data: payData);
@@ -168,19 +168,16 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
           child:
               CusRectField(hintText: _timeStr, hideBorder: true, enable: false),
         ),
-        SizedBox(
-          height: S.h(20),
-          width: S.w(60),
-          child: CusRaisedButton(
-            backgroundColor: Colors.grey,
-            child: Text("选择", style: TextStyle(color: Colors.black)),
-            onPressed: () => TimePicker(
-              context,
-              pickMode: PickerMode.full,
-              showLunar: true,
-              isLunar: (val) => setState(() => _isLunar = val),
-              onConfirm: (val) => setState(() => _yi = val),
-            ),
+        CusRaisedButton(
+          padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(3)),
+          backgroundColor: Colors.grey,
+          child: Text("选择", style: TextStyle(color: Colors.black)),
+          onPressed: () => TimePicker(
+            context,
+            pickMode: PickerMode.full,
+            showLunar: true,
+            isLunar: (val) => setState(() => _isLunar = val),
+            onConfirm: (val) => setState(() => _yi = val),
           ),
         ),
         SizedBox(width: S.w(10)),

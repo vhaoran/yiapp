@@ -153,6 +153,7 @@ class YiOrder {
     data['diagnose'] = this.diagnose;
     data['pay_amt'] = this.pay_amt;
     data['yi_cate_id'] = this.yi_cate_id;
+    data['has_exp'] = this.has_exp;
     if (this.content != null) {
       data['content'] = this.content.toJson();
     }

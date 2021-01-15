@@ -42,10 +42,23 @@ class _PosterIngPageState extends State<PosterIngPage>
   /// 用户获取处理中的帖子
   _fetch() async {
     try {
-      var m = {
-        "where": {"uid": ApiBase.uid, "stat": bbs_paid},
-        "sort": {"last_updated": -1}
+      // 用户处理中的闪断帖的状态分为1已付款和2已抢单，
+      var mVie = {
+        "where": {
+          "uid": ApiBase.uid,
+          "stat": {
+            "\$in": [bbs_paid, bbs_aim]
+          }
+        },
+        "sort": {"create_date_int": -1}
       };
+      // 悬赏帖处理中的只有状态为1的
+      var mPrize = {
+        "where": {"uid": ApiBase.uid, "stat": bbs_paid},
+        "sort": {"create_date_int": -1}
+      };
+      var m = widget.is_vie ? mVie : mPrize;
+      Log.info("+++++++++m:$m");
       PageBean pb = widget.is_vie
           ? await ApiBBSVie.bbsViePage(m)
           : await ApiBBSPrize.bbsPrizePage(m);

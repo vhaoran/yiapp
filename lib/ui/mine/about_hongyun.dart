@@ -54,7 +54,7 @@ class _AboutHongYunAppState extends State<AboutHongYunApp> {
           ),
           SizedBox(height: S.h(10)),
           NormalBox(
-              title: "检查新版版",
+              title: "检查新版本",
               onTap: () async {
                 bool ok = await UpdateUtil.compareVersion(context);
                 if (!ok) {

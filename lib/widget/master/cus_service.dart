@@ -105,46 +105,49 @@ class _ServiceItemState extends State<ServiceItem> {
 
   /// 服务名称和修改服务按钮
   Widget _nameAndCh() {
-    return SizedBox(
-      height: S.h(25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            widget.cate.yi_cate_name, // 服务名称
-            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          widget.cate.yi_cate_name, // 服务名称
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+        ),
+        Spacer(),
+        if (widget.isSelf)
+          CusRaisedButton(
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(12), vertical: S.h(6)),
+            child: Text("修改服务",
+                style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
+            onPressed: () => widget.onChange(widget.cate),
+            borderRadius: 50,
           ),
-          Spacer(),
-          if (widget.isSelf)
-            CusRaisedButton(
-              child: Text("修改服务"),
-              onPressed: () => widget.onChange(widget.cate),
-              borderRadius: 50,
-            ),
-          if (!widget.isSelf)
-            CusRaisedButton(
-              child: Text("立即测算"),
-              onPressed: () async {
-                String str = await KV.getStr(kv_order);
-                // 直接点的一对一咨询
-                if (str == null) {
-                  CusRoute.push(
-                    context,
-                    TalkAboutMaster(data: widget.cate),
-                  );
-                }
-                // 点击四柱六爻合婚后，选择大师一对一咨询
-                else {
-                  CusRoute.push(
-                    context,
-                    MeetMasterPage(cate: widget.cate),
-                  );
-                }
-              },
-              borderRadius: 50,
-            ),
-        ],
-      ),
+        if (!widget.isSelf)
+          CusRaisedButton(
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(12), vertical: S.h(6)),
+            child: Text("立即测算",
+                style: TextStyle(color: Colors.white, fontSize: S.sp(15))),
+            onPressed: () async {
+              String str = await KV.getStr(kv_order);
+              // 直接点的一对一咨询
+              if (str == null) {
+                CusRoute.push(
+                  context,
+                  TalkAboutMaster(data: widget.cate),
+                );
+              }
+              // 点击四柱六爻合婚后，选择大师一对一咨询
+              else {
+                CusRoute.push(
+                  context,
+                  MeetMasterPage(cate: widget.cate),
+                );
+              }
+            },
+            borderRadius: 50,
+          ),
+      ],
     );
   }
 

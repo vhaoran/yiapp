@@ -74,6 +74,7 @@ class _AddBankCardPageState extends State<AddBankCardPage> {
           ),
           SizedBox(height: S.h(50)),
           CusRaisedButton(
+            padding: EdgeInsets.symmetric(vertical: S.h(10)),
             child: Text(
               "确定",
               style: TextStyle(color: t_gray, fontSize: S.sp(15)),
@@ -125,8 +126,8 @@ class _AddBankCardPageState extends State<AddBankCardPage> {
       "branch_bank_id": _bankIdCtrl.text.trim(),
     };
     try {
-      bool ok = await ApiAccount.bankCardInfoAdd(m);
-      if (ok) {
+      var res = await ApiAccount.bankCardInfoAdd(m);
+      if (res != null) {
         CusToast.toast(context, text: "添加成功");
         Navigator.of(context).pop("");
       }

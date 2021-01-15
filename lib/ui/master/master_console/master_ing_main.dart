@@ -21,9 +21,9 @@ import 'package:yiapp/widget/refresh_hf.dart';
 // ------------------------------------------------------
 
 class MasterIngMain extends StatefulWidget {
-  final bool is_vie;
+  final bool isVie;
 
-  MasterIngMain({this.is_vie: false, Key key}) : super(key: key);
+  MasterIngMain({this.isVie: false, Key key}) : super(key: key);
 
   @override
   _MasterIngMainState createState() => _MasterIngMainState();
@@ -44,7 +44,7 @@ class _MasterIngMainState extends State<MasterIngMain>
   _fetch() async {
     try {
       // 如果是闪断帖
-      if (widget.is_vie) {
+      if (widget.isVie) {
         var m1 = {
           "where": {"stat": bbs_aim, "master_id": ApiBase.uid},
           "sort": {"last_updated": -1}
@@ -53,7 +53,9 @@ class _MasterIngMainState extends State<MasterIngMain>
         if (pb != null) {
           _l = pb.data.map((e) => e).toList();
         }
-      } else {
+      }
+      // 如果是悬赏帖
+      else {
         var m2 = {
           "where": {"master_id": ApiBase.uid},
           "sort": {"last_updated": -1}
@@ -61,10 +63,10 @@ class _MasterIngMainState extends State<MasterIngMain>
         List<BBSPrize> l = await ApiBBSPrize.bbsPrizeMasterList(m2);
         if (l != null) _l = l;
       }
-      Log.info("大师处理中的${logVie(widget.is_vie)}个数：${_l.length}");
+      Log.info("大师处理中的${logVie(widget.isVie)}个数：${_l.length}");
       setState(() {});
     } catch (e) {
-      Log.error("获取大师处理中的${logVie(widget.is_vie)}订单出现异常：$e");
+      Log.error("获取大师处理中的${logVie(widget.isVie)}订单出现异常：$e");
     }
   }
 
@@ -95,7 +97,7 @@ class _MasterIngMainState extends State<MasterIngMain>
           if (_l.isEmpty) _noData(),
           ..._l.map(
             (e) => PostCover(
-              post: Post(data: e, is_vie: widget.is_vie, is_ing: true),
+              post: Post(data: e, is_vie: widget.isVie, is_ing: true),
               onChanged: _refresh,
             ),
           ),

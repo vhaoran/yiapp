@@ -56,7 +56,7 @@ class _MasterVieMainState extends State<MasterVieMain> {
           child: TabBarView(
             children: <Widget>[
               PostDataPage(is_vie: true),
-              MasterIngMain(is_vie: true),
+              MasterIngMain(isVie: true),
             ],
           ),
         )),

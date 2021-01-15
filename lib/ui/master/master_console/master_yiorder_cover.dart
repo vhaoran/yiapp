@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
 import 'package:yiapp/ui/mine/exp_add_page.dart';
 import 'package:yiapp/ui/mine/my_orders/meet_master_show.dart';
@@ -93,7 +93,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
                   // 2020-10-20T01:42:17.682Z 非标准的时间格式，故只转换为年月日
                   Text("${CusTime.ymd(_order.create_date)}", style: gray),
                   Spacer(),
-                  _showBtn(_order.stat),
+                  _showBtn(_order),
                 ],
               ),
             ],
@@ -104,52 +104,45 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
   }
 
   /// 显示按钮
-  Widget _showBtn(int stat) {
-    Log.info("订单状态：$stat");
-    if (stat == bbs_init) {
-      return Container(
-        width: S.w(70),
-        constraints: BoxConstraints(maxHeight: S.h(30)),
-        child: CusRaisedButton(
-          child: Text("支付", style: TextStyle(fontSize: S.sp(14))),
-          onPressed: () {
-            PayData payData = PayData(
-              amt: _order.amt,
-              b_type: b_yi_order,
-              id: _order.id,
-            );
-            BalancePay(context, data: payData);
-          },
-          borderRadius: 50,
-          backgroundColor: Colors.black54,
-        ),
+  Widget _showBtn(YiOrder order) {
+    if (order.stat == bbs_init) {
+      return CusRaisedButton(
+        padding: EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.w(15)),
+        child: Text("支付", style: TextStyle(fontSize: S.sp(14))),
+        onPressed: () {
+          PayData payData = PayData(
+            amt: _order.amt,
+            b_type: b_yi_order,
+            id: _order.id,
+          );
+          BalancePay(context, data: payData);
+        },
+        borderRadius: 50,
+        backgroundColor: Colors.black54,
       );
-    } else if (stat == bbs_paid) {
-      return Container(
-        width: S.w(70),
-        constraints: BoxConstraints(maxHeight: S.h(30)),
-        child: CusRaisedButton(
-          child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
-          onPressed: _pushPage,
-          borderRadius: 50,
-          backgroundColor: Colors.lightBlue,
-        ),
+    } else if (order.stat == bbs_paid) {
+      return CusRaisedButton(
+        padding: EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.w(15)),
+        child: Text("回复", style: TextStyle(fontSize: S.sp(14))),
+        onPressed: _pushPage,
+        borderRadius: 50,
+        backgroundColor: Colors.lightBlue,
       );
-    } else if (stat == bbs_ok) {
-      return Container(
-        width: S.w(70),
-        constraints: BoxConstraints(maxHeight: S.h(30)),
-        child: CusRaisedButton(
-          child: Text("评价", style: TextStyle(fontSize: S.sp(14))),
-          onPressed: () => CusRoute.push(
-            context,
-            ExpAddPage(yiOrder: widget.yiOrder),
-          ).then((value) {
-            if (value != null && widget.onChanged != null) widget.onChanged();
-          }),
-          borderRadius: 50,
-          backgroundColor: Colors.lightBlue,
-        ),
+    } else if (order.uid == ApiBase.uid && order.stat == bbs_ok) {
+      if (order.has_exp) {
+        return Container(height: S.h(40)); // 已评价的单子不显示内容
+      }
+      return CusRaisedButton(
+        padding: EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.w(15)),
+        child: Text("评价", style: TextStyle(fontSize: S.sp(14))),
+        onPressed: () => CusRoute.push(
+          context,
+          ExpAddPage(yiOrder: widget.yiOrder),
+        ).then((value) {
+          if (value != null && widget.onChanged != null) widget.onChanged();
+        }),
+        borderRadius: 50,
+        backgroundColor: Colors.lightBlue,
       );
     }
     return SizedBox.shrink();

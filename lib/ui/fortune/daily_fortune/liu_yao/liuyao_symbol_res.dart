@@ -61,7 +61,6 @@ class LiuYaoSymRes extends StatelessWidget {
 
   /// 本卦
   Widget _benGua(String liushen, String benGua, int code, String fushen) {
-    Log.info("六神：" + benGua);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -71,7 +70,7 @@ class LiuYaoSymRes extends StatelessWidget {
             Text(liushen),
             SizedBox(width: Adapt.px(10)),
             // 本卦内容
-            SizedBox(width: Adapt.px(160), child: _shiYingView(benGua)),
+            SizedBox(width: Adapt.px(170), child: _shiYingView(benGua)),
             // 本卦爻符号
             Padding(
               padding: EdgeInsets.only(right: Adapt.px(15)),
