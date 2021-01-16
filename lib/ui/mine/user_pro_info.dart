@@ -7,7 +7,7 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/ui/mall/goods/shop_cart.dart';
 import 'package:yiapp/ui/mall/goods/user_await_goods.dart';
 import 'package:yiapp/ui/mall/goods/user_completed_goods.dart';
-import 'package:yiapp/ui/mall/goods/user_wait_pay.dart';
+import 'package:yiapp/ui/mall/goods/user_wait_pay_goods.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -36,7 +36,7 @@ class UserProductInfo extends StatelessWidget {
           ),
           NormalBox(
             title: "待付款",
-            onTap: () => CusRoute.push(context, AwaitPayment()),
+            onTap: () => CusRoute.push(context, AwaitGoodsPayment()),
           ),
           NormalBox(
             title: "待收货",

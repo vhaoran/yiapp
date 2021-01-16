@@ -135,7 +135,11 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
         timeStr: _timeStr,
         liuYaoView: liuYaoView,
       ),
-    );
+    ).then((value) {
+      if (value != null) {
+        Navigator.of(context).pop("");
+      }
+    });
   }
 
   @override

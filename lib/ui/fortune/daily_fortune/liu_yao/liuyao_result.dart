@@ -179,7 +179,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
         guaTime: widget.guaTime,
         user_nick: _user.nick,
       ),
-    );
+    ).then((value) => Navigator.of(context).pop(""));
   }
 
   /// 显示占类、卦主、时间

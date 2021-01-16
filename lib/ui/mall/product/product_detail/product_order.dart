@@ -14,6 +14,7 @@ import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
@@ -63,16 +64,17 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
       var res = await ApiProductOrder.productOrderAdd(m);
       if (res != null) {
         Log.info("商城订单已生成,详情：${res.toJson()}");
-        Navigator.pop(context);
         if (widget.isShop) {
           // 如果是购物车，则清空数据
           AllShopData data = await ShopKV.remove(widget.allShop);
           bool ok = await ShopKV.refresh(data);
-          print(">>>删除购物车数据结果：$ok");
+          Log.info("删除购物车数据结果：$ok");
         }
+        CusToast.toast(context, text: "订单已生成", pos: ToastPos.bottom);
         BalancePay(
           context,
           data: PayData(amt: widget.allShop.amt, b_type: b_mall, id: res.id),
+          onSuccess: () => Navigator.of(context).pop(""),
         );
       }
     } catch (e) {

@@ -34,8 +34,10 @@ import 'package:yiapp/service/api/api_base.dart';
 class PostContent extends StatefulWidget {
   final Post post;
   final String id; // 根据帖子id查询帖子最新信息
+  final bool backData; // 点击返回按钮，是否细带参数返回
 
-  PostContent({this.post, this.id, Key key}) : super(key: key);
+  PostContent({this.post, this.id, this.backData: false, Key key})
+      : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -110,6 +112,7 @@ class _PostContentState extends State<PostContent> {
     return Scaffold(
       appBar: CusAppBar(
         text: "问题详情",
+        backData: widget.backData ? "携带数据返回" : null,
         actions: <Widget>[
           if (_data != null) _appBarAction(),
         ],

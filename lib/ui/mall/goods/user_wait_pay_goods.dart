@@ -19,17 +19,17 @@ import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/17 11:57
-// usage ：用户待付款
+// usage ：用户待付款商品
 // ------------------------------------------------------
 
-class AwaitPayment extends StatefulWidget {
-  AwaitPayment({Key key}) : super(key: key);
+class AwaitGoodsPayment extends StatefulWidget {
+  AwaitGoodsPayment({Key key}) : super(key: key);
 
   @override
-  _AwaitPaymentState createState() => _AwaitPaymentState();
+  _AwaitGoodsPaymentState createState() => _AwaitGoodsPaymentState();
 }
 
-class _AwaitPaymentState extends State<AwaitPayment> {
+class _AwaitGoodsPaymentState extends State<AwaitGoodsPayment> {
   var _future;
   int _page_no = 0;
   int _rows_count = 0;
@@ -63,6 +63,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
         if (dst == null) _l.add(src);
       });
       Log.info("用户自查待付款订单多少条：${_l.length}");
+      setState(() {});
     } catch (e) {
       Log.error("用户自查待付款订单出现异常：$e");
     }
@@ -109,7 +110,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
             ],
           ),
           onLoad: () async => await _fetch(),
-          onRefresh: () async => _refresh(),
+          onRefresh: () async => await _refresh(),
         );
       },
     );
@@ -159,6 +160,7 @@ class _AwaitPaymentState extends State<AwaitPayment> {
               onPressed: () => BalancePay(
                 context,
                 data: PayData(amt: order.amt, b_type: b_mall, id: order.id),
+                onSuccess: _refresh,
               ),
             ),
             SizedBox(height: S.h(5)),
@@ -175,10 +177,10 @@ class _AwaitPaymentState extends State<AwaitPayment> {
   }
 
   /// 刷新数据
-  void _refresh() async {
+  _refresh() async {
     _page_no = _rows_count = 0;
     _l.clear();
-    await _fetch();
     setState(() {});
+    await _fetch();
   }
 }

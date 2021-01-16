@@ -4,7 +4,9 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_role.dart';
+import 'package:yiapp/model/complex/post_trans.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/ui/question/post_content.dart';
 import 'package:yiapp/util/math_util.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -78,10 +80,6 @@ class _QueDetailPageState extends State<QueDetailPage> {
 
   /// 满足发帖条件
   void _doPost() async {
-    if (CusRole.is_guest) {
-      CusToast.toast(context, text: "请先绑定运营商", milliseconds: 1500);
-      return;
-    }
     if (_score == 0) {
       CusToast.toast(context, text: "未选择悬赏金额", milliseconds: 1500);
       return;
@@ -96,10 +94,25 @@ class _QueDetailPageState extends State<QueDetailPage> {
           ? await ApiBBSVie.bbsVieAdd(m)
           : await ApiBBSPrize.bbsPrizeAdd(m);
       if (data != null) {
-        String b_type = CusRole.isVie ? b_bbs_vie : b_bbs_prize;
+        CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);
+        String bType = CusRole.isVie ? b_bbs_vie : b_bbs_prize;
         BalancePay(
           context,
-          data: PayData(amt: _data.amt, b_type: b_type, id: data.id),
+          data: PayData(amt: _data.amt, b_type: bType, id: data.id),
+          onSuccess: () {
+            CusRoute.push(
+              context,
+              PostContent(
+                post: Post(is_vie: CusRole.isVie, is_ing: true),
+                id: data.id,
+                backData: true,
+              ),
+            ).then((value) {
+              if (value != null) {
+                Navigator.of(context).pop("");
+              }
+            });
+          },
         );
       }
     } catch (e) {
@@ -151,7 +164,9 @@ class _QueDetailPageState extends State<QueDetailPage> {
                   child: Text(
                     CusRole.is_guest
                         ? ""
-                        : _l.isEmpty ? "运营商暂未设置悬赏金额" : "请选择你的悬赏金额",
+                        : _l.isEmpty
+                            ? "运营商暂未设置悬赏金额"
+                            : "请选择你的悬赏金额",
                     style: TextStyle(fontSize: S.sp(17), color: t_primary),
                   ),
                 ),

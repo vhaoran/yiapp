@@ -4,7 +4,6 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/ui/home/home_page.dart';
 import 'package:yiapp/ui/mine/fund_account/recharge_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -116,11 +115,10 @@ class BalancePay {
       bool ok = await ApiBase.postValue(url, m);
       if (ok != null) {
         await Future.delayed(Duration(milliseconds: 1500));
-        Navigator.pop(context); // 关闭支付框
+        Navigator.pop(context); // 关闭正在支付loading框
         CusToast.toast(context, text: "支付成功");
-        Navigator.pop(context); // 可能是因为同时出现了支付款和支付成功弹框，需要再退回
-        CusRoute.pushReplacement(context, HomePage());
-//        if (onSuccess != null) onSuccess();
+        Navigator.pop(context); // 关闭支付框
+        if (onSuccess != null) onSuccess();
       }
     } catch (e) {
       if (e.toString().contains("余额不足")) {
