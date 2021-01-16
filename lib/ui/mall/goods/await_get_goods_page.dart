@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
@@ -21,14 +23,14 @@ import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 // usage ：用户待收货
 // ------------------------------------------------------
 
-class AwaitGetGoods extends StatefulWidget {
-  AwaitGetGoods({Key key}) : super(key: key);
+class AwaitGetGoodsPage extends StatefulWidget {
+  AwaitGetGoodsPage({Key key}) : super(key: key);
 
   @override
-  _AwaitGetGoodsState createState() => _AwaitGetGoodsState();
+  _AwaitGetGoodsPageState createState() => _AwaitGetGoodsPageState();
 }
 
-class _AwaitGetGoodsState extends State<AwaitGetGoods> {
+class _AwaitGetGoodsPageState extends State<AwaitGetGoodsPage> {
   var _future;
   int _page_no = 0;
   int _rows_count = 0;
@@ -41,14 +43,15 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
     super.initState();
   }
 
-  /// 分页查询待收货订单
+  /// 分页查询待收货商城订单
   _fetch() async {
     if (_page_no * _rows_per_page > _rows_count) return;
     _page_no++;
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": 2},
+      "where": {"stat": mall_await_goods},
+      "sort": {"create_time_int": -1},
     };
     try {
       PageBean pb = await ApiProductOrder.productOrderPage(m);
@@ -136,53 +139,68 @@ class _AwaitGetGoodsState extends State<AwaitGetGoods> {
   Widget _coverItem(ProductOrder order) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(left: 15, right: 15, top: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             ...order.items.map(
-              (e) => Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: InkWell(
-                  onTap: () => CusRoute.push(
-                    context,
-                    ProductDetails(id_of_es: e.product_id),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Flexible(
-                        flex: 1,
-                        child: CusText("${e.name}x${e.qty}", t_gray, 30),
-                      ), // 商品名称
-                      Flexible(
-                        flex: 1,
-                        child: CusText("颜色：${e.color_code}", t_gray, 30),
-                      ), // 商品颜色
-                      Flexible(
-                        flex: 1,
-                        child: CusText("总价:￥${e.amt}", t_yi, 30),
-                      ), // 商品价格
-                    ],
-                  ),
+              (e) => InkWell(
+                onTap: () => CusRoute.push(
+                  context,
+                  ProductDetails(id_of_es: e.product_id),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SizedBox(
+                      width: S.screenW() * 2 / 5,
+                      child: Text(
+                        "${e.name}x${e.qty}",
+                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      ),
+                    ), // 商品名称
+                    SizedBox(width: S.w(10)),
+                    // 商品颜色
+                    Text(
+                      "规格：${e.color_code}",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
+                    Spacer(),
+                    // 商品价格
+                    Text(
+                      "单价 ${e.amt} 元",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                CusText("合计:￥${order.amt}", t_primary, 28),
-                SizedBox(width: 15),
-                CusBtn(
-                  text: "确认收货",
-                  pdHor: 20,
-                  fontSize: 26,
-                  textColor: Colors.white,
-                  backgroundColor: Color(0xFFCB4031),
-                  borderRadius: 100,
-                  onPressed: () => _doConfirm(order.id),
-                ),
-              ],
+            SizedBox(height: S.h(5)),
+            Text(
+              "合计 ${order.amt} 元",
+              style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "${order.create_date}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  CusRaisedButton(
+                    child: Text(
+                      "确认收货",
+                      style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        vertical: S.h(3), horizontal: S.w(15)),
+                    borderRadius: 50,
+                    onPressed: () => _doConfirm(order.id),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

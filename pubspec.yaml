@@ -74,8 +74,6 @@ dependencies:
   flutter_screenutil: ^4.0.2
   # 获取app名称，版本号等
   package_info: ^0.4.3+2
-  # 更新app弹框
-  flutter_update_dialog: ^1.0.0
   ###### suxing #####
   flutter_svg: 0.18.0
   #----- mobile push service-------
@@ -128,7 +126,7 @@ flutter:
     - assets/images/zi_mian.png
     - assets/images/zodiac_plate.png
     - assets/images/bg_update_top.png
-    - assets/update_ic_close.png
+    - assets/images/update_ic_close.png
     - assets/images/ic_launcher.png
   fonts:
     - family: AliIcon

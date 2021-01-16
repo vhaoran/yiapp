@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -14,17 +15,17 @@ import 'package:yiapp/ui/mall/goods/complete_detail.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/10/17 14:05
-// usage ：已完成订单
+// usage ：已付款的商城订单
 // ------------------------------------------------------
 
-class CompletedGoods extends StatefulWidget {
-  CompletedGoods({Key key}) : super(key: key);
+class PaidGoodsPage extends StatefulWidget {
+  PaidGoodsPage({Key key}) : super(key: key);
 
   @override
-  _CompletedGoodsState createState() => _CompletedGoodsState();
+  _PaidGoodsPageState createState() => _PaidGoodsPageState();
 }
 
-class _CompletedGoodsState extends State<CompletedGoods> {
+class _PaidGoodsPageState extends State<PaidGoodsPage> {
   var _future;
   int _page_no = 0;
   int _rowsCount = 0;
@@ -44,8 +45,8 @@ class _CompletedGoodsState extends State<CompletedGoods> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
+      "where": {"stat": mall_paid},
       "sort": {"create_time_int": -1},
-      "where": {"stat": 1},
     };
     try {
       PageBean pb = await ApiProductOrder.productOrderPage(m);
@@ -66,7 +67,7 @@ class _CompletedGoodsState extends State<CompletedGoods> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "已完成订单"),
+      appBar: CusAppBar(text: "已付款"),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
@@ -76,7 +77,7 @@ class _CompletedGoodsState extends State<CompletedGoods> {
           if (_l.isEmpty) {
             return Center(
               child: Text(
-                "",
+                "暂无订单",
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             );
@@ -113,7 +114,7 @@ class _CompletedGoodsState extends State<CompletedGoods> {
     );
   }
 
-  /// 单个已完成订单封面
+  /// 单个付款商城订单封面
   Widget _coverItem(ProductOrder order) {
     return Card(
       child: Padding(
@@ -127,26 +128,24 @@ class _CompletedGoodsState extends State<CompletedGoods> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Flexible(
-                      flex: 1,
+                    SizedBox(
+                      width: S.screenW() * 2 / 5,
                       child: Text(
                         "${e.name}x${e.qty}",
                         style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ), // 商品名称
-                    Flexible(
-                      flex: 1,
-                      child: Text(
-                        "规格：${e.color_code}",
-                        style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-                      ),
+                    SizedBox(width: S.w(10)),
+                    Text(
+                      "规格：${e.color_code}",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                     ), // 商品颜色
-                    Flexible(
-                      flex: 1,
-                      child: Text(
-                        "价格：${e.price}",
-                        style: TextStyle(color: t_yi, fontSize: S.sp(15)),
-                      ),
+                    Spacer(),
+                    Text(
+                      "单价 ${e.price} 元",
+                      style: TextStyle(color: t_yi, fontSize: S.sp(15)),
                     ), // 商品价格
                   ],
                 ),
@@ -161,7 +160,7 @@ class _CompletedGoodsState extends State<CompletedGoods> {
                 ),
                 Spacer(),
                 Text(
-                  "合计:￥${order.amt}",
+                  "合计 ${order.amt} 元",
                   style: TextStyle(color: t_primary, fontSize: S.sp(15)),
                 ),
               ],

@@ -70,7 +70,7 @@ class _PostCoverEventState extends State<PostCoverEvent> {
     return Row(
       children: <Widget>[
         // 帖子待付款，显示支付按钮
-        if (_p.data.stat == bbs_init) ...[
+        if (_p.data.stat == bbs_await_pay) ...[
           SizedBox(width: S.w(5)),
           _eventBtn(
             text: "支付",

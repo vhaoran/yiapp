@@ -9,9 +9,7 @@ abstract class BaseWeekBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: new Row(
-        children: getWeekDayWidget(),
-      ),
+      child: new Row(children: getWeekDayWidget()),
     );
   }
 

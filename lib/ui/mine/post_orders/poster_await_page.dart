@@ -51,7 +51,7 @@ class _PostAwaitPageState extends State<PostAwaitPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_init, "uid": ApiBase.uid},
+      "where": {"stat": bbs_await_pay, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);

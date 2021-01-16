@@ -70,23 +70,25 @@ class _CompleteDetailState extends State<CompleteDetail> {
       child: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
             child: CusText("收货人", t_primary, 30),
           ),
           _addrCtr(), // 收货人
           Padding(
-            padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
-            child: Row(
-              children: <Widget>[
-                CusText("订单详情", t_primary, 30),
-                SizedBox(width: Adapt.px(60)),
-                CusText("合计:￥${_order.amt}", t_primary, 30),
-              ],
-            ),
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
+            child: CusText("订单详情", t_primary, 30),
           ),
           ..._order.items.map((e) => _colorPrice(e)), // 商品的颜色和价格
           Padding(
-            padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
+            child: CusText("合计 ${_order.amt} 元", t_primary, 30),
+          ),
+          Padding(
+            padding:
+                EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
             child: CusText("时间：${_order.create_date}", t_primary, 30),
           ),
         ],
@@ -96,11 +98,11 @@ class _CompleteDetailState extends State<CompleteDetail> {
 
   /// 收货人
   Widget _addrCtr() {
-    return Padding(
-      padding: EdgeInsets.all(S.w(10)),
-      child: Card(
-        color: fif_primary,
-        shadowColor: t_gray,
+    return Card(
+      color: fif_primary,
+      shadowColor: t_gray,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -138,18 +140,18 @@ class _CompleteDetailState extends State<CompleteDetail> {
               children: <Widget>[
                 CusText("${e.name}", t_gray, 28), // 商品名称
                 SizedBox(width: Adapt.px(30)),
-                CusText("颜色：${e.color_code}", t_gray, 28), // 商品颜色
+                CusText("规格：${e.color_code}", t_gray, 28), // 商品颜色
               ],
             ),
             SizedBox(height: Adapt.px(30)),
             Row(
               children: <Widget>[
-                CusText("价格：${e.price}", t_gray, 28), // 商品价格
+                CusText("单价 ${e.price}", t_gray, 28), // 商品价格
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Adapt.px(40)),
-                  child: CusText("购买数量：${e.qty}", t_gray, 28),
+                  child: CusText("购买数量 ${e.qty}", t_gray, 28),
                 ), // 商品购买数量
-                CusText("总价：${e.amt}", t_gray, 28), // 商品总价
+                CusText("合计 ${e.amt}", t_gray, 28), // 商品总价
               ],
             ),
           ],

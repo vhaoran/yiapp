@@ -133,7 +133,7 @@ class _MasterDrawMoneyContentState extends State<MasterDrawMoneyContent> {
       }
     }
     // 审核通过的
-    else if (_res.stat == draw_pass) {
+    else if (_res.stat == draw_ok) {
       return Text(
         "当前提现单已审核通过",
         style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(15)),

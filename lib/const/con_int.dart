@@ -4,6 +4,53 @@
 // usage ：全局 int 类型
 // ------------------------------------------------------
 
+// ------------------------- 帖子状态 ------------------------
+const int bbs_rm = -1; // 已取消
+const int bbs_await_pay = 0; // 待付款
+const int bbs_paid = 1; // 已付款
+const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
+const int bbs_ok = 3; // 已打赏
+
+// ------------------------- 大师订单状态 ------------------------
+const int yiorder_await = 0; // 待付款
+const int yiorder_paid = 1; // 已付款
+const int yiorder_ok = 3; // 已处理
+const int yiorder_refund = 4; // 已退款
+
+// ------------------------- 商城订单状态 ------------------------
+const int mall_await_pay = 0; // 待付款
+const int mall_paid = 1; // 已付款
+const int mall_await_goods = 2; // 待收货
+const int mall_had_goods = 3; // 已收货
+const int mall_cancel = 4; // 已作废
+
+// ------------------------- 提现类型 ------------------------
+const int draw_await = 0; // 待审批
+const int draw_cancel = 1; // 取消或驳回
+const int draw_ok = 4; // 审批通过
+
+// ------------------------- 投诉状态 ------------------------
+const int refund_await = 0; // 待审批
+const int refund_b_pass = 1; // 运营商已审批
+const int refund_p_pass = 4; // 平台已审批
+const int refund_r = -1; // 平台已审批
+
+// ------------------------- 可选悬赏帖类型 ------------------------
+const int post_liuyao = 1; // 六爻类型
+const int post_sizhu = 2; // 四柱类型
+const int post_hehun = 3; // 合婚类型
+
+// ------------------------- 评价类型 ------------------------
+const int rate_best = 1; // 好评
+const int rate_mid = 2; // 中评
+const int rate_bad = 3; // 差评
+
+// ------------------------- 六爻 ------------------------
+const int shao_yin = 0; // 少阴 2背1字 3/8 概率
+const int shao_yang = 1; // 少阳 1背2字 3/8 概率
+const int lao_yin = 2; // 老阴 3字 1/8 概率
+const int lao_yang = 3; // 老阳 3面 1/8 概率
+
 // ------------------------- 性别 ------------------------
 const int female = 0; // 女性
 const int male = 1; // 男性
@@ -15,30 +62,6 @@ const int pay_wechat = 1; // 微信
 // ------------------------- 启用停用大师 ------------------------
 const int m_disable = 0; // 停用大师
 const int m_enable = 1; // 启用大师
-
-// ------------------------- 帖子状态 ------------------------
-const int bbs_rm = -1; // 已取消
-const int bbs_init = 0; // 待付款
-const int bbs_paid = 1; // 已付款
-const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
-const int bbs_ok = 3; // 已打赏
-
-// ------------------------- 大师订单状态 ------------------------
-const int yiorder_init = 0; // 待付款
-const int yiorder_paid = 1; // 已付款
-const int yiorder_ok = 3; // 已处理
-const int yiorder_refund = 4; // 已退款
-
-// ------------------------- 悬赏帖类型 ------------------------
-const int post_liuyao = 1; // 六爻类型
-const int post_sizhu = 2; // 四柱类型
-const int post_hehun = 3; // 合婚类型
-
-// ------------------------- 六爻 ------------------------
-const int shao_yin = 0; // 少阴 2背1字 3/8 概率
-const int shao_yang = 1; // 少阳 1背2字 3/8 概率
-const int lao_yin = 2; // 老阴 3字 1/8 概率
-const int lao_yang = 3; // 老阳 3面 1/8 概率
 
 // ----------------------- 大师服务 -----------------------
 const int ming_yun = 1; // 性格命运分析
@@ -71,19 +94,3 @@ const int you_shi = 9; // 酉时
 const int xu_shi = 10; // 戌时
 const int hai_shi = 11; // 亥时
 const int wan_zi = 12; // 晚子
-
-// ------------------------- 评价类型 ------------------------
-const int rate_best = 1; // 好评
-const int rate_mid = 2; // 中评
-const int rate_bad = 3; // 差评
-
-// ------------------------- 提现类型 ------------------------
-const int draw_await = 0; // 待审批
-const int draw_cancel = 1; // 取消或驳回
-const int draw_pass = 4; // 审批通过
-
-// ------------------------- 投诉状态 ------------------------
-const int refund_await = 0; // 待审批
-const int refund_b_pass = 1; // 运营商已审批
-const int refund_p_pass = 4; // 平台已审批
-const int refund_r = -1; // 平台已审批

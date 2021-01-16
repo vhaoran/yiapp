@@ -65,7 +65,7 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      if (mounted) setState(() {});
+      setState(() {});
       Log.info("当前已查询大师已完成订单个数：${_l.length}");
     } catch (e) {
       Log.error("分页查询大师大师已完成订单出现异常：$e");
@@ -123,11 +123,11 @@ class _MasterCompletedOrdersState extends State<MasterCompletedOrders>
   }
 
   /// 刷新数据
-  void _refresh() async {
+  _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
-    await _fetch();
     setState(() {});
+    await _fetch();
   }
 
   @override

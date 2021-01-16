@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_update_dialog/update_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/complex/update_res.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_update.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 
 // ------------------------------------------------------
@@ -19,41 +21,48 @@ class UpdateUtil {
 
   /// 比较版本号
   static Future<bool> compareVersion(BuildContext context) async {
-    try {
-      Response response = await Dio().get(_versionUrl);
-      if (response != null) {
-        var res = UpdateRes.fromJson(json.decode(response.data));
-        if (res != null) {
-          Log.info("服务器版本号：${res.version}");
-          Log.info("本地版本号：${CusRole.packageInfo.version}");
-          String serverVersion = res.version.replaceAll(".", "");
-          String localVersion = CusRole.packageInfo.version.replaceAll(".", "");
-          bool update = num.parse(serverVersion) > num.parse(localVersion);
-          if (update) {
-            _updateDialog(context, res);
-            return true;
+    // 如果是生产模式
+    if (bool.fromEnvironment("dart.vm.product")) {
+      Log.info("这是生产模式，检查更新");
+      try {
+        Response response = await Dio().get(_versionUrl);
+        if (response != null) {
+          var res = UpdateRes.fromJson(json.decode(response.data));
+          if (res != null) {
+            Log.info("服务器版本号：${res.version}");
+            Log.info("本地版本号：${CusRole.packageInfo.version}");
+            String serverVersion = res.version.replaceAll(".", "");
+            String localVersion =
+                CusRole.packageInfo.version.replaceAll(".", "");
+            bool update = num.parse(serverVersion) > num.parse(localVersion);
+//            bool update = 120000 > num.parse(localVersion);
+            if (update) {
+              _updateDialog(context, res);
+              return true;
+            }
           }
         }
+        return false;
+      } catch (e) {
+        Log.error("获取版本号出现异常：$e");
       }
+    } else {
+      Log.info("这是Debug模式不需要更新");
       return false;
-    } catch (e) {
-      Log.error("获取版本号出现异常：$e");
     }
   }
 
   /// 提示更新弹窗
   static void _updateDialog(BuildContext context, UpdateRes res) {
-    UpdateDialog.showUpdate(context,
-        width: 260,
-        titleTextSize: 16,
-        contentTextSize: 15,
-        buttonTextSize: 15,
-        updateButtonText: '升级',
-        themeColor: Color(0xFFFFAC5D), // 按钮背景色
-        title: "检测到新版本 ${res.version}",
-        topImage: Image.asset('assets/images/bg_update_top.png'),
-        updateContent: "当前版本 ${CusRole.packageInfo.version}",
-        onUpdate: () async {
+    CusUpdateDialog.showUpdate(context,
+        topTitle: Text(
+          "检测到新版本 ${res.version}",
+          style: TextStyle(color: Colors.white, fontSize: S.sp(16)),
+        ),
+        updateTitle: Text(
+          "当前版本 ${CusRole.packageInfo.version}",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ), onUpdate: () async {
       try {
         if (await canLaunch(res.url)) {
           Navigator.pop(context); // 关闭更新弹框

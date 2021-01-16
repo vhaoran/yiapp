@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
@@ -22,14 +23,14 @@ import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 // usage ：用户待付款商品
 // ------------------------------------------------------
 
-class AwaitGoodsPayment extends StatefulWidget {
-  AwaitGoodsPayment({Key key}) : super(key: key);
+class AwaitPayGoodsPage extends StatefulWidget {
+  AwaitPayGoodsPage({Key key}) : super(key: key);
 
   @override
-  _AwaitGoodsPaymentState createState() => _AwaitGoodsPaymentState();
+  _AwaitPayGoodsPageState createState() => _AwaitPayGoodsPageState();
 }
 
-class _AwaitGoodsPaymentState extends State<AwaitGoodsPayment> {
+class _AwaitPayGoodsPageState extends State<AwaitPayGoodsPage> {
   var _future;
   int _page_no = 0;
   int _rows_count = 0;
@@ -49,7 +50,7 @@ class _AwaitGoodsPaymentState extends State<AwaitGoodsPayment> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": 0},
+      "where": {"stat": mall_await_pay},
       "sort": {"create_time_int": -1},
     };
     try {
@@ -128,42 +129,62 @@ class _AwaitGoodsPaymentState extends State<AwaitGoodsPayment> {
               (e) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Flexible(
-                    flex: 1,
-                    child: CusText("${e.name}x${e.qty}", t_gray, 30),
+                  SizedBox(
+                    width: S.screenW() * 2 / 5,
+                    child: Text(
+                      "${e.name}x${e.qty}",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ), // 商品名称
-                  Flexible(
-                    flex: 1,
-                    child: CusText("规格：${e.color_code}", t_gray, 30),
-                  ), // 商品颜色
-                  Flexible(
-                    flex: 1,
-                    child: CusText("总价:￥${e.amt}", t_yi, 30),
-                  ), // 商品价格
+                  SizedBox(width: S.w(10)),
+                  // 商品颜色
+                  Text(
+                    "规格 ${e.color_code}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  // 商品价格
+                  Text(
+                    "单价 ${e.amt} 元",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
                 ],
               ),
             ),
             SizedBox(height: S.h(5)),
-            Row(
-              children: <Widget>[
-                CusText("${order.create_date}", t_gray, 30),
-                Spacer(),
-                CusText("合计:￥${order.amt}", t_primary, 28),
-              ],
+            Text(
+              "合计 ${order.amt} 元",
+              style: TextStyle(color: t_primary, fontSize: S.sp(15)),
             ),
-            SizedBox(height: S.h(10)),
-            CusRaisedButton(
-              child: Text("付款"),
-              padding:
-                  EdgeInsets.symmetric(vertical: S.h(3), horizontal: S.w(15)),
-              borderRadius: 50,
-              onPressed: () => BalancePay(
-                context,
-                data: PayData(amt: order.amt, b_type: b_mall, id: order.id),
-                onSuccess: _refresh,
+            Padding(
+              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "${order.create_date}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  CusRaisedButton(
+                    child: Text(
+                      "付款",
+                      style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        vertical: S.h(3), horizontal: S.w(15)),
+                    borderRadius: 50,
+                    onPressed: () => BalancePay(
+                      context,
+                      data:
+                          PayData(amt: order.amt, b_type: b_mall, id: order.id),
+                      onSuccess: _refresh,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: S.h(5)),
           ],
         ),
       ),

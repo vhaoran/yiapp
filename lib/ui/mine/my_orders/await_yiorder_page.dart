@@ -46,7 +46,7 @@ class _AwaitYiorderPageState extends State<AwaitYiorderPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_init},
+      "where": {"stat": bbs_await_pay},
       "sort": {"create_date": -1},
     };
     try {

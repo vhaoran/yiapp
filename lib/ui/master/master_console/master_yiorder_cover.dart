@@ -93,7 +93,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
                   // 2020-10-20T01:42:17.682Z 非标准的时间格式，故只转换为年月日
                   Text("${CusTime.ymd(_order.create_date)}", style: gray),
                   Spacer(),
-                  _showBtn(_order),
+                  _showBtn(_order), // 动态显示支付、评价、回复按钮
                 ],
               ),
             ],
@@ -103,9 +103,9 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
     );
   }
 
-  /// 显示按钮
+  /// 动态显示支付、评价、回复按钮
   Widget _showBtn(YiOrder order) {
-    if (order.stat == bbs_init) {
+    if (order.stat == bbs_await_pay) {
       return CusRaisedButton(
         padding: EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.w(15)),
         child: Text("支付", style: TextStyle(fontSize: S.sp(14))),
@@ -130,7 +130,9 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
         borderRadius: 50,
         backgroundColor: Colors.lightBlue,
       );
-    } else if (order.uid == ApiBase.uid && order.stat == bbs_ok) {
+    }
+    // 下单人已打赏的大师订单，显示评价按钮
+    else if (order.uid == ApiBase.uid && order.stat == bbs_ok) {
       if (order.has_exp) {
         return Container(height: S.h(40)); // 已评价的单子不显示内容
       }
@@ -153,7 +155,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
   /// 根据情况跳转页面
   void _pushPage() {
     // 查看已打赏和待付款的大师订单
-    if (_order.stat == bbs_init || _order.stat == bbs_ok) {
+    if (_order.stat == bbs_await_pay || _order.stat == bbs_ok) {
       CusRoute.push(context, MeetMasterShow(yiOrder: widget.yiOrder))
           .then((value) {
         if (value != null && widget.onChanged != null) widget.onChanged();

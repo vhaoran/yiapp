@@ -87,6 +87,9 @@ class _MasterDrawMoneyAddState extends State<MasterDrawMoneyAdd> {
       if (e.toString().contains("余额不足")) {
         CusDialog.tip(context, title: "余额不足");
       }
+      if (e.toString().contains("无法查询") && e.toString().contains("银行卡")) {
+        CusDialog.tip(context, title: "未设置提现账号");
+      }
       Log.error("大师提现出现异常：$e");
     }
   }

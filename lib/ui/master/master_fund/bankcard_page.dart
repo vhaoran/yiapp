@@ -80,6 +80,7 @@ class _BankCardPageState extends State<BankCardPage> {
   }
 
   Widget _lv() {
+    Log.info("${_card.branch_band_id}");
     return ScrollConfiguration(
       behavior: CusBehavior(),
       child: ListView(
@@ -114,8 +115,11 @@ class _BankCardPageState extends State<BankCardPage> {
           ),
           InkWell(
             onTap: () =>
-                CusRoute.push(context, AddBankCardPage()).then((value) {
-              if (value != null) Navigator.pop(context);
+                CusRoute.push(context, AddBankCardPage()).then((value) async {
+              if (value != null) {
+                await _fetch();
+                setState(() {});
+              }
             }),
             child: Text(
               "现在添加",
