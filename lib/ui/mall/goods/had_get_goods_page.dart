@@ -8,10 +8,10 @@ import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
 import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
+import 'package:yiapp/ui/mine/my_orders/complaints_add.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/flutter/cus_dialog.dart';
-import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 
 // ------------------------------------------------------
@@ -66,28 +66,6 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
     }
   }
 
-  /// 确认收货
-  void _doConfirm(String id) {
-    if (id != null) {
-      CusDialog.normal(
-        context,
-        title: "您是否已确认收到货?",
-        onApproval: () async {
-          try {
-            bool ok = await ApiProductOrder.productOrderReceive(id);
-            if (ok) {
-              CusToast.toast(context, text: "收货成功");
-              _l.removeWhere((e) => e.id == id);
-              setState(() {});
-            }
-          } catch (e) {
-            Log.error("确认收货时出现异常：$e");
-          }
-        },
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +114,7 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
   Widget _coverItem(ProductOrder order) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+        padding: EdgeInsets.only(left: S.h(15), right: S.h(15), top: S.h(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -173,22 +151,41 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
               ),
             ),
             SizedBox(height: S.h(5)),
-            Padding(
-              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "${order.create_date}",
-                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-                  ),
-                  Spacer(),
-                  Text(
-                    "合计 ${order.amt} 元",
-                    style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-                  ),
-                ],
-              ),
+            Row(
+              children: <Widget>[
+                Text(
+                  "合计 ${order.amt} 元",
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+                Spacer(),
+                Text(
+                  "${order.create_date}",
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+              ],
             ),
+            SizedBox(height: S.h(5)),
+//            Padding(
+//              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
+//              child: Row(
+//                children: <Widget>[
+//                  Spacer(),
+//                  CusRaisedButton(
+//                    child: Text(
+//                      "投诉",
+//                      style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
+//                    ),
+//                    padding: EdgeInsets.symmetric(
+//                        vertical: S.h(3), horizontal: S.w(15)),
+//                    borderRadius: 50,
+//                    onPressed: () => CusRoute.push(
+//                      context,
+//                      ComplaintsAdd(productOrder: order),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
           ],
         ),
       ),

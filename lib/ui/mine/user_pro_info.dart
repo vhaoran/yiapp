@@ -13,7 +13,7 @@ import 'package:yiapp/ui/mall/goods/await_pay_goods_page.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/11/11 15:56
-// usage ：我的商品   含购物车、待付款、待收货、已完成订单
+// usage ：我的商品  含购物车、待付款、已付款、待收货、已收货
 // ------------------------------------------------------
 
 class UserProductInfo extends StatelessWidget {

@@ -3,8 +3,11 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
+import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 import 'package:yiapp/util/file_util.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
@@ -21,13 +24,14 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/30 下午3:15
-// usage ：投诉大师订单
+// usage ：投诉大师订单、商城订单
 // ------------------------------------------------------
 
 class ComplaintsAdd extends StatefulWidget {
-  final YiOrder yiOrder;
+  final YiOrder yiOrder; // 投诉大师订单
+  final ProductOrder productOrder; // 投诉商城订单
 
-  ComplaintsAdd({this.yiOrder, Key key}) : super(key: key);
+  ComplaintsAdd({this.yiOrder, this.productOrder, Key key}) : super(key: key);
 
   @override
   _ComplaintsAddState createState() => _ComplaintsAddState();
@@ -38,11 +42,18 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
   var _detailCtrl = TextEditingController(); // 投诉详情
   bool _drawBack = false; // 是否退款，默认不退款
   List<Asset> _assets = []; // 返回选择的图片
+  bool _isYiOrder = false; // 是否投诉大师订单
+
+  @override
+  void initState() {
+    _isYiOrder = widget.yiOrder != null;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "投诉大师订单"),
+      appBar: CusAppBar(text: "投诉${_isYiOrder ? '大师' : '商城'}订单"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -67,24 +78,26 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
     l.forEach((e) => images.add(e['path']));
     try {
       var m = {
-        "master_id": widget.yiOrder.master_id,
         "brief": _briefCtrl.text.trim(),
         "detail": _detailCtrl.text.trim(),
         "images": images,
         "draw_back": _drawBack,
-        "b_type": b_yi_order,
+        "b_type": _isYiOrder ? b_yi_order : b_mall,
         "order_id": widget.yiOrder.id,
       };
+      if (_isYiOrder) {
+        m.addAll({"master_id": widget.yiOrder.master_id});
+      }
       var res = await ApiYiOrder.refundOrderAdd(m);
       if (res != null) {
         CusDialog.tip(
           context,
-          title: "投诉成功，请等待结果",
+          title: "已投诉，请等待结果",
           onApproval: () => Navigator.pop(context),
         );
       }
     } catch (e) {
-      Log.error("投诉大师时出现异常：$e");
+      Log.error("投诉${_isYiOrder ? '大师' : '商城'}时出现异常：$e");
     }
   }
 
@@ -94,9 +107,10 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: S.w(20)),
         children: <Widget>[
+          // 投诉的是大师订单还是商城订单
           Padding(
             padding: EdgeInsets.symmetric(vertical: S.h(10)),
-            child: _masterInfo(), // 被投诉大师
+            child: _isYiOrder ? _masterInfo() : _productView(), // 被投诉大师
           ),
           Text("投诉摘要", style: TextStyle(color: t_primary, fontSize: S.sp(16))),
           SizedBox(height: S.h(5)),
@@ -120,10 +134,10 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
           ),
           SizedBox(height: S.h(15)),
           Container(
-            height: S.h(22),
-            padding: EdgeInsets.only(right: S.screenW() - 170),
+            margin: EdgeInsets.only(right: S.screenW() - 130),
             child: CusRaisedButton(
-              child: Text("可选添加图片", style: TextStyle(color: Colors.black)),
+              padding: EdgeInsets.symmetric(vertical: S.h(2)),
+              child: Text("添加图片", style: TextStyle(color: Colors.black)),
               borderRadius: 50,
               backgroundColor: t_primary,
               onPressed: () async {
@@ -148,6 +162,7 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
             borderRadius: 50,
             onPressed: _doRefund,
           ),
+          SizedBox(height: S.h(30)),
         ],
       ),
     );
@@ -184,6 +199,54 @@ class _ComplaintsAddState extends State<ComplaintsAdd> {
         ),
       ],
     );
+  }
+
+  /// 投诉商品的详情
+  Widget _productView() {
+    if (widget.productOrder != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "商品详情",
+            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+          ),
+          ...widget.productOrder.items.map(
+            (e) => InkWell(
+              onTap: () => CusRoute.push(
+                context,
+                ProductDetails(id_of_es: e.product_id),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                    width: S.screenW() * 2 / 5,
+                    child: Text(
+                      "${e.name}x${e.qty}",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                    ),
+                  ), // 商品名称
+                  SizedBox(width: S.w(10)),
+                  // 商品颜色
+                  Text(
+                    "规格：${e.color_code}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  // 商品价格
+                  Text(
+                    "单价 ${e.amt} 元",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return SizedBox.shrink();
   }
 
   @override

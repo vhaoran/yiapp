@@ -24,8 +24,13 @@ import 'package:yiapp/service/api/api-bbs-prize.dart';
 
 class PostDataPage extends StatefulWidget {
   final bool is_vie;
+  // 是否从问命页面查看的悬赏帖和闪断帖，在问命页面用的是bbsPrizePage2，该路由含有
+  // 已支付但未被抢的，以及已经被打赏过的两种情况
+  // 除从问命页面进来的，其它的用的是bbsPrizePage路由
+  final bool isQue;
 
-  PostDataPage({this.is_vie: false, Key key}) : super(key: key);
+  PostDataPage({this.is_vie: false, this.isQue: false, Key key})
+      : super(key: key);
 
   @override
   _PostDataPageState createState() => _PostDataPageState();
@@ -49,18 +54,21 @@ class _PostDataPageState extends State<PostDataPage>
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
-    // 如果是闪断帖，则不显示 master_id 不为0的帖子
-//    Map<String, dynamic> where = {"stat": bbs_paid};
-    Map<String, dynamic> where = {
+    // 问命页面查看的是已支付但未被抢的，以及已经被打赏过的
+    Map<String, dynamic> queWhere = {
       "stat": {"\$gte": bbs_paid},
     };
+    Map<String, dynamic> otherWhere = {"stat": bbs_paid};
     // 大师查看所有的帖子，会员只查看运营商下大师的帖子
-    if (CusRole.is_vip) where.addAll({"broker_id": CusRole.broker_id});
-//    if (widget.is_vie) where.addAll({"master_id": 0});
+    if (CusRole.is_vip) {
+      widget.isQue
+          ? queWhere.addAll({"broker_id": CusRole.broker_id})
+          : otherWhere.addAll({"broker_id": CusRole.broker_id});
+    }
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": where,
+      "where": widget.isQue ? queWhere : otherWhere,
       "sort": {"create_date_int": -1}, // 按时间倒序排列
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);

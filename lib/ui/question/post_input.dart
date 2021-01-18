@@ -32,27 +32,39 @@ class PostInput extends StatefulWidget {
 class _PostInputState extends State<PostInput> {
   var _replyCtrl = TextEditingController();
   var _focusNode = FocusNode();
+  bool _isSending = false; // 是否正在发送
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 6,
           child: Container(child: _input(), color: Colors.grey),
         ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            color: t_yi,
-            child: FlatButton(
-              onPressed: _doReply,
-              child: Text(
-                "发送",
-                style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
-              ),
-              padding: EdgeInsets.all(0),
+        Container(
+          color: t_yi,
+          child: FlatButton(
+            onPressed: _isSending ? null : _doReply,
+            child: Row(
+              children: <Widget>[
+                if (_isSending) ...[
+                  SizedBox(
+                    height: S.h(20),
+                    width: S.w(20),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: S.w(5)),
+                ],
+                Text(
+                  "发送",
+                  style: TextStyle(color: Colors.black, fontSize: S.sp(14)),
+                ),
+              ],
             ),
+            padding: EdgeInsets.all(0),
           ),
         ),
       ],
@@ -111,37 +123,42 @@ class _PostInputState extends State<PostInput> {
       CusToast.toast(context, text: "请输入回复内容");
       return;
     }
-    int master_id = 0;
+    int masterId = 0;
     // 如果是大师回复，不需要区分帖子类别，回复的是自己
     if (CusRole.is_master)
-      master_id = ApiBase.uid;
+      masterId = ApiBase.uid;
     // 如果是用户回复悬赏帖，则回复的是选择的大师
     else if (!widget.post.is_vie) {
-      master_id = widget.userSelectReply?.master_id;
-      if (master_id == null) {
+      masterId = widget.userSelectReply?.master_id;
+      if (masterId == null) {
         CusToast.toast(context, text: "请先选择一位大师，再进行回复");
+        return;
       }
     }
     // 如果是用户回复闪断帖，则回复的是当前帖子的 master_id
-    else if (widget.post.is_vie) master_id = widget.post.data.master_id;
+    else if (widget.post.is_vie) masterId = widget.post.data.master_id;
     var m = {
       "id": widget.post.data.id,
-      "to_master": master_id,
+      "to_master": masterId,
       "text": [_replyCtrl.text.trim()],
     };
     Log.info("回帖时要提交的数据：$m");
-
+    setState(() => _isSending = true);
     try {
       bool ok = widget.post.is_vie
           ? await ApiBBSVie.bbsVieReply(m)
           : await ApiBBSPrize.bbsPrizeReply(m);
       if (ok) {
+        _isSending = false;
         _replyCtrl.clear();
         _focusNode.unfocus();
         CusToast.toast(context, text: "回帖成功");
+        setState(() {});
         if (widget.onSend != null) widget.onSend();
       }
     } catch (e) {
+      _isSending = false;
+      setState(() {});
       Log.error("回帖出现异常：$e");
     }
   }

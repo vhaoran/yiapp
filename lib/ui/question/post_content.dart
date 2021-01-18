@@ -4,7 +4,6 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/model/complex/post_trans.dart';

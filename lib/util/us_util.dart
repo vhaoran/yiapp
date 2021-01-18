@@ -1,7 +1,6 @@
 import 'package:uuid/uuid.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 
 // ------------------------------------------------------
@@ -27,7 +26,7 @@ class UsUtil {
   }
 
   /// 检查本地的求测大师的数据，有的话清理
-  static void checkLocalY() async {
+  static Future<void> checkLocalY() async {
     String data = await KV.getStr(kv_order);
     if (data != null) {
       bool remove = await KV.remove(kv_order);

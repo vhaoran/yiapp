@@ -96,9 +96,9 @@ class ApiAccount {
   }
 
   /// x修改提现帐号，适用于管理员或平台、大师
-  static Future<BankCardRes> bankCardInfoCh(Map<String, dynamic> data) async {
+  static Future<bool> bankCardInfoCh(Map<String, dynamic> data) async {
     var url = w_yi_trade + "BankCardInfoCh";
-    return await ApiBase.postObj(url, data, (m) => BankCardRes.fromJson(m));
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }
 
   /// 大师对帐单-page

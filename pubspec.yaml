@@ -74,6 +74,8 @@ dependencies:
   flutter_screenutil: ^4.0.2
   # 获取app名称，版本号等
   package_info: ^0.4.3+2
+  # 获取手机信息
+  device_info: ^1.0.0
   ###### suxing #####
   flutter_svg: 0.18.0
   #----- mobile push service-------

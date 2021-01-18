@@ -46,10 +46,10 @@ class _QueMainPageState extends State<QueMainPage>
   _initLoad() async {
     _user = await LoginDao(glbDB).readUserByUid();
     if (_user.enable_prize == 1) {
-      _tabW.addAll({"悬赏帖": PostDataPage()});
+      _tabW.addAll({"悬赏帖": PostDataPage(isQue: true)});
     }
     if (_user.enable_vie == 1) {
-      _tabW.addAll({"闪断帖": PostDataPage(is_vie: true)});
+      _tabW.addAll({"闪断帖": PostDataPage(is_vie: true, isQue: true)});
     }
     setState(() {});
   }
