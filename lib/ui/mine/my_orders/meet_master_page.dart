@@ -158,6 +158,7 @@ class _MeetMasterPageState extends State<MeetMasterPage> {
       if (res != null) {
         Navigator.pop(context);
         Log.info("约聊大师后返回的订单id：${res.id}");
+        Log.info("大师订单详情：${res.toJson()}");
         await UsUtil.checkLocalY(); // 清除本地下单数据
         if (_data.liuYao != null) await KV.remove(kv_liuyao);
         CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);

@@ -205,6 +205,7 @@ class _QueDetailPageState extends State<QueDetailPage> {
       children: <Widget>[
         if (widget.liuYaoView != null) // 六爻排盘信息
           widget.liuYaoView,
+        SizedBox(height: S.h(10)),
         Text("基本信息", style: style1),
         Text("${_data.content.name}", style: style2), // 姓名
         Row(

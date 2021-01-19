@@ -118,20 +118,20 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
       children: <Widget>[
         Expanded(
           child: CusBtn(
-            text: "闪断帖求测",
-            borderRadius: 0,
-            backgroundColor: Color(0xFFED9951),
-            height: 45,
-            onPressed: () => _doPost(true),
-          ),
-        ),
-        Expanded(
-          child: CusBtn(
             text: "悬赏帖求测",
             borderRadius: 0,
             backgroundColor: Color(0xFFE96C62),
             height: 45,
             onPressed: () => _doPost(false),
+          ),
+        ),
+        Expanded(
+          child: CusBtn(
+            text: "闪断帖求测",
+            borderRadius: 0,
+            backgroundColor: Color(0xFFED9951),
+            height: 45,
+            onPressed: () => _doPost(true),
           ),
         ),
         Expanded(
