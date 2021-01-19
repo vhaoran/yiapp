@@ -174,7 +174,10 @@ class _QueMainPageState extends State<QueMainPage>
             context, AskQuestionPage(content_type: post_hehun));
         break;
       case 3: // 其他
-        CusRoute.pushReplacement(context, AskQuestionPage(content_type: 0));
+        CusRoute.pushReplacement(
+          context,
+          AskQuestionPage(content_type: post_other),
+        );
         break;
       default:
         Navigator.pop(context);

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/gao_server.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/complex/update_res.dart';
@@ -17,15 +18,13 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // ------------------------------------------------------
 
 class UpdateUtil {
-  static const _versionUrl = "https://hy3699.com/version";
-
   /// 比较版本号
   static Future<bool> compareVersion(BuildContext context) async {
     // 如果是生产模式
     if (bool.fromEnvironment("dart.vm.product")) {
       Log.info("这是生产模式，检查更新");
       try {
-        Response response = await Dio().get(_versionUrl);
+        Response response = await Dio().get(GaoServer.checkVer);
         if (response != null) {
           var res = UpdateRes.fromJson(json.decode(response.data));
           if (res != null) {

@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/gao_server.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/complex/update_res.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
@@ -24,8 +28,6 @@ class DemoPlugin extends StatefulWidget {
 }
 
 class _DemoPluginState extends State<DemoPlugin> {
-  Map<String, dynamic> _deviceData = Map<String, dynamic>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,6 @@ class _DemoPluginState extends State<DemoPlugin> {
   /// 获取手机信息
   Future<void> _initPlatformState() async {
     Map<String, dynamic> deviceData;
-
     try {
       if (Platform.isAndroid) {
         Log.info("安卓系统");
@@ -66,17 +67,23 @@ class _DemoPluginState extends State<DemoPlugin> {
         title: "版本：${deviceData['version.release']},\n"
             "牌子：${deviceData['model']}",
       );
+      Response response = await Dio().post(
+        GaoServer.inviteCode,
+        data: {
+          "version": "android" + deviceData['version.release'],
+          "model": deviceData['model']
+//          "model": "MacOSX",
+//          "version": "110"
+        },
+      );
+      if (response != null) {
+        Log.info("服务码:${response.data['code']}");
+      }
     } on PlatformException {
       deviceData = <String, dynamic>{
         'Error:': 'Failed to get platform version.'
       };
     }
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceData = deviceData;
-    });
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {

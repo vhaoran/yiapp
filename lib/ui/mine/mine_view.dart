@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:yiapp/const/gao_server.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
@@ -10,6 +13,7 @@ import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
 import 'package:yiapp/ui/mine/user_pro_info.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'account_safe/account_safe_page.dart';
 import 'bind_service_code.dart';
@@ -131,12 +135,21 @@ class _MineIdentityViewState extends State<MineIdentityView> {
 
   /// 运营商管理员
   Widget _brokerAdminView() {
-    Log.info("身份：运营商管理员 ${ApiBase.uid}");
+    Log.info("身份：运营商或者运营商管理员 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoute.push(context, AccountSafePage()),
+        ),
+        NormalBox(
+          title: "服务码",
+          subtitle: CusRole.service_code,
+          onTap: () async {
+            final url = GaoServer.inviteCode + "?code=${CusRole.service_code}";
+            await Clipboard.setData(ClipboardData(text: url));
+            CusToast.toast(context, text: "已复制服务码");
+          },
         )
       ],
     );

@@ -1,8 +1,13 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:yiapp/const/gao_server.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
+import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -16,6 +21,8 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/util/us_util.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/small/cus_loading.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -31,7 +38,7 @@ class LoginVerify {
     Log.info("用户登录结果：${login.toJson()}");
     // 初始化全局信息和网络
     await setLoginInfo(login);
-    initGlobal(login);
+    await _initGlobal(login);
     // 更新本地存储的token
     await KV.setStr(kv_jwt, login.jwt);
     // 在状态管理中初始化用户登录信息
@@ -46,12 +53,17 @@ class LoginVerify {
       Log.info("存储新的用户信息：${login.user_info.id}");
       await LoginDao(glbDB).insert(SqliteLoginRes.from(login));
     }
+    // 获取大师信息
     if (CusRole.is_master) await _fetchMaster(context);
+    // 运营商或者运营商管理员获取服务码
+    if (CusRole.is_broker_admin) await _fetchServiceCode();
+    // 如果是游客，则请求绑定运营商
+//    if (CusRole.is_guest) await _bindBroker(context);
     await _initPackageInfo(); // 获取版本信息
   }
 
   /// 初始化全局信息
-  static void initGlobal(LoginResult r) {
+  static Future<void> _initGlobal(LoginResult r) async {
     // 大师
     CusRole.is_master = r.is_master;
     // 管理员
@@ -84,6 +96,17 @@ class LoginVerify {
     }
   }
 
+  /// 运营商或者运营商管理员，获取服务码
+  static Future<void> _fetchServiceCode() async {
+    num id = ApiBase.loginInfo.user_info.broker_id;
+    try {
+      var res = await ApiBroker.brokerInfoGet(id);
+      if (res != null) CusRole.service_code = res.service_code;
+    } catch (e) {
+      Log.error("获取运营商服务码出现异常：$e");
+    }
+  }
+
   /// 获取版本信息
   static Future<void> _initPackageInfo() async {
     try {
@@ -93,6 +116,56 @@ class LoginVerify {
       }
     } catch (e) {
       Log.error("获取app包信息出现异常：$e");
+    }
+  }
+
+  /// 无码邀请时，游客绑定运营商
+  static Future<void> _bindBroker(BuildContext context) async {
+    var deviceData = Map<String, dynamic>();
+    try {
+      // 获取手机信息
+      if (Platform.isAndroid) {
+        var androidInfo = await DemoPlugin.deviceInfoPlugin.androidInfo;
+        deviceData = {
+          'version.release': androidInfo.version.release,
+          'model': androidInfo.model,
+        };
+        String model = deviceData['model'];
+        String version = "android" + deviceData['version.release'];
+        Log.info("手机品牌：$model,手机版本：$version");
+        Response response = await Dio().post(
+          GaoServer.inviteCode,
+          data: {"version": version, "model": model},
+        );
+        if (response != null) {
+          String serviceCode = response.data['code'];
+          Log.info("无码邀请的服务码:$serviceCode");
+          bool ok = await ApiBroker.serviceCodeBind(serviceCode);
+          Log.info("无码邀请的游客绑定运营商结果：$ok");
+          if (ok) {
+            CusToast.toast(context,
+                text: "已自动绑定运营商，即将为你重新登录", milliseconds: 2000);
+            SpinKit.threeBounce(context);
+            await Future.delayed(Duration(milliseconds: 2000));
+//            var m = {"user_code": user_code, "pwd": pwd};
+//            LoginResult login = await ApiLogin.login(m);
+//            if (login != null) {
+//              await LoginVerify.init(login, context);
+//              Navigator.pop(context); // 退出loading页面
+//              CusRoute.pushReplacement(context, HomePage());
+//            }
+          }
+        }
+      } else if (Platform.isIOS) {
+        var iosInfo = await DemoPlugin.deviceInfoPlugin.iosInfo;
+        // ios 版本需要验证下面两个字段的真实含义
+        deviceData = {
+          'systemVersion': iosInfo.systemVersion,
+          'model': iosInfo.model,
+        };
+      }
+    } catch (e) {
+      Log.error("获取手机设备信息出现异常：$e");
     }
   }
 }

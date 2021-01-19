@@ -36,6 +36,7 @@ const int refund_p_pass = 4; // 平台已审批
 const int refund_r = -1; // 平台已审批
 
 // ------------------------- 可选悬赏帖类型 ------------------------
+const int post_other = 0; // 其他类型
 const int post_liuyao = 1; // 六爻类型
 const int post_sizhu = 2; // 四柱类型
 const int post_hehun = 3; // 合婚类型

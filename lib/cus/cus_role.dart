@@ -16,7 +16,7 @@ class CusRole {
   // 是否系统管理员
   static bool is_admin = false;
 
-  // 是否运营商管理员
+  // 是否运营商、或者运营商管理员
   static bool is_broker_admin = false;
 
   // 是否已经绑定过邀请码，绑定过邀请码的被称为会员
@@ -27,6 +27,9 @@ class CusRole {
 
   // 是否闪断帖
   static bool isVie = false;
+
+  // 运营商服务码
+  static String service_code = "";
 
   // app 信息
   static PackageInfo packageInfo = PackageInfo(

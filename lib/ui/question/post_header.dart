@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -38,8 +39,10 @@ class PostHeader extends StatelessWidget {
         _topView(), // 头像、昵称、赏金、发帖时间
         // 帖子基本信息
         Divider(height: 0, thickness: 0.2, color: t_gray),
-        _info(tip: "姓名", text: data.nick ?? ""),
-        _info(tip: "性别", text: _content.is_male ? "男" : "女" ?? "保密"),
+        if (data.content_type != post_liuyao) ...[
+          _info(tip: "姓名", text: data.nick),
+          _info(tip: "性别", text: _content.is_male ? "男" : "女" ?? "保密"),
+        ],
         _birthDate(),
         _info(tip: "所问类型", text: SwitchUtil.contentType(data.content_type)),
         _info(tip: "标题", text: "${data.title}"),

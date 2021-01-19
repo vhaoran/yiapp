@@ -1,12 +1,13 @@
 // ------------------------------------------------------
 // author：suxing
 // date  ：2021/1/14 上午9:29
-// usage ：更新app的结果
+// usage ：更新app，以及无码邀请
 // ------------------------------------------------------
 
+/// 更新App
 class UpdateRes {
-  String url;
-  String version;
+  String url; // 更新地址
+  String version; // 最新版本号
 
   UpdateRes({this.url, this.version});
 
@@ -24,3 +25,4 @@ class UpdateRes {
     return data;
   }
 }
+

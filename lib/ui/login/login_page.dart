@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
@@ -47,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   // 所有登录用户(不包括游客，默认游客账户可用游客登录功能)，用于切换账号
   List<SqliteLoginRes> _l = [];
   SqliteLoginRes _curLogin; // 当前登录用户
+  DateTime _lastPressedAt; // 上次点击时间
 
   @override
   void initState() {
@@ -74,6 +77,23 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (_lastPressedAt == null ||
+            DateTime.now().difference(_lastPressedAt) > Duration(seconds: 2)) {
+          // 两次点击间隔超过2秒则重新计时
+          _lastPressedAt = DateTime.now();
+          CusToast.toast(context, text: "再按一次返回键，退出登录", pos: ToastPos.bottom);
+          return false;
+        } else {
+          exit(0);
+        }
+      },
+      child: _scaffoldWt(),
+    );
+  }
+
+  Widget _scaffoldWt() {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: CusAppBar(
