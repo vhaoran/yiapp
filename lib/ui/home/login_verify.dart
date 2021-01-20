@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
+import 'package:yiapp/model/complex/update_res.dart';
 import 'package:yiapp/service/api/api-broker.dart';
 import 'package:yiapp/ui/mine/personal_info/bind_usercode_pwd.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
@@ -59,7 +61,7 @@ class LoginVerify {
     // 运营商或者运营商管理员获取服务码
     if (CusRole.is_broker_admin) await _fetchServiceCode();
     // 如果是游客，则请求绑定运营商
-    if (CusRole.is_guest) await _bindBroker(context);
+    if (CusRole.is_guest) await _bindBrokerRes(context);
     await _initPackageInfo(); // 获取版本信息
   }
 
@@ -121,16 +123,14 @@ class LoginVerify {
   }
 
   /// 无码邀请时，游客绑定运营商
-  static Future<void> _bindBroker(BuildContext context) async {
-    Map<String, dynamic> deviceData = await _deviceInfo(); // 获取设备信息
-    String model = deviceData['model'];
-    String version = "android" + deviceData['version.release'];
-    Log.info("手机品牌：$model,系统版本：$version");
+  static Future<void> _bindBrokerRes(BuildContext context) async {
+    DeviceRes device = await _deviceRes(); // 获取设备信息
+    Log.info("手机品牌：${device.model},系统版本：${device.version}");
     try {
       Response response = await Dio().post(
         GaoServer.inviteCode,
-//          data: {"model": model, "version": version},
-        data: {"model": "MacOSX", "version": "110"},
+        data: {"model": device.model, "version": device.version},
+//        data: {"model": "MacOSX", "version": "110"},
       );
       if (response != null && response?.data != null && response?.data != {}) {
         String serviceCode = response.data['code']; // 取运营商服务码
@@ -150,8 +150,6 @@ class LoginVerify {
               context.read<UserInfoState>()?.chBrokerId(brokerId);
               // 修改本地数据库中用户信息broker_id以及不同模块的值
               bool update = await LoginDao(glbDB).updateGuestToVip(brokerInfo);
-
-              if (update) {}
               Log.info("本地将游客转换为普通会员结果:$update");
             }
             CusDialog.normal(
@@ -175,29 +173,38 @@ class LoginVerify {
   }
 
   /// 获取设备信息
-  static Future<Map<String, dynamic>> _deviceInfo() async {
-    var deviceData = Map<String, dynamic>();
-    try {
-      // android 系统
-      if (Platform.isAndroid) {
-        var androidInfo = await DemoPlugin.deviceInfoPlugin.androidInfo;
-        deviceData = {
-          'version.release': androidInfo.version.release,
-          'model': androidInfo.model,
-        };
+  static Future<DeviceRes> _deviceRes() async {
+    var deviceData = DeviceRes();
+    String device = await KV.getStr(kv_device);
+    // 没有获取过设备信息
+    if (device == null) {
+      try {
+        // android 系统
+        if (Platform.isAndroid) {
+          var androidInfo = await DemoPlugin.deviceInfoPlugin.androidInfo;
+          deviceData = DeviceRes.fromJson({
+            'model': androidInfo.model,
+            'version.release': androidInfo.version.release,
+          });
+        }
+        // ios 系统
+        else if (Platform.isIOS) {
+          var iosInfo = await DemoPlugin.deviceInfoPlugin.iosInfo;
+          // ios 版本需要验证下面两个字段的真实含义
+          deviceData = DeviceRes.fromJson({
+            'model': iosInfo.model,
+            'version.release': iosInfo.systemVersion,
+          });
+        }
+      } catch (e) {
+        Log.error("获取手机设备信息出现异常：$e");
       }
-      // ios 系统
-      else if (Platform.isIOS) {
-        var iosInfo = await DemoPlugin.deviceInfoPlugin.iosInfo;
-        // ios 版本需要验证下面两个字段的真实含义
-        deviceData = {
-          'systemVersion': iosInfo.systemVersion,
-          'model': iosInfo.model,
-        };
-      }
-    } catch (e) {
-      Log.error("获取手机设备信息出现异常：$e");
     }
+    // 已经获取过设备信息
+    else {
+      deviceData = DeviceRes.fromJson(json.decode(device));
+    }
+
     return deviceData;
   }
 }

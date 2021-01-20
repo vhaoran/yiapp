@@ -26,3 +26,24 @@ class UpdateRes {
   }
 }
 
+/// 手机信息
+class DeviceRes {
+  String model; // 手机品牌，如 OPPO R9s
+  String version; // 操作系统版本号 如 6.0.1
+
+  DeviceRes({this.model, this.version});
+
+  factory DeviceRes.fromJson(Map<String, dynamic> json) {
+    return DeviceRes(
+      model: json['model'],
+      version: json['version.release'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['model'] = this.model;
+    data['version.release'] = this.version;
+    return data;
+  }
+}

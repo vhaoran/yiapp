@@ -13,6 +13,7 @@ const String kv_tmp_pwd = "tmp_pwd"; // 保存临时密码
 const String kv_liuyao = "liu_yao"; // 存储六爻数据
 const String kv_shop = "shop"; // 本地购物车键
 const String kv_order = "order"; // 提交大师订单的数据(避免多个页面传值)
+const String kv_device = "order"; // 存储手机设备信息
 
 /// 微服务类型前缀
 const String w_yi_cms = "/yi/cms/";
