@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:yiapp/const/gao_server.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
 import 'package:yiapp/service/api/api-broker.dart';
+import 'package:yiapp/ui/mine/personal_info/bind_usercode_pwd.dart';
 import 'package:yiapp/ui/provider/master_state.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -21,8 +23,7 @@ import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
 import 'package:yiapp/util/us_util.dart';
-import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/widget/small/cus_loading.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -58,7 +59,7 @@ class LoginVerify {
     // 运营商或者运营商管理员获取服务码
     if (CusRole.is_broker_admin) await _fetchServiceCode();
     // 如果是游客，则请求绑定运营商
-//    if (CusRole.is_guest) await _bindBroker(context);
+    if (CusRole.is_guest) await _bindBroker(context);
     await _initPackageInfo(); // 获取版本信息
   }
 
@@ -121,42 +122,72 @@ class LoginVerify {
 
   /// 无码邀请时，游客绑定运营商
   static Future<void> _bindBroker(BuildContext context) async {
+    Map<String, dynamic> deviceData = await _deviceInfo(); // 获取设备信息
+    String model = deviceData['model'];
+    String version = "android" + deviceData['version.release'];
+    Log.info("手机品牌：$model,系统版本：$version");
+    try {
+      Response response = await Dio().post(
+        GaoServer.inviteCode,
+//          data: {"model": model, "version": version},
+        data: {"model": "MacOSX", "version": "110"},
+      );
+      if (response != null && response?.data != null && response?.data != {}) {
+        String serviceCode = response.data['code']; // 取运营商服务码
+        num brokerId = num.parse(response.data['broker_id']); // 取运营商id
+        Log.info("运营商服务码:$serviceCode、运营商id:$brokerId");
+        if (serviceCode != null) {
+          // 根据服务码绑定运营商
+          bool ok = await ApiBroker.serviceCodeBind(serviceCode);
+          Log.info("游客通过无码邀请绑定运营商结果：$ok");
+          if (ok) {
+            if (brokerId != null && brokerId > 0) {
+              // mine_view页面是据此显示的，所以这里需要更改
+              ApiBase.loginInfo.user_info.broker_id = brokerId;
+              CusRole.broker_id = brokerId;
+              var brokerInfo = await ApiBroker.brokerInfoGet(brokerId);
+              // 修改用户状态信息broker_id的值
+              context.read<UserInfoState>()?.chBrokerId(brokerId);
+              // 修改本地数据库中用户信息broker_id以及不同模块的值
+              bool update = await LoginDao(glbDB).updateGuestToVip(brokerInfo);
+
+              if (update) {}
+              Log.info("本地将游客转换为普通会员结果:$update");
+            }
+            CusDialog.normal(
+              context,
+              title: "已为你绑定运营商，绑定手机号后可享受更多服务",
+              textAgree: "现在绑定",
+              textCancel: "再想想",
+              fnDataApproval: "",
+              onThen: () => CusRoute.push(context, BindUserCodePwd()),
+            );
+          } else {
+            CusDialog.tip(context, title: "未成功绑定运营商，可手动绑定");
+          }
+        }
+      } else {
+        Log.info("没有服务码的游客进入程序，不需要自动绑定运营商");
+      }
+    } catch (e) {
+      Log.error("游客无码邀请获取服务码出现异常：$e");
+    }
+  }
+
+  /// 获取设备信息
+  static Future<Map<String, dynamic>> _deviceInfo() async {
     var deviceData = Map<String, dynamic>();
     try {
-      // 获取手机信息
+      // android 系统
       if (Platform.isAndroid) {
         var androidInfo = await DemoPlugin.deviceInfoPlugin.androidInfo;
         deviceData = {
           'version.release': androidInfo.version.release,
           'model': androidInfo.model,
         };
-        String model = deviceData['model'];
-        String version = "android" + deviceData['version.release'];
-        Log.info("手机品牌：$model,手机版本：$version");
-        Response response = await Dio().post(
-          GaoServer.inviteCode,
-          data: {"version": version, "model": model},
-        );
-        if (response != null) {
-          String serviceCode = response.data['code'];
-          Log.info("无码邀请的服务码:$serviceCode");
-          bool ok = await ApiBroker.serviceCodeBind(serviceCode);
-          Log.info("无码邀请的游客绑定运营商结果：$ok");
-          if (ok) {
-            CusToast.toast(context,
-                text: "已自动绑定运营商，即将为你重新登录", milliseconds: 2000);
-            SpinKit.threeBounce(context);
-            await Future.delayed(Duration(milliseconds: 2000));
-//            var m = {"user_code": user_code, "pwd": pwd};
-//            LoginResult login = await ApiLogin.login(m);
-//            if (login != null) {
-//              await LoginVerify.init(login, context);
-//              Navigator.pop(context); // 退出loading页面
-//              CusRoute.pushReplacement(context, HomePage());
-//            }
-          }
-        }
-      } else if (Platform.isIOS) {
+      }
+      // ios 系统
+      else if (Platform.isIOS) {
         var iosInfo = await DemoPlugin.deviceInfoPlugin.iosInfo;
         // ios 版本需要验证下面两个字段的真实含义
         deviceData = {
@@ -167,5 +198,6 @@ class LoginVerify {
     } catch (e) {
       Log.error("获取手机设备信息出现异常：$e");
     }
+    return deviceData;
   }
 }

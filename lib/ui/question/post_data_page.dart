@@ -143,7 +143,14 @@ class _PostDataPageState extends State<PostDataPage>
           if (_l.isEmpty) _noData(),
           ..._l.map(
             (e) => PostCover(
-              post: Post(data: e, is_vie: widget.is_vie),
+              post: Post(
+                data: e,
+                is_vie: widget.is_vie,
+//                is_ing: widget.isQue ? e.stat == bbs_paid : false,
+//                is_his: widget.isQue ? e.stat == bbs_ok : false,
+//                is_ing: e.stat == bbs_paid,
+//                is_his: e.stat == bbs_ok,
+              ),
               onChanged: _refresh,
             ),
           ),

@@ -130,8 +130,8 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
         }
       }
     } catch (e) {
-      if (e.toString().contains("没有找到对应的邀请码")) {
-        setState(() => _err = "不存在该邀请码");
+      if (e.toString().contains("没有找到对应的服务代码")) {
+        setState(() => _err = "该邀请码不存在");
       }
       Log.error("绑定运营商出现异常：$e");
     }

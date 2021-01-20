@@ -146,7 +146,10 @@ class _MineIdentityViewState extends State<MineIdentityView> {
           title: "服务码",
           subtitle: CusRole.service_code,
           onTap: () async {
-            final url = GaoServer.inviteCode + "?code=${CusRole.service_code}";
+            String serviceCode = "code=${CusRole.service_code}"; // 运营商服务码
+            String brokerId = "broker_id=${CusRole.broker_id}"; // 运营商id
+            final url = GaoServer.inviteCode + "?$serviceCode&$brokerId";
+            Log.info("url:$url");
             await Clipboard.setData(ClipboardData(text: url));
             CusToast.toast(context, text: "已复制服务码");
           },

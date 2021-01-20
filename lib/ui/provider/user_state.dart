@@ -51,6 +51,12 @@ class UserInfoState with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  /// 修改 broker_id，仅用于游客无码邀请成功绑定运营商
+  void chBrokerId(num broker_id) {
+    _userInfo.broker_id = broker_id;
+    notifyListeners();
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

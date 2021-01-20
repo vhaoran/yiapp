@@ -1,78 +1,62 @@
 // ------------------------------------------------------
-// author: whr    除本人外请勿更改，如果确有必要，请征得本人同意
-// date  : 2020/9/9 09:26
-// usage : 代理商家
-//
+// author：suxing
+// date  ：2021/1/20 下午2:17
+// usage ：代理商家的信息
 // ------------------------------------------------------
+
 class BrokerInfo {
-  int id;
-
-  //主体名称
-  String name;
-
-  //主体简介
-  String brief;
-
-  //头像路径
-  String icon;
-
-  //推荐码
-  String service_code;
-
-  //提现帐号，只能来自微信或支付宝
-  //0 支付宝 1：微信
-  //只能是两者之一
-  int accountType;
-
-  //提现帐号
   String account_code;
-
-  //使用平台商城 0:否 1：是
-  int enableMall;
-
-  //使用平台大师 0:否 1：是
-  int enableMaster;
-
-  //启用状态（0：停用 1：启用,默认启用）
+  int account_type;
+  String brief;
+  String created_at;
+  int enable_mall;
+  int enable_master;
+  int enable_prize;
+  int enable_vie;
   int enabled;
-
-  //拥有者id,来自于userInfo
-  int owner_id;
+  String icon;
+  int id; // 运营商的 broker_id
+  String name;
   String owner_icon;
+  int owner_id; // 运营商的uid
   String owner_nick;
   String owner_user_code;
-
+  String service_code; // 运营商的服务码
   String update_at;
   int ver;
-  String created_at;
 
-  BrokerInfo(
-      {this.accountType,
-      this.account_code,
-      this.brief,
-      this.created_at,
-      this.enableMall,
-      this.enableMaster,
-      this.enabled,
-      this.icon,
-      this.id,
-      this.name,
-      this.owner_icon,
-      this.owner_id,
-      this.owner_nick,
-      this.owner_user_code,
-      this.service_code,
-      this.update_at,
-      this.ver});
+  BrokerInfo({
+    this.account_code,
+    this.account_type,
+    this.brief,
+    this.created_at,
+    this.enable_mall,
+    this.enable_master,
+    this.enable_prize,
+    this.enable_vie,
+    this.enabled,
+    this.icon,
+    this.id,
+    this.name,
+    this.owner_icon,
+    this.owner_id,
+    this.owner_nick,
+    this.owner_user_code,
+    this.service_code,
+    this.update_at,
+    this.ver,
+  });
 
   factory BrokerInfo.fromJson(Map<String, dynamic> json) {
     return BrokerInfo(
-      accountType: json['accountType'],
       account_code: json['account_code'],
+      account_type: json['account_type'],
       brief: json['brief'],
       created_at: json['created_at'],
-      enableMall: json['enableMall'],
-      enableMaster: json['enableMaster'],
+      enable_mall: json['enable_mall'],
+      enable_master: json['enable_master'],
+      enable_prize: json['enable_prize'],
+      enable_vie: json['enable_vie'],
       enabled: json['enabled'],
       icon: json['icon'],
       id: json['id'],
@@ -88,13 +72,15 @@ class BrokerInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['accountType'] = this.accountType;
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['account_code'] = this.account_code;
+    data['account_type'] = this.account_type;
     data['brief'] = this.brief;
     data['created_at'] = this.created_at;
-    data['enableMall'] = this.enableMall;
-    data['enableMaster'] = this.enableMaster;
+    data['enable_mall'] = this.enable_mall;
+    data['enable_master'] = this.enable_master;
+    data['enable_prize'] = this.enable_prize;
+    data['enable_vie'] = this.enable_vie;
     data['enabled'] = this.enabled;
     data['icon'] = this.icon;
     data['id'] = this.id;

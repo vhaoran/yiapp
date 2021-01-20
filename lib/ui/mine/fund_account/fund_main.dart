@@ -89,7 +89,8 @@ class _FundMainState extends State<FundMain> {
             if (_err == null) ...[
               NormalBox(
                 title: "余额",
-                subtitle: "${_balance.toStringAsFixed(2)} 元",
+                subtitle:
+                    "${_balance == 0 ? '0' : _balance.toStringAsFixed(2)} 元",
                 showBtn: false,
               ),
               NormalBox(

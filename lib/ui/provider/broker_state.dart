@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:yiapp/model/dicts/broker-info.dart';
+import 'package:yiapp/model/dicts/broker_info.dart';
 
 // ------------------------------------------------------
 // author：suxing

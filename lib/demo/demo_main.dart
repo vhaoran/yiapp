@@ -5,8 +5,10 @@ import 'package:yiapp/demo/demo_clear_data/clear_data_main.dart';
 import 'package:yiapp/demo/demo_effect/effect_main.dart';
 import 'package:yiapp/demo/demo_plugin/plugin_main.dart';
 import 'package:yiapp/demo/demo_simulate/simulate_main.dart';
+import 'package:yiapp/ui/mine/personal_info/bind_usercode_pwd.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'demo_get_data/get_data_main.dart';
 
@@ -50,6 +52,18 @@ class CusDemoMain extends StatelessWidget {
           title: "05 第三方插件",
           onTap: () => CusRoute.push(context, DemoPlugin()),
         ),
+        NormalBox(
+            title: "按钮",
+            onTap: () {
+              CusDialog.normal(
+                context,
+                title: "已为你绑定运营商，绑定手机号后可享受更多服务",
+                textAgree: "现在绑定",
+                textCancel: "再想想",
+                fnDataApproval: "",
+                onThen: () => CusRoute.push(context, BindUserCodePwd()),
+              );
+            })
       ],
     );
   }

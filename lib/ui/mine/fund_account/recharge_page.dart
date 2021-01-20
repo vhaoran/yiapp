@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/func/cus_browser.dart';
 import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
+import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
+import 'package:yiapp/ui/mine/personal_info/bind_usercode_pwd.dart';
+import 'package:yiapp/util/regex/regex_func.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_dot_format.dart';
@@ -12,6 +17,7 @@ import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_button.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
@@ -59,18 +65,31 @@ class _RechargePageState extends State<RechargePage> {
         }
       }
     }
-    Log.info("当前充值金额:$amt");
-    SpinKit.threeBounce(context);
-    await Future.delayed(Duration(milliseconds: 1500)); // 等待1.5秒
-    String url = ApiPay.PayReqURL(
-      b_recharge,
-      _account_type,
-      "${ApiBase.uid}:${DateTime.now()}", // 订单号先用充值时间+uid
-      amt,
-    );
-    if (url != null) {
-      await CusBrowser.launchIn(url);
-      Navigator.pop(context);
+    var user = await LoginDao(glbDB).readUserByUid();
+    // 如果没有绑定手机号(游客通过无码邀请绑定了运营商服务码后转为了会员)
+    if (!(await RegexUtil.isMobile(user.user_code))) {
+      CusDialog.normal(
+        context,
+        title: "充值需要绑定手机号",
+        textAgree: "现在绑定",
+        textCancel: "再想想",
+        fnDataApproval: "",
+        onThen: () => CusRoute.push(context, BindUserCodePwd()),
+      );
+    } else {
+      Log.info("当前充值金额:$amt");
+      SpinKit.threeBounce(context);
+      await Future.delayed(Duration(milliseconds: 1500)); // 等待1.5秒
+      String url = ApiPay.PayReqURL(
+        b_recharge,
+        _account_type,
+        "${ApiBase.uid}:${DateTime.now()}", // 订单号先用充值时间+uid
+        amt,
+      );
+      if (url != null) {
+        await CusBrowser.launchIn(url);
+        Navigator.pop(context);
+      }
     }
   }
 

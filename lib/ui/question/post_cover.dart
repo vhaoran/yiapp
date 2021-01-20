@@ -88,10 +88,17 @@ class _PostCoverState extends State<PostCover> {
             style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
         ),
+        SizedBox(width: S.w(10)),
         Text(
           "悬赏 ${_p.data.amt} $yuan_bao", // 悬赏金
           style: TextStyle(color: t_yi, fontSize: S.sp(15)),
         ),
+//        Text(
+//          "${_p.data.stat == bbs_ok ? "已" : ""}悬赏 ${_p.data.amt} $yuan_bao", // 悬赏金
+//          style: TextStyle(
+//              color: _p.data.stat == bbs_ok ? Colors.yellow : t_yi,
+//              fontSize: S.sp(15)),
+//        ),
       ],
     );
   }

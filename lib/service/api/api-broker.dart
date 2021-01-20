@@ -5,11 +5,9 @@
 //
 // ------------------------------------------------------
 import 'package:yiapp/model/dicts/broker-admin.dart';
-import 'package:yiapp/model/dicts/broker-admin.dart';
 import 'package:yiapp/model/dicts/broker-apply.dart';
-import 'package:yiapp/model/dicts/broker-info.dart';
+import 'package:yiapp/model/dicts/broker_info.dart';
 import 'package:yiapp/model/login/userInfo.dart';
-
 import 'api_base.dart';
 
 class ApiBroker {

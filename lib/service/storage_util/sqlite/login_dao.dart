@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/model/dicts/broker_info.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -75,10 +76,13 @@ class LoginDao {
   /// 根据 uid 修改出生日期
   Future<bool> updateBirth(
       num birth_year, num birth_month, num birth_day) async {
-    String sql =
-        "UPDATE $tb_login SET birth_year=$birth_year,birth_month=$birth_month,"
-        "birth_day=$birth_day WHERE uid=${ApiBase.uid}";
-    int val = await db.rawUpdate(sql);
+    String update = '''
+    UPDATE $tb_login SET birth_year=$birth_year,
+    birth_month=$birth_month,
+    birth_day=$birth_day
+    WHERE uid=${ApiBase.uid}
+    ''';
+    int val = await db.rawUpdate(update);
     return val > 0 ? true : false;
   }
 
@@ -87,6 +91,20 @@ class LoginDao {
     String sql =
         "UPDATE $tb_login SET user_code=$user_code WHERE uid=${ApiBase.uid}";
     int val = await db.rawUpdate(sql);
+    return val > 0 ? true : false;
+  }
+
+  /// 根据 uid 修改 broker_id，仅用于游客无码邀请成功绑定运营商，修改如下5个数据
+  Future<bool> updateGuestToVip(BrokerInfo info) async {
+    String update = '''
+    UPDATE $tb_login SET broker_id=${info.id},
+    enable_mall=${info.enable_mall},
+    enable_master=${info.enable_master},
+    enable_prize=${info.enable_prize},
+    enable_vie=${info.enable_vie}
+    WHERE uid=${ApiBase.uid}
+    ''';
+    int val = await db.rawUpdate(update);
     return val > 0 ? true : false;
   }
 
