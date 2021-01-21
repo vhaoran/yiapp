@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/orders/yiOrder-heHun.dart';
 import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
@@ -47,5 +48,25 @@ class SwitchUtil {
     if (m is YiOrderSiZhu) return "四柱订单";
     if (m is YiOrderHeHun) return "合婚订单";
     return "";
+  }
+
+  /// 帖子类型的封面(如四柱目前为青色)，目前只用文字显示
+  static Map<String, Color> postType(int contentType) {
+    Map<String, Color> m = {}; // 测算类别，颜色
+    switch (contentType) {
+      case post_liuyao:
+        m = {"六爻": Color(0xFF78BA3B)};
+        break;
+      case post_sizhu:
+        m = {"四柱": Color(0xFF80DAEA)};
+        break;
+      case post_hehun:
+        m = {"合婚": Color(0xFFE0694D)};
+        break;
+      default:
+        m = {"其他": Colors.blueGrey};
+        break;
+    }
+    return m;
   }
 }
