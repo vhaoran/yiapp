@@ -201,7 +201,7 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
     }
     // 如果是已审批的，分为自己取消的、审核不通过的、审核通过的
     else {
-      if (res.stat == draw_cancel) {
+      if (res.stat == draw_cancelled) {
         bool canceled = res.reject_reason == "个人原因";
         Color color = canceled ? t_gray : btn_red;
         // 自己取消的或者被驳回的

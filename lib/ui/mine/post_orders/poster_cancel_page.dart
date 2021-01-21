@@ -51,7 +51,7 @@ class _PosterCancelPageState extends State<PosterCancelPage>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_rm, "uid": ApiBase.uid},
+      "where": {"stat": bbs_cancelled, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);

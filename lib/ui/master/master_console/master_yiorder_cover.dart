@@ -105,7 +105,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
 
   /// 动态显示支付、评价、回复按钮
   Widget _showBtn(YiOrder order) {
-    if (order.stat == bbs_await_pay) {
+    if (order.stat == bbs_unpaid) {
       return CusRaisedButton(
         padding: EdgeInsets.symmetric(vertical: S.h(8), horizontal: S.w(15)),
         child: Text("支付", style: TextStyle(fontSize: S.sp(14))),
@@ -155,7 +155,7 @@ class _MasterYiOrderCoverState extends State<MasterYiOrderCover> {
   /// 根据情况跳转页面
   void _pushPage() {
     // 查看已打赏和待付款的大师订单
-    if (_order.stat == bbs_await_pay || _order.stat == bbs_ok) {
+    if (_order.stat == bbs_unpaid || _order.stat == bbs_ok) {
       CusRoute.push(context, MeetMasterShow(yiOrder: widget.yiOrder))
           .then((value) {
         if (value != null && widget.onChanged != null) widget.onChanged();

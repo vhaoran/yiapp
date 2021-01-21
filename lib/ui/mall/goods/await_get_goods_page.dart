@@ -50,7 +50,7 @@ class _AwaitGetGoodsPageState extends State<AwaitGetGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_await_goods},
+      "where": {"stat": mall_unreceived},
       "sort": {"create_time_int": -1},
     };
     try {

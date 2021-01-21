@@ -5,28 +5,28 @@
 // ------------------------------------------------------
 
 // ------------------------- 帖子状态 ------------------------
-const int bbs_rm = -1; // 已取消
-const int bbs_await_pay = 0; // 待付款
+const int bbs_cancelled = -1; // 已取消
+const int bbs_unpaid = 0; // 待付款
 const int bbs_paid = 1; // 已付款
 const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
 const int bbs_ok = 3; // 已打赏
 
 // ------------------------- 大师订单状态 ------------------------
-const int yiorder_await = 0; // 待付款
+const int yiorder_unpaid = 0; // 待付款
 const int yiorder_paid = 1; // 已付款
 const int yiorder_ok = 3; // 已处理
 const int yiorder_refund = 4; // 已退款
 
 // ------------------------- 商城订单状态 ------------------------
-const int mall_await_pay = 0; // 待付款
+const int mall_unpaid = 0; // 待付款
 const int mall_paid = 1; // 已付款
-const int mall_await_goods = 2; // 待收货
-const int mall_had_goods = 3; // 已收货
-const int mall_cancel = 4; // 已作废
+const int mall_unreceived = 2; // 待收货
+const int mall_received = 3; // 已收货
+const int mall_cancelled = 4; // 已作废
 
 // ------------------------- 提现类型 ------------------------
 const int draw_await = 0; // 待审批
-const int draw_cancel = 1; // 取消或驳回
+const int draw_cancelled = 1; // 取消或驳回
 const int draw_ok = 4; // 审批通过
 
 // ------------------------- 投诉状态 ------------------------

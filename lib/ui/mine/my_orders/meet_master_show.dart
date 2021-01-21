@@ -195,7 +195,7 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
 
   /// 根据订单状态显示不同状态按钮
   Widget _showBtn({int stat}) {
-    if (stat == bbs_await_pay)
+    if (stat == bbs_unpaid)
       return CusRaisedButton(
         child: Text("支付"),
         onPressed: () {

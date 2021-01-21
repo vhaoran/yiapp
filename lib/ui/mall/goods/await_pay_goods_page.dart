@@ -50,7 +50,7 @@ class _AwaitPayGoodsPageState extends State<AwaitPayGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_await_pay},
+      "where": {"stat": mall_unpaid},
       "sort": {"create_time_int": -1},
     };
     try {

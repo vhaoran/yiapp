@@ -47,7 +47,7 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_had_goods},
+      "where": {"stat": mall_received},
       "sort": {"create_time_int": -1},
     };
     try {

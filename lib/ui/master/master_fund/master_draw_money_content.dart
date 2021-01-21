@@ -108,7 +108,7 @@ class _MasterDrawMoneyContentState extends State<MasterDrawMoneyContent> {
         "审批中",
         style: TextStyle(color: t_gray, fontSize: S.sp(15)),
       );
-    } else if (_res.stat == draw_cancel) {
+    } else if (_res.stat == draw_cancelled) {
       bool canceled = _res.reject_reason == "个人原因";
       // 自己取消的或者被驳回的
       if (canceled) {
