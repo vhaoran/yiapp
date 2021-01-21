@@ -44,6 +44,14 @@ class DemoClearData extends StatelessWidget {
             CusDialog.tip(context, title: tip);
           },
         ),
+        NormalBox(
+          title: "03 删除 sqlite 和 kv",
+          onTap: () async {
+            if (await LoginDao(glbDB).deleteAll() && await KV.clear()) {
+              CusDialog.tip(context, title: "删除成功");
+            }
+          },
+        ),
       ],
     );
   }

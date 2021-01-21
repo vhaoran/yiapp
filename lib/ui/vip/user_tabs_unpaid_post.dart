@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_await_page.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_unpaid_Main.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_unpaid_Main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/18 下午5:21
-// usage ：用户待付款的帖子订单主页
+// usage ：会员待付款悬赏帖、闪断帖页面
 // ------------------------------------------------------
 
-class PosterAwaitMain extends StatefulWidget {
-  PosterAwaitMain({Key key}) : super(key: key);
+class UserTabsUnpaidPost extends StatefulWidget {
+  UserTabsUnpaidPost({Key key}) : super(key: key);
 
   @override
-  _PosterAwaitMainState createState() => _PosterAwaitMainState();
+  _UserTabsUnpaidPostState createState() => _UserTabsUnpaidPostState();
 }
 
-class _PosterAwaitMainState extends State<PosterAwaitMain> {
+class _UserTabsUnpaidPostState extends State<UserTabsUnpaidPost> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -53,8 +54,8 @@ class _PosterAwaitMainState extends State<PosterAwaitMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PostAwaitPage(), // 用户待付款的悬赏帖
-              PostAwaitPage(is_vie: true), // 用户待付款的闪断帖
+              UserPrizeUnpaidMain(), // 用户待付款的悬赏帖
+              UserVieUnpaidMain(), // 用户待付款的闪断帖
             ],
           ),
         ),

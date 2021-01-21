@@ -126,4 +126,14 @@ class BBSVie {
     }
     return data;
   }
+
+  DateTime toDateTime() {
+    return DateTime(
+      this.content.year,
+      this.content.month,
+      this.content.day,
+      this.content.hour,
+      this.content?.minutes ?? 00, // 六爻没有分
+    );
+  }
 }

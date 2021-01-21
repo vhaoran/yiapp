@@ -129,46 +129,55 @@ class LoginVerify {
     try {
       Response response = await Dio().post(
         GaoServer.inviteCode,
-        data: {"model": device.model, "version": device.version},
-//        data: {"model": "MacOSX", "version": "110"},
+        data: {"model": device.model, "version": "android" + device.version},
       );
-      if (response != null && response?.data != null && response?.data != {}) {
-        String serviceCode = response.data['code']; // 取运营商服务码
-        num brokerId = num.parse(response.data['broker_id']); // 取运营商id
-        Log.info("运营商服务码:$serviceCode、运营商id:$brokerId");
-        if (serviceCode != null) {
-          // 根据服务码绑定运营商
-          bool ok = await ApiBroker.serviceCodeBind(serviceCode);
-          Log.info("游客通过无码邀请绑定运营商结果：$ok");
-          if (ok) {
-            if (brokerId != null && brokerId > 0) {
-              // mine_view页面是据此显示的，所以这里需要更改
-              ApiBase.loginInfo.user_info.broker_id = brokerId;
-              CusRole.broker_id = brokerId;
-              var brokerInfo = await ApiBroker.brokerInfoGet(brokerId);
-              // 修改用户状态信息broker_id的值
-              context.read<UserInfoState>()?.chBrokerId(brokerId);
-              // 修改本地数据库中用户信息broker_id以及不同模块的值
-              bool update = await LoginDao(glbDB).updateGuestToVip(brokerInfo);
-              Log.info("本地将游客转换为普通会员结果:$update");
+      if (response.statusCode == 200) {
+        if (response != null &&
+            response?.data != null &&
+            response?.data != {} &&
+            response.data['code'] != null &&
+            response.data['broker_id'] != null) {
+          String serviceCode = response.data['code']; // 取运营商服务码
+          num brokerId = num.parse(response.data['broker_id']); // 取运营商id
+          Log.info("运营商服务码:$serviceCode、运营商id:$brokerId");
+          if (serviceCode != null) {
+            // 根据服务码绑定运营商
+            bool ok = await ApiBroker.serviceCodeBind(serviceCode);
+            Log.info("游客通过无码邀请绑定运营商结果：$ok");
+            if (ok) {
+              if (brokerId != null && brokerId > 0) {
+                var brokerInfo = await ApiBroker.brokerInfoGet(brokerId);
+                // 修改用户状态信息broker_id的值
+                // mine_view页面是据此显示的，所以这里需要更改
+                ApiBase.loginInfo.user_info.broker_id = brokerId;
+                CusRole.broker_id = brokerId;
+                context.read<UserInfoState>()?.chBrokerId(brokerId);
+                // 修改本地数据库中用户信息broker_id以及不同模块的值
+                bool update =
+                    await LoginDao(glbDB).updateGuestToVip(brokerInfo);
+                Log.info("本地将游客转换为普通会员结果:$update");
+              }
+              CusDialog.normal(
+                context,
+                title: "已为你绑定运营商，绑定手机号后可享受更多服务",
+                textAgree: "现在绑定",
+                textCancel: "再想想",
+                fnDataApproval: "",
+                onThen: () => CusRoute.push(context, BindUserCodePwd()),
+              );
+            } else {
+              CusDialog.tip(context, title: "未成功绑定运营商，可手动绑定");
             }
-            CusDialog.normal(
-              context,
-              title: "已为你绑定运营商，绑定手机号后可享受更多服务",
-              textAgree: "现在绑定",
-              textCancel: "再想想",
-              fnDataApproval: "",
-              onThen: () => CusRoute.push(context, BindUserCodePwd()),
-            );
-          } else {
-            CusDialog.tip(context, title: "未成功绑定运营商，可手动绑定");
           }
+        } else {
+          Log.info("没有服务码的游客进入程序，不需要自动绑定运营商");
         }
       } else {
-        Log.info("没有服务码的游客进入程序，不需要自动绑定运营商");
+        Log.error("请求获取邀请码的状态码返回不是200");
       }
+      Log.info("resp+++++:${response}");
     } catch (e) {
-      Log.error("游客无码邀请获取服务码出现异常：$e");
+      Log.error("连接 gao server 出现异常：$e");
     }
   }
 
@@ -178,6 +187,7 @@ class LoginVerify {
     String device = await KV.getStr(kv_device);
     // 没有获取过设备信息
     if (device == null) {
+      Log.info("第一次获取设备信息");
       try {
         // android 系统
         if (Platform.isAndroid) {
@@ -189,6 +199,7 @@ class LoginVerify {
         }
         // ios 系统
         else if (Platform.isIOS) {
+          Log.info("已经获取过设备信息");
           var iosInfo = await DemoPlugin.deviceInfoPlugin.iosInfo;
           // ios 版本需要验证下面两个字段的真实含义
           deviceData = DeviceRes.fromJson({

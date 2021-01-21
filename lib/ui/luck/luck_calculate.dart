@@ -21,8 +21,8 @@ class LuckCalculate extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // 大师、管理员、游客不显示付费项目
-        if (!CusRole.is_master && !CusRole.is_guest && !CusRole.is_admin) ...[
+        // broker_id 大于0的有会员、运营商、运营商管理员
+        if (CusRole.broker_id > 0) ...[
           _title(text: "付费测算"),
           _iconView(LuckList.pay, context, true),
         ],

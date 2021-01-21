@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
@@ -13,23 +13,23 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/21 上午11:04
-// usage ：会员悬赏帖待付款订单详情
+// date  ：2021/1/21 下午3:38
+// usage ：会员闪断帖待付款订单详情
 // ------------------------------------------------------
 
-class UserPrizeUnpaidPage extends StatefulWidget {
+class UserVieUnpaidPage extends StatefulWidget {
   final String postId;
 
-  UserPrizeUnpaidPage({this.postId, Key key}) : super(key: key);
+  UserVieUnpaidPage({this.postId, Key key}) : super(key: key);
 
   @override
-  _UserPrizeUnpaidPageState createState() => _UserPrizeUnpaidPageState();
+  _UserVieUnpaidPageState createState() => _UserVieUnpaidPageState();
 }
 
-class _UserPrizeUnpaidPageState extends State<UserPrizeUnpaidPage>
+class _UserVieUnpaidPageState extends State<UserVieUnpaidPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  BBSPrize _bbsPrize; // 悬赏帖待付款详情
+  BBSVie _bbsVie; // 闪断帖待付款详情
 
   @override
   void initState() {
@@ -39,14 +39,14 @@ class _UserPrizeUnpaidPageState extends State<UserPrizeUnpaidPage>
 
   _fetch() async {
     try {
-      BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
+      BBSVie res = await ApiBBSVie.bbsVieGet(widget.postId);
       if (res != null) {
-        _bbsPrize = res;
-        Log.info("当前悬赏帖待付款详情：${_bbsPrize.toJson()}");
+        _bbsVie = res;
+        Log.info("当前闪断帖待付款详情：${_bbsVie.toJson()}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("查询悬赏帖待付款详情出现异常：$e");
+      Log.error("查询闪断帖待付款详情出现异常：$e");
     }
   }
 
@@ -75,15 +75,15 @@ class _UserPrizeUnpaidPageState extends State<UserPrizeUnpaidPage>
       onRefresh: () async => await _fetch(),
       child: ListView(
         children: [
-          if (_bbsPrize == null) EmptyContainer(text: "帖子已被删除"),
-          if (_bbsPrize != null) ...[
+          if (_bbsVie == null) EmptyContainer(text: "帖子已被删除"),
+          if (_bbsVie != null) ...[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: S.w(10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  PostComHeader(prize: _bbsPrize), // 帖子顶部信息
-                  PostComDetail(prize: _bbsPrize), // 帖子基本信息
+                  PostComHeader(vie: _bbsVie), // 帖子顶部信息
+                  PostComDetail(vie: _bbsVie), // 帖子基本信息
                 ],
               ),
             ),

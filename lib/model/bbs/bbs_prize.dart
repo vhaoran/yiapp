@@ -1,5 +1,6 @@
 import 'package:yiapp/model/bbs/bbs_content.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'bbs_reply.dart';
 
 // ------------------------------------------------------
@@ -125,5 +126,15 @@ class BBSPrize {
       data['master_reply'] = this.master_reply.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  DateTime toDateTime() {
+    return DateTime(
+      this.content.year,
+      this.content.month,
+      this.content.day,
+      this.content.hour,
+      this.content.minutes,
+    );
   }
 }
