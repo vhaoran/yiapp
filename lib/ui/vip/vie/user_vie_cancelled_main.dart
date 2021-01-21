@@ -1,42 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
-import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
-import 'package:yiapp/ui/vip/vie/user_vie_unpaid_page.dart';
-import 'package:yiapp/widget/balance_pay.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_cancelled_page.dart';
+import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/post_com/post_com_button.dart';
 import 'package:yiapp/widget/post_com/post_com_cover.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
-import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/widget/cus_complex.dart';
-import 'package:yiapp/model/pagebean.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/21 下午2:59
-// usage ：会员闪断帖待付款订单入口
+// date  ：2021/1/21 下午7:37
+// usage ：会员闪断帖已取消订单入口
 // ------------------------------------------------------
 
-class UserVieUnpaidMain extends StatefulWidget {
-  UserVieUnpaidMain({Key key}) : super(key: key);
+class UserVieCancelledMain extends StatefulWidget {
+  UserVieCancelledMain({Key key}) : super(key: key);
 
   @override
-  _UserVieUnpaidMainState createState() => _UserVieUnpaidMainState();
+  _UserVieCancelledMainState createState() => _UserVieCancelledMainState();
 }
 
-class _UserVieUnpaidMainState extends State<UserVieUnpaidMain>
+class _UserVieCancelledMainState extends State<UserVieCancelledMain>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List<BBSVie> _l = []; // 闪断帖待付款列表
+  List<BBSVie> _l = []; // 闪断帖已取消列表
 
   @override
   void initState() {
@@ -44,31 +41,31 @@ class _UserVieUnpaidMainState extends State<UserVieUnpaidMain>
     super.initState();
   }
 
-  /// 会员分页查询闪断帖待付款订单
+  /// 会员分页查询闪断帖已取消订单
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_unpaid, "uid": ApiBase.uid},
+      "where": {"stat": bbs_cancelled, "uid": ApiBase.uid},
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await ApiBBSVie.bbsViePage(m);
+      PageBean pb = await ApiBBSVie.bbsVieHisPage(m);
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
-        Log.info("未过滤时闪断帖总个数 $_rowsCount");
+        Log.info("未过滤时闪断帖总历史个数 $_rowsCount");
         var l = pb.data.map((e) => e as BBSVie).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
-        Log.info("已加载闪断帖待付款个数 ${_l.length}");
+        Log.info("已加载闪断帖已取消个数 ${_l.length}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("分页查询闪断帖待付款出现异常：$e");
+      Log.error("分页查询闪断帖已取消出现异常：$e");
     }
   }
 
@@ -115,26 +112,15 @@ class _UserVieUnpaidMainState extends State<UserVieUnpaidMain>
               text: "详情",
               onPressed: () => _lookViePost(vie.id),
             ),
-            PostComButton(
-              text: "支付",
-              onPressed: () {
-                var pay = PayData(amt: vie.amt, b_type: b_bbs_vie, id: vie.id);
-                BalancePay(
-                  context,
-                  data: pay,
-                  onSuccess: () => _lookViePost(vie.id),
-                );
-              },
-            ),
           ],
         ),
       ),
     );
   }
 
-  /// 查看闪断帖待付款订单详情
+  /// 查看闪断帖已取消订单详情
   void _lookViePost(String postId) {
-    CusRoute.push(context, UserVieUnpaidPage(postId: postId));
+    CusRoute.push(context, UserVieCancelledPage(postId: postId));
   }
 
   /// 刷新数据

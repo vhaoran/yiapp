@@ -123,7 +123,10 @@ class _UserPrizeUnpaidMainState extends State<UserPrizeUnpaidMain>
                 BalancePay(
                   context,
                   data: pay,
-                  onSuccess: () => _lookPrizePost(prize.id),
+                  onSuccess: () async {
+                    _lookPrizePost(prize.id);
+                    await _refresh();
+                  },
                 );
               },
             ),

@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_cancel_page.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_unpaid_main.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_unpaid_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/18 下午5:36
-// usage ：用户已取消的帖子订单主页
+// date  ：2020/12/18 下午5:21
+// usage ：会员待付款帖子页面
 // ------------------------------------------------------
 
-class PosterCancelMain extends StatefulWidget {
-  final Post post;
-
-  PosterCancelMain({this.post, Key key}) : super(key: key);
+class UserUnpaidPostPage extends StatefulWidget {
+  UserUnpaidPostPage({Key key}) : super(key: key);
 
   @override
-  _PosterCancelMainState createState() => _PosterCancelMainState();
+  _UserUnpaidPostPageState createState() => _UserUnpaidPostPageState();
 }
 
-class _PosterCancelMainState extends State<PosterCancelMain> {
+class _UserUnpaidPostPageState extends State<UserUnpaidPostPage> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -28,7 +26,7 @@ class _PosterCancelMainState extends State<PosterCancelMain> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "处理中"),
+        appBar: CusAppBar(text: '待付款'),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -56,8 +54,8 @@ class _PosterCancelMainState extends State<PosterCancelMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PosterCancelPage(), // 用户已取消悬赏帖历史
-              PosterCancelPage(is_vie: true), // 用户已取消闪断帖历史
+              UserPrizeUnpaidMain(), // 会员待付款悬赏帖
+              UserVieUnpaidMain(), // 会员待付款闪断帖
             ],
           ),
         ),

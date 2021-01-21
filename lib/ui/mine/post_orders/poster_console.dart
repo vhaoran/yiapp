@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/ui/vip/user_tabs_unpaid_post.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_cancel_main.dart';
+import 'package:yiapp/ui/vip/user_unpaid_post_page.dart';
+import 'package:yiapp/ui/vip/user_cancelled_post_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_his_main.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_ing_main.dart';
+import 'package:yiapp/ui/vip/user_doing_post_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console_nav.dart';
 
 // ------------------------------------------------------
@@ -25,10 +25,10 @@ class _PosterConsoleState extends State<PosterConsole> {
 
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
-    "处理中": PosterIngMain(),
-    "待付款": UserTabsUnpaidPost(),
+    "处理中": UserDoingPostPage(),
+    "待付款": UserUnpaidPostPage(),
     "已完成": PosterHisMain(),
-    "已取消": PosterCancelMain(),
+    "已取消": UserCancelledPostPage(),
   };
 
   @override

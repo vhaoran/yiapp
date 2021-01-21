@@ -17,10 +17,10 @@ class EmptyContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.only(top: S.screenH() / 4),
+      padding: EdgeInsets.only(top: S.screenH() / 3),
       child: Text(
         text,
-        style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+        style: TextStyle(color: t_yi, fontSize: S.sp(16)),
       ),
     );
   }

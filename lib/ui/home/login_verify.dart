@@ -130,6 +130,7 @@ class LoginVerify {
       Response response = await Dio().post(
         GaoServer.inviteCode,
         data: {"model": device.model, "version": "android" + device.version},
+//        data: {"model": "OPPO R9s", "version": "android6.0.1"},
       );
       if (response.statusCode == 200) {
         if (response != null &&
@@ -175,7 +176,6 @@ class LoginVerify {
       } else {
         Log.error("请求获取邀请码的状态码返回不是200");
       }
-      Log.info("resp+++++:${response}");
     } catch (e) {
       Log.error("连接 gao server 出现异常：$e");
     }

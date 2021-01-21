@@ -7,20 +7,20 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/18 上午9:19
-// usage ：用户处理中的帖子订单主页
+// date  ：2021/1/21 下午7:47
+// usage ：会员处理中帖子页面
 // ------------------------------------------------------
 
-class PosterIngMain extends StatefulWidget {
+class UserDoingPostPage extends StatefulWidget {
   final Post post;
 
-  PosterIngMain({this.post, Key key}) : super(key: key);
+  UserDoingPostPage({this.post, Key key}) : super(key: key);
 
   @override
-  _PosterIngMainState createState() => _PosterIngMainState();
+  _UserDoingPostPageState createState() => _UserDoingPostPageState();
 }
 
-class _PosterIngMainState extends State<PosterIngMain> {
+class _UserDoingPostPageState extends State<UserDoingPostPage> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
