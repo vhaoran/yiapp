@@ -8,8 +8,7 @@ import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
 import 'package:yiapp/widget/post_com/post_com_header.dart';
-import 'package:yiapp/widget/post_com/post_prize_input.dart';
-import 'package:yiapp/widget/post_com/post_user_prize_reply.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_reply_area.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/widget/small/empty_container.dart';
 
@@ -31,7 +30,7 @@ class UserPrizeHisPage extends StatefulWidget {
 class _UserPrizeHisPageState extends State<UserPrizeHisPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  BBSPrize _bbsPrize; // 悬赏帖已完成详情
+  BBSPrize _prize; // 悬赏帖已完成详情
 
   @override
   void initState() {
@@ -43,8 +42,8 @@ class _UserPrizeHisPageState extends State<UserPrizeHisPage>
     try {
       BBSPrize res = await ApiBBSPrize.bbsPrizeHisGet(widget.postId);
       if (res != null) {
-        _bbsPrize = res;
-        Log.info("当前悬赏帖已完成详情：${_bbsPrize.toJson()}");
+        _prize = res;
+        Log.info("当前悬赏帖已完成详情：${_prize.toJson()}");
         setState(() {});
       }
     } catch (e) {
@@ -77,20 +76,20 @@ class _UserPrizeHisPageState extends State<UserPrizeHisPage>
       onRefresh: () async => await _fetch(),
       child: ListView(
         children: [
-          if (_bbsPrize == null) EmptyContainer(text: "帖子已被删除"),
-          if (_bbsPrize != null) ...[
+          if (_prize == null) EmptyContainer(text: "帖子已被删除"),
+          if (_prize != null) ...[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: S.w(10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  PostComHeader(prize: _bbsPrize), // 帖子顶部信息
-                  PostComDetail(prize: _bbsPrize), // 帖子基本信息
+                  PostComHeader(prize: _prize), // 帖子顶部信息
+                  PostComDetail(prize: _prize), // 帖子基本信息
                 ],
               ),
             ),
             // 帖子评论区
-            PostUserPrizeReply(prize: _bbsPrize, overBtn: true),
+            UserPrizeReplyArea(prize: _prize, overBtn: true),
           ],
         ],
       ),

@@ -5,14 +5,15 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
 import 'package:yiapp/widget/post_com/post_com_header.dart';
-import 'package:yiapp/widget/post_com/post_prize_input.dart';
-import 'package:yiapp/widget/post_com/post_user_prize_reply.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_input.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_reply_area.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/widget/small/empty_container.dart';
 
@@ -37,6 +38,7 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
   BBSPrize _prize; // 悬赏帖处理中详情
   bool _overBtn = false; // 是否隐藏结单按钮，赏金发完显示结单按钮，隐藏打赏大师按钮
   BBSPrizeReply _selectMaster; // 会员当前选择的大师
+  bool _isOwner = false; // 是否本人帖子
 
   @override
   void initState() {
@@ -49,6 +51,7 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
       BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
       if (res != null) {
         _prize = res;
+        _isOwner = _prize.uid == ApiBase.uid;
         Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
         num money = 0;
         res.master_reply.forEach((e) => {money += e.amt});
@@ -101,7 +104,7 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
                     ),
                   ),
                   // 帖子评论区
-                  PostUserPrizeReply(
+                  UserPrizeReplyArea(
                     prize: _prize,
                     overBtn: _overBtn,
                     fnSelectMaster: (val) {
@@ -114,8 +117,9 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
             ),
           ),
         ),
-        if (_prize != null)
-          PostPrizeInput(
+        // 本人帖子且
+        if (_prize != null && _isOwner)
+          UserPrizeInput(
             selectMaster: _selectMaster,
             prize: _prize,
             onSend: _fetch,
@@ -129,7 +133,7 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
       text: "问题详情",
       actions: [
         // 本人处理中的帖子，且悬赏金已经发完，显示结单按钮
-        if (_overBtn)
+        if (_overBtn && _isOwner)
           FlatButton(
             child:
                 Text("结单", style: TextStyle(color: t_gray, fontSize: S.sp(15))),

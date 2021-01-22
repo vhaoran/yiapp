@@ -15,6 +15,7 @@ import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/que_main_page.dart';
+import 'package:yiapp/ui/vip/user_post_ask_page.dart';
 import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
@@ -106,7 +107,8 @@ class _HomePageState extends State<HomePage> {
     _printModules(res); // 仅打印运营商开启的模块
     if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
     if (res.enable_prize == 1 || res.enable_vie == 1) {
-      _m.addAll({"问命": QueMainPage()});
+//      _m.addAll({"问命": QueMainPage()});
+      _m.addAll({"问命": UserPostAskPage()});
     }
     if (res.enable_master == 1) _m.addAll({"大师": MastersPage()});
     _m.addAll({"我的": MinePage()});

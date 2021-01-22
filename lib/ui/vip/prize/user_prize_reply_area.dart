@@ -5,29 +5,29 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/question/reply_more.dart';
 import 'package:yiapp/ui/question/reward_input.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2021/1/22 上午9:55
-// usage ：会员悬赏帖评论详情
+// usage ：会员悬赏帖评论区
 // ------------------------------------------------------
 
 // 用于返回会员选择的大师
 typedef FnSelectMaster = Function(BBSPrizeReply reply);
 
-class PostUserPrizeReply extends StatefulWidget {
+class UserPrizeReplyArea extends StatefulWidget {
   final BBSPrize prize;
   final bool overBtn; // 赏金是否已被打赏完
   final VoidCallback onReward; // 用户打赏大师后的回调
   final FnSelectMaster fnSelectMaster; // 用于返回用户选择的哪位大师
 
-  PostUserPrizeReply({
+  UserPrizeReplyArea({
     this.prize,
     this.overBtn: false,
     this.onReward,
@@ -36,12 +36,19 @@ class PostUserPrizeReply extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PostUserPrizeReplyState createState() => _PostUserPrizeReplyState();
+  _UserPrizeReplyAreaState createState() => _UserPrizeReplyAreaState();
 }
 
-class _PostUserPrizeReplyState extends State<PostUserPrizeReply> {
+class _UserPrizeReplyAreaState extends State<UserPrizeReplyArea> {
   final int _showMax = 4; // 最多显示多少条评论
   int _curLevel = 0; // 当前选择的大师边框显示红色
+  bool _isOwner = false;
+
+  @override
+  void initState() {
+    _isOwner = widget.prize.uid == ApiBase.uid;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +74,13 @@ class _PostUserPrizeReplyState extends State<PostUserPrizeReply> {
   /// 单条评论的内容
   Widget _commentItem(BBSPrizeReply reply, int level) {
     return InkWell(
-      onTap: () {
-        Log.info("当前楼层的详情：${reply.toJson()}");
-        _curLevel = level;
-        if (widget.fnSelectMaster != null) widget.fnSelectMaster(reply);
-      },
+      onTap: _isOwner
+          ? () {
+              Log.info("当前楼层的详情：${reply.toJson()}");
+              _curLevel = level;
+              if (widget.fnSelectMaster != null) widget.fnSelectMaster(reply);
+            }
+          : null,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
         decoration: BoxDecoration(
@@ -143,7 +152,7 @@ class _PostUserPrizeReplyState extends State<PostUserPrizeReply> {
                 children: <Widget>[
                   Text(e.reply.first.create_date, style: gray), // 大师第一条评论的时间
                   // 大师未被打赏，且还有赏金可以打赏，则显示打赏按钮
-                  if (e.amt == 0 && !widget.overBtn) ...[
+                  if (_isOwner && e.amt == 0 && !widget.overBtn) ...[
                     Spacer(),
                     CusRaisedButton(
                       padding: EdgeInsets.symmetric(horizontal: S.w(9)),

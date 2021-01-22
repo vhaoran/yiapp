@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/model/bbs/prize_master_reply.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 
 // ------------------------------------------------------
 // author：suxing
 // date  ：2021/1/22 上午9:44
-// usage ：回复悬赏帖
+// usage ：会员回复闪断帖
 // ------------------------------------------------------
 
-class PostPrizeInput extends StatefulWidget {
-  // 用户选择大师进行回复，大师不需要这个
-  final BBSPrizeReply selectMaster;
-  final BBSPrize prize;
+class UserVieInput extends StatefulWidget {
+  final BBSVie vie;
   final VoidCallback onSend;
 
-  PostPrizeInput({this.selectMaster, this.prize, this.onSend, Key key})
-      : super(key: key);
+  UserVieInput({this.vie, this.onSend, Key key}) : super(key: key);
 
   @override
-  _PostPrizeInputState createState() => _PostPrizeInputState();
+  _UserVieInputState createState() => _UserVieInputState();
 }
 
-class _PostPrizeInputState extends State<PostPrizeInput> {
+class _UserVieInputState extends State<UserVieInput> {
   var _replyCtrl = TextEditingController();
   var _focusNode = FocusNode();
   bool _isSending = false; // 是否正在发送
@@ -104,12 +100,8 @@ class _PostPrizeInputState extends State<PostPrizeInput> {
 
   /// 选择大师后，发送评论
   void _doReply() async {
-    if (widget.prize.master_reply.isEmpty) {
+    if (widget.vie.reply.isEmpty) {
       CusToast.toast(context, text: "请等待大师回复");
-      return;
-    }
-    if (widget.selectMaster == null) {
-      CusToast.toast(context, text: "未选择回复哪位大师");
       return;
     }
     if (_replyCtrl.text.trim().isEmpty) {
@@ -117,14 +109,13 @@ class _PostPrizeInputState extends State<PostPrizeInput> {
       return;
     }
     var m = {
-      "id": widget.prize.id,
-      "to_master": widget.selectMaster.master_id,
+      "id": widget.vie.id,
       "text": [_replyCtrl.text.trim()],
     };
-    Log.info("会员回复悬赏帖的数据：$m");
+    Log.info("会员回复闪断帖的数据：$m");
     setState(() => _isSending = true);
     try {
-      bool ok = await ApiBBSPrize.bbsPrizeReply(m);
+      bool ok = await ApiBBSVie.bbsVieReply(m);
       if (ok) {
         _isSending = false;
         _replyCtrl.clear();
@@ -136,18 +127,14 @@ class _PostPrizeInputState extends State<PostPrizeInput> {
     } catch (e) {
       _isSending = false;
       setState(() {});
-      Log.error("会员回复悬赏帖出现异常：$e");
+      Log.error("会员回复闪断帖出现异常：$e");
     }
   }
 
   String _hintText() {
-    if (widget.prize.master_reply.isEmpty) {
+    if (widget.vie.reply.isEmpty) {
       return "请等待大师回复";
-    } else {
-      if (widget.selectMaster == null) {
-        return "选择一位大师进行回复";
-      }
-      return "回复：${widget.selectMaster.master_nick}";
     }
+    return "回复：${widget.vie.master_nick}";
   }
 }

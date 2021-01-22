@@ -52,7 +52,7 @@ class _UserPrizeUnpaidMainState extends State<UserPrizeUnpaidMain>
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
       "where": {"stat": bbs_unpaid, "uid": ApiBase.uid},
-      "sort": {"create_date": -1},
+      "sort": {"create_date_int": -1},
     };
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizePage(m);

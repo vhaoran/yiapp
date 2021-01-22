@@ -4,6 +4,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_reply_area.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
@@ -13,23 +14,23 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/21 下午7:40
-// usage ：会员闪断帖已取消订单详情
+// date  ：2021/1/22 下午3:14
+// usage ：会员闪断帖已完成订单详情
 // ------------------------------------------------------
 
-class UserVieCancelledPage extends StatefulWidget {
+class UserVieHisPage extends StatefulWidget {
   final String postId;
 
-  UserVieCancelledPage({this.postId, Key key}) : super(key: key);
+  UserVieHisPage({this.postId, Key key}) : super(key: key);
 
   @override
-  _UserVieCancelledPageState createState() => _UserVieCancelledPageState();
+  _UserVieHisPageState createState() => _UserVieHisPageState();
 }
 
-class _UserVieCancelledPageState extends State<UserVieCancelledPage>
+class _UserVieHisPageState extends State<UserVieHisPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  BBSVie _vie; // 闪断帖已取消详情
+  BBSVie _vie; // 闪断帖已完成详情
 
   @override
   void initState() {
@@ -42,11 +43,11 @@ class _UserVieCancelledPageState extends State<UserVieCancelledPage>
       BBSVie res = await ApiBBSVie.bbsVieHisGet(widget.postId);
       if (res != null) {
         _vie = res;
-        Log.info("当前闪断帖已取消详情：${_vie.toJson()}");
+        Log.info("当前闪断帖已完成详情：${_vie.toJson()}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("查询闪断帖已取消详情出现异常：$e");
+      Log.error("查询闪断帖已完成详情出现异常：$e");
     }
   }
 
@@ -88,6 +89,7 @@ class _UserVieCancelledPageState extends State<UserVieCancelledPage>
               ),
             ),
           ],
+          if (_vie != null) UserVieReplyArea(vie: _vie),
         ],
       ),
     );

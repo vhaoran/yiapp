@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/vip/prize/user_prize_doing_page.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_his_page.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -18,23 +20,22 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/21 下午7:48
-// usage ：会员悬赏帖处理中订单入口
+// date  ：2021/1/22 下午3:31
+// usage ：会员问命悬赏帖订单入口
 // ------------------------------------------------------
 
-class UserPrizeDoingMain extends StatefulWidget {
-  UserPrizeDoingMain({Key key}) : super(key: key);
+class UserPrizeAskMain extends StatefulWidget {
+  UserPrizeAskMain({Key key}) : super(key: key);
 
   @override
-  _UserPrizeDoingMainState createState() => _UserPrizeDoingMainState();
+  _UserPrizeAskMainState createState() => _UserPrizeAskMainState();
 }
 
-class _UserPrizeDoingMainState extends State<UserPrizeDoingMain>
+class _UserPrizeAskMainState extends State<UserPrizeAskMain>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
-  int _rowsCount = 0;
-  final int _rowsPerPage = 10; // 默认每页查询个数
+  final int _rowsPerPage = 10; // 默认每页查询个数，必须要为10，否则数据不准
   List<BBSPrize> _l = []; // 悬赏帖处理中列表
 
   @override
@@ -43,31 +44,33 @@ class _UserPrizeDoingMainState extends State<UserPrizeDoingMain>
     super.initState();
   }
 
-  /// 会员分页查询悬赏帖处理中订单
+  /// 会员分页查询所属运营商下，悬赏帖已付款以及已打赏的悬赏帖订单
   _fetch() async {
-    if (_pageNo * _rowsPerPage > _rowsCount) return;
+    // Page2 返回数据的总个数是不准确的，直接页面加1查看即可
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_paid, "uid": ApiBase.uid},
-      "sort": {"create_date_int": -1},
+      "where": {
+        "broker_id": CusRole.broker_id,
+        "stat": {"\$gte": bbs_paid},
+      },
+      "sort": {"create_date_int": -1}, // 按时间倒序排列
     };
+
     try {
-      PageBean pb = await ApiBBSPrize.bbsPrizePage(m);
+      PageBean pb = await ApiBBSPrize.bbsPrizePage2(m);
       if (pb != null) {
-        if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
-        Log.info("未过滤时悬赏帖总个数 $_rowsCount");
         var l = pb.data.map((e) => e as BBSPrize).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
-        Log.info("已加载悬赏帖处理中个数 ${_l.length}");
+        Log.info("问命页面当前已查询悬赏帖多少个：${_l.length}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("分页查询悬赏帖处理中出现异常：$e");
+      Log.error("问命页面分页查询悬赏帖出现异常：$e");
     }
   }
 
@@ -105,26 +108,29 @@ class _UserPrizeDoingMainState extends State<UserPrizeDoingMain>
 
   Widget _coverItem(BBSPrize prize) {
     return InkWell(
-      onTap: () => _lookPrizePost(prize.id),
+      onTap: () => _lookPrizePost(prize),
       child: PostComCover(
         prize: prize,
         events: Row(
           children: <Widget>[
             PostComButton(
               text: "详情",
-              onPressed: () => _lookPrizePost(prize.id),
+              onPressed: () => _lookPrizePost(prize),
             ),
-            // 如果没有大师回复时，用户可以选择取消订单
-            if (prize.master_reply.isEmpty)
+            // 本人已支付的帖子，没有大师回复时，会员可以选择取消订单
+            if (prize.uid == ApiBase.uid &&
+                prize.stat == bbs_paid &&
+                prize.master_reply.isEmpty)
               PostComButton(
                 text: "取消",
                 onPressed: () => _doCancel(prize.id),
               ),
-            // 有大师回复时，用户可点击回复
-            if (prize.master_reply.isNotEmpty)
+            // 本人的帖子，有大师回复时，会员可点击回复
+            if (prize.uid == ApiBase.uid && prize.master_reply.isNotEmpty)
               PostComButton(
                 text: "回复",
-                onPressed: () => _lookPrizePost(prize.id),
+                onPressed: () => CusRoute.push(
+                    context, UserPrizeDoingPage(postId: prize.id)),
               ),
           ],
         ),
@@ -152,18 +158,18 @@ class _UserPrizeDoingMainState extends State<UserPrizeDoingMain>
   }
 
   /// 查看悬赏帖处理中订单详情
-  void _lookPrizePost(String postId) {
-    CusRoute.push(context, UserPrizeDoingPage(postId: postId))
-        .then((value) async {
-      if (value != null) {
-        await _refresh();
-      }
-    });
+  void _lookPrizePost(BBSPrize prize) {
+    if (prize.stat == bbs_paid) {
+      CusRoute.push(context, UserPrizeDoingPage(postId: prize.id));
+    }
+    if (prize.stat == bbs_ok) {
+      CusRoute.push(context, UserPrizeHisPage(postId: prize.id));
+    }
   }
 
   /// 刷新数据
   _refresh() async {
-    _pageNo = _rowsCount = 0;
+    _pageNo = 0;
     _l.clear();
     setState(() {});
     await _fetch();

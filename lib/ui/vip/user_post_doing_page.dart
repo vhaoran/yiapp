@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_ing_page.dart';
 import 'package:yiapp/ui/vip/prize/user_prize_doing_main.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_doing_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
@@ -55,8 +55,7 @@ class _UserPostDoingPageState extends State<UserPostDoingPage> {
           child: TabBarView(
             children: [
               UserPrizeDoingMain(), // 用户处理中的悬赏帖
-//              PosterIngPage(),
-              PosterIngPage(is_vie: true), // 用户处理中的闪断帖
+              UserVieDoingMain(), // 用户处理中的闪断帖
             ],
           ),
         ),

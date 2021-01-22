@@ -49,7 +49,7 @@ class _UserPrizeCancelledMainState extends State<UserPrizeCancelledMain>
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
       "where": {"stat": bbs_cancelled, "uid": ApiBase.uid},
-      "sort": {"create_date": -1},
+      "sort": {"create_date_int": -1},
     };
     try {
       PageBean pb = await ApiBBSPrize.bbsPrizeHisPage(m);

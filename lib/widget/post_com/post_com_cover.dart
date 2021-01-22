@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -58,7 +59,12 @@ class PostComCover extends StatelessWidget {
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ),
-            SizedBox(width: S.w(10)),
+            if (prize.stat == bbs_ok)
+              Text(
+                "已采纳",
+                style: TextStyle(color: t_yi, fontSize: S.sp(15)),
+              ),
+            SizedBox(width: S.w(5)),
             Text(
               "悬赏 ${prize?.amt ?? '***'} 元宝", // 悬赏金
               style: TextStyle(color: t_yi, fontSize: S.sp(15)),
@@ -124,7 +130,12 @@ class PostComCover extends StatelessWidget {
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             ),
-            SizedBox(width: S.w(10)),
+            if (vie.stat == bbs_ok)
+              Text(
+                "已采纳",
+                style: TextStyle(color: t_yi, fontSize: S.sp(15)),
+              ),
+            SizedBox(width: S.w(5)),
             Text(
               "悬赏 ${vie?.amt ?? '***'} 元宝", // 悬赏金
               style: TextStyle(color: t_yi, fontSize: S.sp(15)),
