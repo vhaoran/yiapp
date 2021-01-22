@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'ing_yiorder_page.dart';
-import 'master_prize_main.dart';
+import '../../masters/master_prize_page.dart';
 import 'master_vie_main.dart';
 import 'master_console_nav.dart';
 
@@ -24,7 +24,7 @@ class _MasterConsoleState extends State<MasterConsole> {
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
     "大师订单": IngYiorderPage(), // 在做大师订单，先把其放在首位
-    "悬赏帖": MasterPrizeMain(),
+    "悬赏帖": MasterPrizePage(),
     "闪断帖": MasterVieMain(),
   };
 

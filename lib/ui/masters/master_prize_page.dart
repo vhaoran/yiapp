@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/master/master_console/master_ing_main.dart';
+import 'package:yiapp/ui/masters/prize/master_prize_doing_main.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -8,18 +9,18 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/15 上午9:39
-// usage ：大师控制台 -- 查看悬赏帖可抢单的和处理中的
+// date  ：2021/1/22 下午5:28
+// usage ：大师控制台的悬赏帖，含可抢单和处理中
 // ------------------------------------------------------
 
-class MasterPrizeMain extends StatefulWidget {
-  MasterPrizeMain({Key key}) : super(key: key);
+class MasterPrizePage extends StatefulWidget {
+  MasterPrizePage({Key key}) : super(key: key);
 
   @override
-  _MasterPrizeMainState createState() => _MasterPrizeMainState();
+  _MasterPrizePageState createState() => _MasterPrizePageState();
 }
 
-class _MasterPrizeMainState extends State<MasterPrizeMain> {
+class _MasterPrizePageState extends State<MasterPrizePage> {
   final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override
@@ -56,7 +57,8 @@ class _MasterPrizeMainState extends State<MasterPrizeMain> {
           child: TabBarView(
             children: <Widget>[
               PostDataPage(),
-              MasterIngMain(),
+              MasterPrizeDoingMain(),
+//              MasterIngMain(),
             ],
           ),
         )),
