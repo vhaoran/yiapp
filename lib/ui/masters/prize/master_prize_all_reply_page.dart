@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
@@ -7,9 +6,9 @@ import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_reply.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/ui/question/post_header.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/post_com/post_com_detail.dart';
 import 'package:yiapp/widget/post_com/post_com_header.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
@@ -48,6 +47,7 @@ class _MasterPrizeAllReplyPageState extends State<MasterPrizeAllReplyPage> {
       if (res != null) {
         _prize = res;
         Log.info("大师查看当前悬赏帖所有详情结果：${_prize.toJson()}");
+        setState(() {});
       }
     } catch (e) {
       Log.error("大师查看当前悬赏帖所有详情出现异常：$e");
@@ -78,20 +78,20 @@ class _MasterPrizeAllReplyPageState extends State<MasterPrizeAllReplyPage> {
   Widget _lv() {
     return EasyRefresh(
       header: CusHeader(),
-      footer: CusFooter(),
+      onRefresh: () async => await _fetch(),
       child: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
           if (_prize == null) EmptyContainer(text: "帖子已被删除"),
           if (_prize != null) ...[
-//            PostComHeader(prize: _prize),
-            PostHeader(data: _prize), // 帖子头部信息
+            PostComHeader(prize: _prize),
+            PostComDetail(prize: _prize),
             Divider(height: 0, thickness: 0.2, color: t_gray),
             Container(
               padding: EdgeInsets.symmetric(vertical: S.h(5)),
               alignment: Alignment.center,
               child: Text(
-                _prize.master_reply.isEmpty ? "暂无评论" : "评论区",
+                "评论区",
                 style: TextStyle(color: t_primary, fontSize: S.sp(16)),
               ),
             ),
@@ -102,7 +102,6 @@ class _MasterPrizeAllReplyPageState extends State<MasterPrizeAllReplyPage> {
           ],
         ],
       ),
-      onRefresh: () async => await _refresh(),
     );
   }
 
@@ -193,10 +192,5 @@ class _MasterPrizeAllReplyPageState extends State<MasterPrizeAllReplyPage> {
         ),
       ],
     );
-  }
-
-  Future<void> _refresh() async {
-    await _fetch();
-    setState(() {});
   }
 }

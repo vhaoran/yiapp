@@ -101,7 +101,7 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
             ),
           ),
         ),
-        // 本人帖子且
+        // 大师回复帖子
         if (_prize != null) MasterPrizeInput(prize: _prize, onSend: _fetch),
       ],
     );

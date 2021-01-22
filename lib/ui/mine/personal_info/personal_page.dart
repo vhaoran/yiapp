@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/global/def_data.dart';
+import 'package:yiapp/service/api/api-push.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/service/wsutil/ws_worker.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -125,7 +128,14 @@ class _PersonalPageState extends State<PersonalPage> {
             context,
             title: "您确定退出当前账号吗?",
             fnDataApproval: "",
-            onThen: () => CusRoute.push(context, LoginPage()),
+            onThen: () async {
+              await closeWSChan();
+              if (ApiBase.uid > 0 && await ApiPush.pushUnRegist()) {
+                CusRoute.push(context, LoginPage());
+              } else {
+                CusToast.toast(context, text: "退出失败");
+              }
+            },
           ),
         ),
       ],
