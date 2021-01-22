@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_his_page.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_his_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/18 下午5:28
-// usage ：用户已完成的帖子订单主页
+// date  ：2021/1/22 上午11:52
+// usage ：会员已完成帖子页面
 // ------------------------------------------------------
 
-class PosterHisMain extends StatefulWidget {
+class UserPostHisPage extends StatefulWidget {
   final bool is_vie;
 
-  PosterHisMain({this.is_vie: false, Key key}) : super(key: key);
+  UserPostHisPage({this.is_vie: false, Key key}) : super(key: key);
 
   @override
-  _PosterHisMainState createState() => _PosterHisMainState();
+  _UserPostHisPageState createState() => _UserPostHisPageState();
 }
 
-class _PosterHisMainState extends State<PosterHisMain> {
+class _UserPostHisPageState extends State<UserPostHisPage> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -55,7 +56,8 @@ class _PosterHisMainState extends State<PosterHisMain> {
         Expanded(
           child: TabBarView(
             children: [
-              PosterHisPage(), // 用户已打赏悬赏帖订单
+              UserPrizeHisMain(), // 用户已打赏悬赏帖订单
+//              PosterHisPage(),
               PosterHisPage(is_vie: true), // 用户已打赏闪断帖订单
             ],
           ),

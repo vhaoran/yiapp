@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/complex/post_trans.dart';
-import 'package:yiapp/ui/mine/post_orders/poster_ing_page.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_cancelled_main.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_cancelled_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/21 下午7:47
-// usage ：会员处理中帖子页面
+// date  ：2020/12/18 下午5:36
+// usage ：会员已取消帖子页面
 // ------------------------------------------------------
 
-class UserDoingPostPage extends StatefulWidget {
-  final Post post;
-
-  UserDoingPostPage({this.post, Key key}) : super(key: key);
+class UserPostCancelledPage extends StatefulWidget {
+  UserPostCancelledPage({Key key}) : super(key: key);
 
   @override
-  _UserDoingPostPageState createState() => _UserDoingPostPageState();
+  _UserPostCancelledPageState createState() => _UserPostCancelledPageState();
 }
 
-class _UserDoingPostPageState extends State<UserDoingPostPage> {
+class _UserPostCancelledPageState extends State<UserPostCancelledPage> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -56,8 +54,8 @@ class _UserDoingPostPageState extends State<UserDoingPostPage> {
         Expanded(
           child: TabBarView(
             children: [
-              PosterIngPage(), // 用户处理中的悬赏帖
-              PosterIngPage(is_vie: true), // 用户处理中的闪断帖
+              UserPrizeCancelledMain(), // 会员已取消悬赏帖历史
+              UserVieCancelledMain(), // 会员已取消闪断帖历史
             ],
           ),
         ),

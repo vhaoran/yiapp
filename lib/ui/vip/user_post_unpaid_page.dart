@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/vip/prize/user_prize_cancelled_main.dart';
-import 'package:yiapp/ui/vip/vie/user_vie_cancelled_main.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_unpaid_main.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_unpaid_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/18 下午5:36
-// usage ：会员已取消帖子页面
+// date  ：2020/12/18 下午5:21
+// usage ：会员待付款帖子页面
 // ------------------------------------------------------
 
-class UserCancelledPostPage extends StatefulWidget {
-  UserCancelledPostPage({Key key}) : super(key: key);
+class UserPostUnpaidPage extends StatefulWidget {
+  UserPostUnpaidPage({Key key}) : super(key: key);
 
   @override
-  _UserCancelledPostPageState createState() => _UserCancelledPostPageState();
+  _UserPostUnpaidPageState createState() => _UserPostUnpaidPageState();
 }
 
-class _UserCancelledPostPageState extends State<UserCancelledPostPage> {
+class _UserPostUnpaidPageState extends State<UserPostUnpaidPage> {
   final List<String> _tabs = ["悬赏帖", "闪断帖"];
 
   @override
@@ -26,7 +26,7 @@ class _UserCancelledPostPageState extends State<UserCancelledPostPage> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "处理中"),
+        appBar: CusAppBar(text: '待付款'),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),
@@ -54,8 +54,8 @@ class _UserCancelledPostPageState extends State<UserCancelledPostPage> {
         Expanded(
           child: TabBarView(
             children: [
-              UserPrizeCancelledMain(), // 会员已取消悬赏帖历史
-              UserVieCancelledMain(), // 会员已取消闪断帖历史
+              UserPrizeUnpaidMain(), // 会员待付款悬赏帖
+              UserVieUnpaidMain(), // 会员待付款闪断帖
             ],
           ),
         ),

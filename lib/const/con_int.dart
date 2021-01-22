@@ -9,7 +9,7 @@ const int bbs_cancelled = -1; // 已取消
 const int bbs_unpaid = 0; // 待付款
 const int bbs_paid = 1; // 已付款
 const int bbs_aim = 2; // 已抢单(悬赏帖无此状态)
-const int bbs_ok = 3; // 已打赏
+const int bbs_ok = 3; // 已打赏(已完成)
 
 // ------------------------- 大师订单状态 ------------------------
 const int yiorder_unpaid = 0; // 待付款

@@ -102,7 +102,7 @@ class ReplyMore extends StatelessWidget {
     return Container(
       color: Colors.black12, // 单条评论背景色
       padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
-      margin: EdgeInsets.symmetric(vertical: S.h(4)),
+      margin: EdgeInsets.symmetric(vertical: S.h(2)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
