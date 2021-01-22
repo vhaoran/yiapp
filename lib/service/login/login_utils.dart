@@ -6,6 +6,7 @@ import 'package:yiapp/service/api/api_base.dart';
 /// 设置登录后的初始值
 Future<bool> setLoginInfo(LoginResult r) async {
   //--注销原来的推送------add by whr------------------------------------------
+  await closeWSChan();
   ApiBase.uid > 0{
     ApiPush.pushUnRegist()
   }
@@ -17,7 +18,7 @@ Future<bool> setLoginInfo(LoginResult r) async {
   ApiBase.loginInfo = r;
 
   //----处理webspcket与推送相关------add by whr--------------------
-  await closeWSChan();
+  // await closeWSChan();
   initWSChan(); // 初始化 web socket 连接
   //  await initDB(); // 放在了验证登录位置
 }
