@@ -11,7 +11,16 @@ class ApiPush {
     var url = pre + "PushRegist";
     var data = {"reg_id": regID};
 
-    setPushReceiver();
+    // setPushReceiver();
+
+    return await ApiBase.postValue<bool>(url, data, enableJwt: true);
+  }
+  //注销原来的注册信息，不需要参数
+  static Future<bool> pushUnRegist() async {
+    var url = pre + "PushUnRegist";
+    var data = {"data": "data"};
+
+    // setPushReceiver();
 
     return await ApiBase.postValue<bool>(url, data, enableJwt: true);
   }

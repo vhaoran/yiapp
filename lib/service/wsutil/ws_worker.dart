@@ -104,7 +104,7 @@ initWSChanSingle() {
       _pushReg(_chan);
     } catch (e) {
       timer.cancel();
-      _delayInit();
+      // _delayInit();
     }
   });
 
