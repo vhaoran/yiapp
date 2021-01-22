@@ -7,7 +7,7 @@ import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/ui/masters/prize/master_prize_all_reply_page.dart';
 import 'package:yiapp/ui/masters/prize/master_prize_input.dart';
-import 'package:yiapp/ui/masters/prize/master_vie_reply_area.dart';
+import 'package:yiapp/ui/masters/prize/master_prize_reply_area.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
@@ -46,6 +46,7 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
       BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
       if (res != null) {
         _prize = res;
+        Log.info("发帖人的id:${_prize.uid}");
         Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
         setState(() {});
       }

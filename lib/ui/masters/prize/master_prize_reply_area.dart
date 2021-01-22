@@ -49,7 +49,7 @@ class _MasterPrizeReplyAreaState extends State<MasterPrizeReplyArea> {
     );
     // 说明自己还未给当前帖子回复
     if (r != null) {
-      int level = widget.prize.master_reply.indexOf(r);
+      int level = widget.prize.master_reply.indexOf(r) + 1;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(5)),
         decoration: BoxDecoration(

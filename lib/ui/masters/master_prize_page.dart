@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/ui/masters/prize/master_prize_aim_main.dart';
 import 'package:yiapp/ui/masters/prize/master_prize_doing_main.dart';
 import 'package:yiapp/ui/question/post_data_page.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -55,7 +56,8 @@ class _MasterPrizePageState extends State<MasterPrizePage> {
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              PostDataPage(),
+//              PostDataPage(),
+              MasterPrizeAimMain(),
               MasterPrizeDoingMain(),
             ],
           ),

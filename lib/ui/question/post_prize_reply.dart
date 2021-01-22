@@ -126,7 +126,7 @@ class _PostPrizeReplyState extends State<PostPrizeReply> {
                   int level = widget.data.master_reply.indexOf(rep) + 1;
                   CusRoute.push(
                     context,
-                    ReplyMore(reply: rep, nick: widget.data.nick, level: level),
+                    PrizeReplyMore(reply: rep, nick: widget.data.nick, level: level),
                   );
                 },
                 child: Text(

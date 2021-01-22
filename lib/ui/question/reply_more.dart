@@ -13,12 +13,12 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 // usage ：查看更多评论，针对悬赏帖
 // ------------------------------------------------------
 
-class ReplyMore extends StatelessWidget {
+class PrizeReplyMore extends StatelessWidget {
   final BBSPrizeReply reply;
   final String nick; // 帖主名字
   final int level; // 大师评论所处楼层数
 
-  ReplyMore({this.reply, this.nick: "", this.level: 10, Key key})
+  PrizeReplyMore({this.reply, this.nick: "", this.level: 10, Key key})
       : super(key: key);
 
   @override
@@ -115,8 +115,7 @@ class ReplyMore extends StatelessWidget {
                 Text(nick, style: blue), // 帖主昵称
               ],
               // 帖主的回复
-              if (!r.is_master)
-                Text("${r.nick}", style: blue), // 帖主昵称
+              if (!r.is_master) Text("${r.nick}", style: blue), // 帖主昵称
               Text(
                 "（帖主）",
                 style: TextStyle(color: t_gray, fontSize: S.sp(13)),

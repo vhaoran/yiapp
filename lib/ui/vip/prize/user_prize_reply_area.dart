@@ -110,7 +110,7 @@ class _UserPrizeReplyAreaState extends State<UserPrizeReplyArea> {
                 onTap: () {
                   CusRoute.push(
                     context,
-                    ReplyMore(
+                    PrizeReplyMore(
                         reply: reply, nick: widget.prize.nick, level: level),
                   );
                 },

@@ -6,9 +6,9 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_doing_page.dart';
+import 'package:yiapp/ui/masters/prize/master_prize_aim_page.dart';
 import 'package:yiapp/widget/cus_complex.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/post_com/post_com_button.dart';
 import 'package:yiapp/widget/post_com/post_com_cover.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -48,7 +48,7 @@ class _MasterPrizeAimMainState extends State<MasterPrizeAimMain>
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": bbs_paid, "uid": ApiBase.uid},
+      "where": {"stat": bbs_paid},
       "sort": {"create_date_int": -1},
     };
     try {
@@ -112,19 +112,36 @@ class _MasterPrizeAimMainState extends State<MasterPrizeAimMain>
               text: "详情",
               onPressed: () => _lookPrizePost(prize.id),
             ),
-            PostComButton(
-              text: "回复",
-              onPressed: () => _lookPrizePost(prize.id),
-            ),
+            PostComButton(text: "抢单", onPressed: () => _doAimPrize(prize)),
           ],
         ),
       ),
     );
   }
 
+  /// 抢悬赏帖
+  void _doAimPrize(BBSPrize prize) async {
+    try {
+      bool ok = await ApiBBSPrize.bbsPrizeMasterAim(prize.id);
+      if (ok) {
+        CusToast.toast(context, text: "抢单成功");
+      } else {
+        CusToast.toast(context, text: "抢单失败");
+      }
+      _refresh();
+    } catch (e) {
+      Log.error("大师抢闪断帖出现异常：$e");
+      if (e.toString() == "操作错误已存在，不需要再次添加") {
+        CusToast.toast(context, text: "你已经抢过了");
+        // 提示抢过了也刷新一下页面
+        _refresh();
+      }
+    }
+  }
+
   /// 查看悬赏帖可抢单订单详情
   void _lookPrizePost(String postId) {
-    CusRoute.push(context, MasterPrizeDoingPage(postId: postId))
+    CusRoute.push(context, MasterPrizeAimPage(postId: postId))
         .then((value) async {
       if (value != null) {
         await _refresh();
