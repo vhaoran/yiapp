@@ -7,8 +7,8 @@ import 'package:yiapp/service/api/api_base.dart';
 Future<bool> setLoginInfo(LoginResult r) async {
   //--注销原来的推送------add by whr------------------------------------------
   await closeWSChan();
-  ApiBase.uid > 0{
-    ApiPush.pushUnRegist()
+  if (ApiBase.uid > 0) {
+    ApiPush.pushUnRegist();
   }
 
   //------------------------------------------------
