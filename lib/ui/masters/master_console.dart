@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yiapp/ui/master/master_console/master_vie_main.dart';
-import 'package:yiapp/ui/masters/master_prize_page.dart';
-import 'package:yiapp/ui/masters/master_vie_page.dart';
-import 'ing_yiorder_page.dart';
-import 'master_console_nav.dart';
+import 'package:yiapp/ui/master/master_console/ing_yiorder_page.dart';
+import 'package:yiapp/ui/master/master_console/master_console_nav.dart';
+import 'package:yiapp/ui/masters/master_prize_console_page.dart';
+import 'package:yiapp/ui/masters/master_vie_console_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -24,10 +23,9 @@ class _MasterConsoleState extends State<MasterConsole> {
   int _curIndex = 0; // 当前导航栏索引
   // 大师控制台底部导航栏
   final Map<String, Widget> _mc = {
-    "大师订单": IngYiorderPage(), // 在做大师订单，先把其放在首位
-    "悬赏帖": MasterPrizePage(),
-    "闪断帖": MasterViePage(),
-//    "闪断帖": MasterVieMain(),
+    "大师订单": IngYiorderPage(),
+    "悬赏帖": MasterPrizeConsolePage(),
+    "闪断帖": MasterVieConsolePage(),
   };
 
   @override

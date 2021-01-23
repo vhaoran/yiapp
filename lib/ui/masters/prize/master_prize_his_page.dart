@@ -6,7 +6,6 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/service/api/api-bbs-prize.dart';
 import 'package:yiapp/ui/masters/prize/master_prize_all_reply_page.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_input.dart';
 import 'package:yiapp/ui/masters/prize/master_prize_reply_area.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -17,23 +16,23 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/22 下午5:34
-// usage ：大师悬赏帖处理中订单详情
+// date  ：2021/1/23 上午11:00
+// usage ：大师悬赏帖已完成订单详情
 // ------------------------------------------------------
 
-class MasterPrizeDoingPage extends StatefulWidget {
+class MasterPrizeHisPage extends StatefulWidget {
   final String postId;
 
-  MasterPrizeDoingPage({this.postId, Key key}) : super(key: key);
+  MasterPrizeHisPage({this.postId, Key key}) : super(key: key);
 
   @override
-  _MasterPrizeDoingPageState createState() => _MasterPrizeDoingPageState();
+  _MasterPrizeHisPageState createState() => _MasterPrizeHisPageState();
 }
 
-class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
+class _MasterPrizeHisPageState extends State<MasterPrizeHisPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  BBSPrize _prize; // 悬赏帖处理中详情
+  BBSPrize _prize; // 悬赏帖已完成详情
 
   @override
   void initState() {
@@ -43,14 +42,14 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
 
   _fetch() async {
     try {
-      BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
+      BBSPrize res = await ApiBBSPrize.bbsPrizeHisGet(widget.postId);
       if (res != null) {
         _prize = res;
-        Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
+        Log.info("当前悬赏帖已完成详情：${_prize.toJson()}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("大师查询悬赏帖处理中详情出现异常：$e");
+      Log.error("大师查询悬赏帖已完成详情出现异常：$e");
     }
   }
 
@@ -101,8 +100,6 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
             ),
           ),
         ),
-        // 大师回复帖子
-        if (_prize != null) MasterPrizeInput(prize: _prize, onSend: _fetch),
       ],
     );
   }
@@ -117,7 +114,7 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
           onPressed: () {
             CusRoute.push(
               context,
-              MasterPrizeAllReplyPage(postId: _prize.id),
+              MasterPrizeAllReplyPage(postId: _prize.id, isHis: true),
             );
           },
         ),

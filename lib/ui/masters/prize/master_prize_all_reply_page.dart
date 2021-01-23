@@ -22,8 +22,10 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 class MasterPrizeAllReplyPage extends StatefulWidget {
   final String postId; // 根据帖子id查询帖子最新信息
+  final bool isHis; // 查看详情分为处理中和已完成两种查看
 
-  MasterPrizeAllReplyPage({this.postId, Key key}) : super(key: key);
+  MasterPrizeAllReplyPage({this.postId, this.isHis: false, Key key})
+      : super(key: key);
 
   @override
   _MasterPrizeAllReplyPageState createState() =>
@@ -43,7 +45,9 @@ class _MasterPrizeAllReplyPageState extends State<MasterPrizeAllReplyPage> {
   /// 获取单条帖子详情
   _fetch() async {
     try {
-      BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
+      BBSPrize res = widget.isHis
+          ? await ApiBBSPrize.bbsPrizeHisGet(widget.postId)
+          : await ApiBBSPrize.bbsPrizeGet(widget.postId);
       if (res != null) {
         _prize = res;
         Log.info("大师查看当前悬赏帖所有详情结果：${_prize.toJson()}");

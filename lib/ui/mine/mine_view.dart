@@ -7,10 +7,10 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
-import 'package:yiapp/ui/master/master_console/master_console.dart';
-import 'package:yiapp/ui/master/master_his_main.dart';
+import 'package:yiapp/ui/masters/master_console.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
 import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
+import 'package:yiapp/ui/masters/master_post_his_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
 import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -74,7 +74,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "大师已完成帖子订单",
-          onTap: () => CusRoute.push(context, MasterHisMain()),
+          onTap: () => CusRoute.push(context, MasterPostHisPage()),
         ),
         NormalBox(
           title: "大师已完成订单",

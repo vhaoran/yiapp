@@ -12,14 +12,14 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 // usage ：大师控制台的闪断帖，含可抢单和处理中
 // ------------------------------------------------------
 
-class MasterViePage extends StatefulWidget {
-  MasterViePage({Key key}) : super(key: key);
+class MasterVieConsolePage extends StatefulWidget {
+  MasterVieConsolePage({Key key}) : super(key: key);
 
   @override
-  _MasterViePageState createState() => _MasterViePageState();
+  _MasterVieConsolePageState createState() => _MasterVieConsolePageState();
 }
 
-class _MasterViePageState extends State<MasterViePage> {
+class _MasterVieConsolePageState extends State<MasterVieConsolePage> {
   final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override

@@ -52,14 +52,14 @@ class _MasterHisPageState extends State<MasterHisPage>
     if (!widget.is_vie) {
       where.addAll({"master_reply.master_id": ApiBase.uid});
     }
-    if (widget.is_vie) {
-      where.addAll({"reply.master_id": ApiBase.uid});
-    }
+//    if (widget.is_vie) {
+//      where.addAll({"reply.master_id": ApiBase.uid});
+//    }
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
       "where": where,
-      "sort": {"create_date": -1},
+      "sort": {"create_date_int": -1},
     };
     widget.is_vie ? await _fetchVie(m) : await _fetchPrize(m);
   }

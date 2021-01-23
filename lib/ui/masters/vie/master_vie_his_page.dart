@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
-import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_all_reply_page.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_input.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_reply_area.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/masters/vie/master_vie_reply_area.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/post_com_detail.dart';
@@ -17,23 +14,23 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/22 下午5:34
-// usage ：大师悬赏帖处理中订单详情
+// date  ：2021/1/23 上午11:14
+// usage ：大师闪断帖已完成订单详情
 // ------------------------------------------------------
 
-class MasterPrizeDoingPage extends StatefulWidget {
+class MasterVieHisPage extends StatefulWidget {
   final String postId;
 
-  MasterPrizeDoingPage({this.postId, Key key}) : super(key: key);
+  MasterVieHisPage({this.postId, Key key}) : super(key: key);
 
   @override
-  _MasterPrizeDoingPageState createState() => _MasterPrizeDoingPageState();
+  _MasterVieHisPageState createState() => _MasterVieHisPageState();
 }
 
-class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
+class _MasterVieHisPageState extends State<MasterVieHisPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
-  BBSPrize _prize; // 悬赏帖处理中详情
+  BBSVie _vie; // 闪断帖已完成详情
 
   @override
   void initState() {
@@ -43,14 +40,14 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
 
   _fetch() async {
     try {
-      BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
+      BBSVie res = await ApiBBSVie.bbsVieHisGet(widget.postId);
       if (res != null) {
-        _prize = res;
-        Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
+        _vie = res;
+        Log.info("当前闪断帖已完成详情：${_vie.toJson()}");
         setState(() {});
       }
     } catch (e) {
-      Log.error("大师查询悬赏帖处理中详情出现异常：$e");
+      Log.error("大师查询闪断帖已完成详情出现异常：$e");
     }
   }
 
@@ -58,7 +55,7 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: _appBarWt(),
+      appBar: CusAppBar(text: "问题详情"),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
@@ -82,44 +79,24 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
             onRefresh: () async => await _fetch(),
             child: ListView(
               children: [
-                if (_prize == null) EmptyContainer(text: "帖子已被删除"),
-                if (_prize != null) ...[
+                if (_vie == null) EmptyContainer(text: "帖子已被删除"),
+                if (_vie != null) ...[
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: S.w(10)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        PostComHeader(prize: _prize), // 帖子顶部信息
-                        PostComDetail(prize: _prize), // 帖子基本信息
+                        PostComHeader(vie: _vie), // 帖子顶部信息
+                        PostComDetail(vie: _vie), // 帖子基本信息
                       ],
                     ),
                   ),
                   // 帖子评论区
-                  MasterPrizeReplyArea(prize: _prize),
+                  MasterVieReplyArea(vie: _vie),
                 ],
               ],
             ),
           ),
-        ),
-        // 大师回复帖子
-        if (_prize != null) MasterPrizeInput(prize: _prize, onSend: _fetch),
-      ],
-    );
-  }
-
-  Widget _appBarWt() {
-    return CusAppBar(
-      text: "问题详情",
-      actions: [
-        FlatButton(
-          child:
-              Text("详情", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
-          onPressed: () {
-            CusRoute.push(
-              context,
-              MasterPrizeAllReplyPage(postId: _prize.id),
-            );
-          },
         ),
       ],
     );

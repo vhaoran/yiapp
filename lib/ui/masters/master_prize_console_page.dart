@@ -12,14 +12,14 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 // usage ：大师控制台的悬赏帖，含可抢单和处理中
 // ------------------------------------------------------
 
-class MasterPrizePage extends StatefulWidget {
-  MasterPrizePage({Key key}) : super(key: key);
+class MasterPrizeConsolePage extends StatefulWidget {
+  MasterPrizeConsolePage({Key key}) : super(key: key);
 
   @override
-  _MasterPrizePageState createState() => _MasterPrizePageState();
+  _MasterPrizeConsolePageState createState() => _MasterPrizeConsolePageState();
 }
 
-class _MasterPrizePageState extends State<MasterPrizePage> {
+class _MasterPrizeConsolePageState extends State<MasterPrizeConsolePage> {
   final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override
