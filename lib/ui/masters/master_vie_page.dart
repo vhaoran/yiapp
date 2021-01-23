@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_aim_main.dart';
-import 'package:yiapp/ui/masters/prize/master_prize_doing_main.dart';
+import 'package:yiapp/ui/masters/vie/master_vie_aim_main.dart';
+import 'package:yiapp/ui/masters/vie/master_vie_doing_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/22 下午5:28
-// usage ：大师控制台的悬赏帖，含可抢单和处理中
+// date  ：2021/1/23 上午9:32
+// usage ：大师控制台的闪断帖，含可抢单和处理中
 // ------------------------------------------------------
 
-class MasterPrizePage extends StatefulWidget {
-  MasterPrizePage({Key key}) : super(key: key);
+class MasterViePage extends StatefulWidget {
+  MasterViePage({Key key}) : super(key: key);
 
   @override
-  _MasterPrizePageState createState() => _MasterPrizePageState();
+  _MasterViePageState createState() => _MasterViePageState();
 }
 
-class _MasterPrizePageState extends State<MasterPrizePage> {
+class _MasterViePageState extends State<MasterViePage> {
   final List<String> _tabsName = ["可抢单", "处理中"];
 
   @override
@@ -27,7 +27,7 @@ class _MasterPrizePageState extends State<MasterPrizePage> {
     return DefaultTabController(
       length: _tabsName.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "悬赏帖"),
+        appBar: CusAppBar(text: "闪断帖"),
         body: _body(),
         backgroundColor: primary,
       ),
@@ -55,8 +55,8 @@ class _MasterPrizePageState extends State<MasterPrizePage> {
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              MasterPrizeAimMain(),
-              MasterPrizeDoingMain(),
+              MasterVieAimMain(),
+              MasterVieDoingMain(),
             ],
           ),
         )),
