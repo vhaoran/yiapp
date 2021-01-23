@@ -15,7 +15,7 @@ import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_yi.dart';
@@ -213,7 +213,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 显示四柱结果
   Widget _buildSiZhu() {
-    SiZhuRes siZhu = _order.content as SiZhuRes;
+    SiZhuContent siZhu = _order.content as SiZhuContent;
     return Column(
       children: <Widget>[
         _dividerCtr(),

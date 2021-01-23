@@ -8,7 +8,7 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -100,7 +100,7 @@ class _MasterOrderCoverState extends State<MasterOrderCover> {
     var m = widget.yiOrder.content;
     if (m is LiuYaoRes) {
       return "六爻订单";
-    } else if (m is SiZhuRes) {
+    } else if (m is SiZhuContent) {
       return "四柱订单";
     } else if (m is HeHunRes) {
       return "合婚订单";

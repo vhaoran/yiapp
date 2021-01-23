@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -13,9 +13,9 @@ import 'package:yiapp/model/orders/sizhu_res.dart';
 class SwitchUtil {
   /// 显示帖子类型
   static String contentType(int type) {
-    if (type == post_liuyao) return "六爻";
-    if (type == post_sizhu) return "四柱";
-    if (type == post_hehun) return "合婚";
+    if (type == submit_liuyao) return "六爻";
+    if (type == submit_sizhu) return "四柱";
+    if (type == submit_hehun) return "合婚";
     return "其他";
   }
 
@@ -45,7 +45,7 @@ class SwitchUtil {
   /// 大师订单类型
   static String orderType(m) {
     if (m is LiuYaoRes) return "六爻订单";
-    if (m is SiZhuRes) return "四柱订单";
+    if (m is SiZhuContent) return "四柱订单";
     if (m is HeHunRes) return "合婚订单";
     return "";
   }
@@ -54,13 +54,13 @@ class SwitchUtil {
   static Map<String, Color> postType(int contentType) {
     Map<String, Color> m = {}; // 测算类别，颜色
     switch (contentType) {
-      case post_liuyao:
+      case submit_liuyao:
         m = {"六爻": Color(0xFF78BA3B)};
         break;
-      case post_sizhu:
+      case submit_sizhu:
         m = {"四柱": Color(0xFF80DAEA)};
         break;
-      case post_hehun:
+      case submit_hehun:
         m = {"合婚": Color(0xFFE0694D)};
         break;
       default:

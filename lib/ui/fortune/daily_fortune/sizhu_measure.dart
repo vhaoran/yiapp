@@ -16,7 +16,7 @@ import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
@@ -89,7 +89,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
       CusToast.toast(context, text: err);
       return;
     }
-    var siZhu = SiZhuRes(
+    var siZhu = SiZhuContent(
       is_solar: !_isLunar,
       name: _nameCtrl.text.trim(),
       is_male: _sex == male ? true : false,

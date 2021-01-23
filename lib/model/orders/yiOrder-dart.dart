@@ -1,6 +1,6 @@
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 
 class YiOrder {
   String id; // 订单 id
@@ -86,7 +86,7 @@ class YiOrder {
     if (json['content'] != null) {
       switch (i) {
         case 0:
-          ct = SiZhuRes.fromJson(json['content']);
+          ct = SiZhuContent.fromJson(json['content']);
           break;
         case 1:
           ct = LiuYaoRes.fromJson(json['content']);
@@ -95,7 +95,7 @@ class YiOrder {
           ct = HeHunRes.fromJson(json['content']);
           break;
         default:
-          ct = SiZhuRes.fromJson(json['content']);
+          ct = SiZhuContent.fromJson(json['content']);
           break;
       }
     }

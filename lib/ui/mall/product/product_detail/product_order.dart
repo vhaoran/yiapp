@@ -58,7 +58,8 @@ class _ProductOrderPageState extends State<ProductOrderPage> {
     var m = {
       "items": maps,
       "contact": _addr.contact_person, // 联系人
-      "addr": {"detail": _addr.detail, "mobile": _addr.mobile},
+      "mobile": _addr.mobile,
+      "addr": {"detail": _addr.detail},
     };
     try {
       var res = await ApiProductOrder.productOrderAdd(m);

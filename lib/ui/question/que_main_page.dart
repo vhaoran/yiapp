@@ -167,16 +167,16 @@ class _QueMainPageState extends State<QueMainPage>
         break;
       case 1: // 四柱
         CusRoute.pushReplacement(
-            context, AskQuestionPage(content_type: post_sizhu));
+            context, AskQuestionPage(content_type: submit_sizhu));
         break;
       case 2: // 合婚
         CusRoute.pushReplacement(
-            context, AskQuestionPage(content_type: post_hehun));
+            context, AskQuestionPage(content_type: submit_hehun));
         break;
       case 3: // 其他
         CusRoute.pushReplacement(
           context,
-          AskQuestionPage(content_type: post_other),
+          AskQuestionPage(content_type: submit_other),
         );
         break;
       default:

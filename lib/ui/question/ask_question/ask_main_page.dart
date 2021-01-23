@@ -63,7 +63,7 @@ class _AskQuestionPageState extends State<AskQuestionPage> {
 
   @override
   void initState() {
-    _isLiuYao = widget.content_type == post_liuyao ? true : false;
+    _isLiuYao = widget.content_type == submit_liuyao ? true : false;
     _barName = "问" + SwitchUtil.contentType(widget.content_type);
     super.initState();
   }

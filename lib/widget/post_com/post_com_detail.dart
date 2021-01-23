@@ -41,15 +41,21 @@ class PostComDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // 六爻没有姓名和性别，不显示
-        if (prize?.content_type != post_liuyao) ...[
+        if (prize?.content_type != submit_liuyao) ...[
           _tip(tip: "姓名", text: prize?.nick ?? ""),
           _tip(tip: "性别", text: prize.content.is_male ? "男" : "女" ?? "保密"),
+          _tip(
+            tip: "出生日期",
+            text: TimeUtil.YMD(
+                isSolar: prize?.content?.is_solar, date: prize.toDateTime()),
+          ),
         ],
-        _tip(
-          tip: "出生日期",
-          text: TimeUtil.YMD(
-              isSolar: prize?.content?.is_solar, date: prize.toDateTime()),
-        ),
+        // 六爻都是阳历
+        if (prize?.content_type == submit_liuyao)
+          _tip(
+            tip: "出生日期",
+            text: TimeUtil.YMD(isSolar: true, date: prize.toDateTime()),
+          ),
         _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
         _tip(tip: "标题", text: "${prize?.title ?? ''}"),
         SizedBox(height: S.h(10)),
@@ -71,15 +77,21 @@ class PostComDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // 六爻没有姓名和性别，不显示
-        if (vie?.content_type != post_liuyao) ...[
+        if (vie?.content_type != submit_liuyao) ...[
           _tip(tip: "姓名", text: vie?.nick ?? ""),
           _tip(tip: "性别", text: vie.content.is_male ? "男" : "女" ?? "保密"),
+          _tip(
+            tip: "出生日期",
+            text: TimeUtil.YMD(
+                isSolar: vie?.content?.is_solar, date: vie.toDateTime()),
+          ),
         ],
-        _tip(
-          tip: "出生日期",
-          text: TimeUtil.YMD(
-              isSolar: vie?.content?.is_solar, date: vie.toDateTime()),
-        ),
+        // 六爻都是阳历
+        if (vie?.content_type == submit_liuyao)
+          _tip(
+            tip: "出生日期",
+            text: TimeUtil.YMD(isSolar: true, date: vie.toDateTime()),
+          ),
         _tip(tip: "所问类型", text: SwitchUtil.contentType(vie?.content_type)),
         _tip(tip: "标题", text: "${vie?.title ?? ''}"),
         SizedBox(height: S.h(10)),

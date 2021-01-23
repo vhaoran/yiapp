@@ -10,7 +10,7 @@ import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -282,7 +282,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   /// 根据服务类型，动态显示结果
   Widget _dynamicTypeView() {
-    if (_yiOrder.content is SiZhuRes) {
+    if (_yiOrder.content is SiZhuContent) {
       Log.info("这是测算四柱");
       return SiZhuOrder(siZhu: _yiOrder.content);
     } else if (_yiOrder.content is HeHunRes) {

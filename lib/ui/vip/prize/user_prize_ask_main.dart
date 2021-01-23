@@ -126,7 +126,9 @@ class _UserPrizeAskMainState extends State<UserPrizeAskMain>
                 onPressed: () => _doCancel(prize.id),
               ),
             // 本人的帖子，有大师回复时，会员可点击回复
-            if (prize.uid == ApiBase.uid && prize.master_reply.isNotEmpty)
+            if (prize.uid == ApiBase.uid &&
+                prize.master_reply.isNotEmpty &&
+                prize.stat == bbs_paid)
               PostComButton(
                 text: "回复",
                 onPressed: () => CusRoute.push(

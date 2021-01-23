@@ -120,7 +120,7 @@ class _UserVieDoingMainState extends State<UserVieDoingMain>
               onPressed: () => _lookViePost(vie.id),
             ),
             // 如果没有大师回复时，用户可以选择取消订单
-            if (vie.reply.isEmpty)
+            if (vie.reply.isEmpty && vie.stat == bbs_paid)
               PostComButton(
                 text: "取消",
                 onPressed: () => _doCancel(vie.id),

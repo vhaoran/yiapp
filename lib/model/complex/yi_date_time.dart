@@ -21,11 +21,11 @@ class YiDateTime {
   final OldTime oldTime; // 根据hour 返回时分
 
   YiDateTime({
-    this.year,
-    this.month,
-    this.day,
-    this.hour,
-    this.minute,
+    this.year: 0,
+    this.month: 0,
+    this.day: 0,
+    this.hour: 0,
+    this.minute: 0,
     this.monthStr,
     this.dayStr,
     this.hourStr,
@@ -52,7 +52,6 @@ class YiDateTime {
     var dt = DateTime(this.year, this.month, this.day, this.hour, this.minute);
     return dt;
   }
-
 
   /// YiDateTime转阳历，选择阴历后得到阴历日期，调用TimeUtil后会判断其为阴历再次转换
   /// 所以如果选择的是阴历，则先将阴历转为阳历显示

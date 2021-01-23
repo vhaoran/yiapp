@@ -1,5 +1,9 @@
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/bbs/bbs_content.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
+import 'package:yiapp/model/bbs/submit_hehun_data.dart';
+import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
+import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'bbs_reply.dart';
 
@@ -27,7 +31,7 @@ class BBSPrize {
   String title;
   int uid;
   BBSReply last_reply;
-  PostContentRes content;
+  dynamic content;
   List<String> images;
   List<BBSPrizeReply> master_reply;
 
@@ -55,12 +59,21 @@ class BBSPrize {
   });
 
   factory BBSPrize.fromJson(Map<String, dynamic> json) {
-    // TODO 根据不同的 content-type,来决定解析 content 为不同的数据结构
+    int type = json['content_type'] as int;
     var content = null;
-    int i = json['content_type'] as int;
-    if (i == 0) {}
-    if (i == 1) {}
-    if (i == 2) {}
+//    if (json["content"] != null) {
+//      // 四柱和其它目前算一个类型
+//      if (type == submit_other || type == submit_sizhu) {
+//        content = SubmitSiZhuData.fromJson(json["content"]);
+//      }
+//      if (type == submit_liuyao) {
+//        content = SubmitLiuYaoData.fromJson(json["content"]);
+//      }
+//      if (type == submit_hehun) {
+//        content = SubmitHeHunData.fromJson(json["content"]);
+//      }
+//    }
+
     // 当前暂未设置其它分类，先直接解析
     content = json["content"] != null
         ? PostContentRes.fromJson(json['content'])

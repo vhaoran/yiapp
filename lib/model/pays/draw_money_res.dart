@@ -7,7 +7,7 @@ import 'bank_card.dart';
 // ------------------------------------------------------
 
 class DrawMoneyRes {
-  int amt; // 提现金额
+  num amt; // 提现金额
   String audit_date; // 审核通过时间
   String auditor_icon; // 审核人头像
   int auditor_id; // 审核人uid
@@ -21,7 +21,7 @@ class DrawMoneyRes {
   String master_nick;
   String reject_reason; // 拒绝原因
   int stat; // 提现状态 0:待审批 1:取消或驳回 4:审批通过
-  int tax; // 税金
+  num tax; // 税金
   BankCard card; // 提现账号
 
   DrawMoneyRes({

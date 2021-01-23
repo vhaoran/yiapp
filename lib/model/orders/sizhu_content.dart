@@ -1,10 +1,10 @@
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/28 下午3:14
-// usage ：大师订单内容 -- 排四柱
+// date  ：2021/1/23 下午2:47
+// usage ：四柱 content 的内容
 // ------------------------------------------------------
 
-class SiZhuRes {
+class SiZhuContent {
   bool is_solar;
   String name; // 姓名，可以没有
   bool is_male;
@@ -14,7 +14,7 @@ class SiZhuRes {
   int hour;
   int minute;
 
-  SiZhuRes({
+  SiZhuContent({
     this.is_solar,
     this.name,
     this.is_male,
@@ -25,8 +25,8 @@ class SiZhuRes {
     this.minute,
   });
 
-  factory SiZhuRes.fromJson(Map<String, dynamic> json) {
-    return SiZhuRes(
+  factory SiZhuContent.fromJson(Map<String, dynamic> json) {
+    return SiZhuContent(
       is_solar: json['is_solar'],
       name: json['name'],
       is_male: json['is_male'],

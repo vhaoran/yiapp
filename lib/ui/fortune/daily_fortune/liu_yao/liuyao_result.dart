@@ -173,7 +173,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     CusRoute.push(
       context,
       AskQuestionPage(
-        content_type: post_liuyao,
+        content_type: submit_liuyao,
         res: widget.res,
         l: widget.l,
         guaTime: widget.guaTime,

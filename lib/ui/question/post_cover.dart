@@ -133,11 +133,11 @@ class _PostCoverState extends State<PostCover> {
   /// 显示测算类别
   void _postType() {
     int type = _p.data.content_type;
-    if (type == post_liuyao) {
+    if (type == submit_liuyao) {
       _m = {"六爻": Color(0xFF78BA3B)};
-    } else if (type == post_sizhu) {
+    } else if (type == submit_sizhu) {
       _m = {"四柱": Color(0xFF80DAEA)};
-    } else if (type == post_hehun) {
+    } else if (type == submit_hehun) {
       _m = {"合婚": Color(0xFFE0694D)};
     } else {
       _m = {"其他": Colors.blueGrey};

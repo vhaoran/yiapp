@@ -39,7 +39,7 @@ class PostHeader extends StatelessWidget {
         _topView(), // 头像、昵称、赏金、发帖时间
         // 帖子基本信息
         Divider(height: 0, thickness: 0.2, color: t_gray),
-        if (data.content_type != post_liuyao) ...[
+        if (data.content_type != submit_liuyao) ...[
           _info(tip: "姓名", text: data.nick),
           _info(tip: "性别", text: _content.is_male ? "男" : "女" ?? "保密"),
         ],

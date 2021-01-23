@@ -167,10 +167,10 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
             SizedBox(height: S.h(20)),
             Row(
               children: <Widget>[
-                Text("-${res.amt}", style: tJi), // 提现金额
+                Text("-${res.amt.toStringAsFixed(2)}", style: tJi), // 提现金额
                 Text(" 元", style: tJi),
                 Spacer(),
-                Text("税金：${res.tax} 元", style: tGray), // 税金
+                Text("税金：${res.tax.toStringAsFixed(2)} 元", style: tGray), // 税金
               ],
             ),
             SizedBox(height: S.h(20)),
@@ -188,15 +188,12 @@ class _MasterDrawMoneyPageState extends State<MasterDrawMoneyPage>
   Widget _dynamicView(DrawMoneyRes res) {
     // 如果审批中的，则显示取消申请提现按钮
     if (!widget.hadDraw) {
-      return SizedBox(
-        height: S.h(25),
-        width: S.w(60),
-        child: CusRaisedButton(
-          child: Text("取消"),
-          backgroundColor: Colors.lightBlue,
-          borderRadius: 100,
-          onPressed: () => _doCancelDrawMoney(res.id),
-        ),
+      return CusRaisedButton(
+        padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: 3),
+        child: Text("取消"),
+        backgroundColor: Colors.lightBlue,
+        borderRadius: 100,
+        onPressed: () => _doCancelDrawMoney(res.id),
       );
     }
     // 如果是已审批的，分为自己取消的、审核不通过的、审核通过的

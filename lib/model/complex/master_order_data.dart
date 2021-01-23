@@ -1,6 +1,6 @@
 import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/model/orders/liuyao_res.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -12,7 +12,7 @@ class MasterOrderData {
   int master_id;
   String comment;
   int yi_cate_id;
-  SiZhuRes siZhu; // 四柱
+  SiZhuContent siZhu; // 四柱
   HeHunRes heHun; // 合婚
   LiuYaoRes liuYao; // 六爻
 
@@ -29,7 +29,7 @@ class MasterOrderData {
     master_id = json['master_id'];
     comment = json['comment'];
     yi_cate_id = json['yi_cate_id'];
-    siZhu = json['siZhu'] != null ? SiZhuRes.fromJson(json['siZhu']) : null;
+    siZhu = json['siZhu'] != null ? SiZhuContent.fromJson(json['siZhu']) : null;
     heHun = json['heHun'] != null ? HeHunRes.fromJson(json['heHun']) : null;
     liuYao =
         json['liuYao'] != null ? LiuYaoRes.fromJson(json['liuYao']) : null;

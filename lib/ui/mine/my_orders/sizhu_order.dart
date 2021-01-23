@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 
@@ -11,7 +11,7 @@ import 'package:yiapp/util/time_util.dart';
 // ------------------------------------------------------
 
 class SiZhuOrder extends StatelessWidget {
-  final SiZhuRes siZhu;
+  final SiZhuContent siZhu;
 
   SiZhuOrder({this.siZhu, Key key}) : super(key: key);
 

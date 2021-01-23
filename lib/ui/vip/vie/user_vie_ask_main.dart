@@ -127,7 +127,9 @@ class _UserVieAskMainState extends State<UserVieAskMain>
                 onPressed: () => _doCancel(vie.id),
               ),
             // 本人的帖子，有大师回复时，会员可点击回复
-            if (vie.uid == ApiBase.uid && vie.reply.isNotEmpty)
+            if (vie.uid == ApiBase.uid &&
+                vie.reply.isNotEmpty &&
+                vie.stat == bbs_paid)
               PostComButton(
                 text: "回复",
                 onPressed: () =>
