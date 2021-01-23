@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/complex/master_order_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -16,64 +11,82 @@ import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
-import 'package:yiapp/model/orders/sizhu_res.dart';
-import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/22 16:02
-// usage ：四柱测算
+// date  ：2021/1/23 上午11:27
+// usage ：四柱测算页面
 // ------------------------------------------------------
 
-class SiZhuMeasure extends StatefulWidget {
-  SiZhuMeasure({Key key}) : super(key: key);
+class SiZhuMeasurePage extends StatefulWidget {
+  SiZhuMeasurePage({Key key}) : super(key: key);
 
   @override
-  _SiZhuMeasureState createState() => _SiZhuMeasureState();
+  _SiZhuMeasurePageState createState() => _SiZhuMeasurePageState();
 }
 
-class _SiZhuMeasureState extends State<SiZhuMeasure> {
+class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
   var _nameCtrl = TextEditingController(); // 姓名
-  var _commentCtrl = TextEditingController(); // 内容输入框
-  int _sex = male; // 0 女，1 男
+  int _sex = male; // 默认性别男
   bool _isLunar = false;
   YiDateTime _yi;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "四柱测算", backData: "清理kv_yiorder"),
+      appBar: CusAppBar(text: "四柱测算"),
       body: _lv(),
       backgroundColor: primary,
     );
   }
 
   Widget _lv() {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          child: Text(
-            "填写个人基本信息",
-            style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: S.w(10)),
+            children: <Widget>[
+              SizedBox(height: S.h(25)),
+              Center(
+                child: Text(
+                  "填写个人基本信息",
+                  style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+                ),
+              ),
+              SizedBox(height: S.h(10)),
+              _nameInputWt(), // 姓名输入框
+              _selectSexWt(), // 选择性别
+              _selectDateWt(), // 选择出生日期
+            ],
           ),
         ),
-        _nameInput(), // 姓名输入框
-        _selectSex(), // 选择性别
-        _selectDate(), // 选择出生日期
-        SizedBox(height: S.h(5)),
-        CusRectField(
-          controller: _commentCtrl,
-          hintText: "请详细描述你的问题",
-          maxLines: 10,
-          autofocus: false,
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: CusRaisedButton(
+                child: Text("悬赏帖求测", style: TextStyle(fontSize: S.sp(15))),
+                backgroundColor: Color(0xFFE96C62),
+                onPressed: () {},
+              ),
+            ),
+            Expanded(
+              child: CusRaisedButton(
+                child: Text("闪断帖求测", style: TextStyle(fontSize: S.sp(15))),
+                backgroundColor: Color(0xFFED9951),
+                onPressed: () {},
+              ),
+            ),
+            Expanded(
+              child: CusRaisedButton(
+                child: Text("大师亲测", style: TextStyle(fontSize: S.sp(15))),
+                backgroundColor: Color(0xFFE8493E),
+                onPressed: () {},
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: S.h(35)),
-        // 大师亲测
-        CusRaisedButton(child: Text("大师亲测"), onPressed: _doSelectMaster),
       ],
     );
   }
@@ -81,9 +94,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   /// 跳往选择大师页面
   void _doSelectMaster() async {
     String err;
-    if (_yi == null)
-      err = "未选择日期";
-    else if (_commentCtrl.text.isEmpty) err = "描述内容不能为空";
+    if (_yi == null) err = "未选择日期";
     setState(() {});
     if (err != null) {
       CusToast.toast(context, text: err);
@@ -95,19 +106,13 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
       is_male: _sex == male ? true : false,
     );
     siZhu.ymdhm(_yi.toDateTime());
-    var data = MasterOrderData(comment: _commentCtrl.text.trim(), siZhu: siZhu);
-    Log.info("当前提交四柱的信息：${data.toJson()}");
-    if (await KV.getStr(kv_order) != null) await KV.remove(kv_order); // 清除上次数据
-    // 存储大师订单数据
-    bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (ok) CusRoute.push(context, MastersPage(showLeading: true));
   }
 
   /// 姓名输入框
-  Widget _nameInput() {
+  Widget _nameInputWt() {
     return Container(
       padding: EdgeInsets.only(left: S.w(15)),
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: S.h(15)),
       decoration: BoxDecoration(
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
@@ -127,10 +132,10 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   }
 
   /// 选择性别
-  Widget _selectSex() {
+  Widget _selectSexWt() {
     return Container(
       padding: EdgeInsets.only(left: S.w(15)),
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: S.h(15)),
       decoration: BoxDecoration(
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
@@ -157,14 +162,13 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   }
 
   /// 选择出生日期
-  Widget _selectDate() {
+  Widget _selectDateWt() {
     String time = _yi == null
         ? "请选择出生日期"
         : TimeUtil.YMDHM(
             isSolar: !_isLunar, date: _isLunar ? _yi.toSolar() : _yi);
     return Container(
       padding: EdgeInsets.only(left: S.w(15)),
-      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: fif_primary,
         borderRadius: BorderRadius.circular(10),
@@ -177,6 +181,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
         CusRaisedButton(
           padding: EdgeInsets.symmetric(vertical: S.h(4), horizontal: S.w(12)),
           backgroundColor: Colors.grey,
+          borderRadius: 50,
           child: Text("选择", style: TextStyle(color: Colors.black)),
           onPressed: () {
             _isLunar = false;
@@ -197,7 +202,6 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
   @override
   void dispose() {
     _nameCtrl.dispose();
-    _commentCtrl.dispose();
     super.dispose();
   }
 }

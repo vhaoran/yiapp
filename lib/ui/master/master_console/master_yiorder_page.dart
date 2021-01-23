@@ -8,9 +8,9 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
-import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
-import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
+import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -240,7 +240,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
           padding: EdgeInsets.symmetric(vertical: S.h(10)),
           child: _dynamicTypeView(), // 用户基本信息
         ),
-        if (!(_yiOrder.content is YiOrderLiuYao)) ...[
+        if (!(_yiOrder.content is LiuYaoRes)) ...[
           Text("问题描述", style: _tPrimary),
           Text(_yiOrder.comment, style: _tGray), // 问题描述
         ],
@@ -282,13 +282,13 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
 
   /// 根据服务类型，动态显示结果
   Widget _dynamicTypeView() {
-    if (_yiOrder.content is YiOrderSiZhu) {
+    if (_yiOrder.content is SiZhuRes) {
       Log.info("这是测算四柱");
       return SiZhuOrder(siZhu: _yiOrder.content);
-    } else if (_yiOrder.content is YiOrderHeHun) {
+    } else if (_yiOrder.content is HeHunRes) {
       Log.info("这是测算合婚");
       return HeHunOrder(heHun: _yiOrder.content);
-    } else if (_yiOrder.content is YiOrderLiuYao) {
+    } else if (_yiOrder.content is LiuYaoRes) {
       Log.info("这是测算六爻");
       return MasterOrder(liuYao: _yiOrder.content);
     }

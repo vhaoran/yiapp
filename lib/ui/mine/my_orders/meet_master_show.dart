@@ -7,9 +7,9 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
-import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
-import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
+import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -252,11 +252,11 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
 
   /// 根据服务类型，动态显示所问订单详情
   Widget _dynamicTypeView() {
-    if (widget.yiOrder.content is YiOrderSiZhu) {
+    if (widget.yiOrder.content is SiZhuRes) {
       return SiZhuOrder(siZhu: widget.yiOrder.content);
-    } else if (widget.yiOrder.content is YiOrderHeHun) {
+    } else if (widget.yiOrder.content is HeHunRes) {
       return HeHunOrder(heHun: widget.yiOrder.content);
-    } else if (widget.yiOrder.content is YiOrderLiuYao) {
+    } else if (widget.yiOrder.content is LiuYaoRes) {
       Log.info("这是测算六爻");
       return MasterOrder(liuYao: widget.yiOrder.content);
     }

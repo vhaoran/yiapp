@@ -7,7 +7,7 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
@@ -126,7 +126,7 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
       CusToast.toast(context, text: _err);
       return;
     }
-    YiOrderSiZhu siZhu = YiOrderSiZhu(
+    SiZhuRes siZhu = SiZhuRes(
       is_solar: !_isLunar,
       name: _nameCtrl.text.trim(),
       is_male: _sex == male ? true : false,

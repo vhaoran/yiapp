@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 
@@ -11,7 +11,7 @@ import 'package:yiapp/util/time_util.dart';
 // ------------------------------------------------------
 
 class HeHunOrder extends StatelessWidget {
-  final YiOrderHeHun heHun;
+  final HeHunRes heHun;
 
   HeHunOrder({this.heHun, Key key}) : super(key: key);
 

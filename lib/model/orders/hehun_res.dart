@@ -4,7 +4,7 @@
 // usage ：大师订单内容 -- 合婚
 // ------------------------------------------------------
 
-class YiOrderHeHun {
+class HeHunRes {
   // male 男方
   String name_male;
   bool is_solar_male;
@@ -22,7 +22,7 @@ class YiOrderHeHun {
   int hour_female;
   int minute_female;
 
-  YiOrderHeHun({
+  HeHunRes({
     this.name_male,
     this.is_solar_male,
     this.year_male,
@@ -39,8 +39,8 @@ class YiOrderHeHun {
     this.minute_female,
   });
 
-  factory YiOrderHeHun.fromJson(Map<String, dynamic> json) {
-    return YiOrderHeHun(
+  factory HeHunRes.fromJson(Map<String, dynamic> json) {
+    return HeHunRes(
       name_male: json['name_male'],
       is_solar_male: json['is_solar_male'],
       year_male: json['year_male'],

@@ -6,9 +6,9 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/master/master_order_detail.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
-import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
-import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
+import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -98,11 +98,11 @@ class _MasterOrderCoverState extends State<MasterOrderCover> {
   /// 订单类型
   String _orderStr() {
     var m = widget.yiOrder.content;
-    if (m is YiOrderLiuYao) {
+    if (m is LiuYaoRes) {
       return "六爻订单";
-    } else if (m is YiOrderSiZhu) {
+    } else if (m is SiZhuRes) {
       return "四柱订单";
-    } else if (m is YiOrderHeHun) {
+    } else if (m is HeHunRes) {
       return "合婚订单";
     }
     return "未知类型订单";

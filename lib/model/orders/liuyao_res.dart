@@ -1,10 +1,10 @@
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/29 下午5:41
-// usage ：大师订单内容 -- 六爻
+// usage ：六爻格式
 // ------------------------------------------------------
 
-class YiOrderLiuYao {
+class LiuYaoRes {
   String yao_code; //  卦的代码
   // 这是公历表示的日期
   bool is_male;
@@ -14,7 +14,7 @@ class YiOrderLiuYao {
   int hour;
   int minute;
 
-  YiOrderLiuYao({
+  LiuYaoRes({
     this.yao_code,
     this.is_male,
     this.year,
@@ -24,8 +24,8 @@ class YiOrderLiuYao {
     this.minute,
   });
 
-  factory YiOrderLiuYao.fromJson(Map<String, dynamic> json) {
-    return YiOrderLiuYao(
+  factory LiuYaoRes.fromJson(Map<String, dynamic> json) {
+    return LiuYaoRes(
       yao_code: json['yao_code'],
       is_male: json['is_male'],
       year: json['year'],

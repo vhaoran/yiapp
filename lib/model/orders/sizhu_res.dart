@@ -4,7 +4,7 @@
 // usage ：大师订单内容 -- 排四柱
 // ------------------------------------------------------
 
-class YiOrderSiZhu {
+class SiZhuRes {
   bool is_solar;
   String name; // 姓名，可以没有
   bool is_male;
@@ -14,7 +14,7 @@ class YiOrderSiZhu {
   int hour;
   int minute;
 
-  YiOrderSiZhu({
+  SiZhuRes({
     this.is_solar,
     this.name,
     this.is_male,
@@ -25,8 +25,8 @@ class YiOrderSiZhu {
     this.minute,
   });
 
-  factory YiOrderSiZhu.fromJson(Map<String, dynamic> json) {
-    return YiOrderSiZhu(
+  factory SiZhuRes.fromJson(Map<String, dynamic> json) {
+    return SiZhuRes(
       is_solar: json['is_solar'],
       name: json['name'],
       is_male: json['is_male'],

@@ -18,7 +18,7 @@ import 'package:yiapp/widget/cus_time_picker/picker_mode.dart';
 import 'package:yiapp/widget/cus_time_picker/time_picker.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/widget/master/masters_page.dart';
@@ -102,7 +102,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
       CusToast.toast(context, text: _err);
       return;
     }
-    var heHun = YiOrderHeHun(
+    var heHun = HeHunRes(
       name_male: _maleNameCtrl.text.trim(),
       is_solar_male: !_isLunarMale,
       name_female: _femaleNameCtrl.text.trim(),

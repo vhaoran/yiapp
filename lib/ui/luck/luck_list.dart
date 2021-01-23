@@ -32,6 +32,11 @@ class LuckList {
       "color": 0xFFE86E66,
       "route": r_he_hun,
     },
+    {
+      "text": "临时四柱",
+      "color": 0xFFEEA988,
+      "route": r_sizhu_test,
+    },
   ];
 
   /// 免费测算
@@ -42,21 +47,9 @@ class LuckList {
       "color": 0xFFF0D15F,
       "route": r_con_pair,
     },
-    {
-      "text": "生肖配对",
-      "color": 0xFF78BA3B,
-      "route": r_zodiac_pair
-    },
-    {
-      "text": "血型配对",
-      "color": 0xFFDE524B,
-      "route": r_blood_pair
-    },
-    {
-      "text": "生日配对",
-      "color": 0xFF74C1FA,
-      "route": r_birth_pair
-    },
+    {"text": "生肖配对", "color": 0xFF78BA3B, "route": r_zodiac_pair},
+    {"text": "血型配对", "color": 0xFFDE524B, "route": r_blood_pair},
+    {"text": "生日配对", "color": 0xFF74C1FA, "route": r_birth_pair},
     // 热门灵签
     {
       "text": "观音灵签",
@@ -113,7 +106,7 @@ class LuckIcon {
   int color; // 背景色
   String route; // 路由名称
 
-  LuckIcon({this.text,this.color, this.route});
+  LuckIcon({this.text, this.color, this.route});
 
   LuckIcon.fromJson(Map<String, dynamic> json) {
     text = json['text'];

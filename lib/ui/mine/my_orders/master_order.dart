@@ -6,7 +6,7 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
-import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
+import 'package:yiapp/model/orders/liuyao_res.dart';
 import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
@@ -20,7 +20,7 @@ import 'package:yiapp/util/time_util.dart';
 // ------------------------------------------------------
 
 class MasterOrder extends StatefulWidget {
-  final YiOrderLiuYao liuYao;
+  final LiuYaoRes liuYao;
 
   MasterOrder({this.liuYao, Key key}) : super(key: key);
 

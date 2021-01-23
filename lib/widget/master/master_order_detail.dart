@@ -13,9 +13,9 @@ import 'package:yiapp/widget/master/hehun_res_show.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/yiOrder-heHun.dart';
-import 'package:yiapp/model/orders/yiOrder-liuyao.dart';
-import 'package:yiapp/model/orders/yiOrder-sizhu.dart';
+import 'package:yiapp/model/orders/hehun_res.dart';
+import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/sizhu_res.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_yi.dart';
@@ -62,7 +62,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 如果是六爻，获取六爻详情
   _fetchLiuYao() async {
-    YiOrderLiuYao yao = _order.content;
+    LiuYaoRes yao = _order.content;
     _codes = yao.yao_code.split('').map((e) => int.parse(e)).toList();
     var m = {
       "year": yao.year,
@@ -213,7 +213,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 显示四柱结果
   Widget _buildSiZhu() {
-    YiOrderSiZhu siZhu = _order.content as YiOrderSiZhu;
+    SiZhuRes siZhu = _order.content as SiZhuRes;
     return Column(
       children: <Widget>[
         _dividerCtr(),
@@ -245,7 +245,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 显示合婚结果
   Widget _buildHeHun() {
-    YiOrderHeHun heHun = _order.content as YiOrderHeHun;
+    HeHunRes heHun = _order.content as HeHunRes;
     return Column(
       children: <Widget>[
         HeHunResShow(name: heHun.name_male, sex: "男", time: "男生时间"),
