@@ -1,10 +1,11 @@
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/29 下午4:08
-// usage ：大师订单内容 -- 合婚
+// usage ：合婚 content 的内容
 // ------------------------------------------------------
 
-class HeHunRes {
+
+class HeHunContent {
   // male 男方
   String name_male;
   bool is_solar_male;
@@ -22,7 +23,7 @@ class HeHunRes {
   int hour_female;
   int minute_female;
 
-  HeHunRes({
+  HeHunContent({
     this.name_male,
     this.is_solar_male,
     this.year_male,
@@ -39,8 +40,8 @@ class HeHunRes {
     this.minute_female,
   });
 
-  factory HeHunRes.fromJson(Map<String, dynamic> json) {
-    return HeHunRes(
+  factory HeHunContent.fromJson(Map<String, dynamic> json) {
+    return HeHunContent(
       name_male: json['name_male'],
       is_solar_male: json['is_solar_male'],
       year_male: json['year_male'],

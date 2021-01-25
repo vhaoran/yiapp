@@ -1,10 +1,10 @@
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/12/29 下午5:41
-// usage ：六爻格式
+// date  ：2021/1/25 上午10:01
+// usage ：六爻 content 的内容
 // ------------------------------------------------------
 
-class LiuYaoRes {
+class LiuYaoContent {
   String yao_code; //  卦的代码
   // 这是公历表示的日期
   bool is_male;
@@ -14,7 +14,7 @@ class LiuYaoRes {
   int hour;
   int minute;
 
-  LiuYaoRes({
+  LiuYaoContent({
     this.yao_code,
     this.is_male,
     this.year,
@@ -24,8 +24,8 @@ class LiuYaoRes {
     this.minute,
   });
 
-  factory LiuYaoRes.fromJson(Map<String, dynamic> json) {
-    return LiuYaoRes(
+  factory LiuYaoContent.fromJson(Map<String, dynamic> json) {
+    return LiuYaoContent(
       yao_code: json['yao_code'],
       is_male: json['is_male'],
       year: json['year'],

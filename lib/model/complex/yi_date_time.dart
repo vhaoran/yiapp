@@ -53,6 +53,16 @@ class YiDateTime {
     return dt;
   }
 
+  YiDateTime fromDateTime(DateTime dt) {
+    return YiDateTime(
+      year: dt.year,
+      month: dt.month,
+      day: dt.day,
+      hour: dt.hour,
+      minute: dt.minute,
+    );
+  }
+
   /// YiDateTime转阳历，选择阴历后得到阴历日期，调用TimeUtil后会判断其为阴历再次转换
   /// 所以如果选择的是阴历，则先将阴历转为阳历显示
   DateTime toSolar() {

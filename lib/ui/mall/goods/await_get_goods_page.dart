@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
@@ -50,7 +51,7 @@ class _AwaitGetGoodsPageState extends State<AwaitGetGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_unreceived},
+      "where": {"stat": mall_unreceived, "uid": ApiBase.uid},
       "sort": {"create_time_int": -1},
     };
     try {

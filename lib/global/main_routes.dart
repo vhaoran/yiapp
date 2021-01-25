@@ -12,6 +12,7 @@ import 'package:yiapp/ui/luck/free_calculate/con_pair.dart';
 import 'package:yiapp/ui/luck/free_calculate/zhou_gong_page.dart';
 import 'package:yiapp/ui/luck/free_calculate/zodiac_pair.dart';
 import 'package:yiapp/ui/home/home_page.dart';
+import 'package:yiapp/ui/vip/hehun/hehun_measure_page.dart';
 import 'package:yiapp/ui/vip/sizhu/sizhu_measure_page.dart';
 
 // ------------------------------------------------------
@@ -29,7 +30,8 @@ final Map<String, WidgetBuilder> mainRoutes = {
   r_com_draw: (BuildContext context) => ComDrawPage(), // 共用的免费抽灵签页面
   r_liu_yao: (BuildContext context) => LiuYaoPage(), // 六爻排盘
   r_sizhu: (BuildContext context) => SiZhuMeasure(), // 四柱测算
-  r_sizhu_test: (BuildContext context) => SiZhuMeasurePage(), // 四柱测算
+  r_sizhu_test: (BuildContext context) => SiZhuMeasurePage(), // 四柱测算测试
+  r_hehun_test: (BuildContext context) => HeHunMeasurePage(), // 四柱测算测试
   r_he_hun: (BuildContext context) => HeHunMeasure(), // 合婚测算
   r_article: (BuildContext context) => ArticleMain(), // 精选文章
   r_zhou_gong: (BuildContext context) => ZhouGongPage(), // 周公解梦

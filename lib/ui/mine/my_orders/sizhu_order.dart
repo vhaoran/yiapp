@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
@@ -28,9 +29,14 @@ class SiZhuOrder extends StatelessWidget {
 
   /// 出生日期
   String _birthDate() {
-    DateTime time = siZhu.dateTime(); // 选择的年月日转换为DateTime
-    DateTime date = siZhu.is_solar ? time : TimeUtil.toSolar(time);
-    return TimeUtil.YMDHM(date: date, isSolar: siZhu.is_solar);
+    try {
+      DateTime time = siZhu.toDateTime(); // 选择的年月日转换为DateTime
+      DateTime date = siZhu.is_solar ? time : TimeUtil.toSolar(time);
+      return TimeUtil.YMDHM(date: date, isSolar: siZhu.is_solar);
+    } catch (e) {
+      Log.error("转换出生日期出现异常：$e");
+      return "隐藏";
+    }
   }
 
   /// 通用的 Row

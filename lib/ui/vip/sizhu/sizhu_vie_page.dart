@@ -4,13 +4,13 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
+import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/bo/price_level_res.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
-import 'package:yiapp/service/api/api-bbs-prize.dart';
+import 'package:yiapp/service/api/api-bbs-vie.dart';
 import 'package:yiapp/service/api/api_bo.dart';
-import 'package:yiapp/ui/vip/prize/user_prize_doing_page.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_doing_page.dart';
 import 'package:yiapp/util/math_util.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
@@ -23,24 +23,24 @@ import 'package:yiapp/widget/post_com/post_com_detail.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/23 下午2:14
-// usage ：四柱悬赏帖求测
+// date  ：2021/1/25 下午5:03
+// usage ：四柱闪断帖求测
 // ------------------------------------------------------
 
-class SiZhuPrizePage extends StatefulWidget {
+class SiZhuViePage extends StatefulWidget {
   final SubmitSiZhuData siZhuData;
 
-  SiZhuPrizePage({this.siZhuData, Key key}) : super(key: key);
+  SiZhuViePage({this.siZhuData, Key key}) : super(key: key);
 
   @override
-  _SiZhuPrizePageState createState() => _SiZhuPrizePageState();
+  _SiZhuViePageState createState() => _SiZhuViePageState();
 }
 
-class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
+class _SiZhuViePageState extends State<SiZhuViePage> {
   var _future;
-  List<PriceLevelRes> _l = []; // 运营商悬赏帖标准
+  List<PriceLevelRes> _l = []; // 运营商闪断帖标准
   List<num> _prices = []; // 价格降序重新排列
-  int _select = -1; // 当前选择的第几个悬赏帖标准
+  int _select = -1; // 当前选择的第几个闪断帖标准
   SubmitSiZhuData _siZhuData;
 
   @override
@@ -49,11 +49,11 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
     super.initState();
   }
 
-  /// 会员获取运营商设置的悬赏帖的标准
+  /// 会员获取运营商设置的闪断帖的标准
   _fetch() async {
     try {
       _siZhuData = widget.siZhuData;
-      var res = await ApiBo.brokerPriceLevelPrizeUserList();
+      var res = await ApiBo.brokerPriceLevelVieUserList();
       if (res != null) {
         _l = res;
         if (res.isNotEmpty) {
@@ -64,7 +64,7 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
         }
       }
     } catch (e) {
-      Log.error("会员获取运营商悬赏帖标准出现异常：$e");
+      Log.error("会员获取运营商闪断帖标准出现异常：$e");
     }
   }
 
@@ -101,7 +101,7 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
                 ),
                 // 提交四柱的基本信息
                 PostComDetail(
-                  prize: BBSPrize(
+                  vie: BBSVie(
                     title: _siZhuData.title,
                     brief: _siZhuData.brief,
                     content: _siZhuData.content,
@@ -126,16 +126,16 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
             ),
           ),
         ),
-        // 发布悬赏帖按钮
-        SizedBox(width: S.screenW(), child: _doPrizeOrderWt()),
+        // 发布闪断帖按钮
+        SizedBox(width: S.screenW(), child: _doVieOrderWt()),
       ],
     );
   }
 
-  /// 发悬赏帖按钮
-  Widget _doPrizeOrderWt() {
+  /// 发闪断帖按钮
+  Widget _doVieOrderWt() {
     return CusRaisedButton(
-      child: Text("发悬赏帖", style: TextStyle(fontSize: S.sp(14))),
+      child: Text("发闪断帖", style: TextStyle(fontSize: S.sp(14))),
       borderRadius: 50,
       onPressed: () {
         if (_l.isEmpty) {
@@ -149,7 +149,7 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
         }
         if (_siZhuData != null) {
           Log.info("发帖数据：${_siZhuData.toJson()}");
-          _doPrizeOrder(); // 发四柱悬赏帖
+          _doVieOrder(); // 发四柱闪断帖
         } else {
           Log.error("提交的四柱测试数据为空");
         }
@@ -157,21 +157,21 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
     );
   }
 
-  /// 发四柱悬赏帖
-  void _doPrizeOrder() async {
+  /// 发四柱闪断帖
+  void _doVieOrder() async {
     try {
-      BBSPrize prize = await ApiBBSPrize.bbsPrizeAdd(_siZhuData.toJson());
-      if (prize != null) {
+      BBSVie vie = await ApiBBSVie.bbsVieAdd(_siZhuData.toJson());
+      if (vie != null) {
         CusToast.toast(context, text: "下单成功", pos: ToastPos.bottom);
         BalancePay(
           context,
-          data: PayData(amt: _siZhuData.amt, b_type: b_bbs_prize, id: prize.id),
+          data: PayData(amt: _siZhuData.amt, b_type: b_bbs_vie, id: vie.id),
           onSuccess: () {
             CusRoute.push(
               context,
-              UserPrizeDoingPage(
-                postId: prize.id,
-                backData: "发四柱悬赏帖后进入处理中页面，然后返回时携带数据",
+              UserVieDoingPage(
+                postId: vie.id,
+                backData: "发四柱闪断帖进入处理中页面，然后返回时携带数据",
               ),
             ).then((value) {
               if (value != null) {
@@ -182,11 +182,11 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
         );
       }
     } catch (e) {
-      Log.error("四柱悬赏帖下单出现异常：$e");
+      Log.error("四柱闪断帖下单出现异常：$e");
     }
   }
 
-  /// 单个悬赏帖标准组件
+  /// 单个闪断帖标准组件
   Widget _priceItem(num val, int select) {
     bool checked = _select == select;
     return InkWell(
@@ -197,7 +197,7 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
           (e) => e.price == val,
           orElse: () => null,
         );
-        Log.info("当前的悬赏金标准：${selectPrice.toJson()}");
+        Log.info("当前的闪断金标准：${selectPrice.toJson()}");
         _siZhuData.amt = val;
         _siZhuData.level_id = selectPrice.price_level_id;
         setState(() {});

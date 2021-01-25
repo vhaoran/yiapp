@@ -7,8 +7,8 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
@@ -254,9 +254,9 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
   Widget _dynamicTypeView() {
     if (widget.yiOrder.content is SiZhuContent) {
       return SiZhuOrder(siZhu: widget.yiOrder.content);
-    } else if (widget.yiOrder.content is HeHunRes) {
+    } else if (widget.yiOrder.content is HeHunContent) {
       return HeHunOrder(heHun: widget.yiOrder.content);
-    } else if (widget.yiOrder.content is LiuYaoRes) {
+    } else if (widget.yiOrder.content is LiuYaoContent) {
       Log.info("这是测算六爻");
       return MasterOrder(liuYao: widget.yiOrder.content);
     }

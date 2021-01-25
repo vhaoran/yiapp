@@ -1,5 +1,5 @@
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 
 // ------------------------------------------------------
@@ -13,8 +13,8 @@ class MasterOrderData {
   String comment;
   int yi_cate_id;
   SiZhuContent siZhu; // 四柱
-  HeHunRes heHun; // 合婚
-  LiuYaoRes liuYao; // 六爻
+  HeHunContent heHun; // 合婚
+  LiuYaoContent liuYao; // 六爻
 
   MasterOrderData({
     this.master_id,
@@ -30,9 +30,9 @@ class MasterOrderData {
     comment = json['comment'];
     yi_cate_id = json['yi_cate_id'];
     siZhu = json['siZhu'] != null ? SiZhuContent.fromJson(json['siZhu']) : null;
-    heHun = json['heHun'] != null ? HeHunRes.fromJson(json['heHun']) : null;
+    heHun = json['heHun'] != null ? HeHunContent.fromJson(json['heHun']) : null;
     liuYao =
-        json['liuYao'] != null ? LiuYaoRes.fromJson(json['liuYao']) : null;
+        json['liuYao'] != null ? LiuYaoContent.fromJson(json['liuYao']) : null;
   }
 
   Map<String, dynamic> toJson() {

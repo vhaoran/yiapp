@@ -24,8 +24,9 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 class UserVieDoingPage extends StatefulWidget {
   final String postId;
+  final String backData;
 
-  UserVieDoingPage({this.postId, Key key}) : super(key: key);
+  UserVieDoingPage({this.postId, this.backData, Key key}) : super(key: key);
 
   @override
   _UserVieDoingPageState createState() => _UserVieDoingPageState();
@@ -112,6 +113,7 @@ class _UserVieDoingPageState extends State<UserVieDoingPage>
   Widget _appBarWt() {
     return CusAppBar(
       text: "问题详情",
+      backData: widget.backData,
       actions: [
         // 有大师回复时，显示打赏按钮
         if (_isOwner && _vie.reply.isNotEmpty)

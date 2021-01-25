@@ -14,8 +14,10 @@ import 'package:yiapp/widget/master/cus_service.dart';
 
 class SelectMasterItem extends StatefulWidget {
   final int master_id;
+  final dynamic yiOrderData;
 
-  SelectMasterItem({this.master_id, Key key}) : super(key: key);
+  SelectMasterItem({this.master_id, this.yiOrderData, Key key})
+      : super(key: key);
 
   @override
   _SelectMasterItemState createState() => _SelectMasterItemState();
@@ -63,7 +65,10 @@ class _SelectMasterItemState extends State<SelectMasterItem> {
   Widget _lv() {
     return ListView(
       children: <Widget>[
-        ..._l.map((e) => ServiceItem(cate: e, isSelf: false)),
+        ..._l.map(
+          (e) => ServiceItem(
+              cate: e, isSelf: false, yiOrderData: widget.yiOrderData),
+        ),
       ],
     );
   }

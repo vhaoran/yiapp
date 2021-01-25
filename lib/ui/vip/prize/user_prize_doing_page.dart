@@ -25,8 +25,9 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 class UserPrizeDoingPage extends StatefulWidget {
   final String postId;
+  final String backData;
 
-  UserPrizeDoingPage({this.postId, Key key}) : super(key: key);
+  UserPrizeDoingPage({this.postId, this.backData, Key key}) : super(key: key);
 
   @override
   _UserPrizeDoingPageState createState() => _UserPrizeDoingPageState();
@@ -52,14 +53,14 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
       if (res != null) {
         _prize = res;
         _isOwner = _prize.uid == ApiBase.uid;
-        Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
+        Log.info("会员当前悬赏帖处理中详情：${_prize.toJson()}");
         num money = 0;
         res.master_reply.forEach((e) => {money += e.amt});
         _overBtn = res.amt == money;
         setState(() {});
       }
     } catch (e) {
-      Log.error("查询悬赏帖处理中详情出现异常：$e");
+      Log.error("会员查询悬赏帖处理中详情出现异常：$e");
     }
   }
 
@@ -131,6 +132,7 @@ class _UserPrizeDoingPageState extends State<UserPrizeDoingPage>
   Widget _appBarWt() {
     return CusAppBar(
       text: "问题详情",
+      backData: widget.backData,
       actions: [
         // 本人处理中的帖子，且悬赏金已经发完，显示结单按钮
         if (_overBtn && _isOwner)

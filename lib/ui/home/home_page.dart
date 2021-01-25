@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
 //      _m.addAll({"问命": QueMainPage()});
       _m.addAll({"问命": UserPostAskPage()});
     }
-    if (res.enable_master == 1) _m.addAll({"大师": MastersPage()});
+    if (res.enable_master == 1) _m.addAll({"大师": BrokerMastersListPage()});
     _m.addAll({"我的": MinePage()});
     setState(() {});
   }

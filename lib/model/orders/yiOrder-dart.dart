@@ -1,5 +1,5 @@
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 
 class YiOrder {
@@ -89,10 +89,10 @@ class YiOrder {
           ct = SiZhuContent.fromJson(json['content']);
           break;
         case 1:
-          ct = LiuYaoRes.fromJson(json['content']);
+          ct = LiuYaoContent.fromJson(json['content']);
           break;
         case 3:
-          ct = HeHunRes.fromJson(json['content']);
+          ct = HeHunContent.fromJson(json['content']);
           break;
         default:
           ct = SiZhuContent.fromJson(json['content']);

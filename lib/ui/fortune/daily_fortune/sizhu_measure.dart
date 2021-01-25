@@ -100,7 +100,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order); // 清除上次数据
     // 存储大师订单数据
     bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (ok) CusRoute.push(context, MastersPage(showLeading: true));
+    if (ok) CusRoute.push(context, BrokerMastersListPage(showLeading: true));
   }
 
   /// 姓名输入框

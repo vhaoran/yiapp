@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
@@ -50,7 +51,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       padding: EdgeInsets.symmetric(horizontal: S.w(10)),
       children: <Widget>[
         Container(
-          height: S.screenH() - S.h(120),
+          height: S.screenH() - S.h(bottom_space),
           child: Column(
             children: <Widget>[
               SizedBox(height: S.h(5)),
@@ -65,7 +66,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
               _sexWt(), // 设置性别
               _birthDateWt(), // 设置出生日期
               _titleWt(), // 设置标题
-              _briefWt(),
+              _briefWt(), // 设置摘要
             ],
           ),
         ),
@@ -75,18 +76,20 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
   }
 
   Widget _bottomButtonsWt() {
-    var content = SiZhuContent()
-      ..is_solar = !_isLunar
-      ..name = _nameCtrl.text.trim()
-      ..is_male = _sex == male;
+    var content = SiZhuContent(
+      is_solar: !_isLunar,
+      name: _nameCtrl.text.trim(),
+      is_male: _sex == male,
+    );
     content.ymdhm(_yiDateTime.toDateTime());
-    var siZhuData = SubmitSiZhuData()
-      ..amt = 0
-      ..level_id = 0
-      ..title = _titleCtrl.text.trim()
-      ..brief = _briefCtrl.text.trim()
-      ..content_type = submit_sizhu
-      ..content = content;
+    var siZhuData = SubmitSiZhuData(
+      amt: 0,
+      level_id: 0,
+      title: _titleCtrl.text.trim(),
+      brief: _briefCtrl.text.trim(),
+      content_type: submit_sizhu,
+      content: content,
+    );
     if (siZhuData != null) {
       return SiZhuBottomButtons(siZhuData: siZhuData);
     }
@@ -103,6 +106,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
           hintText: "可默认匿名",
           autofocus: false,
           hideBorder: true,
+          onChanged: () => setState(() {}),
         ),
       ),
     );
@@ -175,10 +179,11 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       child: Expanded(
         child: CusRectField(
           controller: _titleCtrl,
-          hintText: "请输入帖子标题",
-          fromValue: "我想问一下，金银花喝着怎么样？",
+          hintText: "请输入标题",
+          fromValue: "大师，我想问一下，玫瑰花现在多少钱",
           autofocus: false,
           hideBorder: true,
+          onChanged: () => setState(() {}),
         ),
       ),
     );
@@ -195,12 +200,13 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       ),
       child: CusRectField(
         controller: _briefCtrl,
-        hintText: "该区域填写你的帖子内容，问题描述的越清晰，详尽，大师们才能更完整、更高质量的为你解答",
-        fromValue: "大师，帮我测算一下，金银花有什么效果，喝了可以赚很多钱吗？",
+        hintText: "该区域填写你的问题，问题描述的越清晰，详尽，大师们才能更完整、更高质量的为你解答",
+        fromValue: "大师，帮我测算一下，玫瑰花有什么效果，喝了可以飞黄腾达吗？",
         autofocus: false,
         hideBorder: true,
         maxLines: 10,
         pdHor: 0,
+        onChanged: () => setState(() {}),
       ),
     );
   }

@@ -46,7 +46,7 @@ class _MasterPrizeDoingPageState extends State<MasterPrizeDoingPage>
       BBSPrize res = await ApiBBSPrize.bbsPrizeGet(widget.postId);
       if (res != null) {
         _prize = res;
-        Log.info("当前悬赏帖处理中详情：${_prize.toJson()}");
+        Log.info("大师当前悬赏帖处理中详情：${_prize.toJson()}");
         setState(() {});
       }
     } catch (e) {

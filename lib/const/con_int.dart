@@ -95,3 +95,6 @@ const int you_shi = 9; // 酉时
 const int xu_shi = 10; // 戌时
 const int hai_shi = 11; // 亥时
 const int wan_zi = 12; // 晚子
+
+// 设置 Column 底部按钮位于屏幕最下方距离，方便后面统一修改
+const double bottom_space = 120;

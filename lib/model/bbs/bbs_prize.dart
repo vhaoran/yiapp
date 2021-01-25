@@ -1,10 +1,8 @@
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/model/bbs/bbs_content.dart';
 import 'package:yiapp/model/bbs/prize_master_reply.dart';
-import 'package:yiapp/model/bbs/submit_hehun_data.dart';
-import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
-import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
-import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'bbs_reply.dart';
 
 // ------------------------------------------------------
@@ -61,23 +59,18 @@ class BBSPrize {
   factory BBSPrize.fromJson(Map<String, dynamic> json) {
     int type = json['content_type'] as int;
     var content = null;
-//    if (json["content"] != null) {
-//      // 四柱和其它目前算一个类型
-//      if (type == submit_other || type == submit_sizhu) {
-//        content = SubmitSiZhuData.fromJson(json["content"]);
-//      }
-//      if (type == submit_liuyao) {
-//        content = SubmitLiuYaoData.fromJson(json["content"]);
-//      }
-//      if (type == submit_hehun) {
-//        content = SubmitHeHunData.fromJson(json["content"]);
-//      }
-//    }
-
-    // 当前暂未设置其它分类，先直接解析
-    content = json["content"] != null
-        ? PostContentRes.fromJson(json['content'])
-        : null;
+    if (json["content"] != null) {
+      // 四柱和其它目前算一个类型
+      if (type == submit_other || type == submit_sizhu) {
+        content = SiZhuContent.fromJson(json["content"]);
+      }
+      if (type == submit_liuyao) {
+        content = LiuYaoContent.fromJson(json["content"]);
+      }
+      if (type == submit_hehun) {
+        content = HeHunContent.fromJson(json["content"]);
+      }
+    }
     return BBSPrize(
       amt: json['amt'],
       brief: json['brief'],
@@ -147,7 +140,7 @@ class BBSPrize {
       this.content.month,
       this.content.day,
       this.content.hour,
-      this.content.minutes,
+      this.content.minute,
     );
   }
 }

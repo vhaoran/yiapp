@@ -7,6 +7,7 @@ import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
 import 'package:yiapp/ui/vip/prize/user_prize_ask_main.dart';
+import 'package:yiapp/ui/vip/sizhu/sizhu_measure_page.dart';
 import 'package:yiapp/ui/vip/vie/user_vie_ask_main.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -161,14 +162,15 @@ class _UserPostAskPageState extends State<UserPostAskPage>
 
   /// 根据发帖类型跳转
   void _pushWhere(context, int i) {
+    // 关闭选择类型弹框
+    Navigator.pop(context);
     // i 的顺序是 _selectTypes 列表的顺序
     switch (i) {
       case 0: // 六爻
         CusRoute.pushReplacement(context, LiuYaoPage());
         break;
       case 1: // 四柱
-        CusRoute.pushReplacement(
-            context, AskQuestionPage(content_type: submit_sizhu));
+        CusRoute.push(context, SiZhuMeasurePage());
         break;
       case 2: // 合婚
         CusRoute.pushReplacement(

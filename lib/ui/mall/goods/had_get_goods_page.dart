@@ -7,6 +7,7 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 import 'package:yiapp/ui/mine/my_orders/complaints_add.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -47,7 +48,7 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_received},
+      "where": {"stat": mall_received, "uid": ApiBase.uid},
       "sort": {"create_time_int": -1},
     };
     try {

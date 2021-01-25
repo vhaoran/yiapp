@@ -37,6 +37,11 @@ class LuckList {
       "color": 0xFFEEA988,
       "route": r_sizhu_test,
     },
+    {
+      "text": "临时合婚",
+      "color": 0xFFE86E66,
+      "route": r_hehun_test,
+    },
   ];
 
   /// 免费测算

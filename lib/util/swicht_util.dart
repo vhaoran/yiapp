@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 
 // ------------------------------------------------------
@@ -44,9 +44,9 @@ class SwitchUtil {
 
   /// 大师订单类型
   static String orderType(m) {
-    if (m is LiuYaoRes) return "六爻订单";
+    if (m is LiuYaoContent) return "六爻订单";
     if (m is SiZhuContent) return "四柱订单";
-    if (m is HeHunRes) return "合婚订单";
+    if (m is HeHunContent) return "合婚订单";
     return "";
   }
 

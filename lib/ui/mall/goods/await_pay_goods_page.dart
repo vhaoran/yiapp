@@ -4,6 +4,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -50,7 +51,7 @@ class _AwaitPayGoodsPageState extends State<AwaitPayGoodsPage> {
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_unpaid},
+      "where": {"stat": mall_unpaid, "uid": ApiBase.uid},
       "sort": {"create_time_int": -1},
     };
     try {

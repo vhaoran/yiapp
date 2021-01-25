@@ -19,16 +19,21 @@ import 'package:yiapp/model/pagebean.dart';
 // usage ：运营商所属的全部大师
 // ------------------------------------------------------
 
-class MastersPage extends StatefulWidget {
+class BrokerMastersListPage extends StatefulWidget {
   final bool showLeading;
+  final dynamic yiOrderData;
 
-  MastersPage({this.showLeading: false, Key key}) : super(key: key);
+  BrokerMastersListPage({
+    this.showLeading: false,
+    this.yiOrderData,
+    Key key,
+  }) : super(key: key);
 
   @override
-  _MastersPageState createState() => _MastersPageState();
+  _BrokerMastersListPageState createState() => _BrokerMastersListPageState();
 }
 
-class _MastersPageState extends State<MastersPage>
+class _BrokerMastersListPageState extends State<BrokerMastersListPage>
     with AutomaticKeepAliveClientMixin {
   List<BrokerMasterRes> _l = []; // 大师榜单，目前只有获取所有大师的信息，没有排行榜
   int _pageNo = 0;
@@ -55,9 +60,8 @@ class _MastersPageState extends State<MastersPage>
       PageBean pb = await ApiBo.bMasterPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as BrokerMasterRes).toList();
-      Log.info("总的大师个数：$_rowsCount");
+      Log.info("当前运营商下总的大师个数：$_rowsCount");
       l.forEach((src) {
-        // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.broker_id != e.broker_id,
             orElse: () => null);
         if (dst == null) _l.add(src);
@@ -108,23 +112,24 @@ class _MastersPageState extends State<MastersPage>
                   style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                 ),
               ),
-            ..._l.map(
-              (e) => Column(
-                children: <Widget>[
-                  // 大师列表中，每个大师的封面
-                  MasterCover(info: e),
-                  // 大师好评、差评
-                  MasterRate(
-                    titles: [
-                      "${e.best_rate}",
-                      "${e.mid_rate}",
-                      "${e.bad_rate}"
-                    ],
-                    subtitles: ["好评数", "中评数", "差评数"],
-                  ),
-                ],
+            if (_l.isNotEmpty)
+              ..._l.map(
+                (e) => Column(
+                  children: <Widget>[
+                    // 大师列表中，每个大师的封面
+                    MasterCover(info: e, yiOrderData: widget.yiOrderData),
+                    // 大师好评、差评
+                    MasterRate(
+                      titles: [
+                        "${e.best_rate}",
+                        "${e.mid_rate}",
+                        "${e.bad_rate}"
+                      ],
+                      subtitles: ["好评数", "中评数", "差评数"],
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

@@ -52,7 +52,7 @@ class SiZhuContent {
   }
 
   /// 返回的时间数据转换为 DateTime
-  DateTime dateTime() {
+  DateTime toDateTime() {
     return DateTime(this.year, this.month, this.day, this.hour, this.minute);
   }
 

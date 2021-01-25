@@ -17,9 +17,9 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 
 class MasterCover extends StatelessWidget {
   final BrokerMasterRes info;
-  final VoidCallback onPressed;
+  final dynamic yiOrderData;
 
-  const MasterCover({this.info, this.onPressed, Key key}) : super(key: key);
+  const MasterCover({this.info, this.yiOrderData, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +65,15 @@ class MasterCover extends StatelessWidget {
                       borderRadius: 50,
                       onPressed: () => CusRoute.push(
                         context,
-                        SelectMasterItem(master_id: info.master_id),
-                      ),
+                        SelectMasterItem(
+                          master_id: info.master_id,
+                          yiOrderData: yiOrderData,
+                        ),
+                      ).then((value) {
+                        if (value != null) {
+                          Navigator.of(context).pop("");
+                        }
+                      }),
                     ),
                   ],
                 ),

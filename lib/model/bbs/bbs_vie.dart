@@ -1,5 +1,8 @@
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'bbs_reply.dart';
-import 'bbs_content.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,7 +31,7 @@ class BBSVie {
   String title;
   int uid;
   BBSReply last_reply;
-  PostContentRes content;
+  dynamic content;
   List<String> images;
   List<BBSReply> reply;
 
@@ -59,6 +62,20 @@ class BBSVie {
   });
 
   factory BBSVie.fromJson(Map<String, dynamic> json) {
+    int type = json['content_type'] as int;
+    var content = null;
+    if (json["content"] != null) {
+      // 四柱和其它目前算一个类型
+      if (type == submit_other || type == submit_sizhu) {
+        content = SiZhuContent.fromJson(json["content"]);
+      }
+      if (type == submit_liuyao) {
+        content = LiuYaoContent.fromJson(json["content"]);
+      }
+      if (type == submit_hehun) {
+        content = HeHunContent.fromJson(json["content"]);
+      }
+    }
     return BBSVie(
       amt: json['amt'],
       brief: json['brief'],
@@ -82,7 +99,7 @@ class BBSVie {
       last_reply: json['last_reply'] != null
           ? BBSReply.fromJson(json['last_reply'])
           : null,
-      content: PostContentRes.fromJson(json['content']),
+      content: content,
       images:
           json['images'] != null ? new List<String>.from(json['images']) : null,
       reply: json['reply'] != null
@@ -133,7 +150,7 @@ class BBSVie {
       this.content.month,
       this.content.day,
       this.content.hour,
-      this.content?.minutes ?? 00, // 六爻没有分
+      this.content?.minute ?? 00, // 六爻没有分
     );
   }
 }

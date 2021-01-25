@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/time_util.dart';
@@ -25,10 +28,11 @@ class PostComDetail extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: S.h(5)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Divider(height: 0, thickness: 0.2, color: t_gray),
-          if (prize != null) _prizeDetail(),
-          if (vie != null) _vieDetail(),
+          if (prize != null) _prizeDetail(prize),
+          if (vie != null) _vieDetail(vie),
           Divider(height: 0, thickness: 0.2, color: t_gray),
         ],
       ),
@@ -36,73 +40,181 @@ class PostComDetail extends StatelessWidget {
   }
 
   /// 悬赏帖帖子信息
-  Widget _prizeDetail() {
+  Widget _prizeDetail(BBSPrize prize) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // 六爻没有姓名和性别，不显示
-        if (prize?.content_type != submit_liuyao) ...[
-          _tip(tip: "姓名", text: prize?.nick ?? ""),
-          _tip(tip: "性别", text: prize.content.is_male ? "男" : "女" ?? "保密"),
-          _tip(
-            tip: "出生日期",
-            text: TimeUtil.YMD(
-                isSolar: prize?.content?.is_solar, date: prize.toDateTime()),
-          ),
-        ],
-        // 六爻都是阳历
-        if (prize?.content_type == submit_liuyao)
-          _tip(
-            tip: "出生日期",
-            text: TimeUtil.YMD(isSolar: true, date: prize.toDateTime()),
-          ),
+        if (prize.content_type == submit_sizhu) _prizeSiZhu(prize), // 悬赏帖四柱
+        if (prize.content_type == submit_hehun) _prizeHeHun(prize), // 悬赏帖合婚
+        if (prize.content_type == submit_liuyao) _prizeLiuYao(prize), // 悬赏帖六爻
         _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
-        _tip(tip: "标题", text: "${prize?.title ?? ''}"),
-        SizedBox(height: S.h(10)),
-        Text("内容", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
         Padding(
           padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
-            prize?.brief ?? "",
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            "标题：",
+            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
           ),
-        )
+        ),
+        Text(
+          prize?.title ?? "",
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
+          child: Text(
+            "内容：",
+            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+          ),
+        ),
+        Text(
+          prize?.brief ?? "",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ),
+        SizedBox(height: S.h(5)),
       ],
     );
   }
 
-  /// 闪断帖帖子信息
-  Widget _vieDetail() {
+  /// 显示悬赏帖四柱的内容
+  Widget _prizeSiZhu(BBSPrize prize) {
+    SiZhuContent content = prize.content as SiZhuContent;
+    String name = "";
+    if (content.name == null || content.name.isEmpty) {
+      name = "匿名";
+    } else {
+      name = content.name;
+    }
+    var date;
+    if (content.is_solar) {
+      date = prize.toDateTime();
+    } else {
+      date = YiDateTime().fromDateTime(prize.toDateTime()).toSolar();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // 六爻没有姓名和性别，不显示
-        if (vie?.content_type != submit_liuyao) ...[
-          _tip(tip: "姓名", text: vie?.nick ?? ""),
-          _tip(tip: "性别", text: vie.content.is_male ? "男" : "女" ?? "保密"),
-          _tip(
-            tip: "出生日期",
-            text: TimeUtil.YMD(
-                isSolar: vie?.content?.is_solar, date: vie.toDateTime()),
-          ),
-        ],
-        // 六爻都是阳历
-        if (vie?.content_type == submit_liuyao)
-          _tip(
-            tip: "出生日期",
-            text: TimeUtil.YMD(isSolar: true, date: vie.toDateTime()),
-          ),
+        _tip(tip: "姓名", text: name),
+        _tip(tip: "性别", text: content.is_male ? "男" : "女" ?? "保密"),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+              comment: true, isSolar: content.is_solar, date: date),
+        ),
+      ],
+    );
+  }
+
+  /// 显示悬赏帖合婚的内容
+  Widget _prizeHeHun(BBSPrize prize) {
+    return Column(
+      children: <Widget>[
+        Text(
+          "这是合婚待显示的区域",
+          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        ),
+      ],
+    );
+  }
+
+  /// 显示悬赏帖六爻的内容
+  Widget _prizeLiuYao(BBSPrize prize) {
+    return Column(
+      children: <Widget>[
+        Text(
+          "这是 六爻 待显示的区域",
+          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        ),
+      ],
+    );
+  }
+
+  /// ----------------------- 以下是闪断帖 -----------------------
+
+  /// 闪断帖帖子信息
+  Widget _vieDetail(BBSVie vie) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (vie.content_type == submit_sizhu) _vieSiZhu(vie), // 闪断帖四柱
+        if (vie.content_type == submit_hehun) _vieHeHun(vie), // 闪断帖合婚
+        if (vie.content_type == submit_liuyao) _vieLiuYao(vie), // 闪断帖六爻
         _tip(tip: "所问类型", text: SwitchUtil.contentType(vie?.content_type)),
-        _tip(tip: "标题", text: "${vie?.title ?? ''}"),
-        SizedBox(height: S.h(10)),
-        Text("内容", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
         Padding(
           padding: EdgeInsets.symmetric(vertical: S.h(5)),
           child: Text(
-            vie?.brief ?? "",
-            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            "标题：",
+            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
           ),
-        )
+        ),
+        Text(
+          vie?.title ?? "",
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: S.h(5)),
+          child: Text(
+            "内容：",
+            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+          ),
+        ),
+        Text(
+          vie?.brief ?? "",
+          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+        ),
+        SizedBox(height: S.h(5)),
+      ],
+    );
+  }
+
+  /// 显示闪断帖四柱的内容
+  Widget _vieSiZhu(BBSVie vie) {
+    SiZhuContent content = vie.content as SiZhuContent;
+    String name = "";
+    if (content.name == null || content.name.isEmpty) {
+      name = "匿名";
+    } else {
+      name = content.name;
+    }
+    var date;
+    if (content.is_solar) {
+      date = vie.toDateTime();
+    } else {
+      date = YiDateTime().fromDateTime(vie.toDateTime()).toSolar();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _tip(tip: "姓名", text: name),
+        _tip(tip: "性别", text: content.is_male ? "男" : "女" ?? "保密"),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+              comment: true, isSolar: content.is_solar, date: date),
+        ),
+      ],
+    );
+  }
+
+  /// 显示闪断帖合婚的内容
+  Widget _vieHeHun(BBSVie vie) {
+    return Column(
+      children: <Widget>[
+        Text(
+          "这是合婚待显示的区域",
+          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        ),
+      ],
+    );
+  }
+
+  /// 显示闪断帖六爻的内容
+  Widget _vieLiuYao(BBSVie vie) {
+    return Column(
+      children: <Widget>[
+        Text(
+          "这是 六爻 待显示的区域",
+          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        ),
       ],
     );
   }

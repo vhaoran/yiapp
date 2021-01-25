@@ -8,8 +8,8 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
@@ -37,8 +37,10 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 class MasterYiOrderPage extends StatefulWidget {
   final bool isHis; // 是否历史查询
   final String id;
+  final String backData;
 
-  MasterYiOrderPage({this.id, this.isHis: false, Key key}) : super(key: key);
+  MasterYiOrderPage({this.id, this.isHis: false, this.backData, Key key})
+      : super(key: key);
 
   @override
   _MasterYiOrderPageState createState() => _MasterYiOrderPageState();
@@ -240,7 +242,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
           padding: EdgeInsets.symmetric(vertical: S.h(10)),
           child: _dynamicTypeView(), // 用户基本信息
         ),
-        if (!(_yiOrder.content is LiuYaoRes)) ...[
+        if (!(_yiOrder.content is LiuYaoContent)) ...[
           Text("问题描述", style: _tPrimary),
           Text(_yiOrder.comment, style: _tGray), // 问题描述
         ],
@@ -285,10 +287,10 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
     if (_yiOrder.content is SiZhuContent) {
       Log.info("这是测算四柱");
       return SiZhuOrder(siZhu: _yiOrder.content);
-    } else if (_yiOrder.content is HeHunRes) {
+    } else if (_yiOrder.content is HeHunContent) {
       Log.info("这是测算合婚");
       return HeHunOrder(heHun: _yiOrder.content);
-    } else if (_yiOrder.content is LiuYaoRes) {
+    } else if (_yiOrder.content is LiuYaoContent) {
       Log.info("这是测算六爻");
       return MasterOrder(liuYao: _yiOrder.content);
     }
@@ -298,6 +300,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
   Widget _appBar() {
     return CusAppBar(
       text: "大师订单",
+      backData: widget.backData,
       actions: [
         // 如果是大师本人查看订单，订单已支付，且有测算结果时，则显示结单按钮
         if (_yiOrder.master_id == ApiBase.uid &&

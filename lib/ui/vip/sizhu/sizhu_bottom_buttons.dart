@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/bbs_prize.dart';
-import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
-import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/ui/vip/sizhu/sizhu_prize_page.dart';
+import 'package:yiapp/ui/vip/sizhu/sizhu_vie_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/widget/post_com/post_com_header.dart';
+import 'package:yiapp/widget/master/masters_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -40,20 +38,15 @@ class _SiZhuBottomButtonsState extends State<SiZhuBottomButtons> {
 
   /// 悬赏帖求测
   Widget _prizeButtonWt() {
-    Log.info("当前提交的四柱数据：${widget.siZhuData.toJson()}");
     return CusRaisedButton(
       child: Text("悬赏帖求测", style: TextStyle(fontSize: S.sp(15))),
       backgroundColor: Color(0xFFE96C62),
       onPressed: () {
         if (_approved) {
-          SiZhuContent siZhuContent = widget.siZhuData.content;
-          SiZhuContent content = SiZhuContent(
-
-          );
-          BBSPrize prize = BBSPrize(
-            nick: siZhuContent.name,
-          );
-          CusRoute.push(context, SiZhuPrizePage(siZhuData: widget.siZhuData));
+          CusRoute.push(context, SiZhuPrizePage(siZhuData: widget.siZhuData))
+              .then((value) {
+            if (value != null) Navigator.pop(context);
+          });
         }
       },
     );
@@ -64,7 +57,14 @@ class _SiZhuBottomButtonsState extends State<SiZhuBottomButtons> {
     return CusRaisedButton(
       child: Text("闪断帖求测", style: TextStyle(fontSize: S.sp(15))),
       backgroundColor: Color(0xFFED9951),
-      onPressed: () {},
+      onPressed: () {
+        if (_approved) {
+          CusRoute.push(context, SiZhuViePage(siZhuData: widget.siZhuData))
+              .then((value) {
+            if (value != null) Navigator.pop(context);
+          });
+        }
+      },
     );
   }
 
@@ -73,7 +73,21 @@ class _SiZhuBottomButtonsState extends State<SiZhuBottomButtons> {
     return CusRaisedButton(
       child: Text("大师亲测", style: TextStyle(fontSize: S.sp(15))),
       backgroundColor: Color(0xFFE8493E),
-      onPressed: () {},
+      onPressed: () {
+        if (_approved) {
+          CusRoute.push(
+            context,
+            BrokerMastersListPage(
+              showLeading: true,
+              yiOrderData: widget.siZhuData,
+            ),
+          ).then((value) {
+            if (value != null) {
+              Navigator.pop(context);
+            }
+          });
+        }
+      },
     );
   }
 
@@ -84,8 +98,6 @@ class _SiZhuBottomButtonsState extends State<SiZhuBottomButtons> {
     if (content.year > 0 &&
         widget.siZhuData.title.isNotEmpty &&
         widget.siZhuData.brief.isNotEmpty) {
-      // 提交四柱的数据
-      Log.info("会员提交四柱的数据：${widget.siZhuData.toJson()}");
       return true;
     }
     // 验证不通过

@@ -10,7 +10,7 @@ import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/login/userInfo.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_role.dart';
@@ -156,7 +156,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
     var liuYao =
-        LiuYaoRes(yao_code: code, is_male: _user.sex == 1 ? true : false);
+        LiuYaoContent(yao_code: code, is_male: _user.sex == 1 ? true : false);
     liuYao.ymdhm(_dt);
     var data = MasterOrderData(comment: "", liuYao: liuYao);
     Log.info("当前提交六爻的信息：${data.toJson()}");
@@ -164,7 +164,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order);
     // 存储大师订单数据
     bool success = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (success) CusRoute.push(context, MastersPage(showLeading: true));
+    if (success) CusRoute.push(context, BrokerMastersListPage(showLeading: true));
   }
 
   /// 求测悬赏帖还是闪断帖

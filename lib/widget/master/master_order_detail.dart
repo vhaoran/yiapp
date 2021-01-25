@@ -13,8 +13,8 @@ import 'package:yiapp/widget/master/hehun_res_show.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
-import 'package:yiapp/model/orders/hehun_res.dart';
-import 'package:yiapp/model/orders/liuyao_res.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
@@ -62,7 +62,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 如果是六爻，获取六爻详情
   _fetchLiuYao() async {
-    LiuYaoRes yao = _order.content;
+    LiuYaoContent yao = _order.content;
     _codes = yao.yao_code.split('').map((e) => int.parse(e)).toList();
     var m = {
       "year": yao.year,
@@ -245,7 +245,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 显示合婚结果
   Widget _buildHeHun() {
-    HeHunRes heHun = _order.content as HeHunRes;
+    HeHunContent heHun = _order.content as HeHunContent;
     return Column(
       children: <Widget>[
         HeHunResShow(name: heHun.name_male, sex: "男", time: "男生时间"),
