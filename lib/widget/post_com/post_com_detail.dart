@@ -1,15 +1,22 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
+import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
+import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
+import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/time_util.dart';
+import 'package:yiapp/widget/post_com/liuyao_com_header.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -18,25 +25,58 @@ import 'package:yiapp/util/time_util.dart';
 // usage : 含姓名、性别、出生日期、测算类型、标题、内容
 // ------------------------------------------------------
 
-class PostComDetail extends StatelessWidget {
+class PostComDetail extends StatefulWidget {
   final BBSPrize prize;
   final BBSVie vie;
 
   PostComDetail({this.prize, this.vie, Key key}) : super(key: key);
 
   @override
+  _PostComDetailState createState() => _PostComDetailState();
+}
+
+class _PostComDetailState extends State<PostComDetail> {
+  var _liuYaoData = CusLiuYaoData();
+  var _future;
+
+  @override
+  void initState() {
+    _future = _getLocalLiuYao();
+    super.initState();
+  }
+
+  _getLocalLiuYao() async {
+    if (widget.prize.content_type == submit_liuyao ||
+        widget.vie.content_type == submit_liuyao) {
+      String liuyao = await KV.getStr(kv_liuyao);
+      CusLiuYaoData liuYaoData = CusLiuYaoData.fromJson(json.decode(liuyao));
+      if (liuYaoData != null) {
+        _liuYaoData = liuYaoData;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: S.h(5)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Divider(height: 0, thickness: 0.2, color: t_gray),
-          if (prize != null) _prizeDetail(prize),
-          if (vie != null) _vieDetail(vie),
-          Divider(height: 0, thickness: 0.2, color: t_gray),
-        ],
-      ),
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Padding(
+          padding: EdgeInsets.only(top: S.h(5)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Divider(height: 0, thickness: 0.2, color: t_gray),
+              if (widget.prize != null) _prizeDetail(widget.prize),
+              if (widget.vie != null) _vieDetail(widget.vie),
+              Divider(height: 0, thickness: 0.2, color: t_gray),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -47,7 +87,8 @@ class PostComDetail extends StatelessWidget {
       children: <Widget>[
         if (prize.content_type == submit_sizhu) _prizeSiZhu(prize), // 悬赏帖四柱
         if (prize.content_type == submit_hehun) _prizeHeHun(prize), // 悬赏帖合婚
-        if (prize.content_type == submit_liuyao) _prizeLiuYao(prize), // 悬赏帖六爻
+        if (prize.content_type == submit_liuyao)
+          LiuYaoComHeader(liuYaoRes: _liuYaoData.res),
         _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
         Padding(
           padding: EdgeInsets.symmetric(vertical: S.h(5)),
@@ -72,6 +113,15 @@ class PostComDetail extends StatelessWidget {
           style: TextStyle(color: t_gray, fontSize: S.sp(15)),
         ),
         SizedBox(height: S.h(5)),
+        if (prize.content_type == submit_liuyao) ...[
+          Divider(height: 0, thickness: 0.2, color: t_gray),
+          SizedBox(height: S.h(5)),
+          LiuYaoSymRes(
+            res: _liuYaoData.res,
+            codes: _liuYaoData.codes.reversed.toList(),
+          ),
+          SizedBox(height: S.h(5)),
+        ],
       ],
     );
   }
@@ -140,18 +190,6 @@ class PostComDetail extends StatelessWidget {
             isSolar: content.is_solar_female,
             date: dateFemale,
           ),
-        ),
-      ],
-    );
-  }
-
-  /// 显示悬赏帖六爻的内容
-  Widget _prizeLiuYao(BBSPrize prize) {
-    return Column(
-      children: <Widget>[
-        Text(
-          "这是 六爻 待显示的区域",
-          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
         ),
       ],
     );

@@ -89,4 +89,9 @@ class LiuYaoRiqi {
     data['yue_zhi'] = this.yue_zhi;
     return data;
   }
+
+  /// 返回时间
+  DateTime dateTime() {
+    return DateTime(this.year, this.month, this.day, this.hour, this.minute);
+  }
 }

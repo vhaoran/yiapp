@@ -12,26 +12,25 @@ import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_online.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/9/3 10:06
+// date  ：2021/1/26 下午6:05
 // usage ：六爻排盘页面
 // ------------------------------------------------------
 
-class LiuYaoPage extends StatefulWidget {
-  LiuYaoPage({Key key}) : super(key: key);
+class LiuYaoShakePage extends StatefulWidget {
+  LiuYaoShakePage({Key key}) : super(key: key);
 
   @override
-  _LiuYaoPageState createState() => _LiuYaoPageState();
+  _LiuYaoShakePageState createState() => _LiuYaoShakePageState();
 }
 
-class _LiuYaoPageState extends State<LiuYaoPage> {
+class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
   YiDateTime _guaTime; // 起卦时间
   List<int> _codes = []; // 在线起卦的六爻编码
-  bool _isLunar = false; // 是否选择了阴历
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "六爻排盘", backData: "清理kv_yiorder"),
+      appBar: CusAppBar(text: "六爻排盘"),
       body: _lv(),
       backgroundColor: primary,
     );
@@ -95,12 +94,9 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
     var style = TextStyle(color: t_gray, fontSize: S.sp(16));
     return InkWell(
       onTap: () {
-        _isLunar = false;
         TimePicker(
           context,
           pickMode: PickerMode.full,
-          showLunar: true,
-          isLunar: (val) => setState(() => _isLunar = val),
           onConfirm: (yiDate) => setState(() => _guaTime = yiDate),
         );
       },
@@ -117,10 +113,6 @@ class _LiuYaoPageState extends State<LiuYaoPage> {
 
   String get _time {
     if (_guaTime == null) return "选择起卦时间";
-    return TimeUtil.YMDHM(
-      isSolar: !_isLunar,
-      comment: true,
-      date: _isLunar ? _guaTime.toSolar() : _guaTime,
-    );
+    return TimeUtil.YMDHM(isSolar: true, comment: true, date: _guaTime);
   }
 }

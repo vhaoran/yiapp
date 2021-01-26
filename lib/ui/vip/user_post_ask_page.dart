@@ -15,7 +15,7 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/model/login/cus_login_res.dart';
 import 'package:yiapp/service/storage_util/sqlite/login_dao.dart';
 import 'package:yiapp/service/storage_util/sqlite/sqlite_init.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_main.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_shake_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -168,7 +168,7 @@ class _UserPostAskPageState extends State<UserPostAskPage>
     // i 的顺序是 _selectTypes 列表的顺序
     switch (i) {
       case 0: // 六爻
-        CusRoute.pushReplacement(context, LiuYaoPage());
+        CusRoute.pushReplacement(context, LiuYaoShakePage());
         break;
       case 1: // 四柱
         CusRoute.push(context, SiZhuMeasurePage());

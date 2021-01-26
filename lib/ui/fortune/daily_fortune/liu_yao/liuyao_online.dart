@@ -9,13 +9,13 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/ui/provider/user_state.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_measure_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_result.dart';
 import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
@@ -132,7 +132,7 @@ class _LiuYaoByShakeState extends State<LiuYaoByShake> {
       if (res != null) {
         CusRoute.pushReplacement(
           context,
-          LiuYaoResPage(res: res, l: widget.l, guaTime: _guaTime),
+          LiuYaoMeasurePage(liuYaoRes: res, l: widget.l, guaTime: _guaTime),
         ).then((val) {
           if (val != null) Navigator.pop(context);
         });
