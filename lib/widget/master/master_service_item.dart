@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:left_scroll_actions/left_scroll_actions.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/submit_hehun_data.dart';
-import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
-import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
+import 'package:yiapp/ui/mine/my_orders/talk_about_master.dart';
 import 'package:yiapp/ui/vip/yiorder/meet_master_detail_page.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -23,15 +20,15 @@ import 'package:yiapp/model/dicts/master-cate.dart';
 
 typedef FnMasterCate = Function(MasterCate m);
 
-class ServiceItem extends StatefulWidget {
-  final cate; // [MasterCate] 或者 [BrokerMasterCate]
+class MasterServiceItem extends StatefulWidget {
+  final dynamic cate; // [MasterCate] 或者 [BrokerMasterCate]
   final bool isSelf;
   final dynamic yiOrderData;
   final FnMasterCate onRm; // 移除服务事件
   final FnMasterCate onChange; // 修改服务事件
   final VoidCallback onTap; // 点击文章事件
 
-  const ServiceItem({
+  const MasterServiceItem({
     this.cate,
     this.isSelf: false,
     this.yiOrderData,
@@ -41,10 +38,10 @@ class ServiceItem extends StatefulWidget {
     Key key,
   }) : super(key: key);
 
-  _ServiceItemState createState() => _ServiceItemState();
+  _MasterServiceItemState createState() => _MasterServiceItemState();
 }
 
-class _ServiceItemState extends State<ServiceItem> {
+class _MasterServiceItemState extends State<MasterServiceItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -141,6 +138,7 @@ class _ServiceItemState extends State<ServiceItem> {
 //              else {
 //                CusRoute.push(context, MeetMasterPage(cate: widget.cate));
 //              }
+              // 点击四柱六爻合婚后，选择一对一咨询
               if (widget.yiOrderData != null) {
                 CusRoute.push(
                   context,
@@ -148,11 +146,11 @@ class _ServiceItemState extends State<ServiceItem> {
                     cate: widget.cate,
                     yiOrderData: widget.yiOrderData,
                   ),
-                ).then((value) {
-                  if (value != null) {
-                    Navigator.of(context).pop("");
-                  }
-                });
+                );
+              }
+              // 直接点的一对一咨询
+              else {
+                CusRoute.push(context, TalkAboutMaster(data: widget.cate));
               }
             },
             borderRadius: 50,

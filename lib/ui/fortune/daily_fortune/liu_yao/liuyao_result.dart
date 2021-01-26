@@ -25,7 +25,7 @@ import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
-import 'package:yiapp/widget/master/masters_page.dart';
+import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -164,7 +164,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order);
     // 存储大师订单数据
     bool success = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (success) CusRoute.push(context, BrokerMastersListPage(showLeading: true));
+    if (success) CusRoute.push(context, BrokerMasterListPage(showLeading: true));
   }
 
   /// 求测悬赏帖还是闪断帖

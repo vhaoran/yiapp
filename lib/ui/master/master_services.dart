@@ -9,7 +9,7 @@ import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/flutter/cus_dialog.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
-import 'package:yiapp/widget/master/cus_service.dart';
+import 'package:yiapp/widget/master/master_service_item.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
 import 'package:yiapp/ui/master/addChServicePage.dart';
@@ -23,8 +23,10 @@ import 'package:yiapp/ui/master/addChServicePage.dart';
 class MasterServices extends StatefulWidget {
   final int master_id;
   final bool isSelf;
+  final dynamic yiOrderData;
 
-  MasterServices({this.master_id, this.isSelf: false, Key key})
+  MasterServices(
+      {this.master_id, this.isSelf: false, this.yiOrderData, Key key})
       : super(key: key);
 
   @override
@@ -98,11 +100,12 @@ class _MasterServicesState extends State<MasterServices>
             physics: BouncingScrollPhysics(),
             children: List.generate(
               _l.length,
-              (i) => ServiceItem(
+              (i) => MasterServiceItem(
                 cate: _l[i],
                 isSelf: widget.isSelf,
                 onRm: _doRm,
                 onChange: (m) => _doFn(m: m),
+                yiOrderData: widget.yiOrderData,
               ),
             ),
           ),

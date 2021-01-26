@@ -6,6 +6,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_role.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
+import 'package:yiapp/ui/vip/hehun/hehun_measure_page.dart';
 import 'package:yiapp/ui/vip/prize/user_prize_ask_main.dart';
 import 'package:yiapp/ui/vip/sizhu/sizhu_measure_page.dart';
 import 'package:yiapp/ui/vip/vie/user_vie_ask_main.dart';
@@ -173,8 +174,7 @@ class _UserPostAskPageState extends State<UserPostAskPage>
         CusRoute.push(context, SiZhuMeasurePage());
         break;
       case 2: // 合婚
-        CusRoute.pushReplacement(
-            context, AskQuestionPage(content_type: submit_hehun));
+        CusRoute.push(context, HeHunMeasurePage());
         break;
       case 3: // 其他
         CusRoute.pushReplacement(

@@ -70,7 +70,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         NormalBox(
           title: "大师信息",
           onTap: () =>
-              CusRoute.push(context, MasterInfoPage(master_id: ApiBase.uid)),
+              CusRoute.push(context, MasterInfoPage(masterId: ApiBase.uid)),
         ),
         NormalBox(
           title: "大师已完成帖子订单",

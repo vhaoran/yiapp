@@ -21,7 +21,7 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
-import 'package:yiapp/widget/master/masters_page.dart';
+import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -115,7 +115,7 @@ class _HeHunMeasureState extends State<HeHunMeasure> {
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order);
     // 存储大师订单数据
     bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (ok) CusRoute.push(context, BrokerMastersListPage(showLeading: true));
+    if (ok) CusRoute.push(context, BrokerMasterListPage(showLeading: true));
   }
 
   /// 男/女 姓名输入框

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/model/bbs/submit_hehun_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/ui/question/ask_question/que_container.dart';
+import 'package:yiapp/ui/vip/hehun/hehun_bottom_buttons.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
@@ -27,8 +31,8 @@ class HeHunMeasurePage extends StatefulWidget {
 class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
   bool _isLunarMale = false; // 男生是否选择了阴历
   bool _isLunarFemale = false; // 女生是否选择了阴历
-  YiDateTime _maleYiDate; // 男生出生日期
-  YiDateTime _femaleYiDate; // 女生出生日期
+  var _maleYiDate = YiDateTime(); // 男生出生日期
+  var _femaleYiDate = YiDateTime(); // 女生出生日期
   var _maleNameCtrl = TextEditingController(); // 男生姓名
   var _femaleNameCtrl = TextEditingController(); // 女生姓名
   var _commentCtrl = TextEditingController(); // 内容输入框
@@ -72,9 +76,32 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
               // 大师亲测
             ],
           ),
+          _bottomButtonsWt(), // 底部求测按钮
         ],
       ),
     );
+  }
+
+  Widget _bottomButtonsWt() {
+    var content = HeHunContent(
+      name_male: _maleNameCtrl.text.trim(),
+      name_female: _femaleNameCtrl.text.trim(),
+      is_solar_male: !_isLunarMale,
+      is_solar_female: !_isLunarFemale,
+    );
+    content.ymdhm(_maleYiDate.toDateTime(), _femaleYiDate.toDateTime());
+    var heHunData = SubmitHeHunData(
+      amt: 0,
+      level_id: 0,
+      title: _titleCtrl.text.trim(),
+      brief: _briefCtrl.text.trim(),
+      content_type: submit_hehun,
+      content: content,
+    );
+    if (heHunData != null) {
+      return HeHunBottomButtons(heHunData: heHunData);
+    }
+    return SizedBox.shrink();
   }
 
   /// 标题组件、如果是大师订单，则合并标题和摘要为同一个数据
@@ -140,6 +167,7 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
                 hintText: "请输入名字",
                 hintStyle: TextStyle(fontSize: S.h(15), color: Colors.grey),
               ),
+              onChanged: (val) => setState(() {}),
             ),
           ),
         ],
@@ -150,7 +178,7 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
   /// 男/女 选择出生日期组件
   Widget _birthDateWt(YiDateTime yi, bool isMale) {
     String time;
-    if (yi == null) {
+    if (yi.year <= 0) {
       time = "请选择出生日期";
     } else {
       bool isSolar = isMale ? !_isLunarMale : !_isLunarFemale;

@@ -140,7 +140,7 @@ class BBSPrize {
       this.content.month,
       this.content.day,
       this.content.hour,
-      this.content.minute,
+      this.content?.minute ?? 0,
     );
   }
 }

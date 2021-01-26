@@ -4,14 +4,14 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/service/api/api_bo.dart';
-import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/master/master_rate.dart';
-import 'package:yiapp/widget/master/master_base_info.dart';
+import 'package:yiapp/widget/master/master_com_cover.dart';
 import 'package:yiapp/model/pagebean.dart';
+import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -19,23 +19,23 @@ import 'package:yiapp/model/pagebean.dart';
 // usage ：运营商所属的全部大师
 // ------------------------------------------------------
 
-class BrokerMastersListPage extends StatefulWidget {
+class BrokerMasterListPage extends StatefulWidget {
   final bool showLeading;
   final dynamic yiOrderData;
 
-  BrokerMastersListPage({
+  BrokerMasterListPage({
     this.showLeading: false,
     this.yiOrderData,
     Key key,
   }) : super(key: key);
 
   @override
-  _BrokerMastersListPageState createState() => _BrokerMastersListPageState();
+  _BrokerMasterListPageState createState() => _BrokerMasterListPageState();
 }
 
-class _BrokerMastersListPageState extends State<BrokerMastersListPage>
+class _BrokerMasterListPageState extends State<BrokerMasterListPage>
     with AutomaticKeepAliveClientMixin {
-  List<BrokerMasterRes> _l = []; // 大师榜单，目前只有获取所有大师的信息，没有排行榜
+  List<BrokerMasterRes> _l = [];
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
@@ -103,21 +103,16 @@ class _BrokerMastersListPageState extends State<BrokerMastersListPage>
         onRefresh: () async => await _refresh(),
         child: ListView(
           children: <Widget>[
-            if (_l.isEmpty)
-              Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(bottom: S.screenH() / 4),
-                child: Text(
-                  "暂无大师",
-                  style: TextStyle(color: t_gray, fontSize: S.sp(16)),
-                ),
-              ),
+            if (_l.isEmpty) EmptyContainer(text: "暂无大师"),
             if (_l.isNotEmpty)
               ..._l.map(
                 (e) => Column(
                   children: <Widget>[
                     // 大师列表中，每个大师的封面
-                    MasterCover(info: e, yiOrderData: widget.yiOrderData),
+                    MasterComCover(
+                      masterInfo: e,
+                      yiOrderData: widget.yiOrderData,
+                    ),
                     // 大师好评、差评
                     MasterRate(
                       titles: [
@@ -136,8 +131,7 @@ class _BrokerMastersListPageState extends State<BrokerMastersListPage>
     );
   }
 
-  /// 重置数据
-  Future<void> _refresh() async {
+  _refresh() async {
     _pageNo = _rowsCount = 0;
     _l.clear();
     await _fetch();

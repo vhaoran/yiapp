@@ -136,7 +136,7 @@ class _PostInputState extends State<PostInput> {
       }
     }
     // 如果是用户回复闪断帖，则回复的是当前帖子的 master_id
-    else if (widget.post.is_vie) masterId = widget.post.data.master_id;
+    else if (widget.post.is_vie) masterId = widget.post.data.masterId;
     var m = {
       "id": widget.post.data.id,
       "to_master": masterId,

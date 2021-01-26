@@ -23,9 +23,10 @@ import 'master_loops.dart';
 // ------------------------------------------------------
 
 class MasterInfoPage extends StatefulWidget {
-  final int master_id;
+  final int masterId;
+  final dynamic yiOrderData;
 
-  MasterInfoPage({this.master_id, Key key}) : super(key: key);
+  MasterInfoPage({this.masterId, this.yiOrderData, Key key}) : super(key: key);
 
   @override
   _MasterInfoPageState createState() => _MasterInfoPageState();
@@ -48,10 +49,10 @@ class _MasterInfoPageState extends State<MasterInfoPage>
   /// 获取大师图片列表
   _fetch() async {
     try {
-      List<MasterImages> l = await ApiMaster.masterImageList(widget.master_id);
+      List<MasterImages> l = await ApiMaster.masterImageList(widget.masterId);
       if (l != null) _l = l;
       // 这里是为了用户查看大师信息
-      MasterInfo masterInfo = await ApiMaster.masterInfoGet(widget.master_id);
+      MasterInfo masterInfo = await ApiMaster.masterInfoGet(widget.masterId);
       if (masterInfo != null) {
         if (masterInfo.uid == ApiBase.uid) _isSelf = true;
         if (!_isSelf) _m = masterInfo;
@@ -99,7 +100,11 @@ class _MasterInfoPageState extends State<MasterInfoPage>
             children: <Widget>[
               // 大师主页(目前显示的不需要区分用户还是大师)
               MasterHome(m: _m),
-              MasterServices(master_id: widget.master_id, isSelf: _isSelf),
+              MasterServices(
+                master_id: widget.masterId,
+                isSelf: _isSelf,
+                yiOrderData: widget.yiOrderData,
+              ),
               // 这里将服务放到后面，是因为放中间滑动时，红色的左滑删除按钮会在
               // 切换选项卡的时候显示出来，故临时先设置其位置到最后
             ],

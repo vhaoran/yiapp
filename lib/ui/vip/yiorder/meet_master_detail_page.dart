@@ -10,7 +10,7 @@ import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
-import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -76,7 +76,12 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
                   ],
                 ),
                 if (widget.yiOrderData != null)
-                  YiOrderComDetail(yiOrderData: widget.yiOrderData),
+                  YiOrderComDetail(
+                    yiOrderContent: widget.yiOrderData.content,
+                    comment:
+                        widget.yiOrderData.title + widget.yiOrderData.brief,
+                    yiCateId: widget.cate.yi_cate_id,
+                  ),
               ],
             ),
           ),
@@ -98,7 +103,7 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
       var m = {
         "master_id": widget.cate.master_id,
         "yi_cate_id": widget.cate.yi_cate_id,
-        "comment": widget.yiOrderData.title + widget.yiOrderData.brief,
+        "comment": widget.yiOrderData.title + "。" + widget.yiOrderData.brief,
       };
       if (widget.yiOrderData is SubmitSiZhuData) {
         var json = (widget.yiOrderData as SubmitSiZhuData).content.toJson();
@@ -125,12 +130,11 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
           BalancePay(context, data: payData, onSuccess: () {
             CusRoute.pushReplacement(
               context,
-              MasterYiOrderPage(id: res.id, backData: "下完大师订单后，携带数据返回"),
-            ).then((value) {
-              if (value != null) {
-                Navigator.of(context).pop("");
-              }
-            });
+              UserYiOrderDoingPage(
+                yiOrderId: res.id,
+                backData: "下完大师订单后，携带数据返回",
+              ),
+            );
           });
         }
       } catch (e) {

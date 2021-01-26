@@ -4,7 +4,7 @@ import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
 import 'package:yiapp/service/api/api_bo.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/master/cus_service.dart';
+import 'package:yiapp/widget/master/master_service_item.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -12,18 +12,19 @@ import 'package:yiapp/widget/master/cus_service.dart';
 // usage ：选择大师服务
 // ------------------------------------------------------
 
-class SelectMasterItem extends StatefulWidget {
-  final int master_id;
+class SelectMasterServicePage extends StatefulWidget {
+  final int masterId;
   final dynamic yiOrderData;
 
-  SelectMasterItem({this.master_id, this.yiOrderData, Key key})
+  SelectMasterServicePage({this.masterId, this.yiOrderData, Key key})
       : super(key: key);
 
   @override
-  _SelectMasterItemState createState() => _SelectMasterItemState();
+  _SelectMasterServicePageState createState() =>
+      _SelectMasterServicePageState();
 }
 
-class _SelectMasterItemState extends State<SelectMasterItem> {
+class _SelectMasterServicePageState extends State<SelectMasterServicePage> {
   var _future;
   List<BrokerMasterCate> _l = []; // 运营商下面大师的服务项目列表
 
@@ -36,7 +37,7 @@ class _SelectMasterItemState extends State<SelectMasterItem> {
   /// 用户获取运营商下面大师的服务列表
   _fetch() async {
     try {
-      var m = {"master_id": widget.master_id};
+      var m = {"master_id": widget.masterId};
       var l = await ApiBo.bmiPriceUserList(m);
       if (l != null) _l = l;
       setState(() {});
@@ -66,8 +67,11 @@ class _SelectMasterItemState extends State<SelectMasterItem> {
     return ListView(
       children: <Widget>[
         ..._l.map(
-          (e) => ServiceItem(
-              cate: e, isSelf: false, yiOrderData: widget.yiOrderData),
+          (e) => MasterServiceItem(
+            cate: e,
+            isSelf: false,
+            yiOrderData: widget.yiOrderData,
+          ),
         ),
       ],
     );

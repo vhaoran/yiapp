@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
@@ -76,9 +75,10 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
   }
 
   Widget _bottomButtonsWt() {
+    String name = _nameCtrl.text.trim().isEmpty ? "匿名" : _nameCtrl.text.trim();
     var content = SiZhuContent(
       is_solar: !_isLunar,
-      name: _nameCtrl.text.trim(),
+      name: name,
       is_male: _sex == male,
     );
     content.ymdhm(_yiDateTime.toDateTime());

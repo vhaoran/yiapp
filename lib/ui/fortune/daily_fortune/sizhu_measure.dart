@@ -17,7 +17,7 @@ import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
-import 'package:yiapp/widget/master/masters_page.dart';
+import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -100,7 +100,7 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order); // 清除上次数据
     // 存储大师订单数据
     bool ok = await KV.setStr(kv_order, json.encode(data.toJson()));
-    if (ok) CusRoute.push(context, BrokerMastersListPage(showLeading: true));
+    if (ok) CusRoute.push(context, BrokerMasterListPage(showLeading: true));
   }
 
   /// 姓名输入框

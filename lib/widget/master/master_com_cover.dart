@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/bo/broker_master_res.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
-import 'package:yiapp/ui/mine/my_orders/select_master_item.dart';
+import 'package:yiapp/ui/mine/my_orders/select_master_service_page.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -11,20 +11,24 @@ import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/8/17 10:10
-// usage ：大师封面，显示大师的基本资料（含头像、名称、在/离线状态、个签）
+// date  ：2021/1/26 下午2:50
+// usage ：大师通用封面，含头像、昵称、评价、一对一咨询等
 // ------------------------------------------------------
 
-class MasterCover extends StatelessWidget {
-  final BrokerMasterRes info;
+class MasterComCover extends StatelessWidget {
+  final BrokerMasterRes masterInfo;
   final dynamic yiOrderData;
 
-  const MasterCover({this.info, this.yiOrderData, Key key}) : super(key: key);
+  const MasterComCover({this.masterInfo, this.yiOrderData, Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CusRoute.push(context, MasterInfoPage(master_id: info.uid)),
+      onTap: () => CusRoute.push(
+        context,
+        MasterInfoPage(masterId: masterInfo.uid, yiOrderData: yiOrderData),
+      ),
       child: Container(
         color: primary,
         padding: EdgeInsets.all(S.w(9)),
@@ -38,7 +42,7 @@ class MasterCover extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         // 大师头像
-        CusAvatar(url: info.icon, size: 100, rate: 100),
+        CusAvatar(url: masterInfo.icon ?? "", size: 100, rate: 100),
         SizedBox(width: S.w(10)),
         Expanded(
           child: Container(
@@ -50,7 +54,7 @@ class MasterCover extends StatelessWidget {
                   children: <Widget>[
                     // 大师昵称
                     Text(
-                      info.nick,
+                      masterInfo.nick,
                       style: TextStyle(color: t_gray, fontSize: S.sp(15)),
                     ),
                     Spacer(),
@@ -65,15 +69,11 @@ class MasterCover extends StatelessWidget {
                       borderRadius: 50,
                       onPressed: () => CusRoute.push(
                         context,
-                        SelectMasterItem(
-                          master_id: info.master_id,
+                        SelectMasterServicePage(
+                          masterId: masterInfo.master_id,
                           yiOrderData: yiOrderData,
                         ),
-                      ).then((value) {
-                        if (value != null) {
-                          Navigator.of(context).pop("");
-                        }
-                      }),
+                      ),
                     ),
                   ],
                 ),
@@ -89,7 +89,7 @@ class MasterCover extends StatelessWidget {
                   // 这里固定高度是因为 subtitle 内容多少不一时，主副标题跟随着动
                   height: S.h(55),
                   child: Text(
-                    info.brief,
+                    masterInfo.brief,
                     style: TextStyle(color: t_gray, fontSize: Adapt.px(26)),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,

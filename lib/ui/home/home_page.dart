@@ -16,7 +16,7 @@ import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
 import 'package:yiapp/ui/question/que_main_page.dart';
 import 'package:yiapp/ui/vip/user_post_ask_page.dart';
-import 'package:yiapp/widget/master/masters_page.dart';
+import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
 //      _m.addAll({"问命": QueMainPage()});
       _m.addAll({"问命": UserPostAskPage()});
     }
-    if (res.enable_master == 1) _m.addAll({"大师": BrokerMastersListPage()});
+    if (res.enable_master == 1) _m.addAll({"大师": BrokerMasterListPage()});
     _m.addAll({"我的": MinePage()});
     setState(() {});
   }

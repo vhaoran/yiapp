@@ -5,6 +5,7 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
+import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
@@ -106,11 +107,39 @@ class PostComDetail extends StatelessWidget {
 
   /// 显示悬赏帖合婚的内容
   Widget _prizeHeHun(BBSPrize prize) {
+    HeHunContent content = prize.content as HeHunContent;
+    var dateMale;
+    if (content.is_solar_male) {
+      dateMale = content.dateTime(true);
+    } else {
+      dateMale = YiDateTime().fromDateTime(content.dateTime(true)).toSolar();
+    }
+    var dateFemale;
+    if (content.is_solar_female) {
+      dateFemale = content.dateTime(false);
+    } else {
+      dateFemale = YiDateTime().fromDateTime(content.dateTime(false)).toSolar();
+    }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "这是合婚待显示的区域",
-          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        _tip(tip: "男方姓名", text: content.name_male),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+            comment: true,
+            isSolar: content.is_solar_male,
+            date: dateMale,
+          ),
+        ),
+        _tip(tip: "女方姓名", text: content.name_female),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+            comment: true,
+            isSolar: content.is_solar_female,
+            date: dateFemale,
+          ),
         ),
       ],
     );
@@ -197,11 +226,39 @@ class PostComDetail extends StatelessWidget {
 
   /// 显示闪断帖合婚的内容
   Widget _vieHeHun(BBSVie vie) {
+    HeHunContent content = vie.content as HeHunContent;
+    var dateMale;
+    if (content.is_solar_male) {
+      dateMale = content.dateTime(true);
+    } else {
+      dateMale = YiDateTime().fromDateTime(content.dateTime(true)).toSolar();
+    }
+    var dateFemale;
+    if (content.is_solar_female) {
+      dateFemale = content.dateTime(false);
+    } else {
+      dateFemale = YiDateTime().fromDateTime(content.dateTime(false)).toSolar();
+    }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "这是合婚待显示的区域",
-          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
+        _tip(tip: "男方姓名", text: content.name_male),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+            comment: true,
+            isSolar: content.is_solar_male,
+            date: dateMale,
+          ),
+        ),
+        _tip(tip: "女方姓名", text: content.name_female),
+        _tip(
+          tip: "出生日期",
+          text: TimeUtil.YMDHM(
+            comment: true,
+            isSolar: content.is_solar_female,
+            date: dateFemale,
+          ),
         ),
       ],
     );

@@ -10,7 +10,7 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
-import 'package:yiapp/ui/master/master_console/master_yiorder_page.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/balance_pay.dart';
@@ -26,7 +26,7 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // ------------------------------------------------------
 // author：suxing
 // date  ：2020/12/25 上午11:08
-// usage ：大师订单下单
+// usage ：大师订单下单(默认四柱)
 // ------------------------------------------------------
 
 class TalkAboutMaster extends StatefulWidget {
@@ -45,7 +45,6 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
   String _timeStr = ""; // 用来显示时间
   YiDateTime _yi;
   bool _isLunar = false; // 是否阴历
-  String _err; // 错误提示信息
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,7 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
             Expanded(
               child: CusRectField(
                 controller: _nameCtrl,
-                hintText: "请输入姓名",
+                hintText: "可默认匿名",
                 autofocus: false,
                 hideBorder: true,
               ),
@@ -114,21 +113,20 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
   }
 
   void _doVerify() async {
+    String err;
     setState(() {
-      _err = null;
-      if (_nameCtrl.text.isEmpty)
-        _err = "姓名不能为空";
-      else if (_contentCtrl.text.isEmpty)
-        _err = "描述信息不能为空";
-      else if (_yi == null) _err = "未选择日期";
+      if (_yi == null)
+        err = "未选择日期";
+      else if (_contentCtrl.text.isEmpty) err = "描述信息不能为空";
     });
-    if (_err != null) {
-      CusToast.toast(context, text: _err);
+    if (err != null) {
+      CusToast.toast(context, text: err);
       return;
     }
+    String name = _nameCtrl.text.trim().isEmpty ? "匿名" : _nameCtrl.text.trim();
     SiZhuContent siZhu = SiZhuContent(
       is_solar: !_isLunar,
-      name: _nameCtrl.text.trim(),
+      name: name,
       is_male: _sex == male ? true : false,
       year: _yi.year,
       month: _yi.month,
@@ -153,7 +151,10 @@ class _TalkAboutMasterState extends State<TalkAboutMaster> {
         var payData =
             PayData(amt: widget.data.price, b_type: b_yi_order, id: order.id);
         BalancePay(context, data: payData, onSuccess: () {
-          CusRoute.pushReplacement(context, MasterYiOrderPage(id: order.id));
+          CusRoute.pushReplacement(
+            context,
+            UserYiOrderDoingPage(yiOrderId: order.id),
+          );
         });
       }
     } catch (e) {

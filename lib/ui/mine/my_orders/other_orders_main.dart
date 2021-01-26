@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/master/master_console/ing_yiorder_page.dart';
 import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/mine/my_orders/await_yiorder_page.dart';
 import 'package:yiapp/ui/mine/my_orders/complaints_record.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_list_page.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -32,7 +32,7 @@ class OtherOrdersMain extends StatelessWidget {
         children: <Widget>[
           NormalBox(
             title: "处理中大师订单",
-            onTap: () => CusRoute.push(context, IngYiorderPage()),
+            onTap: () => CusRoute.push(context, UserYiOrderDoingListPage()),
           ),
           NormalBox(
             title: "待支付大师订单",
