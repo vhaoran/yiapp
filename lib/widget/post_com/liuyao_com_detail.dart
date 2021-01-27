@@ -65,10 +65,7 @@ class _LiuYaoComDetailState extends State<LiuYaoComDetail> {
             ),
             Divider(height: 0, thickness: 0.2, color: t_gray),
             SizedBox(height: S.h(5)),
-            LiuYaoSymRes(
-              res: _liuYaoRes,
-              codes: _codes.reversed.toList(),
-            ),
+            LiuYaoSymRes(liuYaoContent: widget.liuYaoContent),
             Divider(height: 0, thickness: 0.2, color: t_gray),
             SizedBox(height: S.h(5)),
           ],

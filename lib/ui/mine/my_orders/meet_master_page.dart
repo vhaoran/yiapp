@@ -183,7 +183,7 @@ class _MeetMasterPageState extends State<MeetMasterPage> {
       return HeHunOrder(heHun: _data.heHun);
     } else if (_data.liuYao != null) {
       Log.info("这是测算六爻");
-      return MasterOrder(liuYao: _data.liuYao);
+      return MasterOrder(liuYaoContent: _data.liuYao);
     }
     return Container();
   }

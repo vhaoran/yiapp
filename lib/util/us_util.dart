@@ -20,6 +20,27 @@ class UsUtil {
     return val == 1 ? true : false;
   }
 
+  /// 根据摇卦的数组转换为传递给服务器的字符串格式
+  static String yaoCode(List<int> l) {
+    if (l.isNotEmpty) {
+      String yaoCode = "";
+      l.forEach((e) => yaoCode += e.toString());
+      return yaoCode;
+    }
+    return "";
+  }
+
+  /// 字符串六爻代码转换为摇卦的数组
+  static List<int> yaoCodeList(String yaoCode) {
+    if (yaoCode.isNotEmpty) {
+      List<int> l = [];
+      List<String> codes = yaoCode.split('');
+      codes.forEach((e) => l.add(int.parse(e)));
+      return l.reversed.toList(); // 反序显示
+    }
+    return List<int>();
+  }
+
   static String newUUID() {
     var uuid = Uuid();
     return uuid.v4();

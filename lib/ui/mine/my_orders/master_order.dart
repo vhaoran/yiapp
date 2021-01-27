@@ -5,7 +5,6 @@ import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
-import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/service/api/api_yi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
@@ -20,9 +19,9 @@ import 'package:yiapp/util/time_util.dart';
 // ------------------------------------------------------
 
 class MasterOrder extends StatefulWidget {
-  final LiuYaoContent liuYao;
+  final LiuYaoContent liuYaoContent;
 
-  MasterOrder({this.liuYao, Key key}) : super(key: key);
+  MasterOrder({this.liuYaoContent, Key key}) : super(key: key);
 
   @override
   _MasterOrderState createState() => _MasterOrderState();
@@ -31,8 +30,7 @@ class MasterOrder extends StatefulWidget {
 class _MasterOrderState extends State<MasterOrder> {
   var _future;
   var _data = CusLiuYaoData();
-  var _yaoData = LiuYaoResult();
-  List<int> _codes = []; // 六爻编码
+  var _liuYaoContent = LiuYaoContent();
   String _res;
 
   @override
@@ -62,25 +60,21 @@ class _MasterOrderState extends State<MasterOrder> {
 
   /// 获取六爻数据
   _fetchLiuYao() async {
-    var r = widget.liuYao;
+    LiuYaoContent liuyaoContent = widget.liuYaoContent;
     var m = {
-      "year": r.year,
-      "month": r.month,
-      "day": r.day,
-      "hour": r.hour,
-      "minute": r.minute,
-      "code": r.yao_code,
-      "male": r.is_male ? male : female,
+      "year": liuyaoContent.year,
+      "month": liuyaoContent.month,
+      "day": liuyaoContent.day,
+      "hour": liuyaoContent.hour,
+      "minute": liuyaoContent.minute,
+      "code": liuyaoContent.yao_code,
+      "male": liuyaoContent.male ? male : female,
     };
     Log.info("大师订单提交六爻起卦数据:$m");
     try {
-      var res = await ApiYi.liuYaoQiGua(m);
-      if (res != null) {
-        _yaoData = res;
-        // 六爻编码转换，显示的话应该倒序
-        var l = r.yao_code.split("").reversed.toList();
-        _codes = l.map((e) => int.parse(e)).toList();
-        Log.info("转换后的六爻编码：$_codes");
+      var liuyaoRes = await ApiYi.liuYaoQiGua(m);
+      if (liuyaoRes != null) {
+        _liuYaoContent.liuyao_res = liuyaoRes;
       }
     } catch (e) {
       Log.error("大师订单六爻起卦出现异常：$e");
@@ -97,7 +91,7 @@ class _MasterOrderState extends State<MasterOrder> {
         }
         return Column(
           children: <Widget>[
-            _comRow("性别：", widget.liuYao.is_male ? "男" : "女"),
+            _comRow("性别：", widget.liuYaoContent.male ? "男" : "女"),
             _comRow("摇卦时间：", _birthDate()),
             SizedBox(height: S.h(10)),
             _liuYaoSymRes(), //  显示六爻符号
@@ -110,15 +104,19 @@ class _MasterOrderState extends State<MasterOrder> {
   /// 显示六爻符号
   Widget _liuYaoSymRes() {
     if (_res == null) {
-      return LiuYaoSymRes(res: _yaoData, codes: _codes);
+      return LiuYaoSymRes(liuYaoContent: _liuYaoContent);
     } else {
-      return LiuYaoSymRes(res: _data.res, codes: _data.codes);
+//      return LiuYaoSymRes(res: _data.res, codes: _data.codes);
+      return Text(
+        "这里知道会报错，但需要仔细处理===",
+        style: TextStyle(color: Colors.red, fontSize: S.sp(30)),
+      );
     }
   }
 
   /// 出生日期
   String _birthDate() {
-    DateTime time = widget.liuYao.dateTime(); // 选择的年月日转换为DateTime
+    DateTime time = widget.liuYaoContent.dateTime(); // 选择的年月日转换为DateTime
     return TimeUtil.YMDHM(date: time);
   }
 

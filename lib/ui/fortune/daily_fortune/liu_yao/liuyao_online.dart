@@ -13,6 +13,7 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_measure_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/temp/yi_tool.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
@@ -112,28 +113,35 @@ class _LiuYaoOnLineState extends State<LiuYaoOnLine> {
     );
   }
 
-  /// 开始起卦
+  /// 六爻起卦
   void _doQiGua() async {
     SpinKit.threeBounce(context);
-    String yao_code = "";
-    widget.l.forEach((e) => yao_code += e.toString());
-    var content = LiuYaoContent(yao_code: yao_code, is_male: widget.isMale);
-    content.ymdhm(_guaTime.toDateTime());
-    var liuYaoData = SubmitLiuYaoData(
-      amt: 0,
-      level_id: 0,
-      title: "",
-      brief: "",
-      content_type: submit_liuyao,
-      content: content,
+    // 六爻起卦的数据
+    var liuYaoContent = LiuYaoContent(
+      yao_code: UsUtil.yaoCode(widget.l),
+      male: widget.isMale,
+      year: _guaTime.year,
+      month: _guaTime.month,
+      day: _guaTime.day,
+      hour: _guaTime.hour,
+      minute: _guaTime.minute,
     );
-    Log.info("提交六爻起卦数据:${liuYaoData.toJson()}");
+    Log.info("准备六爻起卦的数据:${liuYaoContent.toJson()}");
     try {
-      var res = await ApiYi.liuYaoQiGua(content.toJson());
-      if (res != null) {
+      var liuyaoRes = await ApiYi.liuYaoQiGua(liuYaoContent.toJson());
+      if (liuyaoRes != null) {
+        liuYaoContent.liuyao_res = liuyaoRes;
+        var liuYaoData = SubmitLiuYaoData(
+          amt: 0,
+          level_id: 0,
+          title: "",
+          brief: "",
+          content_type: submit_liuyao, // 六爻类型
+          content: liuYaoContent,
+        );
         CusRoute.pushReplacement(
           context,
-          LiuYaoMeasurePage(liuYaoRes: res, liuYaoData: liuYaoData),
+          LiuYaoMeasurePage(liuYaoData: liuYaoData),
         ).then((val) {
           if (val != null) Navigator.pop(context);
         });

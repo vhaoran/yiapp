@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/adapt.dart';
@@ -11,7 +12,6 @@ import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/master/hehun_res_show.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
-import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/model/orders/liuyao_content.dart';
@@ -42,8 +42,7 @@ class MasterOrderDetail extends StatefulWidget {
 class _MasterOrderDetailState extends State<MasterOrderDetail> {
   var _future;
   var _order = YiOrder(); // 订单详情
-  var _liuYaoRes = LiuYaoResult(); // 六爻结果详情
-  List<int> _codes = []; // 六爻数组编码
+  var _liuYaoContent = LiuYaoContent();
 
   /// 获取单条订单详情
   _fetch() async {
@@ -62,21 +61,22 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
 
   /// 如果是六爻，获取六爻详情
   _fetchLiuYao() async {
-    LiuYaoContent yao = _order.content;
-    _codes = yao.yao_code.split('').map((e) => int.parse(e)).toList();
+    LiuYaoContent yao = (_order.content) as LiuYaoContent;
     var m = {
       "year": yao.year,
       "month": yao.month,
       "day": yao.day,
       "hour": yao.hour,
       "minute": yao.minute,
-      "code": yao.yao_code,
-      "male": yao.is_male ? 1 : 0,
+      "yao_code": yao.yao_code,
+      "male": yao.male ? male : female,
     };
     Log.info("将要查询的数据:$m");
     try {
       var res = await ApiYi.liuYaoQiGua(m);
-      if (res != null) _liuYaoRes = res;
+      if (res != null) {
+        yao.liuyao_res = res;
+      }
     } catch (e) {
       Log.error("六爻订单中查询六爻出现异常：$e");
     }
@@ -129,12 +129,9 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
         children: <Widget>[
           SizedBox(height: 10),
           ..._avatarNick(), // 大师以及下单人的头像和昵称
-          if (widget.barName.contains("六爻"))
-            _buildLiuYao(),
-          if (widget.barName.contains("四柱"))
-            _buildSiZhu(),
-          if (widget.barName.contains("合婚"))
-            _buildHeHun(),
+          if (widget.barName.contains("六爻")) _buildLiuYao(),
+          if (widget.barName.contains("四柱")) _buildSiZhu(),
+          if (widget.barName.contains("合婚")) _buildHeHun(),
           _dividerCtr(),
           CusText("问题描述", t_primary, 30),
           SizedBox(height: 10),
@@ -206,7 +203,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
       children: <Widget>[
         CusText("六爻排盘结果", t_primary, 30),
         SizedBox(height: 15),
-        LiuYaoSymRes(res: _liuYaoRes, codes: _codes),
+        LiuYaoSymRes(liuYaoContent: _liuYaoContent),
       ],
     );
   }

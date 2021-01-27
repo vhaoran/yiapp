@@ -258,7 +258,7 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
       return HeHunOrder(heHun: widget.yiOrder.content);
     } else if (widget.yiOrder.content is LiuYaoContent) {
       Log.info("这是测算六爻");
-      return MasterOrder(liuYao: widget.yiOrder.content);
+      return MasterOrder(liuYaoContent: widget.yiOrder.content);
     }
     return SizedBox.shrink();
   }

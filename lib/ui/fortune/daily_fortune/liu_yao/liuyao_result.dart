@@ -101,7 +101,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
               ),
               CusDivider(),
               // 卦象
-              LiuYaoSymRes(res: _res, codes: _codes),
+//              LiuYaoSymRes(res: _res, codes: _codes),
               CusDivider(),
             ],
           ),
@@ -156,8 +156,8 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
     var liuYao =
-        LiuYaoContent(yao_code: code, is_male: _user.sex == 1 ? true : false);
-    liuYao.ymdhm(_dt);
+        LiuYaoContent(yao_code: code, male: _user.sex == 1 ? true : false);
+//    liuYao.ymdhm(_dt);
     var data = MasterOrderData(comment: "", liuYao: liuYao);
     Log.info("当前提交六爻的信息：${data.toJson()}");
     // 清除上次数据

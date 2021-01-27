@@ -292,7 +292,7 @@ class _MasterYiOrderPageState extends State<MasterYiOrderPage> {
       return HeHunOrder(heHun: _yiOrder.content);
     } else if (_yiOrder.content is LiuYaoContent) {
       Log.info("这是测算六爻");
-      return MasterOrder(liuYao: _yiOrder.content);
+      return MasterOrder(liuYaoContent: _yiOrder.content);
     }
     return Container();
   }

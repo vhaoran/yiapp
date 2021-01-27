@@ -5,8 +5,8 @@
 // ------------------------------------------------------
 
 class SiZhuContent {
+  String name; // 姓名，没有输入的话按匿名处理
   bool is_solar;
-  String name; // 姓名，可以没有
   bool is_male;
   int year;
   int month;

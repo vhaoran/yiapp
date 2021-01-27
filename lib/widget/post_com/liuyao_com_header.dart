@@ -25,7 +25,7 @@ class LiuYaoComHeader extends StatelessWidget {
       return Column(
         children: <Widget>[
           _headerData("占类", "在线起卦"),
-          _headerData("性别", liuYaoContent?.is_male ? "男" : "女" ?? "保密"),
+          _headerData("性别", liuYaoContent?.male ? "男" : "女" ?? "保密"),
           _headerData(
             "时间",
             TimeUtil.YMDHM(comment: true, date: liuYaoRes.riqi.dateTime()),

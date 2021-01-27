@@ -62,7 +62,7 @@ class _PostLiuYaoCtrState extends State<PostLiuYaoCtr> {
               "  ${riqi.ri_gan}${riqi.ri_zhi}  ${riqi.shi_gan}${riqi.shi_zhi}",
         ),
         // 卦象
-        LiuYaoSymRes(res: widget.res, codes: widget.l.reversed.toList()),
+//        LiuYaoSymRes(res: widget.res, codes: widget.l.reversed.toList()),
       ],
     );
   }

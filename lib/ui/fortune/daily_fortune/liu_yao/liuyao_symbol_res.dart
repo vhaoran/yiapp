@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
+import 'package:yiapp/util/us_util.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -14,10 +16,15 @@ import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 const double _width = 50; // 阴爻中单个符号的宽度
 
 class LiuYaoSymRes extends StatelessWidget {
-  final LiuYaoResult res;
-  final List<int> codes; // 六爻编码
+  final LiuYaoContent liuYaoContent;
 
-  LiuYaoSymRes({this.res, this.codes, Key key}) : super(key: key);
+  LiuYaoSymRes({this.liuYaoContent, Key key}) : super(key: key) {
+    _liuyaoRes = liuYaoContent.liuyao_res;
+    _l = UsUtil.yaoCodeList(liuYaoContent.yao_code);
+  }
+
+  LiuYaoResult _liuyaoRes;
+  List<int> _l;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +37,12 @@ class LiuYaoSymRes extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(
-                res.name,
+                liuYaoContent.liuyao_res.name,
                 style: TextStyle(
                     fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
               Text(
-                res.name_bian,
+                _liuyaoRes.name_bian,
                 style: TextStyle(
                     fontSize: Adapt.px(30), fontWeight: FontWeight.bold),
               ),
@@ -48,8 +55,16 @@ class LiuYaoSymRes extends StatelessWidget {
             (i) => Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _benGua(res.liushen[i], res.l[i], codes[i], res.fushen[i]),
-                _bianGua(res.l_bian[i], codes[i]),
+                _benGua(
+                  _liuyaoRes.liushen[i],
+                  _liuyaoRes.l[i],
+                  _l[i],
+                  _liuyaoRes.fushen[i],
+                ),
+                _bianGua(
+                  _liuyaoRes.l_bian[i],
+                  _l[i],
+                ),
               ],
             ),
           ),

@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
-import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_prize_page.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_vie_page.dart';
 import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
@@ -22,11 +21,8 @@ import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 class LiuYaoBottomButtons extends StatefulWidget {
   final SubmitLiuYaoData liuYaoData;
-  final LiuYaoResult liuYaoRes;
-  final List<int> codes; // 六爻编码
 
-  LiuYaoBottomButtons({this.liuYaoData, this.liuYaoRes, this.codes, Key key})
-      : super(key: key);
+  LiuYaoBottomButtons({this.liuYaoData, Key key}) : super(key: key);
 
   @override
   _LiuYaoBottomButtonsState createState() => _LiuYaoBottomButtonsState();
@@ -107,8 +103,8 @@ class _LiuYaoBottomButtonsState extends State<LiuYaoBottomButtons> {
       await KV.remove(kv_liuyao);
     }
     CusLiuYaoData yaoData = CusLiuYaoData(
-      res: widget.liuYaoRes,
-      codes: widget.codes,
+      res: widget.liuYaoData.content.liuyao_res,
+      codes: UsUtil.yaoCodeList(widget.liuYaoData.content.yao_code),
     );
     String str = json.encode(yaoData.toJson());
     bool isOk = await KV.setStr(kv_liuyao, str);
