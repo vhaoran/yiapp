@@ -156,6 +156,7 @@ class _CusRectFieldState extends State<CusRectField> {
           _focusNode.unfocus();
         }
         setState(() {});
+//        if (mounted) setState(() {});
       },
       inputFormatters: widget.inputFormatters == null
           ? [

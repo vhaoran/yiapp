@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -26,6 +27,7 @@ class LiuYaoShakePage extends StatefulWidget {
 class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
   YiDateTime _guaTime; // 起卦时间
   List<int> _codes = []; // 在线起卦的六爻编码
+  int _sex = male; // 性别（默认男）
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +75,14 @@ class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
           child: _liuYaoTime(),
         ),
         divider,
+        _sexWt(),
+        divider,
         // 摇卦
         Padding(
           padding: EdgeInsets.symmetric(vertical: S.h(10)),
-          child: LiuYaoByShake(
+          child: LiuYaoOnLine(
             l: _codes,
+            isMale: _sex == male,
             guaTime: (YiDateTime time) {
               if (_guaTime != null || time == null) return;
               setState(() => _guaTime = time);
@@ -108,6 +113,35 @@ class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
           Icon(FontAwesomeIcons.calendarAlt, color: t_yi),
         ],
       ),
+    );
+  }
+
+  /// 设置性别
+  Widget _sexWt() {
+    return Row(
+      children: <Widget>[
+        Text("性别", style: TextStyle(color: t_gray, fontSize: S.sp(16))),
+        SizedBox(width: S.w(50)),
+        Row(
+          children: <Widget>[
+            Radio(
+              value: male,
+              groupValue: _sex,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _sex = val),
+            ),
+            Text("男", style: TextStyle(color: t_gray, fontSize: S.sp(16))),
+            SizedBox(width: S.w(20)),
+            Radio(
+              value: female,
+              groupValue: _sex,
+              activeColor: t_primary,
+              onChanged: (val) => setState(() => _sex = val),
+            ),
+            Text("女", style: TextStyle(color: t_gray, fontSize: S.sp(16))),
+          ],
+        ),
+      ],
     );
   }
 

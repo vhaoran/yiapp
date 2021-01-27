@@ -149,7 +149,6 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
                 YiOrderComDetail(
                   yiOrderContent: _yiOrder.content,
                   comment: _yiOrder.comment,
-                  yiCateId: _yiOrder.yi_cate_id,
                 ),
                 // 测算结果
                 Center(child: _diagnoseWt()),

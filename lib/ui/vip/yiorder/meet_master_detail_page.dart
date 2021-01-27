@@ -17,6 +17,7 @@ import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/flutter/rect_field.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_detail.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
@@ -39,6 +40,8 @@ class MeetMasterDetailPage extends StatefulWidget {
 }
 
 class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
+  var _briefCtrl = TextEditingController(); // 摘要
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +52,11 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
   }
 
   Widget _lv() {
-    return ScrollConfiguration(
-      behavior: CusBehavior(),
-      child: Column(
-        children: [
-          Expanded(
+    return Column(
+      children: [
+        Expanded(
+          child: ScrollConfiguration(
+            behavior: CusBehavior(),
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: S.w(10)),
               children: <Widget>[
@@ -75,49 +78,105 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: S.h(10)),
+                if (widget.yiOrderData is SubmitLiuYaoData) ...[
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: S.h(5)),
+                    child: Text(
+                      "填写你要咨询的问题",
+                      style: TextStyle(fontSize: S.sp(16), color: t_primary),
+                    ),
+                  ),
+                  _briefWt(), // 设置摘要
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: S.h(5)),
+                    child: Text(
+                      "六爻排盘信息",
+                      style: TextStyle(fontSize: S.sp(16), color: t_primary),
+                    ),
+                  ),
+                ],
                 if (widget.yiOrderData != null)
                   YiOrderComDetail(
                     yiOrderContent: widget.yiOrderData.content,
                     comment:
                         widget.yiOrderData.title + widget.yiOrderData.brief,
-                    yiCateId: widget.cate.yi_cate_id,
                   ),
+                SizedBox(height: S.h(30)),
               ],
             ),
           ),
-          SizedBox(
-            width: S.screenW(),
-            child: CusRaisedButton(
-              child: Text("下单"),
-              onPressed: _doOrder,
-              borderRadius: 50,
+        ),
+        SizedBox(
+          width: S.screenW(),
+          child: CusRaisedButton(
+            child: Text(
+              "下单",
+              style: TextStyle(fontSize: S.sp(14)),
             ),
+            onPressed: _doYiOrder,
+            borderRadius: 50,
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  /// 约聊大师 摘要组件
+  Widget _briefWt() {
+    return Container(
+      padding: EdgeInsets.only(left: S.w(15)),
+      margin: EdgeInsets.only(bottom: S.h(5)),
+      decoration: BoxDecoration(
+        color: fif_primary,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: CusRectField(
+        controller: _briefCtrl,
+        hintText: "该区域填写你的问题，问题描述的越清晰，详尽，大师们才能更完整、更高质量的为你解答",
+        fromValue: "大师，帮我测算一下，玫瑰花有什么效果，喝了可以飞黄腾达吗？",
+        autofocus: false,
+        hideBorder: true,
+        maxLines: 10,
+        pdHor: 0,
       ),
     );
   }
 
-  void _doOrder() async {
+  /// 约聊大师
+  void _doYiOrder() async {
     if (widget.yiOrderData != null) {
-      var m = {
+      var yiOrder = widget.yiOrderData;
+      if (yiOrder is SubmitLiuYaoData) {
+        if (_briefCtrl.text.trim().isEmpty) {
+          CusToast.toast(context, text: "请输入你要咨询的内容");
+          return;
+        }
+      }
+      Map<String, dynamic> m = {
         "master_id": widget.cate.master_id,
         "yi_cate_id": widget.cate.yi_cate_id,
-        "comment": widget.yiOrderData.title + "。" + widget.yiOrderData.brief,
       };
-      if (widget.yiOrderData is SubmitSiZhuData) {
-        var json = (widget.yiOrderData as SubmitSiZhuData).content.toJson();
+      if (yiOrder is SubmitSiZhuData) {
+        var json = (yiOrder as SubmitSiZhuData).content.toJson();
         m.addAll({"si_zhu": json});
+        m.addAll({"comment": yiOrder.title + yiOrder.brief});
       }
-      if (widget.yiOrderData is SubmitHeHunData) {
-        var json = (widget.yiOrderData as SubmitHeHunData).content.toJson();
+      if (yiOrder is SubmitHeHunData) {
+        var json = (yiOrder as SubmitHeHunData).content.toJson();
         m.addAll({"he_hun": json});
+        m.addAll({"comment": yiOrder.title + yiOrder.brief});
       }
-      if (widget.yiOrderData is SubmitLiuYaoData) {
-        var json = (widget.yiOrderData as SubmitLiuYaoData).content.toJson();
+      if (yiOrder is SubmitLiuYaoData) {
+        var json = (yiOrder as SubmitLiuYaoData).content.toJson();
         m.addAll({"liu_yao": json});
+        m.addAll({"comment": _briefCtrl.text.trim()});
+        Log.info("m.comment:${m['comment']}");
       }
       Log.info("提交约聊大师的数据：${m.toString()}");
+//      return;
       SpinKit.threeBounce(context);
       try {
         YiOrder res = await ApiYiOrder.yiOrderAdd(m);
@@ -156,5 +215,11 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _briefCtrl.dispose();
+    super.dispose();
   }
 }

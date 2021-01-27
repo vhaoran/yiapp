@@ -9,6 +9,7 @@ import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_prize_page.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_vie_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/master/broker_master_list_page.dart';
@@ -54,7 +55,7 @@ class _LiuYaoBottomButtonsState extends State<LiuYaoBottomButtons> {
             context,
             LiuYaoPrizePage(liuYaoData: widget.liuYaoData),
           ).then((value) {
-            if (value != null) Navigator.pop(context);
+            if (value != null) Navigator.of(context).pop("");
           });
         }
       },
@@ -66,11 +67,15 @@ class _LiuYaoBottomButtonsState extends State<LiuYaoBottomButtons> {
     return CusRaisedButton(
       child: Text("闪断帖求测", style: TextStyle(fontSize: S.sp(15))),
       backgroundColor: Color(0xFFED9951),
-      onPressed: () {
-        //          CusRoute.push(context, SiZhuViePage(siZhuData: widget.liuYaoData))
-//              .then((value) {
-//            if (value != null) Navigator.pop(context);
-//          });
+      onPressed: () async {
+        if (await _approved) {
+          CusRoute.push(
+            context,
+            LiuYaoViePage(liuYaoData: widget.liuYaoData),
+          ).then((value) {
+            if (value != null) Navigator.of(context).pop("");
+          });
+        }
       },
     );
   }
@@ -80,14 +85,16 @@ class _LiuYaoBottomButtonsState extends State<LiuYaoBottomButtons> {
     return CusRaisedButton(
       child: Text("大师亲测", style: TextStyle(fontSize: S.sp(15))),
       backgroundColor: Color(0xFFE8493E),
-      onPressed: () {
-        CusRoute.push(
-          context,
-          BrokerMasterListPage(
-            showLeading: true,
-            yiOrderData: widget.liuYaoData,
-          ),
-        );
+      onPressed: () async {
+        if (await _approved) {
+          CusRoute.push(
+            context,
+            BrokerMasterListPage(
+              showLeading: true,
+              yiOrderData: widget.liuYaoData,
+            ),
+          );
+        }
       },
     );
   }
@@ -96,6 +103,7 @@ class _LiuYaoBottomButtonsState extends State<LiuYaoBottomButtons> {
   Future<bool> get _approved async {
     // 存储前有数据先清理
     if (await KV.getStr(kv_liuyao) != null) {
+      Log.info("存储六爻数据前已有数据，先清理");
       await KV.remove(kv_liuyao);
     }
     CusLiuYaoData yaoData = CusLiuYaoData(

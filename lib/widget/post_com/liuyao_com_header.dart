@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 
@@ -13,8 +14,10 @@ import 'package:yiapp/util/time_util.dart';
 
 class LiuYaoComHeader extends StatelessWidget {
   final LiuYaoResult liuYaoRes;
+  final LiuYaoContent liuYaoContent;
 
-  LiuYaoComHeader({this.liuYaoRes, Key key}) : super(key: key);
+  LiuYaoComHeader({this.liuYaoRes, this.liuYaoContent, Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class LiuYaoComHeader extends StatelessWidget {
       return Column(
         children: <Widget>[
           _headerData("占类", "在线起卦"),
+          _headerData("性别", liuYaoContent?.is_male ? "男" : "女" ?? "保密"),
           _headerData(
             "时间",
             TimeUtil.YMDHM(comment: true, date: liuYaoRes.riqi.dateTime()),

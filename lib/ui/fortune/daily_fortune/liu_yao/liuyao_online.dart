@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/ui/provider/user_state.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/global/cus_fn.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_measure_page.dart';
@@ -16,7 +17,6 @@ import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
 import 'package:yiapp/service/api/api_yi.dart';
-import 'package:provider/provider.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -27,28 +27,28 @@ import 'package:provider/provider.dart';
 const String _zi = "assets/images/zi_mian.png"; // 铜钱字面(正面)，阴面
 const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)，阳面
 
-class LiuYaoByShake extends StatefulWidget {
+class LiuYaoOnLine extends StatefulWidget {
   final List<int> l; // 六爻编码
   final FnYiDate guaTime; // 当前点击铜钱的时间
+  final bool isMale;
 
-  LiuYaoByShake({this.l, this.guaTime, Key key}) : super(key: key);
+  LiuYaoOnLine({this.l, this.guaTime, this.isMale: true, Key key})
+      : super(key: key);
 
   @override
-  _LiuYaoByShakeState createState() => _LiuYaoByShakeState();
+  _LiuYaoOnLineState createState() => _LiuYaoOnLineState();
 }
 
-class _LiuYaoByShakeState extends State<LiuYaoByShake> {
+class _LiuYaoOnLineState extends State<LiuYaoOnLine> {
   bool _shaking = false; // 是否正在摇卦
   bool _hadShaken = false; // 是否已经摇完6爻
   YiDateTime _guaTime;
   String _assets = _bei;
   List<String> _ziBeiList = []; // 铜钱字背面
-  num _sex; // 用户性别
 
   @override
   Widget build(BuildContext context) {
     _hadShaken = widget.l.length == 6 ? true : false;
-    _sex = context.watch<UserInfoState>()?.userInfo?.sex ?? -1;
     return Column(
       children: <Widget>[
         _shake(), // 点击铜钱摇卦
@@ -115,24 +115,25 @@ class _LiuYaoByShakeState extends State<LiuYaoByShake> {
   /// 开始起卦
   void _doQiGua() async {
     SpinKit.threeBounce(context);
-    String code = "";
-    widget.l.forEach((e) => code += e.toString());
-    var m = {
-      "year": _guaTime.year,
-      "month": _guaTime.month,
-      "day": _guaTime.day,
-      "hour": _guaTime.hour,
-      "minute": _guaTime.minute,
-      "code": code,
-      "male": _sex,
-    };
-    Log.info("提交六爻起卦数据:$m");
+    String yao_code = "";
+    widget.l.forEach((e) => yao_code += e.toString());
+    var content = LiuYaoContent(yao_code: yao_code, is_male: widget.isMale);
+    content.ymdhm(_guaTime.toDateTime());
+    var liuYaoData = SubmitLiuYaoData(
+      amt: 0,
+      level_id: 0,
+      title: "",
+      brief: "",
+      content_type: submit_liuyao,
+      content: content,
+    );
+    Log.info("提交六爻起卦数据:${liuYaoData.toJson()}");
     try {
-      var res = await ApiYi.liuYaoQiGua(m);
+      var res = await ApiYi.liuYaoQiGua(content.toJson());
       if (res != null) {
         CusRoute.pushReplacement(
           context,
-          LiuYaoMeasurePage(liuYaoRes: res, l: widget.l, guaTime: _guaTime),
+          LiuYaoMeasurePage(liuYaoRes: res, liuYaoData: liuYaoData),
         ).then((val) {
           if (val != null) Navigator.pop(context);
         });

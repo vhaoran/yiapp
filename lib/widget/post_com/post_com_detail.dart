@@ -1,22 +1,16 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
-import 'package:yiapp/const/con_string.dart';
-import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
-import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
-import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/time_util.dart';
-import 'package:yiapp/widget/post_com/liuyao_com_header.dart';
+import 'package:yiapp/widget/post_com/liuyao_com_detail.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -28,55 +22,31 @@ import 'package:yiapp/widget/post_com/liuyao_com_header.dart';
 class PostComDetail extends StatefulWidget {
   final BBSPrize prize;
   final BBSVie vie;
+  // 发布六爻帖子时因为有标题、摘要的输入框了，所以无需再次显示，但查看帖子时要显示
+  final bool hideTitleBrief;
 
-  PostComDetail({this.prize, this.vie, Key key}) : super(key: key);
+  PostComDetail({this.prize, this.vie, this.hideTitleBrief: false, Key key})
+      : super(key: key);
 
   @override
   _PostComDetailState createState() => _PostComDetailState();
 }
 
 class _PostComDetailState extends State<PostComDetail> {
-  var _liuYaoData = CusLiuYaoData();
-  var _future;
-
-  @override
-  void initState() {
-    _future = _getLocalLiuYao();
-    super.initState();
-  }
-
-  _getLocalLiuYao() async {
-    if (widget.prize.content_type == submit_liuyao ||
-        widget.vie.content_type == submit_liuyao) {
-      String liuyao = await KV.getStr(kv_liuyao);
-      CusLiuYaoData liuYaoData = CusLiuYaoData.fromJson(json.decode(liuyao));
-      if (liuYaoData != null) {
-        _liuYaoData = liuYaoData;
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return Padding(
-          padding: EdgeInsets.only(top: S.h(5)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Divider(height: 0, thickness: 0.2, color: t_gray),
-              if (widget.prize != null) _prizeDetail(widget.prize),
-              if (widget.vie != null) _vieDetail(widget.vie),
-              Divider(height: 0, thickness: 0.2, color: t_gray),
-            ],
-          ),
-        );
-      },
+    return Padding(
+      padding: EdgeInsets.only(top: S.h(5)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Divider(height: 0, thickness: 0.2, color: t_gray),
+          if (widget.prize != null) _prizeDetail(widget.prize),
+          if (widget.vie != null) _vieDetail(widget.vie),
+          if (!widget.hideTitleBrief)
+            Divider(height: 0, thickness: 0.2, color: t_gray),
+        ],
+      ),
     );
   }
 
@@ -85,43 +55,36 @@ class _PostComDetailState extends State<PostComDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
         if (prize.content_type == submit_sizhu) _prizeSiZhu(prize), // 悬赏帖四柱
         if (prize.content_type == submit_hehun) _prizeHeHun(prize), // 悬赏帖合婚
         if (prize.content_type == submit_liuyao)
-          LiuYaoComHeader(liuYaoRes: _liuYaoData.res),
-        _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          child: Text(
-            "标题：",
+          LiuYaoComDetail(liuYaoContent: prize.content),
+        if (!widget.hideTitleBrief) ...[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: S.h(5)),
+            child: Text(
+              "标题：",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            ),
+          ),
+          Text(
+            prize?.title ?? "",
             style: TextStyle(color: t_gray, fontSize: S.sp(16)),
           ),
-        ),
-        Text(
-          prize?.title ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          child: Text(
-            "内容：",
-            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: S.h(5)),
+            child: Text(
+              "内容：",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            ),
           ),
-        ),
-        Text(
-          prize?.brief ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-        ),
-        SizedBox(height: S.h(5)),
-        if (prize.content_type == submit_liuyao) ...[
-          Divider(height: 0, thickness: 0.2, color: t_gray),
-          SizedBox(height: S.h(5)),
-          LiuYaoSymRes(
-            res: _liuYaoData.res,
-            codes: _liuYaoData.codes.reversed.toList(),
+          Text(
+            prize?.brief ?? "",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
-          SizedBox(height: S.h(5)),
         ],
+        SizedBox(height: S.h(5)),
       ],
     );
   }
@@ -202,32 +165,35 @@ class _PostComDetailState extends State<PostComDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        _tip(tip: "所问类型", text: SwitchUtil.contentType(vie?.content_type)),
         if (vie.content_type == submit_sizhu) _vieSiZhu(vie), // 闪断帖四柱
         if (vie.content_type == submit_hehun) _vieHeHun(vie), // 闪断帖合婚
-        if (vie.content_type == submit_liuyao) _vieLiuYao(vie), // 闪断帖六爻
-        _tip(tip: "所问类型", text: SwitchUtil.contentType(vie?.content_type)),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          child: Text(
-            "标题：",
+        if (vie.content_type == submit_liuyao)
+          LiuYaoComDetail(liuYaoContent: vie.content),
+        if (!widget.hideTitleBrief) ...[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: S.h(5)),
+            child: Text(
+              "标题：",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            ),
+          ),
+          Text(
+            vie?.title ?? "",
             style: TextStyle(color: t_gray, fontSize: S.sp(16)),
           ),
-        ),
-        Text(
-          vie?.title ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: S.h(5)),
-          child: Text(
-            "内容：",
-            style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: S.h(5)),
+            child: Text(
+              "内容：",
+              style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+            ),
           ),
-        ),
-        Text(
-          vie?.brief ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-        ),
+          Text(
+            vie?.brief ?? "",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
+        ],
         SizedBox(height: S.h(5)),
       ],
     );
@@ -297,18 +263,6 @@ class _PostComDetailState extends State<PostComDetail> {
             isSolar: content.is_solar_female,
             date: dateFemale,
           ),
-        ),
-      ],
-    );
-  }
-
-  /// 显示闪断帖六爻的内容
-  Widget _vieLiuYao(BBSVie vie) {
-    return Column(
-      children: <Widget>[
-        Text(
-          "这是 六爻 待显示的区域",
-          style: TextStyle(color: Colors.yellow, fontSize: S.sp(18)),
         ),
       ],
     );
