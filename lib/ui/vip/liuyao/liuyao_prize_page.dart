@@ -105,12 +105,6 @@ class _LiuYaoPrizePageState extends State<LiuYaoPrizePage> {
           SizedBox(height: S.h(5)),
           _titleWt(), // 设置标题
           _briefWt(), // 设置摘要
-          Center(
-            child: Text(
-              "六爻排盘信息",
-              style: TextStyle(fontSize: S.sp(16), color: t_primary),
-            ),
-          ),
           // 提交六爻的基本信息
           PostComDetail(
             hideTitleBrief: true,
@@ -217,7 +211,7 @@ class _LiuYaoPrizePageState extends State<LiuYaoPrizePage> {
 
   /// 发六爻悬赏帖
   void _doPrizeOrder() async {
-    Log.info("当前提交的六爻数据：${_liuYaoData.toJson()}");
+    Log.info("提交六爻悬赏帖的数据：${_liuYaoData.toJson()}");
     try {
       BBSPrize prize = await ApiBBSPrize.bbsPrizeAdd(_liuYaoData.toJson());
       if (prize != null) {

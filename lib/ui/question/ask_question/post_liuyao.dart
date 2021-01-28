@@ -7,7 +7,7 @@ import 'package:yiapp/util/temp/yi_tool.dart';
 import 'package:yiapp/widget/flutter/cus_text.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_toddler.dart';
 
 // ------------------------------------------------------
 // author：suxing

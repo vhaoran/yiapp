@@ -93,8 +93,12 @@ class _SiZhuMeasureState extends State<SiZhuMeasure> {
       is_solar: !_isLunar,
       name: _nameCtrl.text.trim(),
       is_male: _sex == male ? true : false,
+      year: _yi.year,
+      month: _yi.month,
+      day: _yi.day,
+      hour: _yi.hour,
+      minute: _yi.minute,
     );
-    siZhu.ymdhm(_yi.toDateTime());
     var data = MasterOrderData(comment: _commentCtrl.text.trim(), siZhu: siZhu);
     Log.info("当前提交四柱的信息：${data.toJson()}");
     if (await KV.getStr(kv_order) != null) await KV.remove(kv_order); // 清除上次数据

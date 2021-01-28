@@ -21,76 +21,90 @@ class PostComHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (prize != null) return _prizeHeader();
-    if (vie != null) return _vieHeader();
+    if (prize != null) return _prizeHeader(prize);
+    if (vie != null) return _vieHeader(vie);
     return SizedBox.shrink();
   }
 
   /// 悬赏帖头部
-  Widget _prizeHeader() {
-    return ListTile(
-      // 发帖人头像
-      leading: CusAvatar(url: prize?.icon ?? "", circle: true, size: 50),
-      // 发帖人昵称
-      title: Text(
-        prize?.nick ?? "",
-        style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-      ),
-      // 发帖时间
-      subtitle: Padding(
-        padding: EdgeInsets.only(top: S.h(10)),
-        child: Text(
-          prize?.create_date ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+  Widget _prizeHeader(BBSPrize prize) {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            // 发帖人头像
+            CusAvatar(url: prize?.icon ?? "", circle: true, size: 50),
+            SizedBox(width: S.w(10)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  prize.nick ?? "", // 发帖人昵称
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+                SizedBox(height: S.h(10)),
+                Text(
+                  prize.create_date ?? "", // 发帖时间
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+              ],
+            ),
+            Spacer(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                YuanBao(),
+                SizedBox(width: S.w(5)),
+                Text(
+                  "${prize?.amt ?? '***'}",
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+              ],
+            ),
+          ],
         ),
-      ),
-      // 悬赏金额
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          YuanBao(),
-          SizedBox(width: S.w(5)),
-          Text(
-            "${prize?.amt ?? '***'}",
-            style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-          ),
-        ],
-      ),
-      contentPadding: EdgeInsets.all(0),
+      ],
     );
   }
 
   /// 闪断帖头部
-  Widget _vieHeader() {
-    return ListTile(
-      // 发帖人头像
-      leading: CusAvatar(url: vie.icon ?? "", circle: true, size: 50),
-      // 发帖人昵称
-      title: Text(
-        vie?.nick ?? "",
-        style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-      ),
-      // 发帖时间
-      subtitle: Padding(
-        padding: EdgeInsets.only(top: S.h(10)),
-        child: Text(
-          vie?.create_date ?? "",
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+  Widget _vieHeader(BBSVie vie) {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            // 发帖人头像
+            CusAvatar(url: vie?.icon ?? "", circle: true, size: 50),
+            SizedBox(width: S.w(10)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  vie.nick ?? "", // 发帖人昵称
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+                SizedBox(height: S.h(10)),
+                Text(
+                  vie.create_date ?? "", // 发帖时间
+                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                ),
+              ],
+            ),
+            Spacer(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                YuanBao(),
+                SizedBox(width: S.w(5)),
+                Text(
+                  "${vie?.amt ?? '***'}",
+                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+                ),
+              ],
+            ),
+          ],
         ),
-      ),
-      // 悬赏金额
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          YuanBao(),
-          SizedBox(width: S.w(5)),
-          Text(
-            "${vie?.amt ?? '***'}",
-            style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-          ),
-        ],
-      ),
-      contentPadding: EdgeInsets.all(0),
+      ],
     );
   }
 }

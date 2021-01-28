@@ -82,7 +82,8 @@ class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
           padding: EdgeInsets.symmetric(vertical: S.h(10)),
           child: LiuYaoOnLine(
             l: _codes,
-            isMale: _sex == male,
+            qigua_time: _time,
+            male: _sex,
             guaTime: (YiDateTime time) {
               if (_guaTime != null || time == null) return;
               setState(() => _guaTime = time);
@@ -147,6 +148,6 @@ class _LiuYaoShakePageState extends State<LiuYaoShakePage> {
 
   String get _time {
     if (_guaTime == null) return "选择起卦时间";
-    return TimeUtil.YMDHM(isSolar: true, comment: true, date: _guaTime);
+    return TimeUtil.YMDHM(comment: true, date: _guaTime);
   }
 }

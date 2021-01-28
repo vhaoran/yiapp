@@ -6,11 +6,12 @@ import 'package:yiapp/model/bbs/bbs_prize.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
+import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
+import 'package:yiapp/ui/vip/sizhu/sizhu_content_ui.dart';
 import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/util/swicht_util.dart';
 import 'package:yiapp/util/time_util.dart';
-import 'package:yiapp/widget/post_com/liuyao_com_detail.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_content_ui.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -40,7 +41,6 @@ class _PostComDetailState extends State<PostComDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Divider(height: 0, thickness: 0.2, color: t_gray),
           if (widget.prize != null) _prizeDetail(widget.prize),
           if (widget.vie != null) _vieDetail(widget.vie),
           if (!widget.hideTitleBrief)
@@ -55,11 +55,15 @@ class _PostComDetailState extends State<PostComDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _tip(tip: "所问类型", text: SwitchUtil.contentType(prize?.content_type)),
-        if (prize.content_type == submit_sizhu) _prizeSiZhu(prize), // 悬赏帖四柱
+        // 悬赏帖四柱
+        if (prize.content_type == submit_sizhu)
+          SiZhuContentUI(siZhuContent: prize.content as SiZhuContent),
         if (prize.content_type == submit_hehun) _prizeHeHun(prize), // 悬赏帖合婚
+        // 悬赏帖六爻
         if (prize.content_type == submit_liuyao)
-          LiuYaoComDetail(liuYaoContent: prize.content),
+          LiuYaoContentUI(
+            liuYaoContent: prize.content as LiuYaoContent,
+          ),
         if (!widget.hideTitleBrief) ...[
           Padding(
             padding: EdgeInsets.symmetric(vertical: S.h(5)),
@@ -85,35 +89,6 @@ class _PostComDetailState extends State<PostComDetail> {
           ),
         ],
         SizedBox(height: S.h(5)),
-      ],
-    );
-  }
-
-  /// 显示悬赏帖四柱的内容
-  Widget _prizeSiZhu(BBSPrize prize) {
-    SiZhuContent content = prize.content as SiZhuContent;
-    String name = "";
-    if (content.name == null || content.name.isEmpty) {
-      name = "匿名";
-    } else {
-      name = content.name;
-    }
-    var date;
-    if (content.is_solar) {
-      date = prize.toDateTime();
-    } else {
-      date = YiDateTime().fromDateTime(prize.toDateTime()).toSolar();
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _tip(tip: "姓名", text: name),
-        _tip(tip: "性别", text: content.is_male ? "男" : "女" ?? "保密"),
-        _tip(
-          tip: "出生日期",
-          text: TimeUtil.YMDHM(
-              comment: true, isSolar: content.is_solar, date: date),
-        ),
       ],
     );
   }
@@ -165,11 +140,15 @@ class _PostComDetailState extends State<PostComDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _tip(tip: "所问类型", text: SwitchUtil.contentType(vie?.content_type)),
-        if (vie.content_type == submit_sizhu) _vieSiZhu(vie), // 闪断帖四柱
+        // 闪断帖四柱
+        if (vie.content_type == submit_sizhu)
+          SiZhuContentUI(siZhuContent: vie.content as SiZhuContent),
         if (vie.content_type == submit_hehun) _vieHeHun(vie), // 闪断帖合婚
+        // 闪断帖六爻
         if (vie.content_type == submit_liuyao)
-          LiuYaoComDetail(liuYaoContent: vie.content),
+          LiuYaoContentUI(
+            liuYaoContent: vie.content as LiuYaoContent,
+          ),
         if (!widget.hideTitleBrief) ...[
           Padding(
             padding: EdgeInsets.symmetric(vertical: S.h(5)),
@@ -195,35 +174,6 @@ class _PostComDetailState extends State<PostComDetail> {
           ),
         ],
         SizedBox(height: S.h(5)),
-      ],
-    );
-  }
-
-  /// 显示闪断帖四柱的内容
-  Widget _vieSiZhu(BBSVie vie) {
-    SiZhuContent content = vie.content as SiZhuContent;
-    String name = "";
-    if (content.name == null || content.name.isEmpty) {
-      name = "匿名";
-    } else {
-      name = content.name;
-    }
-    var date;
-    if (content.is_solar) {
-      date = vie.toDateTime();
-    } else {
-      date = YiDateTime().fromDateTime(vie.toDateTime()).toSolar();
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _tip(tip: "姓名", text: name),
-        _tip(tip: "性别", text: content.is_male ? "男" : "女" ?? "保密"),
-        _tip(
-          tip: "出生日期",
-          text: TimeUtil.YMDHM(
-              comment: true, isSolar: content.is_solar, date: date),
-        ),
       ],
     );
   }

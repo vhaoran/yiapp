@@ -94,11 +94,6 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: S.w(10)),
               children: <Widget>[
-                SizedBox(height: S.h(5)),
-                Text(
-                  "四柱信息",
-                  style: TextStyle(fontSize: S.sp(16), color: t_primary),
-                ),
                 // 提交四柱的基本信息
                 PostComDetail(
                   prize: BBSPrize(
@@ -108,12 +103,14 @@ class _SiZhuPrizePageState extends State<SiZhuPrizePage> {
                     content_type: submit_sizhu,
                   ),
                 ),
-                SizedBox(height: S.h(5)),
-                Text(
-                  _l.isEmpty ? "运营商暂未设置悬赏金" : "选择悬赏金",
-                  style: TextStyle(fontSize: S.sp(16), color: t_primary),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: S.h(5)),
+                  child: Text(
+                    _l.isEmpty ? "运营商暂未设置悬赏金" : "选择悬赏金",
+                    style: TextStyle(fontSize: S.sp(16), color: t_primary),
+                  ),
                 ),
-                SizedBox(height: S.h(5)),
                 // 运营商如果已经设置了悬赏金额，用户才可以看到下面这些
                 if (_l.isNotEmpty) ...[
                   // 选择悬赏金额

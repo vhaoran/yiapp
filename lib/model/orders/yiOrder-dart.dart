@@ -20,8 +20,8 @@ class YiOrder {
   //说明
   String comment;
 
-  ////订单类型	 0：四柱 1：六爻 3:合婚   20 其它
-  int order_type;
+  // 订单类型	 0 其它，1 六爻，2 四柱，3 合婚
+  int content_type;
 
   //
   dynamic content;
@@ -64,7 +64,7 @@ class YiOrder {
     this.master_nick_ref,
     this.master_user_code_ref,
     this.nick_ref,
-    this.order_type,
+    this.content_type,
     this.pay_type,
     this.stat,
     this.trade_no,
@@ -113,7 +113,7 @@ class YiOrder {
       master_nick_ref: json['master_nick_ref'],
       master_user_code_ref: json['master_user_code_ref'],
       nick_ref: json['nick_ref'],
-      order_type: json['order_type'],
+      content_type: json['content_type'],
       pay_type: json['pay_type'],
       stat: json['stat'],
       trade_no: json['trade_no'],
@@ -142,7 +142,7 @@ class YiOrder {
     data['master_nick_ref'] = this.master_nick_ref;
     data['master_user_code_ref'] = this.master_user_code_ref;
     data['nick_ref'] = this.nick_ref;
-    data['order_type'] = this.order_type;
+    data['content_type'] = this.content_type;
     data['pay_type'] = this.pay_type;
     data['stat'] = this.stat;
     data['trade_no'] = this.trade_no;

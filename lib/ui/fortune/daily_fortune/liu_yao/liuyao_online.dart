@@ -17,7 +17,7 @@ import 'package:yiapp/util/us_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/widget/small/cus_loading.dart';
 import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol.dart';
-import 'package:yiapp/service/api/api_yi.dart';
+import 'package:yiapp/service/api/api_pai_pan.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -31,10 +31,16 @@ const String _bei = "assets/images/bei_mian.png"; // 铜钱背面(反面)，阳�
 class LiuYaoOnLine extends StatefulWidget {
   final List<int> l; // 六爻编码
   final FnYiDate guaTime; // 当前点击铜钱的时间
-  final bool isMale;
+  final int male;
+  final String qigua_time;
 
-  LiuYaoOnLine({this.l, this.guaTime, this.isMale: true, Key key})
-      : super(key: key);
+  LiuYaoOnLine({
+    this.l,
+    this.guaTime,
+    this.male,
+    this.qigua_time,
+    Key key,
+  }) : super(key: key);
 
   @override
   _LiuYaoOnLineState createState() => _LiuYaoOnLineState();
@@ -117,20 +123,31 @@ class _LiuYaoOnLineState extends State<LiuYaoOnLine> {
   void _doQiGua() async {
     SpinKit.threeBounce(context);
     // 六爻起卦的数据
-    var liuYaoContent = LiuYaoContent(
-      yao_code: UsUtil.yaoCode(widget.l),
-      male: widget.isMale,
-      year: _guaTime.year,
-      month: _guaTime.month,
-      day: _guaTime.day,
-      hour: _guaTime.hour,
-      minute: _guaTime.minute,
-    );
-    Log.info("准备六爻起卦的数据:${liuYaoContent.toJson()}");
+    String yaoCode = UsUtil.yaoCode(widget.l);
+    var m = {
+      "year": _guaTime.year,
+      "month": _guaTime.month,
+      "day": _guaTime.day,
+      "hour": _guaTime.hour,
+      "minute": _guaTime.minute,
+      "yao_code": yaoCode,
+      "male": widget.male,
+    };
+    Log.info("准备六爻起卦的数据:$m");
     try {
-      var liuyaoRes = await ApiYi.liuYaoQiGua(liuYaoContent.toJson());
+      var liuyaoRes = await ApiPaiPan.liuYaoQiGua(m);
       if (liuyaoRes != null) {
-        liuYaoContent.liuyao_res = liuyaoRes;
+        var liuYaoContent = LiuYaoContent(
+          yao_code: yaoCode,
+          is_male: widget.male == male,
+          year: _guaTime.year,
+          month: _guaTime.month,
+          day: _guaTime.day,
+          hour: _guaTime.hour,
+          minute: _guaTime.minute,
+          liuyao_res: liuyaoRes,
+          qigua_time: widget.qigua_time,
+        );
         var liuYaoData = SubmitLiuYaoData(
           amt: 0,
           level_id: 0,

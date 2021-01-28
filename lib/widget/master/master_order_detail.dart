@@ -18,8 +18,8 @@ import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_base.dart';
-import 'package:yiapp/service/api/api_yi.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
+import 'package:yiapp/service/api/api_pai_pan.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_toddler.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -69,11 +69,11 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
       "hour": yao.hour,
       "minute": yao.minute,
       "yao_code": yao.yao_code,
-      "male": yao.male ? male : female,
+      "male": yao.is_male ? male : female,
     };
     Log.info("将要查询的数据:$m");
     try {
-      var res = await ApiYi.liuYaoQiGua(m);
+      var res = await ApiPaiPan.liuYaoQiGua(m);
       if (res != null) {
         yao.liuyao_res = res;
       }
@@ -203,7 +203,7 @@ class _MasterOrderDetailState extends State<MasterOrderDetail> {
       children: <Widget>[
         CusText("六爻排盘结果", t_primary, 30),
         SizedBox(height: 15),
-        LiuYaoSymRes(liuYaoContent: _liuYaoContent),
+        LiuYaoToddler(liuYaoContent: _liuYaoContent),
       ],
     );
   }

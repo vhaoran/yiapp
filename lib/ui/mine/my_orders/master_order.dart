@@ -6,9 +6,9 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/cus_liuyao_data.dart';
 import 'package:yiapp/model/orders/liuyao_content.dart';
-import 'package:yiapp/service/api/api_yi.dart';
+import 'package:yiapp/service/api/api_pai_pan.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_toddler.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 
@@ -68,11 +68,11 @@ class _MasterOrderState extends State<MasterOrder> {
       "hour": liuyaoContent.hour,
       "minute": liuyaoContent.minute,
       "code": liuyaoContent.yao_code,
-      "male": liuyaoContent.male ? male : female,
+      "male": liuyaoContent.is_male ? male : female,
     };
     Log.info("大师订单提交六爻起卦数据:$m");
     try {
-      var liuyaoRes = await ApiYi.liuYaoQiGua(m);
+      var liuyaoRes = await ApiPaiPan.liuYaoQiGua(m);
       if (liuyaoRes != null) {
         _liuYaoContent.liuyao_res = liuyaoRes;
       }
@@ -91,7 +91,7 @@ class _MasterOrderState extends State<MasterOrder> {
         }
         return Column(
           children: <Widget>[
-            _comRow("性别：", widget.liuYaoContent.male ? "男" : "女"),
+            _comRow("性别：", widget.liuYaoContent.is_male ? "男" : "女"),
             _comRow("摇卦时间：", _birthDate()),
             SizedBox(height: S.h(10)),
             _liuYaoSymRes(), //  显示六爻符号
@@ -104,7 +104,7 @@ class _MasterOrderState extends State<MasterOrder> {
   /// 显示六爻符号
   Widget _liuYaoSymRes() {
     if (_res == null) {
-      return LiuYaoSymRes(liuYaoContent: _liuYaoContent);
+      return LiuYaoToddler(liuYaoContent: _liuYaoContent);
     } else {
 //      return LiuYaoSymRes(res: _data.res, codes: _data.codes);
       return Text(

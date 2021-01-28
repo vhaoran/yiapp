@@ -134,6 +134,7 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
   }
 
   Widget _lv() {
+    Log.info("yiordrdddd:${_yiOrder.toJson()}");
     return ListView(
       children: <Widget>[
         if (_yiOrder == null) EmptyContainer(text: "订单找不到了~"),
@@ -146,9 +147,13 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
                 // 大师订单头部信息
                 YiOrderComHeader(yiOrder: _yiOrder),
                 // 大师订单详情
-                YiOrderComDetail(
-                  yiOrderContent: _yiOrder.content,
-                  comment: _yiOrder.comment,
+                YiOrderComDetail(yiOrderContent: _yiOrder.content),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: S.h(3)),
+                  child: Text(
+                    "问题描述:  ${_yiOrder.comment}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                  ),
                 ),
                 // 测算结果
                 Center(child: _diagnoseWt()),

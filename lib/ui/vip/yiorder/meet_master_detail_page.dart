@@ -3,7 +3,6 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/model/bbs/submit_hehun_data.dart';
 import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
@@ -79,6 +78,7 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
                   ],
                 ),
                 SizedBox(height: S.h(10)),
+                Divider(height: 0, thickness: 0.2, color: t_gray),
                 if (widget.yiOrderData is SubmitLiuYaoData) ...[
                   Container(
                     alignment: Alignment.center,
@@ -89,21 +89,16 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
                     ),
                   ),
                   _briefWt(), // 设置摘要
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: S.h(5)),
-                    child: Text(
-                      "六爻排盘信息",
-                      style: TextStyle(fontSize: S.sp(16), color: t_primary),
-                    ),
-                  ),
                 ],
                 if (widget.yiOrderData != null)
-                  YiOrderComDetail(
-                    yiOrderContent: widget.yiOrderData.content,
-                    comment:
-                        widget.yiOrderData.title + widget.yiOrderData.brief,
+                  YiOrderComDetail(yiOrderContent: widget.yiOrderData.content),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: S.h(3)),
+                  child: Text(
+                    "问题描述:  ${widget.yiOrderData.title + widget.yiOrderData.brief}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(16)),
                   ),
+                ),
                 SizedBox(height: S.h(30)),
               ],
             ),
@@ -155,28 +150,19 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
           return;
         }
       }
-      Map<String, dynamic> m = {
+      var m = {
         "master_id": widget.cate.master_id,
         "yi_cate_id": widget.cate.yi_cate_id,
+        "content": yiOrder.content.toJson(),
+        "content_type": yiOrder.content_type,
       };
-      if (yiOrder is SubmitSiZhuData) {
-        var json = (yiOrder as SubmitSiZhuData).content.toJson();
-        m.addAll({"si_zhu": json});
-        m.addAll({"comment": yiOrder.title + yiOrder.brief});
-      }
-      if (yiOrder is SubmitHeHunData) {
-        var json = (yiOrder as SubmitHeHunData).content.toJson();
-        m.addAll({"he_hun": json});
+      if (yiOrder is SubmitSiZhuData || yiOrder is SubmitSiZhuData) {
         m.addAll({"comment": yiOrder.title + yiOrder.brief});
       }
       if (yiOrder is SubmitLiuYaoData) {
-        var json = (yiOrder as SubmitLiuYaoData).content.toJson();
-        m.addAll({"liu_yao": json});
         m.addAll({"comment": _briefCtrl.text.trim()});
-        Log.info("m.comment:${m['comment']}");
       }
       Log.info("提交约聊大师的数据：${m.toString()}");
-//      return;
       SpinKit.threeBounce(context);
       try {
         YiOrder res = await ApiYiOrder.yiOrderAdd(m);

@@ -15,10 +15,10 @@ import 'package:yiapp/util/us_util.dart';
 
 const double _width = 50; // 阴爻中单个符号的宽度
 
-class LiuYaoSymRes extends StatelessWidget {
+class LiuYaoToddler extends StatelessWidget {
   final LiuYaoContent liuYaoContent;
 
-  LiuYaoSymRes({this.liuYaoContent, Key key}) : super(key: key) {
+  LiuYaoToddler({this.liuYaoContent, Key key}) : super(key: key) {
     _liuyaoRes = liuYaoContent.liuyao_res;
     _l = UsUtil.yaoCodeList(liuYaoContent.yao_code);
   }
@@ -144,7 +144,7 @@ class LiuYaoSymRes extends StatelessWidget {
   }
 
   /// 变卦
-  Widget _bianGua(String bian_gua, int code) {
+  Widget _bianGua(String bianGua, int code) {
     if (code == 2) {
       code = 3; // 至阴为阳
     } else if (code == 3) {
@@ -157,7 +157,7 @@ class LiuYaoSymRes extends StatelessWidget {
           children: <Widget>[
             SizedBox(width: Adapt.px(40)),
             // 变卦内容
-            SizedBox(width: Adapt.px(150), child: Text(bian_gua)),
+            SizedBox(width: Adapt.px(150), child: Text(bianGua)),
             // 变卦爻符号（老阴变老阳、老阳变老阴）
             code.isOdd // // 是否奇数，奇数为阳，偶数为阴
                 ? _yaoSym(width: 2 * _width + 10)

@@ -5,7 +5,7 @@ import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/ui/question/ask_question/que_container.dart';
-import 'package:yiapp/ui/vip/sizhu/sizhu_bottom_buttons.dart';
+import 'package:yiapp/ui/vip/sizhu/sizhu_bottom_buttons_wt.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -80,8 +80,13 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       is_solar: !_isLunar,
       name: name,
       is_male: _sex == male,
+      birth_date: _showSelectTime,
+      year: _yiDateTime.year,
+      month: _yiDateTime.month,
+      day: _yiDateTime.day,
+      hour: _yiDateTime.hour,
+      minute: _yiDateTime.minute,
     );
-    content.ymdhm(_yiDateTime.toDateTime());
     var siZhuData = SubmitSiZhuData(
       amt: 0,
       level_id: 0,
@@ -91,7 +96,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       content: content,
     );
     if (siZhuData != null) {
-      return SiZhuBottomButtons(siZhuData: siZhuData);
+      return SiZhuBottomButtonsWt(siZhuData: siZhuData);
     }
     return SizedBox.shrink();
   }
@@ -217,7 +222,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       return "请选择出生日期";
     }
     var date = _isLunar ? _yiDateTime.toSolar() : _yiDateTime;
-    return TimeUtil.YMDHM(isSolar: !_isLunar, date: date);
+    return TimeUtil.YMDHM(isSolar: !_isLunar, date: date, comment: true);
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'package:yiapp/model/sizhu/sizhu_result.dart';
+
 // ------------------------------------------------------
 // author：suxing
 // date  ：2021/1/23 下午2:47
@@ -13,6 +15,9 @@ class SiZhuContent {
   int day;
   int hour;
   int minute;
+  // 自定义
+  String birth_date;
+  SiZhuResult sizhu_res;
 
   SiZhuContent({
     this.is_solar,
@@ -23,6 +28,8 @@ class SiZhuContent {
     this.day,
     this.hour,
     this.minute,
+    this.birth_date,
+    this.sizhu_res,
   });
 
   factory SiZhuContent.fromJson(Map<String, dynamic> json) {
@@ -35,6 +42,10 @@ class SiZhuContent {
       day: json['day'],
       hour: json['hour'],
       minute: json['minute'],
+      birth_date: json['birth_date'],
+      sizhu_res: json['sizhu_res'] != null
+          ? SiZhuResult.fromJson(json['sizhu_res'])
+          : null,
     );
   }
 
@@ -48,20 +59,15 @@ class SiZhuContent {
     data['day'] = this.day;
     data['hour'] = this.hour;
     data['minute'] = this.minute;
+    data['birth_date'] = this.birth_date;
+    if (this.sizhu_res != null) {
+      data['sizhu_res'] = this.sizhu_res.toJson();
+    }
     return data;
   }
 
   /// 返回的时间数据转换为 DateTime
   DateTime toDateTime() {
     return DateTime(this.year, this.month, this.day, this.hour, this.minute);
-  }
-
-  /// 根据选择的时间，为数据赋值
-  void ymdhm(DateTime date) {
-    this.year = date.year;
-    this.month = date.month;
-    this.day = date.day;
-    this.hour = date.hour;
-    this.minute = date.minute;
   }
 }

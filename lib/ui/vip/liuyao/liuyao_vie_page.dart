@@ -105,12 +105,6 @@ class _LiuYaoViePageState extends State<LiuYaoViePage> {
           SizedBox(height: S.h(5)),
           _titleWt(), // 设置标题
           _briefWt(), // 设置摘要
-          Center(
-            child: Text(
-              "六爻排盘信息",
-              style: TextStyle(fontSize: S.sp(16), color: t_primary),
-            ),
-          ),
           // 提交六爻的基本信息
           PostComDetail(
             hideTitleBrief: true,

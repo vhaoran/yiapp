@@ -23,7 +23,7 @@ import 'package:yiapp/widget/flutter/cus_divider.dart';
 import 'package:yiapp/model/liuyaos/liuyao_result.dart';
 import 'package:yiapp/model/liuyaos/liuyao_riqi.dart';
 import 'package:yiapp/service/storage_util/prefs/kv_storage.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/liu_yao/liuyao_symbol_res.dart';
+import 'package:yiapp/ui/vip/liuyao/liuyao_toddler.dart';
 import 'package:yiapp/ui/question/ask_question/ask_main_page.dart';
 import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
@@ -156,7 +156,7 @@ class _LiuYaoResPageState extends State<LiuYaoResPage> {
     String code = "";
     widget.l.forEach((e) => code += e.toString());
     var liuYao =
-        LiuYaoContent(yao_code: code, male: _user.sex == 1 ? true : false);
+        LiuYaoContent(yao_code: code, is_male: _user.sex == 1 ? true : false);
 //    liuYao.ymdhm(_dt);
     var data = MasterOrderData(comment: "", liuYao: liuYao);
     Log.info("当前提交六爻的信息：${data.toJson()}");
