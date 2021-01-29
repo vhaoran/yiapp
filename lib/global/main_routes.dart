@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/temp/temp_page.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/hehun_measure.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_shake_page.dart';
-import 'package:yiapp/ui/fortune/daily_fortune/sizhu_measure.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_main.dart';
 import 'package:yiapp/ui/luck/free_calculate/birth_pair.dart';
 import 'package:yiapp/ui/luck/free_calculate/blood_pair.dart';
@@ -28,11 +26,9 @@ final Map<String, WidgetBuilder> mainRoutes = {
   r_blood_pair: (BuildContext context) => BloodPairPage(), // 血型配对
   r_birth_pair: (BuildContext context) => BirthPairPage(), // 生日配对
   r_com_draw: (BuildContext context) => ComDrawPage(), // 共用的免费抽灵签页面
-  r_liu_yao: (BuildContext context) => LiuYaoShakePage(), // 六爻排盘
-  r_sizhu: (BuildContext context) => SiZhuMeasure(), // 四柱测算
-  r_sizhu_test: (BuildContext context) => SiZhuMeasurePage(), // 四柱测算测试
-  r_hehun_test: (BuildContext context) => HeHunMeasurePage(), // 四柱测算测试
-  r_he_hun: (BuildContext context) => HeHunMeasure(), // 合婚测算
+  r_liuyao: (BuildContext context) => LiuYaoShakePage(), // 六爻排盘
+  r_sizhu: (BuildContext context) => SiZhuMeasurePage(), // 四柱测算测试
+  r_hehun: (BuildContext context) => HeHunMeasurePage(), // 四柱测算测试
   r_article: (BuildContext context) => ArticleMain(), // 精选文章
   r_zhou_gong: (BuildContext context) => ZhouGongPage(), // 周公解梦
   "temp": (BuildContext context) => TempPage(), // 临时页面[待删]

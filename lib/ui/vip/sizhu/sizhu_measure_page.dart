@@ -5,7 +5,7 @@ import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 import 'package:yiapp/ui/question/ask_question/que_container.dart';
-import 'package:yiapp/ui/vip/sizhu/sizhu_bottom_buttons_wt.dart';
+import 'package:yiapp/ui/vip/sizhu/sizhu_bottom_buttons.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
 import 'package:yiapp/widget/cus_button.dart';
@@ -96,7 +96,7 @@ class _SiZhuMeasurePageState extends State<SiZhuMeasurePage> {
       content: content,
     );
     if (siZhuData != null) {
-      return SiZhuBottomButtonsWt(siZhuData: siZhuData);
+      return SiZhuBottomButtons(siZhuData: siZhuData);
     }
     return SizedBox.shrink();
   }

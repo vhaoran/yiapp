@@ -2,42 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_msg.dart';
-import 'package:yiapp/ui/vip/yiorder/user_yiorder_input.dart';
+import 'package:yiapp/ui/masters/yiorder/ch_diagnose_page.dart';
+import 'package:yiapp/ui/masters/yiorder/master_yiorder_input.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
+import 'package:yiapp/widget/post_com/yiorder_com_reply_area.dart';
+import 'package:yiapp/widget/cus_button.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_detail.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_header.dart';
-import 'package:yiapp/widget/post_com/yiorder_com_reply_area.dart';
 import 'package:yiapp/widget/refresh_hf.dart';
 import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/26 上午9:47
-// usage ：会员处理中的单个大师订单详情
+// date  ：2021/1/29 下午2:10
+// usage ：大师处理中的单个大师订单详情
 // ------------------------------------------------------
 
-class UserYiOrderDoingPage extends StatefulWidget {
+class MasterYiOrderDoingPage extends StatefulWidget {
   final String yiOrderId;
-  final String backData;
 
-  UserYiOrderDoingPage({this.yiOrderId, this.backData, Key key})
-      : super(key: key);
+  MasterYiOrderDoingPage({this.yiOrderId, Key key}) : super(key: key);
 
   @override
-  _UserYiOrderDoingPageState createState() => _UserYiOrderDoingPageState();
+  _MasterYiOrderDoingPageState createState() => _MasterYiOrderDoingPageState();
 }
 
-class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
+class _MasterYiOrderDoingPageState extends State<MasterYiOrderDoingPage> {
   YiOrder _yiOrder;
   var _future;
-
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
@@ -55,21 +57,21 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
     await _fetchReply();
   }
 
-  /// 会员获取大师订单详情
+  /// 大师获取大师订单详情
   _fetchOrder() async {
     try {
       YiOrder order = await ApiYiOrder.yiOrderGet(widget.yiOrderId);
       if (order != null) {
-        Log.info("会员当前处理中大师订单详情：${order.toJson()}");
+        Log.info("大师当前处理中大师订单详情：${order.toJson()}");
         _yiOrder = order;
         setState(() {});
       }
     } catch (e) {
-      Log.error("会员获取处理中大师订单出现异常：$e");
+      Log.error("大师获取处理中大师订单出现异常：$e");
     }
   }
 
-  /// 会员分页获取聊天内容
+  /// 大师分页获取聊天内容
   _fetchReply() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
@@ -92,24 +94,24 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
         Log.info("当前已加载处理中的大师订单聊天个数 ${_l.length}");
       }
     } catch (e) {
-      Log.error("会员分页获取处理中大师订单聊天记录出现异常 $e");
+      Log.error("大师分页获取处理中大师订单聊天记录出现异常 $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CusAppBar(text: "大师订单", backData: widget.backData),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snap) {
-          if (snap.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return _co();
-        },
-      ),
-      backgroundColor: primary,
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Scaffold(
+          appBar: _appBarWt(),
+          body: _co(),
+          backgroundColor: primary,
+        );
+      },
     );
   }
 
@@ -128,7 +130,7 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
             ),
           ),
         ),
-        UserYiOrderInput(yiOrderId: _yiOrder.id, onSend: _refresh),
+        MasterYiOrderInput(yiOrder: _yiOrder, onSend: _refresh),
       ],
     );
   }
@@ -176,19 +178,66 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
 
   /// 测算结果
   Widget _diagnoseWt() {
+    bool empty = _yiOrder.diagnose.isEmpty;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "测算结果:",
-          style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+        Row(
+          children: <Widget>[
+            Text(
+              "测算结果:",
+              style: TextStyle(color: t_primary, fontSize: S.sp(16)),
+            ),
+            Spacer(),
+            CusRaisedButton(
+              padding: EdgeInsets.symmetric(
+                horizontal: S.w(13),
+                vertical: S.h(0),
+              ),
+              backgroundColor: empty ? t_yi : t_ji,
+              child: Text(
+                empty ? "设置测算结果" : "修改测算结果",
+                style: TextStyle(fontSize: S.sp(13), color: Colors.black),
+              ),
+              onPressed: () {
+                CusRoute.push(context, ChDiagnosePage(yiOrder: _yiOrder))
+                    .then((value) {
+                  if (value != null) _fetch();
+                });
+              },
+              borderRadius: 50,
+            ),
+          ],
         ),
+        SizedBox(height: S.h(5)),
         Text(
-          _yiOrder.diagnose.isEmpty ? "暂无测算结果" : _yiOrder.diagnose,
-          style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          empty ? "暂未设置测算结果" : _yiOrder.diagnose, // 显示测试结果
+          style: TextStyle(color: t_gray, fontSize: S.sp(16)),
         ),
         SizedBox(height: S.h(5)),
         Divider(height: 0, thickness: 0.2, color: t_gray),
+      ],
+    );
+  }
+
+  Widget _appBarWt() {
+    return CusAppBar(
+      text: "大师订单",
+      actions: [
+        if (_yiOrder.diagnose.isNotEmpty)
+          FlatButton(
+            child:
+                Text("结单", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
+            onPressed: () async {
+              CusDialog.normal(context, title: "是否现在结单", onApproval: () async {
+                bool ok = await ApiYiOrder.yiOrderComplete(_yiOrder.id);
+                if (ok) {
+                  CusToast.toast(context, text: "已结单");
+                  Navigator.of(context).pop("");
+                }
+              });
+            },
+          ),
       ],
     );
   }

@@ -19,16 +19,16 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // usage ：四柱底部的按钮事件，含悬赏帖求测、闪断帖求测、大师亲测
 // ------------------------------------------------------
 
-class SiZhuBottomButtonsWt extends StatefulWidget {
+class SiZhuBottomButtons extends StatefulWidget {
   final SubmitSiZhuData siZhuData;
 
-  SiZhuBottomButtonsWt({this.siZhuData, Key key}) : super(key: key);
+  SiZhuBottomButtons({this.siZhuData, Key key}) : super(key: key);
 
   @override
-  _SiZhuBottomButtonsWtState createState() => _SiZhuBottomButtonsWtState();
+  _SiZhuBottomButtonsState createState() => _SiZhuBottomButtonsState();
 }
 
-class _SiZhuBottomButtonsWtState extends State<SiZhuBottomButtonsWt> {
+class _SiZhuBottomButtonsState extends State<SiZhuBottomButtons> {
   @override
   Widget build(BuildContext context) {
     return Row(

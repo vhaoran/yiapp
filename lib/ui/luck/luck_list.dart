@@ -25,22 +25,12 @@ class LuckList {
     {
       "text": "六爻排盘",
       "color": 0xFFA18CF7,
-      "route": r_liu_yao,
+      "route": r_liuyao,
     },
     {
       "text": "合婚测算",
       "color": 0xFFE86E66,
-      "route": r_he_hun,
-    },
-    {
-      "text": "临时四柱",
-      "color": 0xFFEEA988,
-      "route": r_sizhu_test,
-    },
-    {
-      "text": "临时合婚",
-      "color": 0xFFE86E66,
-      "route": r_hehun_test,
+      "route": r_hehun,
     },
   ];
 

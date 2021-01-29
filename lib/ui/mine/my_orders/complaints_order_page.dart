@@ -36,7 +36,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List<ComplaintsRes> _l = []; // 投诉的大师订单结果
+  List<RefundRes> _l = []; // 投诉的大师订单结果
 
   @override
   void initState() {
@@ -107,7 +107,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
         Log.info("总的处理中投诉大师订单个数：$_rowsCount");
-        var l = pb.data.map((e) => e as ComplaintsRes).toList();
+        var l = pb.data.map((e) => e as RefundRes).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
@@ -127,7 +127,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
         Log.info("总的已处理投诉大师订单个数：$_rowsCount");
-        var l = pb.data.map((e) => e as ComplaintsRes).toList();
+        var l = pb.data.map((e) => e as RefundRes).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
@@ -179,7 +179,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
   }
 
   /// 投诉订单封面
-  Widget _complaintsCover(ComplaintsRes res) {
+  Widget _complaintsCover(RefundRes res) {
     // 动态显示大师、用户头像
     String url = CusRole.is_master ? res.icon : res.master_icon;
     String nick = CusRole.is_master ? res.nick : res.master_nick;
@@ -199,7 +199,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
     );
   }
 
-  Widget _coverItem(ComplaintsRes res, String url, nick) {
+  Widget _coverItem(RefundRes res, String url, nick) {
     TextStyle tGray = TextStyle(color: t_gray, fontSize: S.sp(15));
     TextStyle tPrimary = TextStyle(color: t_primary, fontSize: S.sp(15));
     return Row(
@@ -247,7 +247,7 @@ class _ComplaintsOrderPageState extends State<ComplaintsOrderPage>
   }
 
   /// 显示投诉状态
-  Widget _statView(ComplaintsRes res) {
+  Widget _statView(RefundRes res) {
     if (res.stat == refund_await) {
       return Text("待审核",
           style: TextStyle(color: t_primary, fontSize: S.sp(15)));

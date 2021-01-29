@@ -4,7 +4,7 @@
 // usage ：投诉大师结果
 // ------------------------------------------------------
 
-class ComplaintsRes {
+class RefundRes {
   String create_date;
   int amt; // 不需要退款，默认为0，需要退款，则显示退款金额
   String audit_date;
@@ -34,7 +34,7 @@ class ComplaintsRes {
   int uid;
   List<String> images;
 
-  ComplaintsRes({
+  RefundRes({
     this.create_date,
     this.amt,
     this.audit_date,
@@ -65,8 +65,8 @@ class ComplaintsRes {
     this.images,
   });
 
-  factory ComplaintsRes.fromJson(Map<String, dynamic> json) {
-    return ComplaintsRes(
+  factory RefundRes.fromJson(Map<String, dynamic> json) {
+    return RefundRes(
       create_date: json['CreateDate'],
       amt: json['amt'],
       audit_date: json['audit_date'],

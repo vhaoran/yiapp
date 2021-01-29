@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/bbs/submit_hehun_data.dart';
 import 'package:yiapp/model/complex/yi_date_time.dart';
 import 'package:yiapp/model/orders/hehun_content.dart';
@@ -38,6 +39,8 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
   var _commentCtrl = TextEditingController(); // 内容输入框
   var _titleCtrl = TextEditingController(); // 标题
   var _briefCtrl = TextEditingController(); // 摘要
+  String _birthDateMale = ""; // 显示男生出生日期
+  String _birthDateFemale = ""; // 女生出生日期
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +91,8 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
       name_female: _femaleNameCtrl.text.trim(),
       is_solar_male: !_isLunarMale,
       is_solar_female: !_isLunarFemale,
+      birth_date_male: _birthDateMale,
+      birth_date_female: _birthDateFemale,
     );
     content.ymdhm(_maleYiDate.toDateTime(), _femaleYiDate.toDateTime());
     var heHunData = SubmitHeHunData(
@@ -186,8 +191,15 @@ class _HeHunMeasurePageState extends State<HeHunMeasurePage> {
       time = TimeUtil.YMDHM(
         isSolar: isSolar,
         date: isSolar ? date : date.toSolar(),
+        comment: true,
       );
+      if (isMale) {
+        _birthDateMale = time;
+      } else {
+        _birthDateFemale = time;
+      }
     }
+
     return InkWell(
       child: Container(
         constraints: BoxConstraints(minHeight: S.h(45)),

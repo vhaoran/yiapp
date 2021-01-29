@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
-import 'package:yiapp/ui/mine/my_orders/complaints_order_page.dart';
+import 'package:yiapp/ui/masters/refund/master_refund_doing_list.dart';
+import 'package:yiapp/ui/masters/refund/master_refund_his_list.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/5 上午9:23
-// usage ：投诉订单记录（含处理中和处理过的）
+// date  ：2021/1/29 下午7:15
+// usage ：大师处理中、已处理的投诉记录
 // ------------------------------------------------------
 
-class ComplaintsRecord extends StatefulWidget {
-  ComplaintsRecord({Key key}) : super(key: key);
+class MasterRefundMainPage extends StatefulWidget {
+  MasterRefundMainPage({Key key}) : super(key: key);
 
   @override
-  _ComplaintsRecordState createState() => _ComplaintsRecordState();
+  _MasterRefundMainPageState createState() => _MasterRefundMainPageState();
 }
 
-class _ComplaintsRecordState extends State<ComplaintsRecord> {
+class _MasterRefundMainPageState extends State<MasterRefundMainPage> {
   final List<String> _tabsName = ["处理中", "已处理"];
 
   @override
@@ -54,8 +55,8 @@ class _ComplaintsRecordState extends State<ComplaintsRecord> {
           behavior: CusBehavior(),
           child: TabBarView(
             children: <Widget>[
-              ComplaintsOrderPage(),
-              ComplaintsOrderPage(isHis: true),
+              MasterRefundDoingList(), // 大师处理中的投诉订单
+              MasterRefundHisList(),// 大师已完成的投诉订单
             ],
           ),
         )),

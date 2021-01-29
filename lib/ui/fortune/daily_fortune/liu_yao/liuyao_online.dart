@@ -137,6 +137,7 @@ class _LiuYaoOnLineState extends State<LiuYaoOnLine> {
     try {
       var liuyaoRes = await ApiPaiPan.liuYaoQiGua(m);
       if (liuyaoRes != null) {
+        Navigator.pop(context);
         var liuYaoContent = LiuYaoContent(
           yao_code: yaoCode,
           is_male: widget.male == male,

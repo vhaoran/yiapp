@@ -94,11 +94,6 @@ class _HeHunPrizePageState extends State<HeHunPrizePage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: S.w(10)),
               children: <Widget>[
-                SizedBox(height: S.h(5)),
-                Text(
-                  "合婚信息",
-                  style: TextStyle(fontSize: S.sp(16), color: t_primary),
-                ),
                 // 提交合婚的基本信息
                 PostComDetail(
                   prize: BBSPrize(

@@ -9,8 +9,9 @@ import 'package:yiapp/ui/broker/broker_apply.dart';
 import 'package:yiapp/ui/master/master_apply.dart';
 import 'package:yiapp/ui/masters/master_console.dart';
 import 'package:yiapp/ui/master/master_info_page.dart';
-import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
 import 'package:yiapp/ui/masters/master_post_his_page.dart';
+import 'package:yiapp/ui/masters/refund/master_refund_main_page.dart';
+import 'package:yiapp/ui/masters/yiorder/master_yiorder_his_list_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
 import 'package:yiapp/ui/mine/user_pro_info.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -19,7 +20,6 @@ import 'account_safe/account_safe_page.dart';
 import 'bind_service_code.dart';
 import 'fund_account/fund_main.dart';
 import 'fund_account/master_fund_main.dart';
-import 'my_orders/complaints_record.dart';
 import 'my_orders/other_orders_main.dart';
 
 // ------------------------------------------------------
@@ -78,7 +78,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "大师已完成订单",
-          onTap: () => CusRoute.push(context, MasterCompletedOrders()),
+          onTap: () => CusRoute.push(context, MasterYiOrderHisListPage()),
         ),
         NormalBox(
           title: "大师资金账号",
@@ -86,7 +86,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "被投诉订单",
-          onTap: () => CusRoute.push(context, ComplaintsRecord()),
+          onTap: () => CusRoute.push(context, MasterRefundMainPage()),
         ),
         NormalBox(
           title: "账户与安全",

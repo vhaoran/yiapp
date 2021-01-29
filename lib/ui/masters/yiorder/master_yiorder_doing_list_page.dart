@@ -3,7 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_page.dart';
+import 'package:yiapp/ui/masters/yiorder/master_yiorder_doing_page.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_button.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_cover.dart';
@@ -17,25 +17,25 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/26 上午9:31
-// usage ：会员处理中的大师订单列表
+// date  ：2021/1/29 下午2:05
+// usage ：大师处理中的大师订单列表
 // ------------------------------------------------------
 
-class UserYiOrderDoingListPage extends StatefulWidget {
-  UserYiOrderDoingListPage({Key key}) : super(key: key);
+class MasterYiOrderDoingListPage extends StatefulWidget {
+  MasterYiOrderDoingListPage({Key key}) : super(key: key);
 
   @override
-  _UserYiOrderDoingListPageState createState() =>
-      _UserYiOrderDoingListPageState();
+  _MasterYiOrderDoingListPageState createState() =>
+      _MasterYiOrderDoingListPageState();
 }
 
-class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
+class _MasterYiOrderDoingListPageState extends State<MasterYiOrderDoingListPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List<YiOrder> _l = []; // 会员处理中的大师订单列表
+  List<YiOrder> _l = []; // 大师处理中的大师订单列表
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
     super.initState();
   }
 
-  /// 会员分页查询处理中的大师订单
+  /// 大师分页查询处理中的大师订单
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
@@ -54,18 +54,18 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
       "sort": {"create_date": -1},
     };
     try {
-      PageBean pb = await ApiYiOrder.yiOrderPage(m);
+      PageBean pb = await ApiYiOrder.yiOrderPageOfMaster(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
-      Log.info("会员处理中大师订单总数 $_rowsCount");
+      Log.info("大师处理中大师订单总数 $_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
-      Log.info("会员已查询处理中大师订单个数 ${_l.length}");
+      Log.info("大师已查询处理中大师订单个数 ${_l.length}");
     } catch (e) {
-      Log.error("会员分页查询处理中大师订单出现异常：$e");
+      Log.error("大师分页查询处理中大师订单出现异常：$e");
     }
   }
 
@@ -101,8 +101,8 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
                     onTap: () => _lookYiOrderPage(e.id),
                     child: YiOrderComCover(
                       yiOrder: e,
-                      iconUrl: e.master_icon_ref,
-                      nick: e.master_nick_ref,
+                      iconUrl: e.icon_ref,
+                      nick: e.nick_ref,
                       child: YiOrderComButton(
                         text: "回复",
                         onPressed: () => _lookYiOrderPage(e.id),
@@ -120,7 +120,10 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
 
   /// 查看处理中大师订单页
   void _lookYiOrderPage(String yiOrderId) {
-    CusRoute.push(context, UserYiOrderDoingPage(yiOrderId: yiOrderId));
+    CusRoute.push(context, MasterYiOrderDoingPage(yiOrderId: yiOrderId))
+        .then((value) {
+      if (value != null) _refresh();
+    });
   }
 
   /// 刷新数据

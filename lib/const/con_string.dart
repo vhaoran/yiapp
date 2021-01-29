@@ -38,11 +38,9 @@ const String r_zodiac_pair = "zodiac_pair"; // 生肖配对
 const String r_blood_pair = "blood_pair"; // 血型配对
 const String r_birth_pair = "birth_pair"; // 生日配对
 const String r_com_draw = "com_draw"; // 共用的免费抽灵签页面
-const String r_liu_yao = "liu_yao"; // 六爻排盘
+const String r_liuyao = "liuyao"; // 六爻排盘
 const String r_sizhu = "sizhu"; // 四柱测算
-const String r_he_hun = "he_hun"; // 合婚测算
-const String r_sizhu_test = "r_sizhu_test"; // 临时四柱测算
-const String r_hehun_test = "r_hehun_test"; // 临时合婚测算
+const String r_hehun = "hehun"; // 合婚测算
 const String r_article = "article"; // 文章
 const String r_zhou_gong = "zhou_gong"; // 周公
 

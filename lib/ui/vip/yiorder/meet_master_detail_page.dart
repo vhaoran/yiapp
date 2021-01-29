@@ -92,13 +92,14 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
                 ],
                 if (widget.yiOrderData != null)
                   YiOrderComDetail(yiOrderContent: widget.yiOrderData.content),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: S.h(3)),
-                  child: Text(
-                    "问题描述:  ${widget.yiOrderData.title + widget.yiOrderData.brief}",
-                    style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                if (!(widget.yiOrderData is SubmitLiuYaoData))
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: S.h(3)),
+                    child: Text(
+                      "问题描述:  ${widget.yiOrderData.title + widget.yiOrderData.brief}",
+                      style: TextStyle(color: t_gray, fontSize: S.sp(16)),
+                    ),
                   ),
-                ),
                 SizedBox(height: S.h(30)),
               ],
             ),
@@ -157,6 +158,7 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
         "content_type": yiOrder.content_type,
       };
       if (yiOrder is SubmitSiZhuData || yiOrder is SubmitSiZhuData) {
+        Log.info("是四柱或者合婚，添加 comment");
         m.addAll({"comment": yiOrder.title + yiOrder.brief});
       }
       if (yiOrder is SubmitLiuYaoData) {

@@ -29,7 +29,7 @@ class ComplaintsDetailPage extends StatefulWidget {
 
 class _ComplaintsDetailPageState extends State<ComplaintsDetailPage> {
   var _future;
-  ComplaintsRes _res; // 单条投诉单详情
+  RefundRes _res; // 单条投诉单详情
   List _images = []; // 用户提供的图片
 
   @override

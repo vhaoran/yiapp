@@ -27,17 +27,17 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // usage ：投诉大师订单、商城订单
 // ------------------------------------------------------
 
-class ComplaintsAdd extends StatefulWidget {
+class RefundAddPage extends StatefulWidget {
   final YiOrder yiOrder; // 投诉大师订单
   final ProductOrder productOrder; // 投诉商城订单
 
-  ComplaintsAdd({this.yiOrder, this.productOrder, Key key}) : super(key: key);
+  RefundAddPage({this.yiOrder, this.productOrder, Key key}) : super(key: key);
 
   @override
-  _ComplaintsAddState createState() => _ComplaintsAddState();
+  _RefundAddPageState createState() => _RefundAddPageState();
 }
 
-class _ComplaintsAddState extends State<ComplaintsAdd> {
+class _RefundAddPageState extends State<RefundAddPage> {
   var _briefCtrl = TextEditingController(); // 投诉摘要
   var _detailCtrl = TextEditingController(); // 投诉详情
   bool _drawBack = false; // 是否退款，默认不退款

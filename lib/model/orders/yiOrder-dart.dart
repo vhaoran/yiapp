@@ -2,54 +2,41 @@ import 'package:yiapp/model/orders/hehun_content.dart';
 import 'package:yiapp/model/orders/liuyao_content.dart';
 import 'package:yiapp/model/orders/sizhu_content.dart';
 
+// ------------------------------------------------------
+// author：suxing
+// date  ：2021/1/29 上午11:27
+// usage ：大师订单结果
+// ------------------------------------------------------
+
 class YiOrder {
   String id; // 订单 id
-
-  //用户id
+  // 用户id
   int uid;
   String user_code;
   String nick_ref;
   String icon_ref;
-
-  ////大师id
+  // 大师id
   int master_id;
   String master_user_code_ref;
   String master_nick_ref;
   String master_icon_ref;
-
-  //说明
-  String comment;
-
-  // 订单类型	 0 其它，1 六爻，2 四柱，3 合婚
-  int content_type;
-
-  //
+  String comment; // 摘要
+  int content_type; // 订单类型	 0 其它，1 六爻，2 四柱，3 合婚
+  // 自定义内容
   dynamic content;
-
-  //金额
-  int amt;
-
+  int amt; // 赏金
   String create_date;
   int create_date_int;
-
-  //支付类型	0:积分付款 1：支付宝 2：微信
-  int pay_type;
-
-  ////第三方付款单号
-  String trade_no;
-
-  //// 订单状态	0:待付款 1：已付款 3 已处理  4 已退款
-  int stat;
-
+  int pay_type; // 支付类型：0 余额付款、1 支付宝 、2 微信
+  String trade_no; // 第三方付款单号
+  int stat; // 订单状态	0:待付款 1：已付款 3 已处理  4 已退款
   int broker_id;
   String broker_name;
-  String diagnose; // 诊断
+  String diagnose; // 测算结果
   String last_updated;
   num pay_amt;
   int yi_cate_id;
-
-  //是滞已评价
-  bool has_exp;
+  bool has_exp; // 是否已评价
 
   YiOrder({
     this.amt,
@@ -81,7 +68,7 @@ class YiOrder {
 
   factory YiOrder.fromJson(Map<String, dynamic> json) {
     ////订单类型	 0：四柱 1：六爻 3:合婚   20 其它
-    int i = json['order_type'] as int;
+    int i = json['content_type'] as int;
     dynamic ct = null;
     if (json['content'] != null) {
       switch (i) {

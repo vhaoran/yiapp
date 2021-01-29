@@ -4,6 +4,7 @@
 // usage ：合婚 content 的内容
 // ------------------------------------------------------
 
+import 'package:yiapp/model/sizhu/sizhu_result.dart';
 
 class HeHunContent {
   // male 男方
@@ -22,6 +23,11 @@ class HeHunContent {
   int day_female;
   int hour_female;
   int minute_female;
+  // 自定义的
+  String birth_date_male; // 男方出生日期
+  String birth_date_female; // 女方出生日期
+  SiZhuResult male_sizhu_res; // 男方八字
+  SiZhuResult female_sizhu_res; // 女方八字
 
   HeHunContent({
     this.name_male,
@@ -38,6 +44,10 @@ class HeHunContent {
     this.day_female,
     this.hour_female,
     this.minute_female,
+    this.birth_date_male,
+    this.birth_date_female,
+    this.male_sizhu_res,
+    this.female_sizhu_res,
   });
 
   factory HeHunContent.fromJson(Map<String, dynamic> json) {
@@ -56,6 +66,14 @@ class HeHunContent {
       day_female: json['day_female'],
       hour_female: json['hour_female'],
       minute_female: json['minute_female'],
+      birth_date_male: json['birth_date_male'],
+      birth_date_female: json['birth_date_female'],
+      male_sizhu_res: json['male_sizhu_res'] != null
+          ? SiZhuResult.fromJson(json['male_sizhu_res'])
+          : null,
+      female_sizhu_res: json['female_sizhu_res'] != null
+          ? SiZhuResult.fromJson(json['female_sizhu_res'])
+          : null,
     );
   }
 
@@ -75,6 +93,14 @@ class HeHunContent {
     data['day_female'] = this.day_female;
     data['hour_female'] = this.hour_female;
     data['minute_female'] = this.minute_female;
+    data['birth_date_male'] = this.birth_date_male;
+    data['birth_date_female'] = this.birth_date_female;
+    if (this.male_sizhu_res != null) {
+      data['male_sizhu_res'] = this.male_sizhu_res.toJson();
+    }
+    if (this.female_sizhu_res != null) {
+      data['female_sizhu_res'] = this.female_sizhu_res.toJson();
+    }
     return data;
   }
 

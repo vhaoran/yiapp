@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/master/master_order/master_complete_orders.dart';
-import 'package:yiapp/ui/mine/my_orders/await_yiorder_page.dart';
-import 'package:yiapp/ui/mine/my_orders/complaints_record.dart';
+import 'package:yiapp/ui/vip/refund/user_refund_main_page.dart';
 import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_list_page.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_his_list_page.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_unpaid_list_page.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -36,15 +36,15 @@ class OtherOrdersMain extends StatelessWidget {
           ),
           NormalBox(
             title: "待支付大师订单",
-            onTap: () => CusRoute.push(context, AwaitYiorderPage()),
+            onTap: () => CusRoute.push(context, UserYiOrderUnpaidListPage()),
           ),
           NormalBox(
             title: "已完成大师订单",
-            onTap: () => CusRoute.push(context, MasterCompletedOrders()),
+            onTap: () => CusRoute.push(context, UserYiOrderHisListPage()),
           ),
           NormalBox(
             title: "投诉记录",
-            onTap: () => CusRoute.push(context, ComplaintsRecord()),
+            onTap: () => CusRoute.push(context, UserRefundMainPage()),
           ),
         ],
       ),

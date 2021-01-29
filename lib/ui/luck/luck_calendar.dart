@@ -5,6 +5,7 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/ui/fortune/almanac/almanac_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/time_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -42,12 +43,15 @@ class LuckCalendar extends StatelessWidget {
           ),
         ),
         SizedBox(width: S.w(12)),
-        InkWell(
-          onTap: () => CusRoute.push(context, AlmanacPage()),
+        CusRaisedButton(
           child: Text(
             "详情",
-            style: TextStyle(color: Colors.lightBlue, fontSize: S.sp(15)),
+            style: TextStyle(color: Colors.black, fontSize: S.sp(13)),
           ),
+          onPressed: () => CusRoute.push(context, AlmanacPage()),
+          padding: EdgeInsets.symmetric(horizontal: S.w(10), vertical: S.h(2)),
+          backgroundColor: t_primary,
+          borderRadius: 50,
         ),
         SizedBox(width: S.w(8)),
       ],

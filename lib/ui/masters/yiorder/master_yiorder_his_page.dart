@@ -7,7 +7,6 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_msg.dart';
-import 'package:yiapp/ui/vip/yiorder/user_yiorder_input.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -19,25 +18,22 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/26 上午9:47
-// usage ：会员处理中的单个大师订单详情
+// date  ：2021/1/29 下午1:37
+// usage ：大师已完成的单个大师订单详情
 // ------------------------------------------------------
 
-class UserYiOrderDoingPage extends StatefulWidget {
+class MasterYiOrderHisPage extends StatefulWidget {
   final String yiOrderId;
-  final String backData;
 
-  UserYiOrderDoingPage({this.yiOrderId, this.backData, Key key})
-      : super(key: key);
+  MasterYiOrderHisPage({this.yiOrderId, Key key}) : super(key: key);
 
   @override
-  _UserYiOrderDoingPageState createState() => _UserYiOrderDoingPageState();
+  _MasterYiOrderHisPageState createState() => _MasterYiOrderHisPageState();
 }
 
-class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
+class _MasterYiOrderHisPageState extends State<MasterYiOrderHisPage> {
   YiOrder _yiOrder;
   var _future;
-
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
@@ -55,21 +51,21 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
     await _fetchReply();
   }
 
-  /// 会员获取大师订单详情
+  /// 大师获取大师订单详情
   _fetchOrder() async {
     try {
-      YiOrder order = await ApiYiOrder.yiOrderGet(widget.yiOrderId);
+      YiOrder order = await ApiYiOrder.yiOrderHisGet(widget.yiOrderId);
       if (order != null) {
-        Log.info("会员当前处理中大师订单详情：${order.toJson()}");
+        Log.info("大师当前已完成大师订单详情：${order.toJson()}");
         _yiOrder = order;
         setState(() {});
       }
     } catch (e) {
-      Log.error("会员获取处理中大师订单出现异常：$e");
+      Log.error("大师获取已完成大师订单出现异常：$e");
     }
   }
 
-  /// 会员分页获取聊天内容
+  /// 大师分页获取聊天内容
   _fetchReply() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
@@ -82,42 +78,31 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
       PageBean pb = await ApiMsg.yiOrderMsgHisPage(m);
       if (pb != null) {
         if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
-        Log.info("处理中的大师订单聊天总个数 $_rowsCount");
+        Log.info("已完成的大师订单聊天总个数 $_rowsCount");
         var l = pb.data.map((e) => e as MsgYiOrder).toList();
         l.forEach((src) {
           var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
           if (dst == null) _l.add(src);
         });
         setState(() {});
-        Log.info("当前已加载处理中的大师订单聊天个数 ${_l.length}");
+        Log.info("当前已加载已完成的大师订单聊天个数 ${_l.length}");
       }
     } catch (e) {
-      Log.error("会员分页获取处理中大师订单聊天记录出现异常 $e");
+      Log.error("大师分页获取已完成大师订单聊天记录出现异常 $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "大师订单", backData: widget.backData),
+      appBar: CusAppBar(text: "大师订单"),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
-          return _co();
-        },
-      ),
-      backgroundColor: primary,
-    );
-  }
-
-  Widget _co() {
-    return Column(
-      children: [
-        Expanded(
-          child: ScrollConfiguration(
+          return ScrollConfiguration(
             behavior: CusBehavior(),
             child: EasyRefresh(
               header: CusHeader(),
@@ -126,10 +111,10 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
               onLoad: () async => _fetchReply(),
               child: _lv(),
             ),
-          ),
-        ),
-        UserYiOrderInput(yiOrderId: _yiOrder.id, onSend: _refresh),
-      ],
+          );
+        },
+      ),
+      backgroundColor: primary,
     );
   }
 
@@ -174,7 +159,7 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
     );
   }
 
-  /// 测算结果
+  /// 显示测算结果
   Widget _diagnoseWt() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

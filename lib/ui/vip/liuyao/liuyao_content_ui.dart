@@ -28,6 +28,7 @@ class LiuYaoContentUI extends StatelessWidget {
 
   Widget _co() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Divider(height: 0, thickness: 0.2, color: t_gray),
         Container(

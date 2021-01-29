@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_int.dart';
+import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
-import 'package:yiapp/ui/vip/yiorder/user_yiorder_doing_page.dart';
+import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_unpaid_page.dart';
+import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_button.dart';
 import 'package:yiapp/widget/post_com/yiorder_com_cover.dart';
@@ -17,25 +20,25 @@ import 'package:yiapp/widget/small/empty_container.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/26 上午9:31
-// usage ：会员处理中的大师订单列表
+// date  ：2021/1/29 上午11:42
+// usage ：会员待付款的大师订单列表
 // ------------------------------------------------------
 
-class UserYiOrderDoingListPage extends StatefulWidget {
-  UserYiOrderDoingListPage({Key key}) : super(key: key);
+class UserYiOrderUnpaidListPage extends StatefulWidget {
+  UserYiOrderUnpaidListPage({Key key}) : super(key: key);
 
   @override
-  _UserYiOrderDoingListPageState createState() =>
-      _UserYiOrderDoingListPageState();
+  _UserYiOrderUnpaidListPageState createState() =>
+      _UserYiOrderUnpaidListPageState();
 }
 
-class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
+class _UserYiOrderUnpaidListPageState extends State<UserYiOrderUnpaidListPage>
     with AutomaticKeepAliveClientMixin {
   var _future;
   int _pageNo = 0;
   int _rowsCount = 0;
   final int _rowsPerPage = 10; // 默认每页查询个数
-  List<YiOrder> _l = []; // 会员处理中的大师订单列表
+  List<YiOrder> _l = []; // 会员待付款的大师订单列表
 
   @override
   void initState() {
@@ -43,29 +46,29 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
     super.initState();
   }
 
-  /// 会员分页查询处理中的大师订单
+  /// 会员分页查询待付款的大师订单
   _fetch() async {
     if (_pageNo * _rowsPerPage > _rowsCount) return;
     _pageNo++;
     var m = {
       "page_no": _pageNo,
       "rows_per_page": _rowsPerPage,
-      "where": {"stat": yiorder_paid},
+      "where": {"stat": yiorder_unpaid},
       "sort": {"create_date": -1},
     };
     try {
       PageBean pb = await ApiYiOrder.yiOrderPage(m);
       if (_rowsCount == 0) _rowsCount = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as YiOrder).toList();
-      Log.info("会员处理中大师订单总数 $_rowsCount");
+      Log.info("会员待付款大师订单总数 $_rowsCount");
       l.forEach((src) {
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
       setState(() {});
-      Log.info("会员已查询处理中大师订单个数 ${_l.length}");
+      Log.info("会员已查询待付款大师订单个数 ${_l.length}");
     } catch (e) {
-      Log.error("会员分页查询处理中大师订单出现异常：$e");
+      Log.error("会员分页查询待付款大师订单出现异常：$e");
     }
   }
 
@@ -73,7 +76,7 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CusAppBar(text: "处理中大师订单"),
+      appBar: CusAppBar(text: "待付款大师订单"),
       body: _buildFb(),
       backgroundColor: primary,
     );
@@ -101,11 +104,19 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
                     onTap: () => _lookYiOrderPage(e.id),
                     child: YiOrderComCover(
                       yiOrder: e,
-                      iconUrl: e.master_icon_ref,
-                      nick: e.master_nick_ref,
+                      iconUrl: e.icon_ref,
+                      nick: e.nick_ref,
                       child: YiOrderComButton(
-                        text: "回复",
-                        onPressed: () => _lookYiOrderPage(e.id),
+                        text: "支付",
+                        onPressed: () {
+                          var pay =
+                              PayData(amt: e.amt, b_type: b_yi_order, id: e.id);
+                          BalancePay(
+                            context,
+                            data: pay,
+                            onSuccess: () async => await _refresh(),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -118,9 +129,9 @@ class _UserYiOrderDoingListPageState extends State<UserYiOrderDoingListPage>
     );
   }
 
-  /// 查看处理中大师订单页
+  /// 查看待付款大师订单页
   void _lookYiOrderPage(String yiOrderId) {
-    CusRoute.push(context, UserYiOrderDoingPage(yiOrderId: yiOrderId));
+    CusRoute.push(context, UserYiOrderUnpaidPage(yiOrderId: yiOrderId));
   }
 
   /// 刷新数据

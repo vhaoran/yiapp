@@ -168,7 +168,7 @@ class _UserPostAskPageState extends State<UserPostAskPage>
     // i 的顺序是 _selectTypes 列表的顺序
     switch (i) {
       case 0: // 六爻
-        CusRoute.pushReplacement(context, LiuYaoShakePage());
+        CusRoute.push(context, LiuYaoShakePage());
         break;
       case 1: // 四柱
         CusRoute.push(context, SiZhuMeasurePage());
@@ -177,13 +177,12 @@ class _UserPostAskPageState extends State<UserPostAskPage>
         CusRoute.push(context, HeHunMeasurePage());
         break;
       case 3: // 其他
-        CusRoute.pushReplacement(
+        CusRoute.push(
           context,
           AskQuestionPage(content_type: submit_other),
         );
         break;
       default:
-        Navigator.pop(context);
         break;
     }
   }

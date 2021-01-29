@@ -2,26 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/small/cus_avatar.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/26 上午11:20
-// usage ：会员大师订单评论区
+// date  ：2021/1/29 下午3:34
+// usage ：大师订单评论区
 // ------------------------------------------------------
 
-class UserYiOrderReplyArea extends StatefulWidget {
+class YiOrderComReplyArea extends StatefulWidget {
   final List<MsgYiOrder> l;
+  final int uid; // 命主的uid
 
-  UserYiOrderReplyArea({this.l, Key key}) : super(key: key);
+  YiOrderComReplyArea({this.l, this.uid, Key key}) : super(key: key);
 
   @override
-  _UserYiOrderReplyAreaState createState() => _UserYiOrderReplyAreaState();
+  _YiOrderComReplyAreaState createState() => _YiOrderComReplyAreaState();
 }
 
-class _UserYiOrderReplyAreaState extends State<UserYiOrderReplyArea> {
+class _YiOrderComReplyAreaState extends State<YiOrderComReplyArea> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -90,14 +90,10 @@ class _UserYiOrderReplyAreaState extends State<UserYiOrderReplyArea> {
           e.from_nick, // 评论人昵称
           style: TextStyle(color: t_primary, fontSize: S.sp(15)),
         ),
-        // 显示命主标识
-        if (e.from == ApiBase.uid)
-          Padding(
-            padding: EdgeInsets.only(left: S.h(5)),
-            child: Text(
-              "(命主)",
-              style: TextStyle(color: t_gray, fontSize: S.sp(14)),
-            ),
+        if (e.from == widget.uid)
+          Text(
+            "(命主)",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
           ),
         Spacer(),
         // 显示层数

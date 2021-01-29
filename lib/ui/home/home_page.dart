@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
@@ -14,8 +16,8 @@ import 'package:yiapp/ui/home/login_verify.dart';
 import 'package:yiapp/ui/luck/luck_main.dart';
 import 'package:yiapp/ui/mall/mall_main.dart';
 import 'package:yiapp/ui/mine/mine_page.dart';
-import 'package:yiapp/ui/question/que_main_page.dart';
 import 'package:yiapp/ui/vip/user_post_ask_page.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/master/broker_master_list_page.dart';
 
 // ------------------------------------------------------
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   Map<String, Widget> _m = {}; // 底部导航名称、组件
   var _pc = PageController();
   var _future;
+  DateTime _lastPressedAt; // 上次点击时间
 
   @override
   void initState() {
@@ -54,7 +57,22 @@ class _HomePageState extends State<HomePage> {
           if (snap.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
-          return _buildScaffold();
+          return WillPopScope(
+            onWillPop: () async {
+              if (_lastPressedAt == null ||
+                  DateTime.now().difference(_lastPressedAt) >
+                      Duration(seconds: 2)) {
+                // 两次点击间隔超过2秒则重新计时
+                _lastPressedAt = DateTime.now();
+                CusToast.toast(context,
+                    text: "再按一次返回键，退出登录", pos: ToastPos.bottom);
+                return false;
+              } else {
+                exit(0);
+              }
+            },
+            child: _buildScaffold(),
+          );
         });
   }
 
@@ -107,7 +125,6 @@ class _HomePageState extends State<HomePage> {
     _printModules(res); // 仅打印运营商开启的模块
     if (res.enable_mall == 1) _m.addAll({"商城": MallPage()});
     if (res.enable_prize == 1 || res.enable_vie == 1) {
-//      _m.addAll({"问命": QueMainPage()});
       _m.addAll({"问命": UserPostAskPage()});
     }
     if (res.enable_master == 1) _m.addAll({"大师": BrokerMasterListPage()});
