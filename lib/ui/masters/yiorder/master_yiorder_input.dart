@@ -92,7 +92,7 @@ class _MasterYiOrderInputState extends State<MasterYiOrderInput> {
       MsgYiOrder msgYiOrder = await ApiMsg.yiOrderMsgSend(m);
       if (msgYiOrder != null) {
         _isSending = false;
-        CusToast.toast(context, text: "回复成功");
+        CusToast.toast(context, text: "发送成功");
         _replyCtrl.clear();
         _focusNode.unfocus();
         if (widget.onSend != null) widget.onSend();

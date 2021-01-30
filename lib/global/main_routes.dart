@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/temp/temp_page.dart';
+import 'package:yiapp/ui/login/login_page.dart';
 import 'package:yiapp/ui/vip/liuyao/liuyao_shake_page.dart';
 import 'package:yiapp/ui/fortune/free_calculate/article/article_main.dart';
 import 'package:yiapp/ui/luck/free_calculate/birth_pair.dart';
@@ -20,7 +21,8 @@ import 'package:yiapp/ui/vip/sizhu/sizhu_measure_page.dart';
 // ------------------------------------------------------
 
 final Map<String, WidgetBuilder> mainRoutes = {
-  "home": (BuildContext context) => HomePage(),
+  r_home: (BuildContext context) => HomePage(),
+  r_login: (BuildContext context) => LoginPage(),
   r_con_pair: (BuildContext context) => ConPairPage(), // 星座配对
   r_zodiac_pair: (BuildContext context) => ZodiacPairPage(), // 生肖配对
   r_blood_pair: (BuildContext context) => BloodPairPage(), // 血型配对
@@ -33,3 +35,8 @@ final Map<String, WidgetBuilder> mainRoutes = {
   r_zhou_gong: (BuildContext context) => ZhouGongPage(), // 周公解梦
   "temp": (BuildContext context) => TempPage(), // 临时页面[待删]
 };
+
+
+// -------------------------- 统一命名路由 --------------------------
+const String r_home = "/home"; // 首页
+const String r_login = "/login"; // 登录页

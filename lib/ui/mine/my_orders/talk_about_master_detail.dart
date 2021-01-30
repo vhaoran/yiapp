@@ -102,7 +102,7 @@ class _TalkAboutMasterDetailState extends State<TalkAboutMasterDetail> {
         BalancePay(context, data: payData, onSuccess: () {
           CusRoute.pushReplacement(
             context,
-            UserYiOrderDoingPage(yiOrderId: order.id),
+            UserYiOrderDoingPage(yiOrderId: order.id, backData: ""),
           );
         });
       }

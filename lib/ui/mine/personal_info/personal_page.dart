@@ -131,7 +131,7 @@ class _PersonalPageState extends State<PersonalPage> {
             onThen: () async {
               await closeWSChan();
               if (ApiBase.uid > 0 && await ApiPush.pushUnRegist()) {
-                CusRoute.push(context, LoginPage());
+                CusRoute.pushNamedAndRemoveAllUntil(context, "/login");
               } else {
                 CusToast.toast(context, text: "退出失败");
               }

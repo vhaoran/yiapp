@@ -101,7 +101,7 @@ class _UserVieInputState extends State<UserVieInput> {
   /// 选择大师后，发送评论
   void _doReply() async {
     if (widget.vie.reply.isEmpty) {
-      CusToast.toast(context, text: "请等待大师回复");
+      CusToast.toast(context, text: "有大师回帖后帖主才可以评论");
       return;
     }
     if (_replyCtrl.text.trim().isEmpty) {
@@ -133,7 +133,7 @@ class _UserVieInputState extends State<UserVieInput> {
 
   String _hintText() {
     if (widget.vie.reply.isEmpty) {
-      return "请等待大师回复";
+      return "有大师回帖后帖主才可以评论";
     }
     return "回复：${widget.vie.master_nick}";
   }

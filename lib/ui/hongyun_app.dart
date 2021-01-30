@@ -19,6 +19,7 @@ class HongYunApp extends StatelessWidget {
         _systemPrepare(context, constraints);
         return MaterialApp(
           home: HomePage(),
+          initialRoute: r_home,
           routes: mainRoutes,
           theme: ThemeData(
             primarySwatch: Colors.blue,

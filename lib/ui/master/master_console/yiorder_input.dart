@@ -85,7 +85,7 @@ class _YiOrderInputState extends State<YiOrderInput> {
       Log.info("提交回复大师订单的数据：$m");
       MsgYiOrder msgYiOrder = await ApiMsg.yiOrderMsgSend(m);
       if (msgYiOrder != null) {
-        CusToast.toast(context, text: "回复成功");
+        CusToast.toast(context, text: "发送成功");
         _doRefresh();
       }
     } catch (e) {

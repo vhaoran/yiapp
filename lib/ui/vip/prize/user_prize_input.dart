@@ -105,7 +105,7 @@ class _UserPrizeInputState extends State<UserPrizeInput> {
   /// 选择大师后，发送评论
   void _doReply() async {
     if (widget.prize.master_reply.isEmpty) {
-      CusToast.toast(context, text: "请等待大师回复");
+      CusToast.toast(context, text: "有大师回帖后帖主才可以评论");
       return;
     }
     if (widget.selectMaster == null) {
@@ -142,7 +142,7 @@ class _UserPrizeInputState extends State<UserPrizeInput> {
 
   String _hintText() {
     if (widget.prize.master_reply.isEmpty) {
-      return "请等待大师回复";
+      return "有大师回帖后帖主才可以评论";
     } else {
       if (widget.selectMaster == null) {
         return "选择一位大师进行回复";

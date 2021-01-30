@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/global/main_routes.dart';
 import 'package:yiapp/util/adapt.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -264,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
             SpinKit.threeBounce(context, text: "正在登录，请稍等...");
             await Future.delayed(Duration(milliseconds: 1000));
             Navigator.pop(context);
-            CusRoute.pushReplacement(context, HomePage());
+            CusRoute.pushReplacementNamed(context, r_home);
           }
         } catch (e) {
           Log.error("登录出现异常：$e");

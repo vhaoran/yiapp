@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/global/main_routes.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
 import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
@@ -99,7 +101,13 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "大师订单", backData: widget.backData),
+      appBar: CusAppBar(
+          text: "大师订单",
+          leadingFn: () {
+            if (widget.backData != null) {
+              CusRoute.pushNamedAndRemoveAllUntil(context, r_home);
+            }
+          }),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
