@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/orders/refund_res.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
+import 'package:yiapp/ui/vip/yiorder/user_yiorder_his_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -50,7 +52,19 @@ class _UserRefundDoingPageState extends State<UserRefundDoingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "投诉详情"),
+      appBar: CusAppBar(
+        text: "投诉详情",
+        actions: [
+          FlatButton(
+            onPressed: () => CusRoute.push(
+                context, UserYiOrderHisPage(yiOrderId: _refundRes.order_id)),
+            child: Text(
+              "查看订单",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+          ),
+        ],
+      ),
       body: _buildFb(),
       backgroundColor: primary,
     );

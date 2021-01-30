@@ -144,7 +144,7 @@ class _UserPrizeDoingMainState extends State<UserPrizeDoingMain>
           await _refresh();
         }
       } catch (e) {
-        CusToast.toast(context, text: "该帖子已不可取消", milliseconds: 1500);
+        CusToast.toast(context, text: "已经有大师抢单了，快去看看吧", milliseconds: 1500);
         await _refresh();
         Log.error("取消悬赏帖订单出现异常：$e");
       }

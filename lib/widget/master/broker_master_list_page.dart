@@ -62,6 +62,7 @@ class _BrokerMasterListPageState extends State<BrokerMasterListPage>
       var l = pb.data.map((e) => e as BrokerMasterRes).toList();
       Log.info("当前运营商下总的大师个数：$_rowsCount");
       l.forEach((src) {
+        // TODO 这里应该要设置为根据 master_id 过滤
         var dst = _l.firstWhere((e) => src.broker_id != e.broker_id,
             orElse: () => null);
         if (dst == null) _l.add(src);

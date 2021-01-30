@@ -105,7 +105,9 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
           text: "大师订单",
           leadingFn: () {
             if (widget.backData != null) {
-              CusRoute.pushNamedAndRemoveAllUntil(context, r_home);
+              CusRoute.popUntil(context, r_home);
+            } else {
+              Navigator.pop(context);
             }
           }),
       body: FutureBuilder(
