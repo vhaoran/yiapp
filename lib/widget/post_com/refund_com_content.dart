@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yiapp/const/con_color.dart';
+import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/orders/refund_res.dart';
 import 'package:yiapp/util/screen_util.dart';
@@ -45,6 +46,12 @@ class _RefundComContentState extends State<RefundComContent> {
               ? "需要退款，应退${widget.refundRes.amt}元宝"
               : "无需退款",
         ),
+        Text(
+          "处理状态",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)),
+        ),
+        SizedBox(height: S.h(5)),
+        _statView(widget.refundRes),
         Divider(height: 0, color: t_gray, thickness: 0.2),
         SizedBox(height: S.h(5)),
         Text(
@@ -91,5 +98,43 @@ class _RefundComContentState extends State<RefundComContent> {
         SizedBox(height: S.h(5)),
       ],
     );
+  }
+
+  /// 显示投诉状态
+  Widget _statView(RefundRes res) {
+    if (res.stat == refund_await) {
+      return Text("待审核",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
+    }
+    if (res.stat == refund_b_pass) {
+      return Text("待平台审核",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
+    }
+    if (res.stat == refund_r) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "已驳回",
+            style: TextStyle(color: t_red, fontSize: S.sp(15)),
+          ),
+          SizedBox(height: S.h(5)),
+          Text(
+            "驳回原因：${res.reject_reason}",
+            style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+          ),
+          SizedBox(height: S.h(5)),
+        ],
+      );
+    }
+    if (res.stat == refund_p_pass) {
+      if (res.draw_back) {
+        return Text("已退款",
+            style: TextStyle(color: Colors.green, fontSize: S.sp(15)));
+      }
+      return Text("平台审核通过",
+          style: TextStyle(color: t_primary, fontSize: S.sp(15)));
+    }
+    return SizedBox.shrink();
   }
 }

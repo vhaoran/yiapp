@@ -69,8 +69,10 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "大师信息",
-          onTap: () =>
-              CusRoute.push(context, MasterInfoPage(masterId: ApiBase.uid)),
+          onTap: () => CusRoute.push(
+            context,
+            MasterInfoPage(masterId: ApiBase.uid),
+          ),
         ),
         NormalBox(
           title: "大师已完成帖子订单",
@@ -133,11 +135,27 @@ class _MineIdentityViewState extends State<MineIdentityView> {
     );
   }
 
-  /// 运营商管理员
+  /// 运营商或者运营商管理员
   Widget _brokerAdminView() {
     Log.info("身份：运营商或者运营商管理员 ${ApiBase.uid}");
     return Column(
       children: <Widget>[
+        NormalBox(
+          title: "帖子订单",
+          onTap: () => CusRoute.push(context, PosterConsole()),
+        ),
+        NormalBox(
+          title: "其它订单",
+          onTap: () => CusRoute.push(context, OtherOrdersMain()),
+        ),
+        NormalBox(
+          title: "我的商品",
+          onTap: () => CusRoute.push(context, UserProductInfo()),
+        ),
+        NormalBox(
+          title: "个人资金账号",
+          onTap: () => CusRoute.push(context, FundMain()),
+        ),
         NormalBox(
           title: "账户与安全",
           onTap: () => CusRoute.push(context, AccountSafePage()),

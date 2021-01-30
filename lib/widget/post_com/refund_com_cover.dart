@@ -68,7 +68,7 @@ class RefundComCover extends StatelessWidget {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   _statView(res), // 投诉状态
                   Spacer(),

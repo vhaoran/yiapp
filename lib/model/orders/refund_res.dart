@@ -32,6 +32,7 @@ class RefundRes {
   String order_id; // 投诉的大师订单的id
   int stat; // 处理中的 0 待审批、1 运营商已审批 --- 已完成的 4 平台已审批 -1 已驳回
   int uid;
+  String reject_reason; // 驳回原因
   List<String> images;
 
   RefundRes({
@@ -62,6 +63,7 @@ class RefundRes {
     this.order_id,
     this.stat,
     this.uid,
+    this.reject_reason,
     this.images,
   });
 
@@ -94,6 +96,7 @@ class RefundRes {
       order_id: json['order_id'],
       stat: json['stat'],
       uid: json['uid'],
+      reject_reason: json['reject_reason'],
       images: json['images'] != null ? List<String>.from(json['images']) : null,
     );
   }
@@ -127,6 +130,7 @@ class RefundRes {
     data['order_id'] = this.order_id;
     data['stat'] = this.stat;
     data['uid'] = this.uid;
+    data['reject_reason'] = this.reject_reason;
     if (this.images != null) {
       data['images'] = this.images;
     }

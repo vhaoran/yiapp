@@ -26,7 +26,7 @@ class _UserPostCancelledPageState extends State<UserPostCancelledPage> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: CusAppBar(text: "处理中"),
+        appBar: CusAppBar(text: "已取消"),
         body: _bodyCtr(),
         backgroundColor: primary,
       ),

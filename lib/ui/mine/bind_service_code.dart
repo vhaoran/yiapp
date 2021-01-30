@@ -38,7 +38,6 @@ class BindSerCodePage extends StatefulWidget {
 
 class _BindSerCodePageState extends State<BindSerCodePage> {
   var _codeCtrl = TextEditingController(); // 邀请码输入
-  String _err; // 提示信息
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +95,8 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
     }
     // 满足绑定运营商条件，可以绑定
     else {
-      _err = null;
       if (_codeCtrl.text.length < 6) {
-        _err = "邀请码必须是六位数字";
-      }
-      setState(() {});
-      if (_err != null) {
-        CusToast.toast(context, text: _err);
+        CusToast.toast(context, text: "邀请码必须是六位数字");
         return;
       }
       Log.info("已绑定手机号和密码，当前手机号：${user.user_code}");
@@ -111,7 +105,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
   }
 
   /// 游客绑定邀请码
-  void _doBind(String user_code) async {
+  void _doBind(String userCode) async {
     try {
       bool ok = await ApiBroker.serviceCodeBind(_codeCtrl.text.trim());
       Log.info("绑定运营商结果：$ok");
@@ -120,7 +114,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
         SpinKit.threeBounce(context);
         await Future.delayed(Duration(milliseconds: 2000));
         String pwd = await KV.getStr(kv_tmp_pwd);
-        var m = {"user_code": user_code, "pwd": pwd};
+        var m = {"user_code": userCode, "pwd": pwd};
         LoginResult login = await ApiLogin.login(m);
         if (login != null) {
           await LoginVerify.init(login, context);
@@ -131,7 +125,7 @@ class _BindSerCodePageState extends State<BindSerCodePage> {
       }
     } catch (e) {
       if (e.toString().contains("没有找到对应的服务代码")) {
-        setState(() => _err = "该邀请码不存在");
+        CusToast.toast(context, text: "该邀请码不存在");
       }
       Log.error("绑定运营商出现异常：$e");
     }

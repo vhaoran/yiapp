@@ -120,7 +120,7 @@ class _UserVieInputState extends State<UserVieInput> {
         _isSending = false;
         _replyCtrl.clear();
         _focusNode.unfocus();
-        CusToast.toast(context, text: "回帖成功");
+        CusToast.toast(context, text: "发送成功");
         setState(() {});
         if (widget.onSend != null) widget.onSend();
       }

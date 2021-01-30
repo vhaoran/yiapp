@@ -11,10 +11,10 @@ import 'package:yiapp/widget/flutter/cus_toast.dart';
 // ------------------------------------------------------
 
 class ProductCount extends StatefulWidget {
-  final FnInt OnChanged;
+  final FnInt onChanged;
   final int count;
 
-  ProductCount({this.OnChanged, this.count, Key key}) : super(key: key);
+  ProductCount({this.onChanged, this.count, Key key}) : super(key: key);
 
   @override
   _ProductCountState createState() => _ProductCountState();
@@ -50,7 +50,7 @@ class _ProductCountState extends State<ProductCount> {
         color: Colors.transparent,
         border: Border.all(color: Colors.grey),
       ),
-      constraints: BoxConstraints(maxHeight: S.h(30)),
+      constraints: BoxConstraints(minHeight: S.h(30)),
       padding: EdgeInsets.symmetric(vertical: 5),
       child: Text(
         "$_count",
@@ -68,8 +68,8 @@ class _ProductCountState extends State<ProductCount> {
           _count = 1;
           CusToast.toast(context, text: "亲，不能再减少了");
         }
-        if (widget.OnChanged != null) {
-          widget.OnChanged(_count);
+        if (widget.onChanged != null) {
+          widget.onChanged(_count);
         }
         setState(() {});
       },
@@ -78,7 +78,7 @@ class _ProductCountState extends State<ProductCount> {
           color: Colors.transparent,
           border: Border.all(color: Colors.grey),
         ),
-        constraints: BoxConstraints(maxHeight: S.h(30)),
+        constraints: BoxConstraints(minHeight: S.h(30)),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Text("-", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
       ),
@@ -90,8 +90,8 @@ class _ProductCountState extends State<ProductCount> {
     return InkWell(
       onTap: () {
         _count++;
-        if (widget.OnChanged != null) {
-          widget.OnChanged(_count);
+        if (widget.onChanged != null) {
+          widget.onChanged(_count);
         }
         setState(() {});
       },
@@ -100,7 +100,7 @@ class _ProductCountState extends State<ProductCount> {
           color: Colors.transparent,
           border: Border.all(color: Colors.grey),
         ),
-        constraints: BoxConstraints(maxHeight: S.h(30)),
+        constraints: BoxConstraints(minHeight: S.h(30)),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Text("+", style: TextStyle(color: t_gray, fontSize: S.sp(15))),
       ),

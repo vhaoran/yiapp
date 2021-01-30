@@ -77,6 +77,10 @@ class _MasterYiOrderInputState extends State<MasterYiOrderInput> {
       CusToast.toast(context, text: "请输入内容");
       return;
     }
+    if (widget.yiOrder.diagnose.isEmpty) {
+      CusToast.toast(context, text: "请设置测算结果后再回复");
+      return;
+    }
     var m = {
       "id_of_order": widget.yiOrder.id,
       "msg_type": msg_text,

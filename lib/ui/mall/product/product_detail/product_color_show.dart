@@ -100,7 +100,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
                 // 购买数量
                 ProductCount(
                   count: _count,
-                  OnChanged: (val) => setState(() => _count = val),
+                  onChanged: (val) => setState(() => _count = val),
                 ),
               ],
             ),
@@ -126,6 +126,7 @@ class _ProductColorShowState extends State<ProductColorShow> {
       onTap: () => setState(() {
         _curSelect = i;
         _path = path;
+        _count = 1;
         print(">>>颜色：${e.code}");
         if (_select.isEmpty) {
           _select.addAll({"$i": e});
@@ -180,8 +181,8 @@ class _ProductColorShowState extends State<ProductColorShow> {
   }
 
   Widget _bottomBtn(String text, {VoidCallback onPressed}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+    return SizedBox(
+      width: S.screenW(),
       child: CusRaisedButton(
         child: Text(text, style: TextStyle(fontSize: S.sp(14))),
         padding:

@@ -104,15 +104,17 @@ class _UserYiOrderHisListPageState extends State<UserYiOrderHisListPage>
                       yiOrder: e,
                       iconUrl: e.icon_ref,
                       nick: e.nick_ref,
-                      child: YiOrderComButton(
-                        text: "评价",
-                        onPressed: () => CusRoute.push(
-                          context,
-                          ExpAddPage(yiOrder: e),
-                        ).then((value) {
-                          if (value != null) _refresh();
-                        }),
-                      ),
+                      child: e.has_exp
+                          ? SizedBox.shrink()
+                          : YiOrderComButton(
+                              text: "评价",
+                              onPressed: () => CusRoute.push(
+                                context,
+                                ExpAddPage(yiOrder: e),
+                              ).then((value) {
+                                if (value != null) _refresh();
+                              }),
+                            ),
                     ),
                   ),
                 ),
