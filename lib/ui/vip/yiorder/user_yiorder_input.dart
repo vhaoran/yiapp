@@ -3,6 +3,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/msg/msg-yiorder.dart';
+import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
@@ -14,10 +15,10 @@ import 'package:yiapp/widget/flutter/cus_toast.dart';
 // ------------------------------------------------------
 
 class UserYiOrderInput extends StatefulWidget {
-  final String yiOrderId;
+  final YiOrder yiOrder;
   final VoidCallback onSend;
 
-  UserYiOrderInput({this.yiOrderId, this.onSend, Key key}) : super(key: key);
+  UserYiOrderInput({this.yiOrder, this.onSend, Key key}) : super(key: key);
 
   @override
   _UserYiOrderInputState createState() => _UserYiOrderInputState();
@@ -75,8 +76,12 @@ class _UserYiOrderInputState extends State<UserYiOrderInput> {
       CusToast.toast(context, text: "请输入回复内容");
       return;
     }
+    if (widget.yiOrder.diagnose.isEmpty) {
+      CusToast.toast(context, text: "请设置测算结果后再回复");
+      return;
+    }
     var m = {
-      "id_of_order": widget.yiOrderId,
+      "id_of_order": widget.yiOrder.id,
       "msg_type": msg_text,
       "msg": _replyCtrl.text.trim(),
     };
@@ -93,7 +98,7 @@ class _UserYiOrderInputState extends State<UserYiOrderInput> {
       }
     } catch (e) {
       _isSending = false;
-      Log.error("会员回复大师订单 ${widget.yiOrderId} 出现异常：$e");
+      Log.error("会员回复大师订单 ${widget.yiOrder.id} 出现异常：$e");
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/model/bbs/submit_hehun_data.dart';
 import 'package:yiapp/model/bbs/submit_liuyao_data.dart';
 import 'package:yiapp/model/bbs/submit_sizhu_data.dart';
 import 'package:yiapp/model/bo/broker_master_cate.dart';
@@ -157,7 +158,8 @@ class _MeetMasterDetailPageState extends State<MeetMasterDetailPage> {
         "content": yiOrder.content.toJson(),
         "content_type": yiOrder.content_type,
       };
-      if (yiOrder is SubmitSiZhuData || yiOrder is SubmitSiZhuData) {
+      Log.info("yiOrder.runtimeType:${yiOrder.runtimeType}");
+      if (yiOrder is SubmitSiZhuData || yiOrder is SubmitHeHunData) {
         Log.info("是四柱或者合婚，添加 comment");
         m.addAll({"comment": yiOrder.title + yiOrder.brief});
       }

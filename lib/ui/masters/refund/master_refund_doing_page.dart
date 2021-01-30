@@ -89,8 +89,8 @@ class _MasterRefundDoingPageState extends State<MasterRefundDoingPage> {
           // 投诉订单头部
           RefundComHeader(
             refundRes: _refundRes,
-            iconUrl: _refundRes.master_icon,
-            nick: _refundRes.master_nick,
+            iconUrl: _refundRes.icon,
+            nick: _refundRes.nick,
           ),
           // 投诉的内容
           RefundComContent(refundRes: _refundRes),

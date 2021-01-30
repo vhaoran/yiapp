@@ -4,6 +4,7 @@ import 'package:yiapp/const/con_string.dart';
 import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
+import 'package:yiapp/ui/vip/prize/user_prize_doing_page.dart';
 import 'package:yiapp/ui/vip/prize/user_prize_unpaid_page.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/post_com/post_com_button.dart';
@@ -124,8 +125,11 @@ class _UserPrizeUnpaidMainState extends State<UserPrizeUnpaidMain>
                   context,
                   data: pay,
                   onSuccess: () async {
-                    _lookPrizePost(prize.id);
                     await _refresh();
+                    CusRoute.push(
+                      context,
+                      UserPrizeDoingPage(postId: prize.id, backData: ""),
+                    );
                   },
                 );
               },

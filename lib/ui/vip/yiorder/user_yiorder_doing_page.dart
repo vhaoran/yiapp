@@ -128,7 +128,7 @@ class _UserYiOrderDoingPageState extends State<UserYiOrderDoingPage> {
             ),
           ),
         ),
-        UserYiOrderInput(yiOrderId: _yiOrder.id, onSend: _refresh),
+        UserYiOrderInput(yiOrder: _yiOrder, onSend: _refresh),
       ],
     );
   }

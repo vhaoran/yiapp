@@ -6,6 +6,7 @@ import 'package:yiapp/cus/cus_route.dart';
 import 'package:yiapp/model/bbs/bbs_vie.dart';
 import 'package:yiapp/model/pays/order_pay_data.dart';
 import 'package:yiapp/service/api/api-bbs-vie.dart';
+import 'package:yiapp/ui/vip/vie/user_vie_doing_page.dart';
 import 'package:yiapp/ui/vip/vie/user_vie_unpaid_page.dart';
 import 'package:yiapp/widget/balance_pay.dart';
 import 'package:yiapp/widget/post_com/post_com_button.dart';
@@ -123,8 +124,8 @@ class _UserVieUnpaidMainState extends State<UserVieUnpaidMain>
                   context,
                   data: pay,
                   onSuccess: () async {
-                    _lookViePost(vie.id);
                     await _refresh();
+                    CusRoute.push(context, UserVieDoingPage(postId: vie.id));
                   },
                 );
               },

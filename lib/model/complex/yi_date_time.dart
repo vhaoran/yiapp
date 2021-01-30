@@ -1,4 +1,5 @@
 import 'package:secret/tools/lunar.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/model/complex/old_time.dart';
 
 // ------------------------------------------------------
@@ -67,7 +68,9 @@ class YiDateTime {
   /// 所以如果选择的是阴历，则先将阴历转为阳历显示
   DateTime toSolar() {
     Lunar lunar = Lunar.fromYmd(this.year, this.month, this.day);
+    Log.info("lunar：${lunar.toString()}");
     var t = lunar.toSolar;
+    Log.info("lunar.toSolar：${t.toString()}");
     DateTime dt = DateTime(t.year, t.month, t.day, this.hour, this.minute);
     return dt;
   }

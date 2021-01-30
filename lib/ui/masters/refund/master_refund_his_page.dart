@@ -82,15 +82,15 @@ class _MasterRefundHisPageState extends State<MasterRefundHisPage> {
           Container(
             padding: EdgeInsets.symmetric(vertical: S.h(5)),
             child: Text(
-              "被投诉大师",
+              "投诉人",
               style: TextStyle(color: t_primary, fontSize: S.sp(15)),
             ),
           ),
           // 投诉订单头部
           RefundComHeader(
             refundRes: _refundRes,
-            iconUrl: _refundRes.master_icon,
-            nick: _refundRes.master_nick,
+            iconUrl: _refundRes.icon,
+            nick: _refundRes.nick,
           ),
           // 投诉的内容
           RefundComContent(refundRes: _refundRes),
