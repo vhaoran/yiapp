@@ -18,18 +18,18 @@ import 'package:yiapp/ui/mall/product/product_detail/product_order.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/15 11:18
-// usage ：用户购物车页面
+// date  ：2021/2/1 上午9:33
+// usage ：会员购物车页面
 // ------------------------------------------------------
 
-class ShopCartPage extends StatefulWidget {
-  ShopCartPage({Key key}) : super(key: key);
+class UserMallShopCartPage extends StatefulWidget {
+  UserMallShopCartPage({Key key}) : super(key: key);
 
   @override
-  _ShopCartPageState createState() => _ShopCartPageState();
+  _UserMallShopCartPageState createState() => _UserMallShopCartPageState();
 }
 
-class _ShopCartPageState extends State<ShopCartPage> {
+class _UserMallShopCartPageState extends State<UserMallShopCartPage> {
   var _future;
   List<SingleShopData> _l = []; // 购物车数据
   var _m = Map<String, SingleShopData>(); // 选中商品

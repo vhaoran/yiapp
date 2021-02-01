@@ -27,17 +27,18 @@ import 'package:yiapp/widget/small/cus_loading.dart';
 // usage ：投诉大师订单、商城订单
 // ------------------------------------------------------
 
-class RefundAddPage extends StatefulWidget {
+class UserRefundAddPage extends StatefulWidget {
   final YiOrder yiOrder; // 投诉大师订单
   final ProductOrder productOrder; // 投诉商城订单
 
-  RefundAddPage({this.yiOrder, this.productOrder, Key key}) : super(key: key);
+  UserRefundAddPage({this.yiOrder, this.productOrder, Key key})
+      : super(key: key);
 
   @override
-  _RefundAddPageState createState() => _RefundAddPageState();
+  _UserRefundAddPageState createState() => _UserRefundAddPageState();
 }
 
-class _RefundAddPageState extends State<RefundAddPage> {
+class _UserRefundAddPageState extends State<UserRefundAddPage> {
   var _briefCtrl = TextEditingController(); // 投诉摘要
   var _detailCtrl = TextEditingController(); // 投诉详情
   bool _drawBack = false; // 是否退款，默认不退款
@@ -98,6 +99,9 @@ class _RefundAddPageState extends State<RefundAddPage> {
       }
     } catch (e) {
       Log.error("投诉${_isYiOrder ? '大师' : '商城'}时出现异常：$e");
+      if (e.toString().contains("已经有过投诉")) {
+        CusDialog.tip(context, title: "你已经投诉过该订单了");
+      }
     }
   }
 

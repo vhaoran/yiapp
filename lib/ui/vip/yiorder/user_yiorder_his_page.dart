@@ -8,7 +8,7 @@ import 'package:yiapp/model/orders/yiOrder-dart.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-yi-order.dart';
 import 'package:yiapp/service/api/api_msg.dart';
-import 'package:yiapp/ui/vip/refund/refund_add_page.dart';
+import 'package:yiapp/ui/vip/refund/user_refund_add_page.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/widget/cus_complex.dart';
 import 'package:yiapp/widget/flutter/cus_appbar.dart';
@@ -186,7 +186,7 @@ class _UserYiOrderHisPageState extends State<UserYiOrderHisPage> {
       // TODO 单子是否已被投诉，动态显示按钮
       FlatButton(
         onPressed: () =>
-            CusRoute.push(context, RefundAddPage(yiOrder: _yiOrder)),
+            CusRoute.push(context, UserRefundAddPage(yiOrder: _yiOrder)),
         child: Text(
           "投诉",
           style: TextStyle(color: t_gray, fontSize: S.sp(15)),

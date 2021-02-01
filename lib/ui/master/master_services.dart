@@ -12,7 +12,7 @@ import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/master/master_service_item.dart';
 import 'package:yiapp/model/dicts/master-cate.dart';
 import 'package:yiapp/service/api/api-master.dart';
-import 'package:yiapp/ui/master/addChServicePage.dart';
+import 'package:yiapp/ui/masters/info/master_add_ch_service_page.dart';
 
 // ------------------------------------------------------
 // author：suxing
@@ -149,12 +149,15 @@ class _MasterServicesState extends State<MasterServices>
 
   /// 修改服务，添加服务功能
   void _doFn({MasterCate m}) {
-    CusRoute.push(context, AddChServicePage(res: m)).then((val) {
+    var l = _l as List<MasterCate>;
+    List<String> strL = [];
+    l.forEach((element) => strL.add(element.yi_cate_name));
+    CusRoute.push(context, MasterAddChServicePage(res: m, l: strL)).then((val) {
       if (val != null) _refresh();
     });
   }
 
-  Future<void> _refresh() async {
+  _refresh() async {
     _l.clear();
     await _fetchServices();
   }

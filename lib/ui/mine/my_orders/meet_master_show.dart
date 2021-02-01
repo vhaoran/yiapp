@@ -16,7 +16,7 @@ import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/service/api/api_msg.dart';
 import 'package:yiapp/ui/mine/my_orders/hehun_order.dart';
 import 'package:yiapp/ui/mine/my_orders/master_order.dart';
-import 'package:yiapp/ui/vip/refund/refund_add_page.dart';
+import 'package:yiapp/ui/vip/refund/user_refund_add_page.dart';
 import 'package:yiapp/ui/mine/my_orders/sizhu_order.dart';
 import 'package:yiapp/util/screen_util.dart';
 import 'package:yiapp/util/swicht_util.dart';
@@ -278,7 +278,7 @@ class _MeetMasterShowState extends State<MeetMasterShow> {
           FlatButton(
             onPressed: () => CusRoute.push(
               context,
-              RefundAddPage(yiOrder: widget.yiOrder),
+              UserRefundAddPage(yiOrder: widget.yiOrder),
             ),
             child: Text(
               "投诉",

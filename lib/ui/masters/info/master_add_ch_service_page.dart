@@ -19,16 +19,17 @@ import 'package:yiapp/service/api/api-master.dart';
 // usage ：添加、修改大师服务共用页面
 // ------------------------------------------------------
 
-class AddChServicePage extends StatefulWidget {
+class MasterAddChServicePage extends StatefulWidget {
   final MasterCate res;
+  final List<String> l;
 
-  AddChServicePage({this.res, Key key}) : super(key: key);
+  MasterAddChServicePage({this.res, this.l, Key key}) : super(key: key);
 
   @override
-  _AddChServicePageState createState() => _AddChServicePageState();
+  _MasterAddChServicePageState createState() => _MasterAddChServicePageState();
 }
 
-class _AddChServicePageState extends State<AddChServicePage> {
+class _MasterAddChServicePageState extends State<MasterAddChServicePage> {
   var _priceCtrl = TextEditingController(); // 服务价格
   var _commentCtrl = TextEditingController(); // 服务介绍
   String _nameErr; // 项目名称错误信息提示
@@ -107,8 +108,10 @@ class _AddChServicePageState extends State<AddChServicePage> {
         SizedBox(height: Adapt.px(30)),
         _tip("选择项目名称"),
         InkWell(
-          onTap: () => FnDialog(context, l: c_service, groupValue: _cate_id,
-              fnPair: (int sex, int select, String name) {
+          onTap: () => FnDialog(context,
+              l: c_service,
+              hadL: widget.l,
+              groupValue: _cate_id, fnPair: (int sex, int select, String name) {
             if (select != null) _cate_id = select;
             if (name != null) _cate_name = name;
             if (_nameErr != null) _nameErr = null;

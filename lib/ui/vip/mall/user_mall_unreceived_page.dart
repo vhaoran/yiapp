@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/const/con_int.dart';
 import 'package:yiapp/cus/cus_log.dart';
+import 'package:yiapp/service/api/api_base.dart';
+import 'package:yiapp/util/screen_util.dart';
+import 'package:yiapp/widget/cus_button.dart';
+import 'package:yiapp/widget/refresh_hf.dart';
+import 'package:yiapp/const/con_color.dart';
 import 'package:yiapp/cus/cus_route.dart';
+import 'package:yiapp/widget/flutter/cus_appbar.dart';
+import 'package:yiapp/widget/flutter/cus_dialog.dart';
+import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/model/orders/productOrder.dart';
 import 'package:yiapp/model/pagebean.dart';
 import 'package:yiapp/service/api/api-product-order.dart';
-import 'package:yiapp/service/api/api_base.dart';
 import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
-import 'package:yiapp/ui/vip/refund/refund_add_page.dart';
-import 'package:yiapp/util/screen_util.dart';
-import 'package:yiapp/widget/cus_button.dart';
-import 'package:yiapp/widget/flutter/cus_appbar.dart';
-import 'package:yiapp/widget/refresh_hf.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2021/1/16 下午6:16
-// usage ：用户已收货
+// date  ：2021/2/1 上午9:39
+// usage ：会员待收货商城订单
 // ------------------------------------------------------
 
-class HadGetGoodsPage extends StatefulWidget {
-  HadGetGoodsPage({Key key}) : super(key: key);
+class UserMallUnreceivedPage extends StatefulWidget {
+  UserMallUnreceivedPage({Key key}) : super(key: key);
 
   @override
-  _HadGetGoodsPageState createState() => _HadGetGoodsPageState();
+  _UserMallUnreceivedPageState createState() => _UserMallUnreceivedPageState();
 }
 
-class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
+class _UserMallUnreceivedPageState extends State<UserMallUnreceivedPage> {
   var _future;
   int _page_no = 0;
   int _rows_count = 0;
   final int _rows_per_page = 10; // 默认每页查询个数
-  List<ProductOrder> _l = []; // 已收货列表
+  List<ProductOrder> _l = []; // 待收货列表
 
   @override
   void initState() {
@@ -41,36 +42,58 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
     super.initState();
   }
 
-  /// 分页查询已收货商城订单
+  /// 分页查询待收货商城订单
   _fetch() async {
     if (_page_no * _rows_per_page > _rows_count) return;
     _page_no++;
     var m = {
       "page_no": _page_no,
       "rows_per_page": _rows_per_page,
-      "where": {"stat": mall_received, "uid": ApiBase.uid},
+      "where": {"stat": mall_unreceived, "uid": ApiBase.uid},
       "sort": {"create_time_int": -1},
     };
     try {
-      PageBean pb = await ApiProductOrder.productOrderHisPage(m);
+      PageBean pb = await ApiProductOrder.productOrderPage(m);
       if (_rows_count == 0) _rows_count = pb.rowsCount ?? 0;
       var l = pb.data.map((e) => e as ProductOrder).toList();
-      Log.info("已收货订单总个数：$_rows_count");
+      Log.info("待收货订单总个数：$_rows_count");
       l.forEach((src) {
         // 在原来的基础上继续添加新的数据
         var dst = _l.firstWhere((e) => src.id == e.id, orElse: () => null);
         if (dst == null) _l.add(src);
       });
-      Log.info("用户自查已收货订单多少条：${_l.length}");
+      Log.info("用户自查待收货订单多少条：${_l.length}");
     } catch (e) {
-      Log.error("用户自查已收货订单出现异常：$e");
+      Log.error("用户自查待收货订单出现异常：$e");
+    }
+  }
+
+  /// 确认收货
+  void _doConfirm(String id) {
+    if (id != null) {
+      CusDialog.normal(
+        context,
+        title: "您是否已确认收到货?",
+        onApproval: () async {
+          try {
+            bool ok = await ApiProductOrder.productOrderReceive(id);
+            if (ok) {
+              CusToast.toast(context, text: "收货成功");
+              _l.removeWhere((e) => e.id == id);
+              setState(() {});
+            }
+          } catch (e) {
+            Log.error("确认收货时出现异常：$e");
+          }
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CusAppBar(text: "已收货"),
+      appBar: CusAppBar(text: "待收货"),
       body: FutureBuilder(
         future: _future,
         builder: (context, snap) {
@@ -80,7 +103,7 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
           if (_l.isEmpty) {
             return Center(
               child: Text(
-                "暂无已收货记录",
+                "暂无待收货记录",
                 style: TextStyle(color: t_gray, fontSize: S.sp(15)),
               ),
             );
@@ -115,9 +138,9 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
   Widget _coverItem(ProductOrder order) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.only(left: S.h(15), right: S.h(15), top: S.h(10)),
+        padding: EdgeInsets.only(left: 15, right: 15, top: 5),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ...order.items.map(
               (e) => InkWell(
@@ -152,41 +175,37 @@ class _HadGetGoodsPageState extends State<HadGetGoodsPage> {
               ),
             ),
             SizedBox(height: S.h(5)),
-            Row(
-              children: <Widget>[
-                Text(
-                  "合计 ${order.amt} 元",
-                  style: TextStyle(color: t_primary, fontSize: S.sp(15)),
-                ),
-                Spacer(),
-                Text(
-                  "${order.create_date}",
-                  style: TextStyle(color: t_gray, fontSize: S.sp(15)),
-                ),
-              ],
+            Text(
+              "合计 ${order.amt} 元",
+              style: TextStyle(color: t_primary, fontSize: S.sp(15)),
             ),
             SizedBox(height: S.h(5)),
-//            Padding(
-//              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
-//              child: Row(
-//                children: <Widget>[
-//                  Spacer(),
-//                  CusRaisedButton(
-//                    child: Text(
-//                      "投诉",
-//                      style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
-//                    ),
-//                    padding: EdgeInsets.symmetric(
-//                        vertical: S.h(3), horizontal: S.w(15)),
-//                    borderRadius: 50,
-//                    onPressed: () => CusRoute.push(
-//                      context,
-//                      ComplaintsAdd(productOrder: order),
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
+            Text(
+              "订单号：${order.bill_no}",
+              style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: S.h(10), bottom: S.h(5)),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "${order.create_date}",
+                    style: TextStyle(color: t_gray, fontSize: S.sp(15)),
+                  ),
+                  Spacer(),
+                  CusRaisedButton(
+                    child: Text(
+                      "确认收货",
+                      style: TextStyle(color: Colors.white, fontSize: S.sp(14)),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        vertical: S.h(3), horizontal: S.w(15)),
+                    borderRadius: 50,
+                    onPressed: () => _doConfirm(order.id),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

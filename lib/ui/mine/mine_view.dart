@@ -13,7 +13,7 @@ import 'package:yiapp/ui/masters/master_post_his_page.dart';
 import 'package:yiapp/ui/masters/refund/master_refund_main_page.dart';
 import 'package:yiapp/ui/masters/yiorder/master_yiorder_his_list_page.dart';
 import 'package:yiapp/ui/mine/post_orders/poster_console.dart';
-import 'package:yiapp/ui/mine/user_pro_info.dart';
+import 'package:yiapp/ui/vip/mall/user_mall_order_page.dart';
 import 'package:yiapp/widget/flutter/cus_toast.dart';
 import 'package:yiapp/widget/small/cus_box.dart';
 import 'account_safe/account_safe_page.dart';
@@ -113,7 +113,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "我的商品",
-          onTap: () => CusRoute.push(context, UserProductInfo()),
+          onTap: () => CusRoute.push(context, UserMallOrderPage()),
         ),
         NormalBox(
           title: "个人资金账号",
@@ -150,7 +150,7 @@ class _MineIdentityViewState extends State<MineIdentityView> {
         ),
         NormalBox(
           title: "我的商品",
-          onTap: () => CusRoute.push(context, UserProductInfo()),
+          onTap: () => CusRoute.push(context, UserMallOrderPage()),
         ),
         NormalBox(
           title: "个人资金账号",

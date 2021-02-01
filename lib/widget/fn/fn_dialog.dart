@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yiapp/cus/cus_log.dart';
 import 'package:yiapp/util/screen_util.dart';
 
 // ------------------------------------------------------
@@ -13,6 +14,7 @@ class FnDialog {
   final int sex;
   final int groupValue;
   final List<String> l;
+  final List<String> hadL;
   final FnPair fnPair;
 
   FnDialog(
@@ -20,6 +22,7 @@ class FnDialog {
     this.sex: 0,
     this.groupValue: -1,
     this.l,
+    this.hadL,
     this.fnPair,
   }) {
     _selectPair(context);
@@ -55,32 +58,42 @@ class FnDialog {
     );
   }
 
-  /// 单个星座组件
+  /// 单个选项组件
   Widget _conItem({int select, String name, VoidCallback onTap}) {
+    bool had = false;
+    if (hadL != null) {
+      had = hadL.contains(name);
+    }
     return InkWell(
-      onTap: () {
-        if (fnPair != null) fnPair(sex, select, name);
-      },
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(width: S.w(10)),
-              Text(name, style: TextStyle(fontSize: S.sp(15))),
-              Spacer(),
-              Radio(
-                value: select,
-                groupValue: groupValue,
-                onChanged: (value) {
-                  if (fnPair != null) {
-                    fnPair(sex, select, name);
-                  }
-                },
-              ),
-            ],
-          ),
-          Divider(thickness: 0.4, height: 0, color: Colors.grey),
-        ],
+      onTap: had
+          ? null
+          : () {
+              Log.info("选择的sex:$sex,select:$select,name:$name");
+              if (fnPair != null) fnPair(sex, select, name);
+            },
+      child: Container(
+        color: had ? Colors.grey[300] : Colors.transparent,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                SizedBox(width: S.w(10)),
+                Text(name, style: TextStyle(fontSize: S.sp(15))),
+                Spacer(),
+                Radio(
+                  value: select,
+                  groupValue: groupValue,
+                  onChanged: (value) {
+                    if (fnPair != null) {
+                      fnPair(sex, select, name);
+                    }
+                  },
+                ),
+              ],
+            ),
+            Divider(thickness: 0.4, height: 0, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }

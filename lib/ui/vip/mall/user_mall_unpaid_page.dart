@@ -20,18 +20,18 @@ import 'package:yiapp/ui/mall/product/product_detail/product_details.dart';
 
 // ------------------------------------------------------
 // author：suxing
-// date  ：2020/10/17 11:57
-// usage ：用户待付款商品
+// date  ：2021/2/1 上午9:35
+// usage ：会员待付款商城订单
 // ------------------------------------------------------
 
-class AwaitPayGoodsPage extends StatefulWidget {
-  AwaitPayGoodsPage({Key key}) : super(key: key);
+class UserMallUnpaidPage extends StatefulWidget {
+  UserMallUnpaidPage({Key key}) : super(key: key);
 
   @override
-  _AwaitPayGoodsPageState createState() => _AwaitPayGoodsPageState();
+  _UserMallUnpaidPageState createState() => _UserMallUnpaidPageState();
 }
 
-class _AwaitPayGoodsPageState extends State<AwaitPayGoodsPage> {
+class _UserMallUnpaidPageState extends State<UserMallUnpaidPage> {
   var _future;
   int _page_no = 0;
   int _rows_count = 0;
